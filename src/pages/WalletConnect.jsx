@@ -1,0 +1,112 @@
+import React , { useState } from 'react';
+import { Link , useLocation, useNavigate } from "react-router-dom";
+import Footer from '../components/footer/Footer';
+import HeaderStyle2 from '../components/header/HeaderStyle2';
+import img1 from '../assets/images/icon/connect-1.png'
+import img2 from '../assets/images/icon/connect-2.png'
+import img3 from '../assets/images/icon/connect-3.png'
+import img4 from '../assets/images/icon/connect-4.png'
+import img5 from '../assets/images/icon/connect-5.png'
+import img6 from '../assets/images/icon/connect-6.png'
+import img7 from '../assets/images/icon/connect-7.png'
+import img8 from '../assets/images/icon/connect-8.png'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
+
+const WalletConnect = () => {
+    const [data] = useState(
+        [
+            {
+                img: img1,
+                title: 'Meta Mask',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'
+            },
+            {
+                img: img2,
+                title: 'Bitski',
+                description: ' Dolor lacinia? Donec nulla, deleniti, dis arcu pharetra maecenas dapibus ante nemo! Wisi?'
+            },
+            {
+                img: img3,
+                title: 'Fortmatic',
+                description: 'Potenti eleifend faucibus quo vero nibh netus suspendisse unde? Consectetuer aspernatur'
+            },
+            {
+                img: img4,
+                title: 'Wallet Connect',
+                description: 'Metus corrupti itaque reiciendis, provident condimentum, reprehenderit numquam, mi'
+            },
+            {
+                img: img5,
+                title: 'Coinbase Wallet',
+                description: 'Sollicitudin iure conubia vivamus habitasse aptent, eligendi deserunt excepteur tellus non'
+            },
+            {
+                img: img6,
+                title: 'Authereum',
+                description: 'Purus irure lacinia eiusmod inventore bibendum habitant potenti non sint rem! Felis, asper'
+            },
+            {
+                img: img7,
+                title: 'Kaikas',
+                description: 'Varius culpa, aspernatur accusantium? Corporis rhoncus, voluptatibus incididunt, velit '
+            },
+            {
+                img: img8,
+                title: 'Torus',
+                description: ' Soluta fuga nihil, mollitia, ad reprehenderit qui viverra culpa posuere labore inventore'
+            },
+            
+        ]
+    )
+
+    const nav = useNavigate();
+    const userKey = localStorage.getItem('UserKey');
+
+    const connectWallet = async (e) => {
+        e.preventDefault();
+        
+        
+    }
+
+    return (
+        <div>
+            <HeaderStyle2 />
+            
+            <div className="tf-connect-wallet tf-section">
+                <div className="themesflat-container">
+                    <div className="row mrgTopSection connectWalletSec">
+                        <div className="col-12">
+                            <h2 className="tf-title-heading ct style-2 mg-bt-12">
+                                Connect Your Wallet
+                            </h2>
+                            <h5>
+                            <br /><br /><br /><br /><br /><br /><br /><br />
+                            </h5>
+                        </div>
+                        <div className="col-md-12">
+                            <div className="sc-box-icon-inner style-2 mobileWalletConnect">
+                            <ConnectWallet colorMode="dark"/>
+                            </div>  
+                        </div>    
+                    </div>              
+                </div>
+            </div>
+            <ToastContainer>
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            </ToastContainer>
+            <Footer />
+        </div>
+    );
+}
+
+export default WalletConnect;

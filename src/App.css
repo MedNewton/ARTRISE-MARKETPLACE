@@ -1,0 +1,1622 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.css-55ygxk{
+  border-radius: 15px !important;
+}
+
+.is_dark .css-55ygxk{
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.is_dark .css-55ygxk:hover{
+  background-color: rgb(232, 232, 232);
+}
+
+.is_dark .css-55ygxk span span{
+  color: #030303 !important;
+}
+
+.is_dark .css-55ygxk span span::before{
+  filter: invert(1);
+}
+
+
+
+.is_dark .css-55ygxk span svg{
+  filter: invert(0);
+}
+
+
+
+.css-55ygxk span span{
+  font-size: 16px;
+  color: #fff !important;
+}
+
+
+.css-0 li{
+  font-size: 14px;
+  
+}
+
+.css-1bnwz7w{
+  background-color: #000 !important;
+  border-color: #14141F !important;
+  color: #fff !important;
+}
+
+.css-1bnwz7w span{
+  font-size: 12px !important;
+  color: #fff;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.mrgTopSection{
+  padding-top: 20vh !important;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.buyNowBtn{
+  width: 100% !important;
+}
+
+.tf-section{
+  padding-top: 00px !important;
+}
+
+.tf-box-icon.create{
+  padding-bottom: 50px;
+}
+
+.tf-section.tf-item-details{
+  padding-top: 200px !important;
+}
+
+.collectionName{
+  color: rgb(16,16,16);
+  font-style: italic;
+  margin-bottom: 20px;
+  font-weight: 400 !important;
+}
+
+.is_dark .collectionName{
+  color: rgb(255, 255, 255);
+  font-style: italic;
+  margin-bottom: 20px;
+  font-weight: 400 !important;
+}
+
+.is_dark #root > div > div.mainslider.sld > div{
+  background: #030303 !important;
+}
+
+.is_dark .slide-pane__content{
+  background-color: #030303;
+}
+
+.is_dark #side-bar{
+  background-color: #030303;
+}
+
+.artworkDescription{
+  font-weight: 500;
+  font-size: 16px;
+  margin: 20px 0px;
+}
+
+.flat-accordion2 .accordion-item{
+  border-radius: 10px !important;
+  border: solid 1px rgb(229,232,235);
+  background-color: #F8F8F8;
+}
+
+.metadataBox{
+  height: auto;
+  width: 100%;
+}
+
+.propertiesBox{
+  padding-left: 33px;
+}
+
+.attr{
+  padding: 5px 10px;
+  background-color:lightsteelblue;
+  color:#282c34;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.attributeTitle{
+  font-size: 25px;
+  font-weight: 700;
+  color: #000;
+}
+
+.attributeValue{
+  font-size: 20px;
+  font-weight: 500;
+  font-style: italic;
+  color: rgb(66, 66, 66);
+}
+
+.physicalImages{
+  height: 500px;
+  width: 100%;
+  margin-right: 30%;
+}
+
+.physicalImages div:first-child{
+  height: 500px;
+  width: 85%;
+  border-radius: 10px;
+}
+
+
+.detailRight{
+  font-size: medium;
+  float: right;
+}
+
+.historyBox{
+  width: 100%;
+  height: 200px;
+  margin: 0px 0px;
+  border-radius: 10px !important;
+  border: solid 1px rgb(229,232,235);
+  box-shadow: 0px 2px 5px rgb(28 36 51 / 10%);
+  background-color: #F8F8F8;
+}
+
+.rsis-container{
+  height: 100%;
+  width: 100%;
+}
+
+.BuyNowBtn{
+  cursor: pointer;
+  margin-top: 5%;
+}
+
+#TDP{
+  padding-top: 3%;
+}
+
+#nextDrop{
+  padding-bottom: 5px !important;
+}
+
+.is_dark .copyrights{
+  background-color: transparent !important;
+}
+
+.css-55ygxk span span::before{
+  content: url("https://artrise.io/wallet2.svg");
+  padding-right: 5px;
+  padding-top: 5px;
+  width: 50px;
+}
+
+.tf-item-details .content-right .meta-item .option::before{
+  content: "\e90b" !important;
+}
+
+.tf-item-details .content-right .meta-item .eye::before{
+  content: "\e90b" !important;
+  color: red;
+}
+
+.socialShare{
+  vertical-align: top;
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 10px;
+  text-align: center;
+  
+}
+
+.socialShareBtn{
+  cursor: pointer;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+.socialShareBtn:hover:not(:active){
+  opacity: 0.75;
+}
+
+
+.tf-item-details .content-right .meta-item .eye{
+  cursor: pointer;
+}
+
+.historySpace{
+  height: 200px;
+  background-color: #F8F8F8;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px 10px;
+}
+
+.historyTitle{
+  color: #020e28;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.historyLine{
+  margin: 5px 0px;
+  height: 100px;
+}
+
+.historyImage{
+  height: 100%;
+  width: 100%;
+  border-radius: 10%;
+  background-image: url('assets/images/logo/logo2.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.historyImg{
+  width: 100%;
+  height: 100%;
+  border-radius: 10%;
+}
+
+.historyContentBox{
+  background-color: red;
+  height: 100px;
+}
+
+.ourArtists{
+  margin-top: 10%;
+  text-align: left;
+  margin-bottom: 3%;
+  margin-left: 0%;
+  font-size: 5em;
+}
+
+.browse{
+  margin-top: 5%;
+  text-align: left;
+  margin-bottom: 5%;
+  margin-left: 2%;
+  font-size: 5em;
+}
+
+.artistProfile{
+  padding-top: 10%;
+}
+
+.all{
+  margin-top: 5%;
+}
+
+.profilePadding{
+  padding-top: 10% !important;
+}
+
+.side{
+  padding-top:5%;
+}
+
+.authorName{
+  font-weight: 700;
+  font-style: italic;
+}
+
+.terms{
+  padding: 5% 2%;
+}
+
+.textPara{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-right: 5%;
+  font-size: 15px;
+  color: #000;
+  font-weight: 500;
+}
+
+.sub-widget-logo{
+  font-size: 25px !important;
+  line-height: 50px !important;
+  font-weight: 600;
+}
+
+.point{
+  padding-left: 2%;
+}
+
+.profileBar{
+  height: fit-content;
+  margin-bottom: 5%;
+  width: 100%;
+}
+
+.profileBarBtn{
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-radius: 30px;
+}
+
+.btnText{
+  color: #FFF;
+}
+
+.collectionHeader{
+  padding-top: 60vh;
+  height: 30vh;
+  line-height: 30vh;
+  background-image: url('https://artrise.io/photoSiteYann.jpeg');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.collectionImage{
+  background-image: url('https://i.seadn.io/gae/YCFtj9LoBESLlVYFnaFhCDylBOPzlmPsa6QHhbBmlnnOmnCKkpOjjDsTvfzF1T_fn-Cf4B6E-rXRqKM1UWXdvEA7wBHeE5fXLKh-4bk?auto=format&w=256');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 200px;
+  width: 200px;
+  margin-left: 5%;
+  margin-top: -10%;
+  border-radius: 30px;
+  padding: 10px;
+  border: solid 5px #d9d9d9;
+}
+
+.collectionTitle{
+  margin-top: -25%;
+  color: #FFF;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.is_dark html{
+  background-color: #030303 !important;
+}
+
+.is_dark .home-8 .header_1.header_2.style2{
+  background-color: #030303 !important;
+}
+
+.is_dark .flat-tabs.items .react-tabs__tab-list{
+  background-color: #212121 !important;
+}
+
+.is_dark .flat-tabs.items .react-tabs__tab-list li.react-tabs__tab--selected::after{
+  background-color: #fff !important;
+}
+
+.is_dark .flat-tabs.items .react-tabs__tab-list li{
+  color: rgb(184, 184, 184);
+}
+
+.noArtworks{
+  height: 60vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.noreferral{
+  height: fit-content;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.sorry{
+  width: 100%;
+  text-align: center;
+}
+
+.referralSorry{
+  margin-top: 10%;
+}
+
+.artworksBox{
+  padding-top: 50%;
+  background-color: red;
+  height: 100px;
+  width: 100%;
+}
+
+.collectionInfo{
+  padding-top: 5% !important;
+  padding-bottom: 15px !important;
+}
+
+.is_dark .collectionInfo p{
+  color: #fff;
+}
+
+.is_dark .filtersBtn svg{
+  filter: invert(1);
+}
+
+.blockchainDetails{
+  margin-top: 0%;
+  margin-bottom: -10%;
+}
+
+
+
+.createdBy{
+  margin-top: 5%;
+  margin-bottom: 3%;
+}
+
+.secondBD{
+  margin-top: 3%;
+}
+
+.blockchainDetailsData{
+  margin-top: 1%;
+}
+
+#submit{
+  background-color: #000;
+  border: #000;
+}
+
+.is_dark #submit{
+  background-color: #FFF;
+}
+
+.is_dark #submit i{
+  color:#000;
+}
+
+.tagsBar{
+  margin-top: 2%;
+  margin-bottom: 3%;
+}
+
+.tag{
+  display: inline;
+  text-align: center;
+  margin-right: 5px;
+  background-color: #FFF;
+  border: solid 1px #3b3b3b;
+  color: #3b3b3b;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 1.5em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tag:hover{
+  background-color: rgb(200, 200, 200);
+  border: solid 1px rgb(53, 53, 53);
+  color: #000000;
+}
+
+.selectedTag{
+  display: inline;
+  text-align: center;
+  margin-right: 5px;
+  background-color: rgb(0, 0, 0);
+  border: solid 1px #3b3b3b;
+  color: #ffffff;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 1.5em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hid{
+  display: none;
+}
+
+#showLess{
+  color: rgb(0, 0, 177);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#showMore{
+  color: rgb(0, 0, 177);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filtersBtn{
+  background-color: transparent;
+  border: solid 1px rgb(39, 39, 39);
+  border-radius: 10px;
+  width: fit-content;
+  height: fit-content;
+  padding: 8px;
+  margin-left: 0%;
+  margin-bottom: 2%;
+  cursor: pointer;
+}
+
+.filtersBtn:hover{
+  border: solid 1px #000;
+  background-color: rgb(207, 207, 207);
+}
+.slide-pane{
+
+  z-index: 999 !important;
+
+}
+.slide-pane__header{
+background-color: white !important;
+border-bottom: 0px !important;
+}
+
+.slide-pane__close{
+  color: white;
+}
+
+.slide-pane__title{
+  color: white;
+}
+
+.dropsRawContainer{
+  width: 93vw;
+}
+
+.dropsSeparator{
+  width: 100%;
+  height: 50px;
+}
+
+.collectionLinks{
+  float: right !important;
+}
+
+.artistName1{
+  font-style: italic;
+  color: #282c34;
+}
+
+.buyOptionsSeparator{
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.swal2-container{
+  z-index: 99999;
+}
+
+.physicalArtworksTitle{
+  margin-top: 3%;
+  margin-bottom: 2%;
+}
+
+#shipping{
+  margin-top: 0px !important;
+}
+
+.dropsPageTitle{
+  margin-top: 10%;
+  text-align: left;
+  margin-bottom: 3%;
+  margin-left: 1%;
+  font-size: 5em;
+}
+
+.mobileWalletConnect{
+  display: none;
+}
+
+.mobileOnly{
+  display: none;
+}
+
+.mobileTags{
+  display: none;
+}
+
+.mobileArtistDescription{
+  display: none;
+}
+
+
+.profileInfoSection{
+  width: 100%;
+  height: fit-content;
+  padding: 2% 0px 5% 2%;
+}
+
+.pdpSpace{
+  border-radius: 50%;
+  background-color: #F8F8F8;
+  height: 10vw;
+  width: 10vw;
+  border: 5px solid #cbcbcb;
+  box-shadow: #cbcbcb 0px 0px 50px;
+}
+
+.pdpSpace img{
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.userNameSpace{
+  padding-top: 2%;
+  width: fit-content;
+}
+
+.userNameTitle span{
+  margin-top: 50px !important;
+  height: 50px;
+}
+
+.is_dark .userNameTitle{
+  color: #fff;
+}
+
+.userAddress{
+  font-style: italic;
+  color: rgb(84, 84, 84);
+  font-size: 1.5em;
+}
+
+.is_dark .userAddress{
+  font-style: italic;
+  color: rgb(255, 255, 255);
+  font-size: 1.5em;
+}
+
+.tagLinksBar{
+  padding: 5% 0px 10px 0px;
+  border-bottom: solid 1px rgb(152, 152, 152);
+}
+
+.is_dark .tagLinksBar{
+  padding: 5% 0px 10px 0px;
+  border-bottom: solid 1px rgb(255, 255, 255);
+}
+
+.tagLink{
+  display: inline;
+  text-align: center;
+  margin-right: 5px;
+  
+  color: #3b3b3b;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 20px;
+  font-size: 1.6em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.is_dark .tagLink{
+  display: inline;
+  text-align: center;
+  margin-right: 5px;
+  
+  color: #ffffff;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 20px;
+  font-size: 1.6em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tagLinkSelected{
+  color: #FFF;
+  background-color: #030303;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.is_dark .tagLinkSelected{
+  color: #030303;
+  background-color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.followers{
+  margin-top: 2%;
+}
+
+.followersData{
+  margin-top: -1%;
+}
+
+.referralPadding{
+  padding: 0px 5%;
+}
+
+.shippingDetails{
+font-size: 0.8em;
+font-style: italic;
+color: rgb(28, 12, 70);
+margin-left: 5px;
+cursor: pointer;
+}
+.referralText{
+  margin-top: 2%;
+}
+
+#cover{
+  height: 30vh !important;
+  object-fit: cover;
+}
+
+
+#coverSection{
+  margin-bottom: 5%;
+}
+.referralAccordion{
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  margin-top: 3%;
+}
+
+.tf-title-heading{
+  padding-top: 3%;
+}
+
+.affiliateButton{
+  width: 100%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #030303;
+  border-color: transparent !important;
+}
+
+.affiliateButton:hover{
+  color: rgb(112, 112, 112);
+}
+
+.is_dark .affiliateButton{
+  background-color: #fff;
+  color: #030303;
+}
+
+.is_dark .affiliateButton:hover{
+  color: rgb(112, 112, 112);
+}
+
+.artistCategory{
+  font-style: italic;
+  font-weight: 400;
+}
+
+.desktopHistoryTab{
+  padding-left: 0px !important;
+  margin: 5% 0px 1% 0px !important;
+}
+
+.mobileHistoryTab{
+  padding-left: 0px !important;
+  margin: 15% 0px 1% 0px !important;
+}
+
+
+.physImg{
+  height: 30%;
+  width: auto;
+  aspect-ratio: 1;
+}
+
+.styles-module_image__2hdkJ{
+  max-height: 90vh !important;
+  position: absolute !important;
+  left: 25vw !important;
+  top: 2% !important;
+  max-width: auto !important;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.userCoverSection{
+  height: 45vh;
+  width: 100vw;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-bottom: -10%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button-place-bid{
+  display: none;
+}
+
+.tags{
+  display: none;
+}
+
+.sc-button.style.bag.fl-button.pri-3.no-bg:hover{
+  background-color: rgb(16, 16, 16);
+  border-color: rgb(16, 16, 16);
+  color: white;
+}
+
+
+.is_dark .sc-button.style.bag.fl-button.pri-3.no-bg{
+  border-color: #030303 !important;
+  background-color: #030303;
+}
+.is_dark .sc-button.style.bag.fl-button.pri-3.no-bg:hover{
+  background-color: white;
+  border-color: white;
+  color: rgb(16,16,16);
+}
+
+.is_dark .sc-button.style.bag.fl-button.pri-3.no-bg:hover span::before{
+  color: rgb(16,16,16) !important;
+}
+
+.is_dark .artistButton{
+  background-color: white !important;
+  color: #000 !important;
+  border-color: transparent;
+}
+
+.is_dark .sc-card-collection .sc-button.fl-button.pri-3{
+  border-color: #030303;
+  background-color: #030303;
+}
+
+.is_dark .sc-card-collection .sc-button.fl-button.pri-3:hover{
+  border-color: #030303;
+  background-color: #fff;
+  color: #030303;
+}
+
+.is_dark .authors-2 .react-tabs__tab-list{
+  background-color: #212121;
+}
+
+.sc-button.header-slider.style.style-1.rocket.fl-button.pri-1:hover span{
+  color: red !important;
+}
+
+.icon-color1{
+  background-color: rgb(16,16,16);
+}
+
+
+.icon-color2{
+  background-color: rgb(16,16,16);
+}
+
+.icon-color3{
+  background-color: rgb(16,16,16);
+}
+
+.badge{
+  background-color: rgb(16,16,16) !important;
+}
+
+.collectionLinks:hover ul li a:hover{
+  background-color: rgb(16,16,16);
+}
+
+.widget-social.style-3:hover ul li a:hover{
+  background-color: rgb(16,16,16);
+} 
+
+
+.sc-button.style-1.follow:hover{
+  background-color: rgb(16,16,16) !important;
+  border-color: rgb(16,16,16) !important;
+}
+
+
+#root > div > div.tf-section.tf-item-details > div > div:nth-child(1) > div:nth-child(2) > div > div > div.physicalImages > div > div:nth-child(5){
+  display: none;
+}
+
+
+.sc-button.loadmore.style.bag.fl-button.pri-3{
+  background-color: white !important;
+  border-color: rgb(16,16,16) !important;
+  color: #030303;
+}
+
+.sc-button.loadmore.style.bag.fl-button.pri-3:hover{
+  background-color: #030303 !important;
+  border-color: #fff !important;
+}
+
+.sc-button.loadmore.style.bag.fl-button.pri-3:hover span{
+  color: #fff;
+}
+
+.sc-button.loadmore.style.bag.fl-button.pri-3:hover span::before{
+  color: #fff;
+}
+
+
+.accordion-button.collapsed::after{
+  color: #000 !important;
+}
+
+.react-tabs__tab.react-tabs__tab--selected{
+  color: rgb(16,16,16) !important;
+}
+
+.is_dark .react-tabs__tab.react-tabs__tab--selected{
+  color: white !important;
+}
+
+.react-tabs__tab.react-tabs__tab--selected::after{
+  color: transparent !important;
+}
+
+
+.is_dark .sc-card-collection{
+  background-color:  #fff;
+  color: #000;
+}
+
+.is_dark .content a,p,h4{
+  color: #000;
+}
+
+.is_dark .artworkDescription{
+  color: #fff !important;
+}
+
+.swal2-styled.swal2-confirm{
+  background-color: #030303 !important;
+}
+
+#submitBtn{
+  background-color: #030303;
+  color: #fff;
+  border-color: transparent;
+}
+
+.is_dark #submitBtn{
+  background-color: #fff;
+  color: #030303;
+
+}
+
+#menu-primary-menu > li:nth-child(4){
+  display: none;
+}
+
+.help-center-form button{
+  background-color: #030303;
+  border-color: #030303;
+}
+
+.is_dark .help-center-form button{
+
+  border-color: #fff;
+}
+
+.is_dark textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{
+  color: #fff;
+}
+
+.question-form form button svg{
+  filter: invert(1);
+}
+
+.is_dark .question-form form button svg{
+  filter: invert(0);
+}
+
+
+
+.is_dark .mg-bt-24{
+  color: #fff !important;
+}
+
+.is_dark .widget-tag a.box-widget-tag{
+  background-color: #fff;
+  color: #030303;
+}
+
+.meta-post .inner.boder::after{
+  background-color: #030303;
+}
+
+.is_dark .meta-post .inner.boder::after{
+  background-color: #fff;
+}
+
+.tf-button-submit{
+  background-color: #030303;
+  color: #fff;
+  border-color: transparent;
+}
+
+.tf-button-submit:hover{
+  background-color: #030303;
+  color: rgb(161, 161, 161);
+  border-color: transparent;
+}
+
+.is_dark .tf-button-submit{
+  background-color: #fff;
+  color: #030303;
+  border-color: transparent;
+}
+
+.is_dark .tf-button-submit:hover{
+  background-color: #030303;
+  color: #fff;
+  border-color: #fff;
+}
+
+@media only screen and (max-width: 900px) {
+
+  .question-form form button{
+    left: 70% !important;
+  }
+
+  #menu-primary-menu > li:nth-child(4){
+    display: block;
+  }
+  .pdpSpace{
+    width: 30vw;
+    height: 30vw;
+  }
+
+  .userNameTitle{
+    margin-bottom: 20%;
+  }
+
+  .followers{
+    margin-top: 10%;
+  }
+
+  .followersData{
+    margin-bottom: 10%;
+  }
+
+  .tagLink{
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  #coverSection{
+    margin-top: 20vh !important;
+  }
+
+  #submitBtn{
+    width: 92vw;
+  }
+
+
+  .is_dark .menu-primary-menu{
+    background-color: #030303 !important;
+  }
+
+  .is_dark .menu-primary-menu li{
+    background-color: #030303 !important;
+  }
+
+  .header_2 .question-form input[type="text"]{
+    font-size: 8px !important;
+    margin-left: 0;
+    padding-left: 5px;
+    width: 100%;
+  }
+
+
+  .profilePadding{
+    padding-top: 30% !important;
+  }
+
+  .mobileWalletConnect .mobileWalletBtn{
+    width: 94vw;
+    padding: 5% 0px;
+    height: fit-content;
+    font-size: 2.5em;
+    background-color: #030303;
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 30px;
+    border-color: #fff;
+  }
+
+  .sc-card-product{
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .client-infor.sc-card-product{
+    margin-left: 0px !important;
+  }
+
+  .mobileOnly.blockchainDetails{
+    margin-top: 10%;
+    margin-bottom: 5%;
+  }
+
+
+
+  .rsis-image{
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+  }
+
+  .artistProfile{
+    padding-top: 30%;
+  }
+  .mobileOnly{
+    display: block;
+  }
+
+  .desktopOnly{
+    display: none;
+  }
+  .flat-search-btn {
+    display: none;
+  }
+  .mobile-button{
+    display: block;
+    z-index: 999;
+    
+    background-color: transparent;
+  }
+
+  #TDP{
+    padding-top: 0px;
+  }
+
+  .mobile-button:before, .mobile-button:after, .mobile-button span{
+    background-color: #000;
+  }
+
+  .is_dark .mobile-button:before{
+    background-color: #FFF;
+  }
+
+  .slide-pane__content{
+    padding: 24px 0px 24px 0px !important;
+  }
+
+  .is_dark .mobile-button:after{
+    background-color: #FFF;
+  }
+
+  .is_dark .mobile-button span{
+    background-color: #FFF;
+  }
+  .mobileWalletConnect{
+    
+
+    height: fit-content;
+    padding: 5px 0% 5px 3vw;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: block;
+  }
+
+  .header_avatar{
+    display: block;
+    visibility: visible;
+  }
+
+  .connectWalletSec{
+    margin-bottom: 50%;
+  }
+
+  .css-55ygxk span span{
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .main-logo img, .main-logo h2{
+    margin-left: -15%;
+  }
+  .AuctionsBg{
+    border-radius: 0px;
+    margin-bottom: 10%;
+  }
+  .sc-box-icon .image .icon-create {
+    margin-left:auto;
+    margin-right: auto;
+  }
+  .sc-box-icon{
+    text-align: center !important;
+  }
+  .widget-logo .sub-widget-logo{
+    padding-left: 0px;
+    font-size: 2em !important;
+  }
+  #logo_footer{
+    margin-left: -5%;
+  }
+  .copyrights{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .copyrights div{
+    width: 100%;
+  }
+  .rights{
+    text-align: center;
+  }
+  .privacy{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+  }
+  .indentedHR{
+    margin-top: 20%;
+  }
+  .SeparatorTitle2{
+    line-height: 1.1em;
+    margin-top: 30% !important;
+  }
+  .artistButton{
+    width: 90%;
+  }
+  .SeparatorTitle{
+    line-height: 1.1em;
+  }
+
+  .content{
+    padding-top: 0px !important;
+  }
+  .heading{
+    margin-right: 15%;
+  }
+  
+  .sub-heading{
+    text-align: center;
+    width: 90%;
+  }
+
+  .metadataBox{
+    margin-top: 20%;
+  }
+
+  .media{
+    margin-top: -20%;
+  }
+
+  .physicalImages{
+    margin-top: 15%;
+  }
+
+  .flat-accordion2 .accordion-item .accordion-body p {
+    font-size: 1.3em;
+    line-height: 1.2em;
+  }
+
+  .our-creater{
+    padding-top: 20% !important;
+  }
+
+  
+
+  .tagsBar{
+    display: none;
+  }
+
+  .mobileTags{
+    display: block;
+    width: 100vw;
+    height: fit-content;
+    padding-left: 10px;
+    padding-right: 10px ;
+    margin-left: 5%;
+    margin-right: 6%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    white-space: nowrap;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  
+    overflow-x: scroll;
+    margin-bottom: 5%;
+  }
+
+  .mobileTags::-webkit-scrollbar{
+    display: none;
+  }
+
+  .authors{
+    padding-top: 20% !important;
+  }
+
+  .desktopArtistDescription{
+    display: none;
+  }
+
+  .mobileArtistDescription{
+    display: block;
+    padding: 5%;
+    margin-top: 5%;
+    font-size: 1.5em;
+  }
+
+  
+
+  .display-text-group{
+    margin-bottom: 5%;
+  }
+  .read-more-button{
+    font-weight: 700;
+  }
+
+  .home-8 .flat-tabs.items .react-tabs__tab-list{
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  #TDP{
+    width: 100vw !important;
+  }
+
+
+  #root > div > section > div > div > div.author-profile.flex > div.widget-social.style-3 > ul{
+    display: none !important;
+  }
+
+  .main-nav{
+    overflow-y: scroll !important;
+  }
+
+  .authors{
+    padding-top: 0px !important;
+  }
+  
+  .heading {
+    margin-right: 5% !important;
+    margin-left: 5% !important;
+  }
+
+  .collectionTitle{
+    margin-top: -75%;
+    line-height: 1.1em;
+  }
+
+  .collectionImage {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .slide-pane{
+    width: 70vw !important;
+  }
+
+  .blockchainDetailsText{
+    font-style: italic;
+    font-size: 1.3em;
+    font-weight: 400 !important;
+    color: rgb(71, 71, 71);
+  }
+
+  .BDTXT{
+    font-weight: 400 !important;
+  }
+
+  .sep{
+    width: 100vw;
+    height: 20px;
+  }
+
+  .filtersBtn{
+    margin-left: 5%;
+    margin-bottom: 3%;
+  }
+
+  .ourArtists{
+    padding-top: 20%;
+  }
+
+  .browse{
+    margin-top: 20% !important;
+  }
+
+  .flat-tabs.items .react-tabs__tab-panel{
+    padding: 0px !important;
+  }
+}
+
+.smallPrice{
+  font-style: italic;
+  margin-right: 5px;
+}
+
+.smallpriceQuestion{
+  cursor: pointer !important;
+}
+
+.uploadNFTMediaBtn::before{
+  background-color: #030303 !important;
+  color: #fff !important;
+  border-color: #030303 !important;
+}
+
+.traitsWrapper{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+.traitsHeader{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3%;
+}
+
+.addTraitBtn{
+  background-color: #030303;
+  color: #fff;
+  border-color: #030303;
+  height: fit-content;
+  padding: 0.7% 1%;
+  font-size: 2em;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.removeTraitBtn{
+  background-color: #030303;
+  color: #fff;
+  border-color: #030303;
+  height: fit-content;
+  width: fit-content;
+  padding: 5% 10%;
+  margin-top: 5%;
+  font-size: 2em;
+  border-radius: 5px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+
+.traitListWrapper{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.trait{
+  width: 100%;
+  padding: 0% 5%;
+}
+
+.traitForm{
+  width: 100% !important;
+}
+
+.traitInputWrapper{
+  width: 50% !important;
+}
+
+.traitTitle{
+  margin-bottom: 2%;
+}
+
+#mintBtn{
+  cursor: pointer;
+  background-color: #030303;
+  color: #fff;
+  border-color: #030303;
+  width: 100%;
+  border-radius: 15px;
+  font-size: 2em;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%;
+  margin-left: auto;
+  margin-right: auto;
+  border-width: 2px;
+  font-weight: 700;
+}
+
+#mintBtn:hover{
+  background-color: #fff;
+  color: #030303;
+  border-color: #030303;
+  border-width: 2px;
+}
+
+.walletsWrapper{
+  width: fit-content;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.walletLogo{
+  height: 10vh;
+  width: auto;
+  margin-left: 1vh;
+  margin-right: 1vh;
+  cursor: pointer;
+}
+
+.collectionCoverPreview{
+  height: 40vh !important;
+}
+
+.percentageInput::after{
+  content: ' %' !important;
+}

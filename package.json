@@ -1,0 +1,81 @@
+{
+  "name": "axies-reactjs",
+  "homepage": "https://marketplace.artrise.io/",
+  "version": "1.0.1",
+  "private": true,
+  "dependencies": {
+    "@testing-library/react": "^13.4.0",
+    "@thirdweb-dev/react": "^3.6.2",
+    "@thirdweb-dev/sdk": "^3.6.2",
+    "@walletconnect/web3-provider": "^1.8.0",
+    "@web3modal/ethereum": "^2.2.2",
+    "@web3modal/react": "^2.2.2",
+    "alchemy-sdk": "^2.2.3",
+    "axios": "^1.2.0",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.2.3",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "firebase": "^9.14.0",
+    "lottie-react": "^2.4.0",
+    "moralis": "^2.7.4",
+    "node-sass": "^8.0.0",
+    "openssl": "^2.0.0",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.6.0",
+    "react-bootstrap-accordion": "^1.0.0",
+    "react-countdown": "^2.3.4",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
+    "react-images-viewer": "^1.7.1",
+    "react-router-dom": "^6.4.3",
+    "react-scripts": "5.0.1",
+    "react-share": "^4.4.1",
+    "react-side-pane": "^2.4.6",
+    "react-simple-image-slider": "^2.4.1",
+    "react-simple-image-viewer": "^1.2.2",
+    "react-sliding-pane": "^7.3.0",
+    "react-sliding-side-panel": "^2.0.3",
+    "react-social-login-buttons": "^3.6.1",
+    "react-tabs": "^5.1.0",
+    "react-toastify": "^9.1.1",
+    "react-transition-group": "^4.4.5",
+    "reactjs-social-login": "^2.6.2",
+    "read-more-react": "^1.0.10",
+    "sass": "^1.56.1",
+    "sweetalert2": "^11.6.15",
+    "sweetalert2-react-content": "^5.0.7",
+    "swiper": "^8.4.5",
+    "wagmi": "^0.12.6",
+    "web-vitals": "^3.1.0",
+    "web3": "^1.8.1",
+    "web3modal": "^1.9.12"
+  },
+  "scripts": {
+    "start": "set HTTPS=true&&set SSL_CRT_FILE=C:/Windows/System32/cert.crt&& set SSL_KEY_FILE=C:/Windows/System32/cert.key&&react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react-tabs": "^5.0.5"
+  }
+}
