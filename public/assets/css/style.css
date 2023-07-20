@@ -1447,6 +1447,7 @@ header{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    justify-content: flex-end;
     text-align: center;
     -webkit-box-align: center;
     -ms-flex-align: center;

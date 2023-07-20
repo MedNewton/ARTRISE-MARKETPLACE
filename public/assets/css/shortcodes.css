@@ -1939,7 +1939,7 @@
 }
 
 .sc-btn-top .sc-button {
-  padding: 12px 35px 12px 32px;
+  padding: 10px 35px 10px 32px;
 }
 
 .connect-wal .sc-btn-top .sc-button {
@@ -3890,7 +3890,7 @@ section.today-picks {
   font-size: 20px;
   line-height: 26px;
   font-weight: 700;
-  padding: 2.2% 67px 2.5%;
+  padding: 0.6% 67px 1%;
 }
 
 .authors-2 .react-tabs__tab.react-tabs__tab--selected {
@@ -4698,8 +4698,8 @@ section.today-picks {
 .mode_switcher {
   display: flex;
   position: absolute;
-  top: 21px;
-  right: 11px;
+  /*top: 21px;
+  right: 11px;*/
   justify-content: center;
   align-items: center;
 }
@@ -5612,12 +5612,19 @@ button.accordion-button {
   border-radius: 20px !important;
   border: none !important;
   box-shadow: 0px 3px 16px rgb(47 83 109 / 12%) !important;
-  background-color: var(--primary-color);
+  background-color: #fff;
   width: 100%;
-  position: relative;
+  position: absolute !important;
+  top: 20vh !important;
   display: flex;
   flex-direction: column;
 }
+
+.is_dark .modal-dialog .modal-content{
+  box-shadow: 0px 3px 16px rgba(255, 255, 255, 0.12) !important;
+  background-color: #020202;
+}
+
 .modal-dialog .modal-header {
   border: none;
 }
@@ -5682,7 +5689,8 @@ button.accordion-button {
 }
 
 .is_dark .modal-content .btn-close {
-  background-color: #14141f;
+  background-color: #020202;
+  box-shadow: 0px 3px 16px rgba(255, 255, 255, 0.12) !important;
 }
 
 .is_dark .modal-content .btn-close span {
@@ -5719,8 +5727,8 @@ button.accordion-button {
 }
 
 .header_2 .mode_switcher {
-  right: 50px;
-  top: 25% !important;
+  /*right: 50px;
+  top: 25% !important;*/
 }
 
 .header_2 .flat-search-btn {
@@ -5769,7 +5777,7 @@ button.accordion-button {
 }
 
 .header_2 .question-form input[type="text"] {
-  padding: 13px 18px 13px 66px;
+  padding: 10px 18px 10px 66px;
   background-color: transparent;
   border-radius: 25px;
   border: 2px solid #fff;
@@ -7864,11 +7872,11 @@ button.accordion-button {
 
 
 .is-fixed .sc-button.style-1{
-  border: 2px solid #fff;
+  border: 2px solid #020202;
 }
 
 .is-fixed .sc-button.style-1 span{
-  color: #fff;
+  color: #020202;
 }
 
 .sc-button.style.wallet span::before{
@@ -7876,7 +7884,7 @@ button.accordion-button {
 }
 
 .is-fixed .sc-button.style.wallet span::before{
-  color: #fff !important;
+  color: #020202 !important;
 }
 
 .is_dark .sc-button.style-1{
@@ -8088,7 +8096,7 @@ button.accordion-button {
 }
 
 .flat-tabs.items .react-tabs__tab-list li {
-  padding: 28px 23px 30px 40px;
+  padding: 2% 5px 2% 5px;
   position: relative;
   background: transparent;
   border: none;
@@ -8125,7 +8133,7 @@ button.accordion-button {
 }
 
 .flat-tabs.items .react-tabs__tab-panel {
-  padding: 122px 40px 8px 40px;
+  padding: 80px 40px 8px 40px;
 }
 
 .flat-tabs.items .react-tabs__tab-panel .option {

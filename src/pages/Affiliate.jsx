@@ -1,4 +1,4 @@
-import React , { useState } from 'react';
+import React , { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import Header from '../components/header/Header';
 import HeaderStyle2 from '../components/header/HeaderStyle2';
@@ -25,6 +25,10 @@ const Affiliate = () => {
             },
         ]
     )
+
+    useEffect(() => {
+        window.ire('identify', { customerId: localStorage.getItem('UserKey') });
+      }, []);
     return (
         <div>
             <HeaderStyle2 />

@@ -16,6 +16,10 @@ import { ref as SRef , getDownloadURL, uploadBytesResumable } from "firebase/sto
 
 const ArtistInfos = () => {
 
+    useEffect(() => {
+        window.ire('identify', { customerId: localStorage.getItem('UserKey') });
+      }, []);
+
     const nav = useNavigate();
 
     const [displayName, setDisplayName] = useState('');

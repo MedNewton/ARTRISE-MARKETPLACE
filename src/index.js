@@ -10,6 +10,8 @@ import { Web3Modal } from '@web3modal/react'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon } from 'wagmi/chains'
 
+
+
 const chains = [arbitrum, mainnet, polygon];
 
 const projectId = "45193581ccfa87dbe7f7b29ff4ee303e";
@@ -32,7 +34,10 @@ root.render(
   <BrowserRouter>
     <WagmiConfig client={wagmiClient}>
       <ScrollToTop />
-      <ThirdwebProvider desiredChainId={activeChainId}>
+      <ThirdwebProvider 
+      desiredChainId={activeChainId}
+      
+      >
         <App />
       </ThirdwebProvider>
       <ScrollToTop />

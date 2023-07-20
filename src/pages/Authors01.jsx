@@ -13,6 +13,7 @@ import { ref, onValue, get, update, set, child } from "firebase/database";
 
 
 const Authors01 = () => {
+    
     const [data] = useState(popularCollectionData);
 
     const [artists, setArtists] = useState([]);
@@ -24,17 +25,21 @@ const Authors01 = () => {
             let dt = snapshot.val();
             for(let artistKey in dt){
                 let a = dt[artistKey];
-                let artist = {
-                    "name": a.name,
-                    "type": a.artistType,
-                    "pdpLink": a.pdpLink,
-                    "img1": a.img1,
-                    "img2": a.img2,
-                    "img3": a.img3,
-                    "img4": a.img4,
-                    "slug": a.slug
+                if(a.name != "Armin Simon"){
+                    let artist = {
+                        "name": a.name,
+                        "type": a.artistType,
+                        "pdpLink": a.pdpLink,
+                        "img1": a.img1,
+                        "img2": a.img2,
+                        "img3": a.img3,
+                        "img4": a.img4,
+                        "slug": a.slug
+                    }
+                    
+                    setArtists(current=>[...current, artist]);
                 }
-                setArtists(current=>[...current, artist]);
+                
             }
         })
     }
@@ -42,10 +47,15 @@ const Authors01 = () => {
     useEffect(() => {
 
       getArtists();
+      
     }, [])
     
+    useEffect(() => {
+        console.log(artists)
+    }, [artists])
+    
 
-    const [visible , setVisible] = useState(6);
+    const [visible , setVisible] = useState(20);
     const showMoreItems = () => {
         setVisible((prevValue) => prevValue + 3);
     }
@@ -74,7 +84,15 @@ const Authors01 = () => {
             
 
             <section className="tf-section our-creater dark-style2">
-                <div className="themesflat-container">
+                <div className="themesflat-container"
+                style={{
+                    paddingLeft: "1%",
+                    paddingRight: "1%",
+                    marginLeft: "0px",
+                    marginRight: "0px",
+                    width: "100%"
+                }}
+                >
                     <div className="row">
                         <div className="col-md-12">
                             <h2 className="tf-title style4 mg-bt-38 ourArtists">

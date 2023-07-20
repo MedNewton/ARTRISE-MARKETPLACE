@@ -51,7 +51,15 @@ const Create = () => {
     ]
     return (
         <section className="tf-box-icon create style1 tf-section">
-            <div className="themesflat-container">
+            <div className="themesflat-container"
+            style={{
+                paddingLeft: "2%",
+                paddingRight: "2%",
+                marginLeft: "0px",
+                marginRight: "0px",
+                width: "100%"
+            }}
+            >
                 <div className="row">
                         <div className="col-12">
                             <h1 className="tf-title-heading ct style-2 fs-30 mg-bt-10 SeparatorTitle2">

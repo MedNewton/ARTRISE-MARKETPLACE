@@ -22,19 +22,25 @@ const LoginModal = (props) => {
 
       <div className="modal-body space-y-20 pd-40">
         <h3>Login</h3>
-        <p className="text-center"><span className="price color-popup">Using a crypto wallet</span>
+        <p className="text-center">
+          <span className="price color-popup" style={{ fontWeight: "600" }}>
+            Access your account to mint, browse and collect the world's best hybrid NFTs
+          </span>
+        </p>
+        <p className="text-center" style={{ marginTop: "10%", marginBottom: "0px !important" }}>
+          <span className="price color-popup" style={{ fontWeight: "500", fontSize: "1.1em" }}>
+            Login using your wallet:
+          </span>
         </p>
         <div id='createCollection' onClick={async () => {props.onHide();await open();}} className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close">Connect wallet</div>
 
-        <hr className='buyOptionsSeparator' />
-        <p className="text-center"><span className="price color-popup">Using social networks</span>
+        <p className="text-center" style={{ marginTop: "10%", marginBottom: "0px !important" }}>
+          <span className="price color-popup" style={{ fontWeight: "500", fontSize: "1.1em" }}>
+            Login using your social networks:
+          </span>
         </p>
         <div id='createCollection' className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close" onClick={()=>{setShowSocialLoginModal(true)}}>Social login</div>
-        <hr className='buyOptionsSeparator' />
-        <p className="text-center"><span className="price color-popup">Using an email address</span>
-        </p>
-        <div id='createCollection' className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close">Login with Email</div>
-
+        
 
       </div>
       <SocialLoginModal 

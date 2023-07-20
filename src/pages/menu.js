@@ -36,11 +36,7 @@ const menus = [
         name: 'Drops',
         links: '/drops',
     },
-    {
-        id: 4,
-        name: 'Profile',
-        links: '/Profile'
-    }
+    
     
 ]
 

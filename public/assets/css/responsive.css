@@ -427,7 +427,7 @@
     height: 80px !important;
   }
   .header_2 .mode_switcher {
-    top: 85px;
+    top: 25%;
     right: 15% !important;
   }
   .side-bar.item {

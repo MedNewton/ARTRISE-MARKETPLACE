@@ -57,7 +57,6 @@ import axios from "axios";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import Web3 from "web3";
 
-
 const ItemDetails01 = (props) => {
   const [modalShow, setModalShow] = useState(false);
   const [shippingModalShow, setShippingModalShow] = useState(false);
@@ -200,29 +199,27 @@ const ItemDetails01 = (props) => {
 
   async function buyNFT(listing) {
     let newPrice = (3500 / usdPriceInEth).toFixed(2);
-    let newPriceInWei = Web3.utils.toWei(newPrice, 'ether');
-    console.log(Web3.utils.toWei(newPrice, 'ether'))
-    let bignumberPrice = BigNumber.from(newPriceInWei)
-    
-    let bignumberDate1 = BigNumber.from(Date.now())
+    let newPriceInWei = Web3.utils.toWei(newPrice, "ether");
+    console.log(Web3.utils.toWei(newPrice, "ether"));
+    let bignumberPrice = BigNumber.from(newPriceInWei);
+
+    let bignumberDate1 = BigNumber.from(Date.now());
     setBuyModalShow(false);
     try {
       let lstID = lst;
-      
-      
+
       let updateResult = await contract.direct.updateListing({
         id: lstID,
         quantity: 1,
         buyoutPrice: bignumberPrice,
         currencyContractAddress: currencyContractAddress,
         startTimeInSeconds: bignumberDate1,
-        secondsUntilEnd: 86400
-      })
+        secondsUntilEnd: 86400,
+      });
       await contract.interceptor.overrideNextTransaction(() => ({
         gasLimit: 0,
       }));
       await contract.buyoutListing(lstID, 1);
-      
     } catch (error) {
       let errMsg = error.toString();
       if (errMsg.includes("requires a connected wallet")) {
@@ -253,11 +250,10 @@ const ItemDetails01 = (props) => {
     return ether;
   }
 
-  function etherToWei(eth){
+  function etherToWei(eth) {
     let wei = eth * 1000000000000000000;
     return wei;
   }
-
 
   async function likeBtnHandle() {
     if (!address || address == null || address == "" || address == " ") {
@@ -538,12 +534,12 @@ const ItemDetails01 = (props) => {
                               <div className="price">
                                 <div className="price-box">
                                   <h5>
-                                    {(3500 / usdPriceInEth).toFixed(2)} ETH{" "}
-                                    <span className="smallPrice"> / 3500$</span>
+                                    $3500
+                                    <span className="smallPrice"> {" / "+(3500 / usdPriceInEth).toFixed(2).toString()} ETH{" "}</span>
                                     <BsFillQuestionCircleFill
                                       color="#000"
                                       size={12}
-                                      className='smallpriceQuestion'
+                                      className="smallpriceQuestion"
                                       onClick={() => {
                                         Swal.fire({
                                           icon: "question",
@@ -584,9 +580,13 @@ const ItemDetails01 = (props) => {
                             className="BuyNowBtn"
                             onClick={() => {
                               setLst(listing.id);
-                              setAssetContractAddress(listing.assetContractAddress)
-                              setTokenId(listing.tokenId)
-                              setcurrencyContractAddress(listing.currencyContractAddress)
+                              setAssetContractAddress(
+                                listing.assetContractAddress
+                              );
+                              setTokenId(listing.tokenId);
+                              setcurrencyContractAddress(
+                                listing.currencyContractAddress
+                              );
                               setBuyModalShow(true);
                             }}
                           >
@@ -914,8 +914,19 @@ const ItemDetails01 = (props) => {
                               <div className="price">
                                 <div className="price-box">
                                   <h5>
-                                    {weiToEther(listing.buyoutPrice).toString()}{" "}
+                                    $1800
+                                    <small
+                                      style={{
+                                        fontWeight: "400",
+                                        color: "grey",
+                                        fontSize: "0.7em",
+                                        fontStyle: "italic",
+                                      }}
+                                    >
+                                      {weiToEther(listing.buyoutPrice).toString()}{" "}
                                     ETH
+                                    </small>
+                                    
                                   </h5>
                                 </div>
                               </div>

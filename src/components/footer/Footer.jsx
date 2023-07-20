@@ -32,11 +32,11 @@ const Footer = () => {
             link: "/hybrid_nft"
         },
         {
-            title: "Ecosystem",
+            title: "How it works?",
             link: "//artrise.io/index.php/ecosystem/"
         },
         {
-            title: "Artist Application",
+            title: "How to use?",
             link: "//forms.gle/dVamYz7mYkfz7EaW7"
         },
         {

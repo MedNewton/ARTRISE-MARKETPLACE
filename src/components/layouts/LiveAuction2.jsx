@@ -25,12 +25,20 @@ const LiveAuction2 = props => {
     return (
         <Fragment>
             <section className="tf-section live-auctions">
-                <div className="themesflat-container">
+                <div className="themesflat-container"
+                style={{
+                    paddingLeft: "1%",
+                    paddingRight: "1%",
+                    marginLeft: "0px",
+                    marginRight: "0px",
+                    width: "100%"
+                }}
+                >
                     <div className="row">
                         <div className="col-md-12">
                             <div className="heading-live-auctions">
                                 <h2 className="tf-title pb-20" id='nextDrop'>
-                                Next drops</h2>
+                                Coming Soon</h2>
                             </div>
                         </div>
 
@@ -72,7 +80,7 @@ const LiveAuction2 = props => {
                                                                             <div className="featured-countdown">
                                                                             <span className="slogan"></span>
                                                                             <Countdown date={Date.now() + diff}>
-                                                                                <span>You are good to go!</span>
+                                                                                <span></span>
                                                                             </Countdown>
                                                                         </div>
                                                                             <div className="button-place-bid">

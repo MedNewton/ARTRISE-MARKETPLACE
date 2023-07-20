@@ -18,7 +18,15 @@ const LiveAuction = props => {
     return (
         <Fragment>
             <section className="tf-section live-auctions">
-                <div className="themesflat-container">
+                <div className="themesflat-container"
+                style={{
+                    paddingLeft: "1%",
+                    paddingRight: "1%",
+                    marginLeft: "0px",
+                    marginRight: "0px",
+                    width: "100%"
+                }}
+                >
                     <div className="row">
                         <div className="col-md-12">
                             <div className="">
@@ -62,8 +70,8 @@ const LiveAuction = props => {
                                                                         <Link to="/login" className="wishlist-button heart"><span className="number-like">{item.wishlist}</span></Link>
                                                                         <div className="featured-countdown">
                                                                             <span className="slogan"></span>
-                                                                            <Countdown date={Date.now() + 500000000}>
-                                                                                <span>You are good to go!</span>
+                                                                            <Countdown date={Date.now() + 5000000000000}>
+                                                                                <span></span>
                                                                             </Countdown>
                                                                         </div>
                                                                         <div className="button-place-bid">

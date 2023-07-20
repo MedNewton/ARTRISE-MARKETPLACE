@@ -47,10 +47,24 @@ import ReferralPage from "./ReferralkPage";
 import HybridArticle from "./HybridBlogArticle";
 import ArtistInfos from "./artistInfos";
 import CreateCollection from "./createCollection";
+import CreateChoices from "./createChoices"
+import SettingsPage from "./settingsPage"
+import CreatePublicCollection from "./createPublicCollection";
+import Tokenize from "./tokenize";
+import Premiers from "./bidPage1";
+import MyCollections from "./myCollections";
+import Tokenized from "./tokenized";
+import MyPendingArtworks from "./myPendingArtworks";
+import Ressources from './ressources'
+import LazyDisplay from "./lazyDisplay";
+import ListItem from "./listNFT";
 
 const routes = [
   { path: '/', component: <Home01 />},
   { path: '/artist-info', component: <ArtistInfos />},
+  { path: '/private-display', component: <LazyDisplay />},
+  { path: '/list-item', component: <ListItem />},
+  { path: '/ressources', component: <Ressources />},
   { path: '/home-02', component: <Home02 />},
   { path: '/home-03', component: <Home03 />},
   { path: '/home-04', component: <Home04 />},
@@ -64,7 +78,7 @@ const routes = [
   { path: '/my-artworks', component: <MyArtworks />},
   { path: '/profile', component: <Profile />},
   { path: '/likedItems', component: <LikedItems />},
-  { path: '/referral_program', component: <Referral />},
+  { path: '/referral', component: <Referral />},
   { path: '/hybrid_nft', component: <HybridNFT />},
   { path: '/affiliate_program', component: <Affiliate />},
   { path: '/referral-program', component: <ReferralHome />},
@@ -90,6 +104,7 @@ const routes = [
   { path: '/wallet-connect', component: <WalletConnect />},
   { path: '/create-item', component: <CreateItem />},
   { path: '/create-collection', component: <CreateCollection />},
+  { path: '/create-public-collection', component: <CreatePublicCollection />},
   { path: '/edit-profile', component: <EditProfile />},
   { path: '/ranking', component: <Ranking />},
   { path: '/login', component: <Login />},
@@ -98,6 +113,13 @@ const routes = [
   { path: '/faq', component: <FAQ />},
   { path: '/contact-01', component: <Contact01 />},
   { path: '/contact-02', component: <Contact02 />},
+  { path: '/creator-choice', component: <CreateChoices />},
+  { path: '/settings', component: <SettingsPage />},
+  { path: '/tokenize', component: <Tokenize />},
+  { path: '/à_jamais_les_premiers', component: <Premiers />},
+  { path: '/tokenized', component: <Tokenized />},
+  { path: '/myCollections', component: <MyCollections />},
+  { path: '/pending-tokenizations', component: <MyPendingArtworks />},
 ]
 
 export default routes;

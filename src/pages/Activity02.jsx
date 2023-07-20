@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/header/Header';
 import HeaderStyle2 from '../components/header/HeaderStyle2';
@@ -183,6 +183,10 @@ const Activity02 = () => {
             },
         ]
     )
+
+    useEffect(() => {
+        window.ire('identify', { customerId: localStorage.getItem('UserKey') });
+      }, []);
 
     const [visible , setVisible] = useState(8);
     const showMoreItems = () => {

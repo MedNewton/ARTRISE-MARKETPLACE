@@ -61,8 +61,8 @@ const LiveAuction = props => {
                                                                     <Link to="/item-details-01"><img src={item.img} alt="axies" /></Link>
                                                                     <div className="featured-countdown">
                                                                         <span className="slogan"></span>
-                                                                        <Countdown date={Date.now() + 500000000}>
-                                                                                <span>You are good to go!</span>
+                                                                        <Countdown date={Date.now() + 5000000000000}>
+                                                                                <span></span>
                                                                             </Countdown>
                                                                     </div>
                                                                     <div className="button-place-bid">

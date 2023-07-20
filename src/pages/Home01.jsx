@@ -27,6 +27,7 @@ const Home01 = () => {
 
     const nav = useNavigate();
 
+
     
 
     /*useEffect(() => {
@@ -53,6 +54,11 @@ const Home01 = () => {
         getUserInfo();
         
     }, []);
+
+    // Impact : 
+    useEffect(() => {
+        window.ire('identify', { customerId: localStorage.getItem('UserKey') });
+      }, []);
 
     return (
         <div className='home-1'>
