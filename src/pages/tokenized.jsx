@@ -1,5 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, withRouter } from "react-router-dom";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import "react-sliding-pane/dist/react-sliding-pane.css";
 import Header from "../components/header/Header";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
@@ -116,7 +119,7 @@ const Tokenized = () => {
   }
 
   return (
-    <div>
+    <div  className="authors-2">
       <HeaderStyle2 />
 
       <div className="tf-create-item tf-section">
@@ -185,51 +188,44 @@ const Tokenized = () => {
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-12">
-                  <div className="row tagLinksBar">
-                    <div className="col-12 tlBar">
-                      
-                      <Link to={"/profile?id="+urlSlug}>
-                        <div className="tagLink">Owned</div>
-                      </Link>
-                      <Link to={"/tokenized?id="+urlSlug}>
-                        <div className="tagLink tagLinkSelected">Tokenized</div>
-                      </Link>
-                      <Link to={"/likedItems?id="+urlSlug}>
-                        <div className="tagLink">Liked items</div>
-                      </Link>
-                      {accountType == "artist" ? (
-                        <div className="tagLink">My collections</div>
-                      ) : (
-                        ""
-                      )}
-
-                      <div className="tagLink">
-                        <Dropdown>
-                          <Dropdown.Toggle id="profileTabDropdown">
-                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                          </Dropdown.Toggle>
-
-                          <Dropdown.Menu>
-                            <Dropdown.Item href="/">
-                              <p className="tagLinkDropdownItemText">Offers Made</p>
-                            </Dropdown.Item>
-                            <Dropdown.Item href="/">
-                              <p className="tagLinkDropdownItemText">Offers Received</p>
-                            </Dropdown.Item>
-                            <Dropdown.Item href="/">
-                              <p className="tagLinkDropdownItemText">Pending Tokenization</p>
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
+            <Tabs style={{width: "100%"}}>
+              <TabList  style={{padding: "0 0 0 0"}}>
+                <Link to={"/profile?id="+urlSlug}><Tab  key={1} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Owned</Tab></Link>
+                <Link to={"/tokenized?id=" + urlSlug}><Tab key={2}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Tokenized</Tab></Link>
+                <Link to={"/likedItems?id=" + urlSlug}><Tab key={3}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Liked items</Tab></Link>
+                {accountType === "artist" ? <Link to={"/myCollections?id=" + urlSlug}><Tab key={4} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Collections</Tab></Link> : ""}
+                <Tab key={5}><div className="tagLink">
+                  <Dropdown>
+                    <Dropdown.Toggle id="profileTabDropdown">
+                      <i
+                          className="fa fa-ellipsis-h"
+                          aria-hidden="true"
+                      ></i>
+                    </Dropdown.Toggle>
 
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">
+                          Offers Made
+                        </p>
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">
+                          Offers Received
+                        </p>
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">
+                          Pending Tokenization
+                        </p>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                </Tab>
+              </TabList>
+            </Tabs>
             {!isLoading && ownedNFTs && address
               ? ownedNFTs.map((nft) => {
                   if (nft.metadata.id != 0) {
@@ -268,7 +264,7 @@ const Tokenized = () => {
                   }
                 })
               :  (
-                  <div style={{width: "100%"}}>
+                  <div style={{width: "100%", marginTop: "220px"}}>
                     <div className="noArtworks">
                       <img
                         src="https://cdn.dribbble.com/users/1693462/screenshots/3504905/media/e76b879fc2bb9ec2a1f92da0732eb608.gif"

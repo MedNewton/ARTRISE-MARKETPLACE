@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
+// import { useHistory } from 'react-router-dom';
+import {ConnectWallet, useAddress, useContract, useListings} from "@thirdweb-dev/react";
 import menus from "../../pages/menu";
 import DarkMode from "./DarkMode";
 import logodark from "../../assets/images/logo/logo_dark.png";
@@ -30,8 +31,168 @@ import {
 import { AiOutlineBell } from "react-icons/ai";
 
 import { BiCoinStack } from "react-icons/bi";
+import axios from "axios";
+
+class LazyNFTListing {
+  constructor(i, d, p, on, oi) {
+    this.id = i;
+    this.data = d;
+    this.price = p;
+    this.ownerName = on;
+    this.ownerImage = oi;
+  }
+}
+
 
 const HeaderStyle2 = () => {
+
+
+  const { contract } = useContract(
+      "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
+      "marketplace"
+  );
+
+
+  // const history = useHistory();
+
+
+  const [artists, setArtists] = useState([]);
+  const [artistSearchList, setArtistSearchList] = useState([]);
+  const [searchingArray, setSearchingArray] = useState([]);
+  const [artWorks, setArtWorks] = useState([]);
+  const [lazyListed, setLazyListed] = useState([]);
+  const { data: listings, isLoading, error } = useListings(contract);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
+
+  async function getArtists() {
+    let ARTISTS = [];
+    const artistsRef = ref(db, 'artists/');
+    const snapshot = await get(artistsRef);
+    let dt = snapshot.val();
+    for (let artistKey in dt) {
+      let a = dt[artistKey];
+      if (a.name !== "Armin Simon") {
+        let artist = {
+          "name": a.name,
+          "type": a.artistType,
+          "pdpLink": a.pdpLink,
+          "img1": a.img1,
+          "img2": a.img2,
+          "img3": a.img3,
+          "img4": a.img4,
+          "slug": a.slug
+        }
+        ARTISTS.push(artist);
+      }
+    }
+    setArtists(ARTISTS);
+  }
+  async function getLazyOwned(adr) {
+    const listingsRef = ref(db, "listings/");
+    const snapshot = await get(listingsRef);
+    let dt = snapshot.val();
+    let lazyNFTs = [];
+    for (let i in dt) {
+      let listing = dt[i];
+      if (i > 27) {
+        let listingArtworkId = listing.artwork_id;
+        let price = listing.price;
+        let artworkRef = ref(db, "artworks/" + listingArtworkId);
+        const artworkSnapshot = await get(artworkRef);
+        let artwork = artworkSnapshot.val();
+        let ipfsURI = artwork.ipfsURI;
+        let owner = artwork.owner;
+        let ownerRef = ref(db, "users/" + owner);
+        const ownerSnapshot = await get(ownerRef);
+        let ownerData = ownerSnapshot.val();
+        let ownerName = ownerData.displayName;
+        let ownerImage = ownerData.pdpLink;
+        try {
+          let res = await axios.get(artwork.ipfsURI);
+          let lazyNFT = new LazyNFTListing(i, res.data, price, ownerName, ownerImage);
+          lazyNFTs.push(lazyNFT);
+        } catch (error) {
+          console.log("error");
+        }
+      }
+    }
+    setLazyListed(lazyNFTs);
+  }
+  const getArtworkForSearch = () => {
+    if (listings) {
+      let data = listings.map((artworkItem) => {
+        return { "name": artworkItem.asset.name, "id": artworkItem.id, "type": "Artwork" };
+      });
+      setArtWorks(data);
+    }
+  };
+  const getArtistsForSearch = () => {
+    if (artists) {
+      let data = artists.map((artist) => {
+        return { "name": artist.name, "id": artist.slug, "type": "Artist" };
+      });
+      setArtistSearchList(data);
+    }
+  };
+  const getSearchElements = () => {
+    const newArray = [...artWorks, ...artistSearchList];
+    const uniqueArray = Array.from(new Set(newArray));
+    setSearchingArray(uniqueArray);
+  };
+
+  useEffect(() => {
+    getLazyOwned();
+    getArtists();
+  }, []);
+
+  useEffect(() => {
+    getArtworkForSearch();
+    getArtistsForSearch();
+  }, [listings, artists]);
+
+  useEffect(() => {
+    getSearchElements();
+  }, [artWorks, artistSearchList]);
+
+  // console.log("wwwwww here in headerStyle2 searchingArray",searchingArray)
+
+  const handleSearch = (event) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchQuery(searchValue);
+    if (searchValue) {
+      const searchWords = searchValue.split(' ');
+      const filteredResults = searchingArray.filter((item) =>
+          searchWords.every((word) =>
+              item.name.toLowerCase().includes(word)
+          )
+      );
+      setSearchResults(filteredResults);
+    } else {
+      setSearchResults([]);
+    }
+  };
+
+  const handleItemClick = (item) => {
+    if (item.type === 'Artwork') {
+      // history.push(`/artwork/${item.id}`);
+
+    } else if (item.type === 'Artist') {
+      // history.push(`/artist/${item.id}`);
+    }
+    // You can add more cases for other types if needed
+    setSearchQuery(''); // Clear the search query after clicking on an item
+    setSearchResults([]); // Clear the search results after clicking on an item
+  };
+
+  // useEffect(() => {
+    // console.log(artists)
+  // }, [artists])
+
+
+
   // Impact IDENTIFICATION CODE :
 
   useEffect(() => {
@@ -367,7 +528,7 @@ const HeaderStyle2 = () => {
                     <form action="#" method="get">
                       <input
                         type="text"
-                        placeholder="Type to search..."
+                        placeholder="Type to search...1"
                         required
                       />
                       <button type="submit">
@@ -700,16 +861,44 @@ const HeaderStyle2 = () => {
                     </ul>
                   </nav>
                   <div className="question-form">
-                    <form action="#" method="get">
+                    <div className="">
                       <input
-                        type="text"
-                        placeholder="Type to search..."
-                        required
+                          type="text"
+                          placeholder="Type to search..."
+                          value={searchQuery}
+                          onChange={handleSearch}
                       />
-                      <button type="submit">
-                        <i className="bi bi-search"></i>
-                      </button>
-                    </form>
+                      {searchResults.length > 0 && (
+                          <div className="search-dropdown">
+                            {searchResults.map((result) => (
+                                <div
+                                    key={result.id}
+                                    className="search-item"
+                                    onClick={() => handleItemClick(result)}
+
+                                >
+                                  {result.type === "Artwork" ?
+                                      <Link
+                                          to={{
+                                            pathname: "/item-details-01",
+                                            search: `?listing=${result.id}`,
+                                          }}
+                                      >
+                                        <p>{result.name}</p>
+                                        <p className="search-item-detail">{result.type}</p>
+                                      </Link> :<Link
+                                          to={"/authors-02?artist=" + result.id}
+                                      >
+                                        <p>{result.name}</p>
+                                        <p>{result.type}</p>
+                                      </Link>
+                                  }
+
+                                </div>
+                            ))}
+                          </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flat-search-btn flex">
@@ -989,7 +1178,7 @@ const HeaderStyle2 = () => {
                     <form action="#" method="get">
                       <input
                         type="text"
-                        placeholder="Type to search..."
+                        placeholder="Type to search...3"
                         required
                       />
                       <button type="submit">

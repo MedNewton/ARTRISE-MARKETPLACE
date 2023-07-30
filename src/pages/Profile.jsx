@@ -1,5 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, withRouter } from "react-router-dom";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import "react-sliding-pane/dist/react-sliding-pane.css";
+
 import Header from "../components/header/Header";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
@@ -55,6 +59,26 @@ const Profile = () => {
   const [urlSlug, setUrlSlug] = useState("");
   const { address, isConnected } = useAccount();
   const [lazyOwned, setLazyOwned] = useState([]);
+  const [artistType, setArtistType] = useState("");
+
+  const [menuTab] = useState([
+    {
+      class: "active",
+      name: "Owned",
+    },
+    {
+      class: "",
+      name: "Tokenized",
+    },
+    {
+      class: "",
+      name: "Liked items",
+    },
+    {
+      class: "",
+      name: "Collections",
+    },
+  ]);
 
   async function getLazyOwned(adr) {
     const artworksRef = ref(db, "artworks/");
@@ -87,6 +111,7 @@ const Profile = () => {
       setTwitterLink(dt.Twitter);
       setDiscordLink(dt.Discord);
       setAccountType(dt.accountType);
+      setArtistType(dt.artistType);
       setSlug(dt.slug);
       let following =
         Object.entries(dt.followedArtists).length +
@@ -145,12 +170,11 @@ const Profile = () => {
   }
 
   return (
-    <div>
+    <div className="authors-2">
       <HeaderStyle2 />
-
-      <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row profilePadding ">
+      <div className="tf-create-item tf-section" >
+        <div className="themesflat-container" >
+          <div className="row profilePadding">
             <div
               className="row userCoverSection"
               id="userCover"
@@ -167,7 +191,7 @@ const Profile = () => {
               <div className="userDataContainer">
                 <h5 className="userName">{displayName}</h5>
                 <p className="userAttribution">
-                  {accountType == "artist" ? "Artist" : "Member"}
+                  {accountType === "artist" ? `${artistType ? artistType : "Artist"}` : "Member"}
                 </p>
                 <div className="userSocialsContainer">
                   <i
@@ -223,54 +247,43 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-12">
-                  <div className="row tagLinksBar">
-                    <div className="col-12 tlBar">
-                      <div className="tagLink tagLinkSelected">Owned</div>
-                      <Link to={"/tokenized?id=" + urlSlug}>
-                        <div className="tagLink">Tokenized</div>
-                      </Link>
-                      <Link to={"/likedItems?id=" + urlSlug}>
-                        <div className="tagLink">Liked items</div>
-                      </Link>
-                      {accountType == "artist" ? (
-                        <Link to={"/myCollections?id=" + urlSlug}>
-                          <div className="tagLink">My collections</div>
-                        </Link>
-                      ) : (
-                        ""
-                      )}
-
-                      <div className="tagLink">
-                        <Dropdown>
-                          <Dropdown.Toggle id="profileTabDropdown">
-                            <i
-                              className="fa fa-ellipsis-h"
-                              aria-hidden="true"
-                            ></i>
-                          </Dropdown.Toggle>
-
-                          <Dropdown.Menu>
-                            <Dropdown.Item href="/">
-                              <p className="tagLinkDropdownItemText">
-                                Offers Made
-                              </p>
-                            </Dropdown.Item>
-                            <Dropdown.Item href="/">
-                              <p className="tagLinkDropdownItemText">
-                                Offers Received
-                              </p>
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
+            <Tabs style={{width: "100%"}}>
+              <TabList  style={{padding: "0 0 0 0"}}>
+                <Tab key={1} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Owned</Tab>
+                <Link to={"/tokenized?id=" + urlSlug}><Tab key={2}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Tokenized</Tab></Link>
+                <Link to={"/likedItems?id=" + urlSlug}><Tab key={3}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Liked items</Tab></Link>
+                {accountType === "artist" ? <Link to={"/myCollections?id=" + urlSlug}><Tab key={4} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Collections</Tab></Link> : ""}
+                <Tab key={5}><div className="tagLink">
+                  <Dropdown>
+                    <Dropdown.Toggle id="profileTabDropdown">
+                      <i
+                          className="fa fa-ellipsis-h"
+                          aria-hidden="true"
+                      ></i>
+                    </Dropdown.Toggle>
 
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">
+                          Offers Made
+                        </p>
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">
+                          Offers Received
+                        </p>
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">
+                          Pending Tokenization
+                        </p>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                </Tab>
+              </TabList>
             {!isLoading && ownedNFTs && address
               ? ownedNFTs.map((nft) => {
                   if (nft.metadata.id != 0) {
@@ -346,6 +359,7 @@ const Profile = () => {
                   }
                 })
               : ""}
+              </Tabs>
           </div>
         </div>
       </div>

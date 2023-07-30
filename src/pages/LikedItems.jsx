@@ -116,7 +116,7 @@ const LikedItems = () => {
     const ThisUserRef = ref(db, "users/" + address);
     await get(ThisUserRef).then((snapshot) => {
       let dt = snapshot.val();
-      let likes = dt.likedListings;
+      let likes = dt?.likedListings;
 
       for (let likeIndex in likes) {
         myLikes.push(likes[likeIndex]);
