@@ -9,6 +9,7 @@ import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon } from 'wagmi/chains'
+import { Gnosis, Ethereum } from "@thirdweb-dev/chains";
 
 
 
@@ -33,14 +34,12 @@ const activeChainId = ChainId.Mainnet;
 root.render(
   <BrowserRouter>
     <WagmiConfig client={wagmiClient}>
-      <ScrollToTop />
       <ThirdwebProvider 
-      desiredChainId={activeChainId}
-      
+      activeChain={"ethereum"}
+      clientId="df89feb02d2661087b8992b3c1561b89"
       >
         <App />
       </ThirdwebProvider>
-      <ScrollToTop />
     </WagmiConfig>
 
     <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />

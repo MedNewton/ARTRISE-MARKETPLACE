@@ -52,7 +52,9 @@ import {
   ThirdwebNftMedia,
   MediaRenderer,
   useAddress,
+  useBuyNow 
 } from "@thirdweb-dev/react";
+import { ListingType } from "@thirdweb-dev/sdk";
 import axios from "axios";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import Web3 from "web3";
@@ -93,14 +95,18 @@ const ItemDetails01 = (props) => {
     "marketplace"
   );
   const { data: listings, isLoading, Error } = useListings(contract);
+  const { mutateAsync: buyNow, isBuyLoading, error } = useBuyNow(contract);
 
   const [usdPriceInEth, setUsdPriceInEth] = useState();
 
-  useEffect(async () => {
-    const response = await axios.get(
-      "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
-    );
-    setUsdPriceInEth(parseFloat(response.data.USD));
+  useEffect(() => {
+    async function call() {
+      const response = await axios.get(
+        "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+      );
+      setUsdPriceInEth(parseFloat(response.data.USD));
+    }
+    call();
   }, []);
 
   useEffect(() => {
@@ -198,28 +204,13 @@ const ItemDetails01 = (props) => {
   ]);
 
   async function buyNFT(listing) {
-    let newPrice = (3500 / usdPriceInEth).toFixed(2);
-    let newPriceInWei = Web3.utils.toWei(newPrice, "ether");
-    console.log(Web3.utils.toWei(newPrice, "ether"));
-    let bignumberPrice = BigNumber.from(newPriceInWei);
-
-    let bignumberDate1 = BigNumber.from(Date.now());
-    setBuyModalShow(false);
+    let quantity = 1;
     try {
-      let lstID = lst;
-
-      let updateResult = await contract.direct.updateListing({
-        id: lstID,
-        quantity: 1,
-        buyoutPrice: bignumberPrice,
-        currencyContractAddress: currencyContractAddress,
-        startTimeInSeconds: bignumberDate1,
-        secondsUntilEnd: 86400,
-      });
-      await contract.interceptor.overrideNextTransaction(() => ({
-        gasLimit: 0,
-      }));
-      await contract.buyoutListing(lstID, 1);
+      buyNow({
+        id: listing, // ID of the listing to buy
+        type: ListingType.Direct, // Direct (0) or Auction (1)
+        buyAmount: quantity, // Amount to buy
+      })
     } catch (error) {
       let errMsg = error.toString();
       if (errMsg.includes("requires a connected wallet")) {
@@ -241,7 +232,13 @@ const ItemDetails01 = (props) => {
           text: "It seems that you don't have sufficient funds in your wallet to perform this action.\nPlease, change or top-up your wallet with Ether.",
         });
       }
-      console.log(error);
+      else if (errMsg.includes("missing revert data")) {
+        Swal.fire({
+          icon: "error",
+          title: "Insufficient funds",
+          text: "It seems that you don't have sufficient funds in your wallet to perform this action.\nPlease, change or top-up your wallet with Ether.",
+        });
+      }
     }
   }
 
@@ -298,11 +295,11 @@ const ItemDetails01 = (props) => {
 
       {!isLoading && listings ? (
         listings?.map((listing, index) => {
-          if (listing.id == listingID) {
+          if (listing.id === listingID) {
             let NFTProperties = listing.asset.attributes;
 
             return (
-              <div key={index} className="tf-section tf-item-details">
+              <div key={listing.id} className="tf-section tf-item-details">
                 <div className="themesflat-container">
                   <div className="row desktopOnly">
                     <div className="col-xl-6 col-md-12">
@@ -535,7 +532,14 @@ const ItemDetails01 = (props) => {
                                 <div className="price-box">
                                   <h5>
                                     $3500
-                                    <span className="smallPrice"> {" / "+(3500 / usdPriceInEth).toFixed(2).toString()} ETH{" "}</span>
+                                    <span className="smallPrice">
+                                      {" "}
+                                      {" / " +
+                                        (3500 / usdPriceInEth)
+                                          .toFixed(2)
+                                          .toString()}{" "}
+                                      ETH{" "}
+                                    </span>
                                     <BsFillQuestionCircleFill
                                       color="#000"
                                       size={12}
@@ -579,7 +583,7 @@ const ItemDetails01 = (props) => {
                           <div
                             className="BuyNowBtn"
                             onClick={() => {
-                              setLst(listing.id);
+                              /*setLst(listing.id);
                               setAssetContractAddress(
                                 listing.assetContractAddress
                               );
@@ -587,7 +591,7 @@ const ItemDetails01 = (props) => {
                               setcurrencyContractAddress(
                                 listing.currencyContractAddress
                               );
-                              setBuyModalShow(true);
+                              buyNFT(listing.id);*/
                             }}
                           >
                             <span className="sc-button loadmore style bag fl-button pri-3">
@@ -923,10 +927,11 @@ const ItemDetails01 = (props) => {
                                         fontStyle: "italic",
                                       }}
                                     >
-                                      {weiToEther(listing.buyoutPrice).toString()}{" "}
-                                    ETH
+                                      {weiToEther(
+                                        listing.buyoutPrice
+                                      ).toString()}{" "}
+                                      ETH
                                     </small>
-                                    
                                   </h5>
                                 </div>
                               </div>
@@ -952,7 +957,7 @@ const ItemDetails01 = (props) => {
                             className="BuyNowBtn"
                             onClick={() => {
                               setLst(listing.id);
-                              setBuyModalShow(true);
+                              buyNFT(listing.id);
                             }}
                           >
                             <span className="sc-button loadmore style bag fl-button pri-3">
@@ -1167,6 +1172,10 @@ const ItemDetails01 = (props) => {
                 </div>
               </div>
             );
+          } else {
+            return (
+              ""
+            );
           }
         })
       ) : (
@@ -1174,6 +1183,7 @@ const ItemDetails01 = (props) => {
           <img
             src="https://media.tenor.com/eL-cXQYmRjQAAAAM/loading-load.gif"
             className="loadingGIF"
+            alt=""
           ></img>
         </div>
       )}

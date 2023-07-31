@@ -211,7 +211,7 @@ const HeaderStyle2 = () => {
           },
         });
         console.log(window.ire);
-        window.ire(
+        let trackConversion = window.ire(
           "trackConversion",
           37268,
           {
@@ -222,6 +222,7 @@ const HeaderStyle2 = () => {
             verifySiteDefinitionMatch: true,
           }
         );
+        console.log(trackConversion)
         passwordlessLogin(snapshot);
       } else {
         passwordlessLogin(snapshot);

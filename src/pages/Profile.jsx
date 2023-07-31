@@ -29,9 +29,10 @@ import Dropdown from "react-bootstrap/Dropdown";
 import axios from "axios";
 
 class LazyNFT {
-  constructor(i, d) {
+  constructor(i, d, l) {
     this.id = i;
     this.data = d;
+    this.listable = l;
   }
 }
 
@@ -62,11 +63,14 @@ const Profile = () => {
       let dt = snapshot.val();
       for (let i in dt) {
         let lazyArtwork = dt[i];
+        let listable = false;
+        if(lazyArtwork.listed === "no") listable = true;
         if (lazyArtwork.owner === adr && lazyArtwork.type === "lazyMinted") {
+          
           console.log(lazyArtwork.ipfsURI);
           try {
             let res = await axios.get(lazyArtwork.ipfsURI);
-            let lazyNFT = new LazyNFT(i, res.data);
+            let lazyNFT = new LazyNFT(i, res.data, listable);
             setLazyOwned((prevState) => [...prevState, lazyNFT]);
           } catch (error) {console.log("error")}
         }
@@ -313,36 +317,60 @@ const Profile = () => {
               ? lazyOwned.map((nft, index) => {
                   if (nft) {
                     let id = nft.id;
-
-                    return (
-                      <div
-                        key={index}
-                        className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-                      >
-                        <div className={`sc-card-product`}>
-                          <div className="card-media">
-                            <Link to={"/private-display?id=" + id}>
-                              <img src={nft.data.image} alt="" />
-                            </Link>
-                          </div>
-                          <div className="card-title">
-                            <Link to={"/private-display?id=" + id}>
-                              <h5 className="style2">{nft.data.name}</h5>
-                            </Link>
-                          </div>
-                          <div className="card-bottom">
-                            <Link
-                              to={"/private-display?id=" + id}
-                              className="buyNowBtn"
-                            >
-                              <button className="sc-button style bag fl-button pri-3 no-bg">
-                                <span>List this NFT</span>
-                              </button>
-                            </Link>
+                    if(nft.listable){
+                      return (
+                        <div
+                          key={index}
+                          className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+                        >
+                          <div className={`sc-card-product`}>
+                            <div className="card-media">
+                              <Link to={"/private-display?id=" + id}>
+                                <img src={nft.data.image} alt="" />
+                              </Link>
+                            </div>
+                            <div className="card-title">
+                              <Link to={"/private-display?id=" + id}>
+                                <h5 className="style2">{nft.data.name}</h5>
+                              </Link>
+                            </div>
+                            <div className="card-bottom">
+                              <Link
+                                to={"/private-display?id=" + id}
+                                className="buyNowBtn"
+                              >
+                                <button className="sc-button style bag fl-button pri-3 no-bg">
+                                  <span>List this NFT</span>
+                                </button>
+                              </Link>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
+                      );
+                    }
+                    else{
+                      return (
+                        <div
+                          key={index}
+                          className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+                        >
+                          <div className={`sc-card-product`}>
+                            <div className="card-media">
+                              <Link to={"/artwork-dettails?id=" + id}>
+                                <img src={nft.data.image} alt="" />
+                              </Link>
+                            </div>
+                            <div className="card-title">
+                              <Link to={"/artwork-dettails?id=" + id}>
+                                <h5 className="style2">{nft.data.name}</h5>
+                              </Link>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    }
+                    
                   }
                 })
               : ""}

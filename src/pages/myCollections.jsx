@@ -46,7 +46,7 @@ const MyCollections = () => {
   const [slug, setSlug] = useState("");
   const [urlSlug, setUrlSlug] = useState("");
   const { address, isConnected } = useAccount();
-  const [myCollections, setMyCollections] = useState([])
+  const [myCollections, setMyCollections] = useState([]);
 
   async function getUserData(adr) {
     const ThisUserRef = ref(db, "users/" + adr);
@@ -73,17 +73,17 @@ const MyCollections = () => {
     });
   }
 
-  async function getMyCollections(adr){
+  async function getMyCollections(adr) {
     const collectionsRef = ref(db, "collections/");
-    await get(collectionsRef).then(async (snapshot)=> {
-        let dt = snapshot.val();
-        for(let i in dt){
-            let collection = dt[i];
-            if(collection.owner == adr){
-                setMyCollections(prevState=>[...prevState, collection])
-            }
+    await get(collectionsRef).then(async (snapshot) => {
+      let dt = snapshot.val();
+      for (let i in dt) {
+        let collection = dt[i];
+        if (collection.owner === adr) {
+          setMyCollections((prevState) => [...prevState, collection]);
         }
-    })
+      }
+    });
   }
 
   useEffect(() => {
@@ -95,11 +95,10 @@ const MyCollections = () => {
       nav("/");
     }
     if (address) {
-        getUserData(address);
-        getMyCollections(address);
-        console.log(myCollections)
-    }
-    else {
+      getUserData(address);
+      getMyCollections(address);
+      console.log(myCollections);
+    } else {
       if (
         localStorage.getItem("twitter") ||
         localStorage.getItem("google") ||
@@ -108,15 +107,7 @@ const MyCollections = () => {
         getUserData(localStorage.getItem("UserKey").toString());
       }
     }
-
-
   }, []);
-
-  
-
-  
-
-  
 
   return (
     <div>
@@ -144,9 +135,18 @@ const MyCollections = () => {
                   {accountType == "artist" ? "Artist" : "Member"}
                 </p>
                 <div className="userSocialsContainer">
-                  <i style={{ fontSize: "1.8em" }} className="fab fa-facebook"></i>
-                  <i style={{ fontSize: "1.8em" }} className="fab fa-twitter"></i>
-                  <i style={{ fontSize: "1.8em" }} className="fab fa-instagram"></i>
+                  <i
+                    style={{ fontSize: "1.8em" }}
+                    className="fab fa-facebook"
+                  ></i>
+                  <i
+                    style={{ fontSize: "1.8em" }}
+                    className="fab fa-twitter"
+                  ></i>
+                  <i
+                    style={{ fontSize: "1.8em" }}
+                    className="fab fa-instagram"
+                  ></i>
                 </div>
                 <div className="folContainer">
                   <div className="ContainerofFollowers">
@@ -203,7 +203,9 @@ const MyCollections = () => {
                       </Link>
                       {accountType == "artist" ? (
                         <Link to={"/myCollections?id=" + urlSlug}>
-                          <div className="tagLink tagLinkSelected">My collections</div>
+                          <div className="tagLink tagLinkSelected">
+                            My collections
+                          </div>
                         </Link>
                       ) : (
                         ""
@@ -212,7 +214,10 @@ const MyCollections = () => {
                       <div className="tagLink">
                         <Dropdown>
                           <Dropdown.Toggle id="profileTabDropdown">
-                            <i className="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            <i
+                              className="fa fa-ellipsis-h"
+                              aria-hidden="true"
+                            ></i>
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu>
@@ -226,7 +231,9 @@ const MyCollections = () => {
                                 Offers Received
                               </p>
                             </Dropdown.Item>
-                            <Dropdown.Item href={"/pending-tokenizations?id=" + urlSlug}>
+                            <Dropdown.Item
+                              href={"/pending-tokenizations?id=" + urlSlug}
+                            >
                               <p className="tagLinkDropdownItemText">
                                 Pending Tokenization
                               </p>
@@ -250,7 +257,12 @@ const MyCollections = () => {
                     >
                       <div className={`sc-card-product`}>
                         <div className="card-media">
-                          <img src={collection.image} alt="" />
+                          <Link
+                            to={"/collection-items?id=" + collection.address}
+                          >
+                            <img src={collection.image} alt="" />
+                          </Link>
+
                           <Link
                             to="/login"
                             className="wishlist-button heart"
@@ -263,9 +275,12 @@ const MyCollections = () => {
                           </div>
                         </div>
                         <div className="card-title">
-                          <h5 className="style2">{collection.name}</h5>
+                          <Link
+                            to={"/collection-items?id=" + collection.address}
+                          >
+                            <h5 className="style2">{collection.name}</h5>
+                          </Link>
                         </div>
-                        
                       </div>
                     </div>
                   );

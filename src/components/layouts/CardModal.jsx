@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom'
 import { Modal } from "react-bootstrap";
+
+import {useMetamask} from "@thirdweb-dev/react";
 
 const CardModal = (props) => {
 
     
+const connect = useMetamask();
 
+useEffect(() => {
+  connect();
+}, [])
 
 
 return (

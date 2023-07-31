@@ -1,0 +1,2 @@
+client id : df89feb02d2661087b8992b3c1561b89
+secret key : wn1M18gZKRULiLyzztlOuBG2keyBmrXYybBXKpqmcXOSqJEoJ8SIhSz61ZHh4iwVXnH_DYCDSXaww0_kPcg5yg

@@ -58,11 +58,15 @@ import MyPendingArtworks from "./myPendingArtworks";
 import Ressources from './ressources'
 import LazyDisplay from "./lazyDisplay";
 import ListItem from "./listNFT";
+import Artwork from "./artwork";
+import CollectionItems from "./collectionItems";
 
 const routes = [
   { path: '/', component: <Home01 />},
   { path: '/artist-info', component: <ArtistInfos />},
   { path: '/private-display', component: <LazyDisplay />},
+  { path: '/collection-items', component: <CollectionItems />},
+  { path: '/artwork-dettails', component: <Artwork />},
   { path: '/list-item', component: <ListItem />},
   { path: '/ressources', component: <Ressources />},
   { path: '/home-02', component: <Home02 />},

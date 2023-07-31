@@ -81,6 +81,7 @@ const CreateItem = () => {
   const [collectionName, setCollectionName] = useState(
     "Choose your collection"
   );
+  const [collectionID, setCollectionID] = useState("");
   const [externalLink, setExternalLink] = useState("");
   const [supply, setSupply] = useState(1);
   const [media, setMedia] = useState();
@@ -356,7 +357,8 @@ const CreateItem = () => {
       type: "lazyMinted",
       ipfsURI: localStorage.getItem("newURI"),
       owner : address.toString(),
-      collection: "ASPC"
+      collection: collectionID,
+      listed: "no"
     }).then(()=>{
       toast.success("Minted ! redirecting you to homepage...", {
         position: "top-left",
@@ -547,7 +549,9 @@ const CreateItem = () => {
                                     marginBottom: "0px",
                                   }}
                                   onClick={() => {
-                                    console.log(collection.name);
+                                    
+                                    setCollectionID(collection.address)
+                                    console.log(collectionID)
                                     setCollectionName(collection.name);
                                   }}
                                 >

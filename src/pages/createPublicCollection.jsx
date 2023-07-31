@@ -34,14 +34,25 @@ import {
 
 import CollectionSuccessModal from "../components/layouts/collectionSuccessModal";
 
-
-
 const CreatePublicCollection = () => {
-  
-
   const sdk = useSDK();
 
   const connect = useMetamask();
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const [bio, setBio] = useState("");
 
@@ -119,7 +130,7 @@ const CreatePublicCollection = () => {
     return errorsExist;
   }
 
-  async function uploadMainMedia(f){
+  async function uploadMainMedia(f) {
     const newFileID = (
       Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
     ).toString();
@@ -136,16 +147,16 @@ const CreatePublicCollection = () => {
       (error) => {
         alert(error);
       },
-      ()=>{
-        getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL)=>{
-          console.log(downloadURL)
-          setMediaURL(downloadURL)
-        })
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          console.log(downloadURL);
+          setMediaURL(downloadURL);
+        });
       }
-    )
+    );
   }
 
-  async function uploadCover(f){
+  async function uploadCover(f) {
     const newFileID = (
       Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
     ).toString();
@@ -162,13 +173,12 @@ const CreatePublicCollection = () => {
       (error) => {
         alert(error);
       },
-      ()=>{
-        getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL)=>{
-          
-          setCoverURL(downloadURL)
-        })
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          setCoverURL(downloadURL);
+        });
       }
-    )
+    );
   }
 
   async function deployNFTCollection() {
@@ -176,38 +186,42 @@ const CreatePublicCollection = () => {
     let metadataErrors = checkDeployMetadataError();
 
     if (metadataErrors == false) {
-      setLoadingOverlay(true)
+      setLoadingOverlay(true);
       await uploadMainMedia(media);
       await uploadCover(cover);
-      console.log(coverURL)
-      console.log(mediaURL)
+      console.log(coverURL);
+      console.log(mediaURL);
       const newCollectionID = (
         Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
       ).toString();
+      var currentTime = new Date();
+      var month = currentTime.getMonth() + 1;
+      var year = currentTime.getFullYear();
+      var createdAt = months[month] + " " + year.toString();
       await set(ref(db, "collections/" + newCollectionID), {
-        "name": title,
-        "description": description,
-        "symbol": symbol,
-        "owner": address,
-        "image": mediaURL,
-        "cover": coverURL,
-        "artisticCollection": artisticCollection,
-        "address": newCollectionID
-      })
-      setLoadingOverlay(false)
+        name: title,
+        description: description,
+        symbol: symbol,
+        owner: address,
+        image: mediaURL,
+        cover: coverURL,
+        artisticCollection: artisticCollection,
+        address: newCollectionID,
+        createdAt: createdAt,
+        
+      });
+      setLoadingOverlay(false);
       Swal.fire({
         icon: "success",
         title: "Collection created !",
         text: "Your collection has been created on the ARTRISE public collection. Once approved, you will find your new collection in your profile.",
-      }).then(()=>{
-        window.location.href = "/"
-      })
+      }).then(() => {
+        window.location.href = "/";
+      });
     }
 
     //await sdk.deployer.deployNFTCollection()
   }
-
-  
 
   const [title, setTitle] = useState("Collection name");
   const [symbol, setSymbol] = useState("");
@@ -215,15 +229,17 @@ const CreatePublicCollection = () => {
   const [externalLink, setExternalLink] = useState("");
   const [artisticCollection, setArtisticCollection] = useState(false);
   const [media, setMedia] = useState();
-  const [mediaURL, setMediaURL] = useState()
+  const [mediaURL, setMediaURL] = useState();
   const [mediaPreview, setMediaPreview] = useState(img1);
-  const [cover, setCover] = useState()
-  const [coverURL, setCoverURL] = useState()
-  const [coverPreview, setCoverPreview] = useState(img1)
+  const [cover, setCover] = useState();
+  const [coverURL, setCoverURL] = useState();
+  const [coverPreview, setCoverPreview] = useState(img1);
   const [primarySalesRecipient, setPrimarySalesRecipient] = useState();
-  const [royaltiesRecipient, setRoyaltiesRecipient] = useState(address.toString());
+  const [royaltiesRecipient, setRoyaltiesRecipient] = useState(
+    address.toString()
+  );
   const [royaltiesPercentage, setRoyaltiesPercentage] = useState(10);
-  const [loadingOverlay, setLoadingOverlay] = useState(false)
+  const [loadingOverlay, setLoadingOverlay] = useState(false);
 
   return (
     <div className="create-item">
@@ -412,7 +428,6 @@ const CreatePublicCollection = () => {
                         </div>
                       </form>
                     </TabPanel>
-                    
                   </Tabs>
                 </div>
               </div>
@@ -421,9 +436,11 @@ const CreatePublicCollection = () => {
         </div>
       </div>
       <Footer />
-      <CollectionSuccessModal 
+      <CollectionSuccessModal
         show={loadingOverlay}
-        onHide={()=>{setLoadingOverlay(false)}}
+        onHide={() => {
+          setLoadingOverlay(false);
+        }}
       />
     </div>
   );

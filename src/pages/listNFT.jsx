@@ -9,12 +9,13 @@ import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import avt from "../assets/images/avatar/avt-9.jpg";
 import db from "../firebase";
-import { ref, set } from "firebase/database";
+import { ref, set, update } from "firebase/database";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ListItem = () => {
   const [price, setPrice] = useState(0);
+  const [shippingPrice, setShippingPrice] = useState(0);
   const [auctionPrice, setAuctionprice] = useState(0);
   const [minBid, setMinBid] = useState(0);
 
@@ -47,12 +48,16 @@ const ListItem = () => {
     else{
         let newListingId = getRandomInteger(30, 1000000);
         let artworkId = window.location.href.toString().split("id=")[1].toString()
-
-        const artworksRef = ref(db, "listings/" + newListingId);
-        await set(artworksRef, {
+        const artworkRef = ref(db, "artworks/" + artworkId);
+        await update(artworkRef, {
+          "listed": "yes"
+        })
+        const listingRef = ref(db, "listings/" + newListingId);
+        await set(listingRef, {
             "artwork_id": artworkId,
             "likes": 0,
-            price: parseFloat(price)
+            "price": parseFloat(price),
+            "shipping": parseFloat(shippingPrice)
         }).then(()=>{
             toast.success(
                 "NFT listed succesfully !",
@@ -117,6 +122,11 @@ const ListItem = () => {
                           type="number"
                           placeholder="Enter price for one item (ETH)"
                           onChange={(e) => {setPrice(e.target.value)}}
+                        />
+                        <input
+                          type="number"
+                          placeholder="Enter price for shipping cost"
+                          onChange={(e) => {setShippingPrice(e.target.value)}}
                         />
 
                         <div className="listButton" onClick={(e)=>{listForFixedPrice();}}>List this item</div>

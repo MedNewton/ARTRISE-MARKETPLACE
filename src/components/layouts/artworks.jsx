@@ -13,12 +13,13 @@ import db from "../../firebase";
 import { ref, get } from "firebase/database";
 
 class LazyNFTListing {
-  constructor(i, d, p, on, oi) {
+  constructor(i, d, p, on, oi, ai) {
     this.id = i;
     this.data = d;
     this.price = p;
     this.ownerName = on;
     this.ownerImage = oi;
+    this.artworkId = ai;
   }
 }
 
@@ -64,7 +65,8 @@ const Artworks = (props) => {
                   res.data,
                   price,
                   ownerName,
-                  ownerImage
+                  ownerImage,
+                  listingArtworkId
                 );
                 console.log(lazyNFT);
                 setLazyListed((prevState) => [...prevState, lazyNFT]);
@@ -342,108 +344,97 @@ const Artworks = (props) => {
               </div>
             )}
 
-{!isLoading && listings ? (
-              lazyListed.map((listing, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-                  >
-                    <div className={`sc-card-product`}>
-                      <div className="card-media">
-                        <Link
-                          to={{
-                            pathname: "/item-details-01",
-                          }}
-                        >
-                          <img src={listing.data.image} alt="" />
-                        </Link>
-                        <Link
-                          to="/login"
-                          className="wishlist-button heart"
-                          hidden
-                        >
-                          <span className="number-like">10</span>
-                        </Link>
-                        <div className="coming-soon" hidden>
-                          10
-                        </div>
-                      </div>
-                      <div className="card-title">
-                        <h5 className="style2">
+            {!isLoading && listings
+              ? lazyListed.map((listing, index) => {
+                console.log(listing)
+                  return (
+                    <div
+                      key={index}
+                      className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+                    >
+                      <div className={`sc-card-product`}>
+                        <div className="card-media">
                           <Link
-                            to={{
-                              pathname: "/item-details-01",
-                            }}
+                            to={"/artwork-dettails?id=" + listing.artworkId}
                           >
-                            {listing.data.name}
+                            <img src={listing.data.image} alt="" />
                           </Link>
-                        </h5>
-                      </div>
-                      <div className="meta-info">
-                        <div className="author">
-                          <div className="avatar">
-                            <img src={listing.ownerImage} alt="" />
-                          </div>
-                          <div className="info">
-                            <span>Owned By</span>
-                            <h6>
-                              {" "}
-                              <Link to="/Artists/Yann_Faisant">
-                                {listing.ownerName}
-                              </Link>{" "}
-                            </h6>
+                          <Link
+                            to="/login"
+                            className="wishlist-button heart"
+                            hidden
+                          >
+                            <span className="number-like">10</span>
+                          </Link>
+                          <div className="coming-soon" hidden>
+                            10
                           </div>
                         </div>
-                        <div className="price">
-                          <span>Price</span>
-                          <h5>
-                            ${listing.price * usdPriceInEth}
-                            <small
-                              style={{
-                                fontWeight: "400",
-                                color: "grey",
-                                fontSize: "0.7em",
-                                fontStyle: "italic",
-                              }}
+                        <div className="card-title">
+                          <h5 className="style2">
+                            <Link
+                              to={"/artwork-dettails?id=" + listing.artworkId}
                             >
-                              &nbsp;
-                              {" / (" +
-                                listing.price +
-                                ")"}{" "}
-                              ETH&nbsp;
-                            </small>
+                              {listing.data.name}
+                            </Link>
                           </h5>
                         </div>
-                      </div>
-                      <div className="card-bottom">
-                        <Link
-                          to={{
-                            pathname: "/item-details-01",
-                            search: `?listing=${listing.id}`,
-                          }}
-                          className="buyNowBtn"
-                        >
-                          <button className="sc-button style bag fl-button pri-3 no-bg">
-                            <span>Buy now</span>
-                          </button>
-                        </Link>
-  
-                        <Link
-                          to="/activity-01"
-                          className="view-history reload"
-                          hidden
-                        >
-                          View History
-                        </Link>
+                        <div className="meta-info">
+                          <div className="author">
+                            <div className="avatar">
+                              <img src={listing.ownerImage} alt="" />
+                            </div>
+                            <div className="info">
+                              <span>Owned By</span>
+                              <h6>
+                                {" "}
+                                <Link to="/Artists/Yann_Faisant">
+                                  {listing.ownerName}
+                                </Link>{" "}
+                              </h6>
+                            </div>
+                          </div>
+                          <div className="price">
+                            <span>Price</span>
+                            <h5>
+                              ${(listing.price * usdPriceInEth).toFixed(2)}
+                              <small
+                                style={{
+                                  fontWeight: "400",
+                                  color: "grey",
+                                  fontSize: "0.7em",
+                                  fontStyle: "italic",
+                                }}
+                              >
+                                &nbsp;
+                                {" / (" + listing.price + ")"} ETH&nbsp;
+                              </small>
+                            </h5>
+                          </div>
+                        </div>
+                        <div className="card-bottom">
+                          <Link
+                            to={"/artwork-dettails?id=" + listing.artworkId}
+                            className="buyNowBtn"
+                          >
+                            <button className="sc-button style bag fl-button pri-3 no-bg">
+                              <span>Buy now</span>
+                            </button>
+                          </Link>
+
+                          <Link
+                            to="/activity-01"
+                            className="view-history reload"
+                            hidden
+                          >
+                            View History
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })
-            ) : (
-              ""
-            )}
+                  );
+                })
+              : ""}
 
             {visible < data.length && (
               <div
