@@ -49,6 +49,7 @@ import { ref, onValue, get, update, set, child } from "firebase/database";
 import ArtworksTom from "../components/layouts/TomWhiteArtworks";
 import ArtworksOdibo from "../components/layouts/ArtworksOdibo";
 import ArtworksVilte from "../components/layouts/ArtworksVilte";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function importAll(r) {
   return r.keys().map(r);
@@ -128,6 +129,7 @@ const Authors02 = () => {
   const [website, setWebsite] = useState("");
   const [instagram, setInstagram] = useState("");
   const [facebook, setFacebook] = useState("");
+  const [artistType, setArtistType] = useState('');
 
   let url = window.location.href.toString();
   let artistName = url.split("?artist=")[1];
@@ -147,6 +149,7 @@ const Authors02 = () => {
           setInstagram(a.instagram);
           setTwitter(a.twitter);
           setWebsite(a.website);
+          setArtistType(a.artistType);
         }
       }
     });
@@ -271,10 +274,10 @@ const Authors02 = () => {
                 </div>
                 <div
                   className="userDataContainer"
-                  style={{ marginBottom: "5%" }}
+                  style={{ marginBottom: "2%" }}
                 >
                   <h5 className="userName">{name}</h5>
-                  <p className="userAttribution">Artist</p>
+                  <p className="userAttribution">{artistType ?artistType : "Artist"}</p>
                   <div className="userSocialsContainer">
                     <i class="fab fa-facebook"></i>
                     <i class="fab fa-twitter"></i>
@@ -295,10 +298,44 @@ const Authors02 = () => {
                   </div>
                 </div>
                 <Tabs>
-                  <TabList>
+                  <TabList style={{padding: "0 0 0 0"}}>
                     {menuTab.map((item, index) => (
-                      <Tab key={index}>{item.name}</Tab>
+                      <Tab style={{fontSize: '16px',padding:'0.6% 50px 1%'}} key={index}>{item.name}</Tab>
                     ))}
+                    <Tab><div className="tagLink">
+                      <Dropdown>
+                        <Dropdown.Toggle id="profileTabDropdown">
+                          <i
+                              className="fa fa-ellipsis-h"
+                              aria-hidden="true"
+                          ></i>
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                          <Dropdown.Item href="/">
+                            <p className="tagLinkDropdownItemText">
+                              Owned
+                            </p>
+                          </Dropdown.Item>
+                          <Dropdown.Item href="/">
+                            <p className="tagLinkDropdownItemText">
+                              Liked Items
+                            </p>
+                          </Dropdown.Item>
+                          <Dropdown.Item href="/">
+                            <p className="tagLinkDropdownItemText">
+                              Offers Made
+                            </p>
+                          </Dropdown.Item>
+                          <Dropdown.Item href="/">
+                            <p className="tagLinkDropdownItemText">
+                              Offers Received
+                            </p>
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                    </Tab>
                   </TabList>
 
                   <div className="content-tab">
@@ -339,7 +376,7 @@ const Authors02 = () => {
                                       }
                                       id="collection_painter"
                                     >
-                                      Painter
+                                      Painting
                                     </div>
                                     <div
                                       className="tag"
@@ -348,7 +385,7 @@ const Authors02 = () => {
                                       }
                                       id="collection_photographer"
                                     >
-                                      Photographer
+                                      Photography
                                     </div>
                                     <div
                                       className="tag"
@@ -357,7 +394,7 @@ const Authors02 = () => {
                                       }
                                       id="collection_sculpturer"
                                     >
-                                      Sculpturer
+                                      Sculpture
                                     </div>
                                     <div
                                       className="tag"
@@ -366,7 +403,7 @@ const Authors02 = () => {
                                       }
                                       id="collection_ceramic_artist"
                                     >
-                                      Ceramic artist
+                                      Ceramic Artworks
                                     </div>
                                     <div
                                       className="tag"
@@ -375,7 +412,7 @@ const Authors02 = () => {
                                       }
                                       id="collection_others"
                                     >
-                                      Others
+                                      Others...
                                     </div>
                                   </div>
                                 </div>

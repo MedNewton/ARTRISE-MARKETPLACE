@@ -122,7 +122,7 @@ const ItemDetails01 = (props) => {
     let ThisItemLikesRef = ref(db, "listings/" + listingID);
     await get(ThisItemLikesRef).then((snapshot) => {
       let dt = snapshot.val();
-      let likes = dt.likes;
+      let likes = dt?.likes;
       setItemLikes(likes);
     });
   }
@@ -263,7 +263,7 @@ const ItemDetails01 = (props) => {
     const ThisUserRef = ref(db, "users/" + address);
     await get(ThisUserRef).then(async (snapshot) => {
       let dt = snapshot.val();
-      let myLikes = dt.likedListings;
+      let myLikes = dt?.likedListings;
       let alreadyLiked = false;
       for (let l in myLikes) {
         if (myLikes[l] == listingID) alreadyLiked = true;
@@ -295,7 +295,7 @@ const ItemDetails01 = (props) => {
 
       {!isLoading && listings ? (
         listings?.map((listing, index) => {
-          if (listing.id === listingID) {
+          if (listing.id == listingID) {
             let NFTProperties = listing.asset.attributes;
 
             return (
@@ -467,7 +467,7 @@ const ItemDetails01 = (props) => {
                                   likeBtnHandle();
                                 }}
                               >
-                                {itemLikes}
+                                {itemLikes?itemLikes:""}
                               </span>
                               <span
                                 className="liked heart wishlist-button mg-l-8"
