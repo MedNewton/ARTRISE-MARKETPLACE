@@ -119,118 +119,12 @@ const Tokenized = () => {
   }
 
   return (
-    <div  className="authors-2">
-      <HeaderStyle2 />
-
-      <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row profilePadding ">
-            <div
-              className="row userCoverSection"
-              id="userCover"
-              style={{ backgroundImage: `url(${coverLink})` }}
-            ></div>
-            <div className="col-md-12 col-lg-12 col-sm-12 col-12 profileInfoSection">
-              <div className="row">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-12 pdpContainer">
-                  <div className="pdpSpace" id="pdp">
-                    <img src={pdpLink} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className="userDataContainer">
-                <h5 className="userName">{displayName}</h5>
-                <p className="userAttribution">
-                  {accountType == "artist" ? "Member" : "Artist"}
-                </p>
-                <div className="userSocialsContainer">
-                  <i class="fab fa-facebook"></i>
-                  <i class="fab fa-twitter"></i>
-                  <i class="fab fa-instagram"></i>
-                </div>
-                <div className="folContainer">
-                  <div className="ContainerofFollowers">
-                    <h5 className="dataOfFollowers">{userFollowers}</h5>
-                    <h5 className="titleOfFollowers">followers</h5>
-                  </div>
-                  <div className="ContainerofFollowing">
-                    <h5 className="dataOfFollowing">{userFollowing}</h5>
-                    <h5 className="titleOfFollowing">following</h5>
-                  </div>
-                </div>
-                <div className="userButtonsContainer">
-                  {slug == urlSlug ? (
-                    ""
-                  ) : (
-                    <div className="followUserBtn">
-                      <i class="fa fa-user-plus"></i>
-                      <h5>Follow</h5>
-                    </div>
-                  )}
-                  {slug == urlSlug ? (
+      <div className='profile-tabPanel-item'>
+        {!isLoading && ownedNFTs && address
+            ? ownedNFTs.map((nft) => {
+              if (nft.metadata.id != 0) {
+                return (
                     <div
-                      className="followUserBtn"
-                      onClick={() => {
-                        window.location.href = "/edit-profile";
-                      }}
-                    >
-                      <i class="fa fa-pen"></i>
-                      <h5 style={{ whiteSpace: "nowrap" }}>Edit info</h5>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <div className="shareUserBtn">
-                    <i className="fa fa-share-alt"></i>
-                  </div>
-                  <div className="shareUserBtn">
-                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Tabs style={{width: "100%"}}>
-              <TabList  style={{padding: "0 0 0 0"}}>
-                <Link to={"/profile?id="+urlSlug}><Tab  key={1} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Owned</Tab></Link>
-                <Link to={"/tokenized?id=" + urlSlug}><Tab key={2}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Tokenized</Tab></Link>
-                <Link to={"/likedItems?id=" + urlSlug}><Tab key={3}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Liked items</Tab></Link>
-                {accountType === "artist" ? <Link to={"/myCollections?id=" + urlSlug}><Tab key={4} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Collections</Tab></Link> : ""}
-                <Tab key={5}><div className="tagLink">
-                  <Dropdown>
-                    <Dropdown.Toggle id="profileTabDropdown">
-                      <i
-                          className="fa fa-ellipsis-h"
-                          aria-hidden="true"
-                      ></i>
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Offers Made
-                        </p>
-                      </Dropdown.Item>
-                      <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Offers Received
-                        </p>
-                      </Dropdown.Item>
-                      <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Pending Tokenization
-                        </p>
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-                </Tab>
-              </TabList>
-            </Tabs>
-            {!isLoading && ownedNFTs && address
-              ? ownedNFTs.map((nft) => {
-                  if (nft.metadata.id != 0) {
-                    return (
-                      <div
                         key={nft.metadata.id}
                         className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
                       >
@@ -264,8 +158,8 @@ const Tokenized = () => {
                   }
                 })
               :  (
-                  <div style={{width: "100%", marginTop: "220px"}}>
-                    <div className="noArtworks">
+                  <div>
+                    <div>
                       <img
                         src="https://cdn.dribbble.com/users/1693462/screenshots/3504905/media/e76b879fc2bb9ec2a1f92da0732eb608.gif"
                         alt=""
@@ -282,19 +176,11 @@ const Tokenized = () => {
                           purchase one or more <br /> of our unique and amazing
                           artworks.
                         </h5>
-                      </div>
                     </div>
                   </div>
-                )}
-          </div>
-        </div>
+                </div>
+            )}
       </div>
-      <CreateModal
-        show={createModalShow}
-        onHide={() => setCreateModalShow(false)}
-      />
-      <Footer />
-    </div>
   );
 };
 

@@ -526,16 +526,43 @@ const HeaderStyle2 = () => {
                     </ul>
                   </nav>
                   <div className="question-form">
-                    <form action="#" method="get">
+                    <div className="">
                       <input
-                        type="text"
-                        placeholder="Type to search...1"
-                        required
+                          type="text"
+                          placeholder="Type to search..."
+                          value={searchQuery}
+                          onChange={handleSearch}
                       />
-                      <button type="submit">
-                        <i className="bi bi-search"></i>
-                      </button>
-                    </form>
+                      {searchResults.length > 0 && (
+                          <div className="search-dropdown">
+                            {searchResults.map((result) => (
+                                <div
+                                    key={result.id}
+                                    className="search-item"
+                                    onClick={() => handleItemClick(result)}
+
+                                >
+                                  {result.type === "Artwork" ?
+                                      <Link
+                                          to={{
+                                            pathname: "/item-details-01",
+                                            search: `?listing=${result.id}`,
+                                          }}
+                                      >
+                                        <p>{result.name}</p>
+                                        <p className="search-item-detail">{result.type}</p>
+                                      </Link> :<Link
+                                          to={"/authors-02?artist=" + result.id}
+                                      >
+                                        <p>{result.name}</p>
+                                        <p>{result.type}</p>
+                                      </Link>
+                                  }
+                                </div>
+                            ))}
+                          </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flat-search-btn flex">
