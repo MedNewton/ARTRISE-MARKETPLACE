@@ -33,6 +33,7 @@
     "react-loading-overlay": "^1.0.1",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
+    "react-select": "^5.7.4",
     "react-share": "^4.4.1",
     "react-simple-image-slider": "^2.4.1",
     "react-simple-image-viewer": "^1.2.2",
@@ -83,8 +84,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-tabs": "^5.0.5",
     "cross-env": "^7.0.3",
     "react-app-rewired": "^2.2.1"
+  },
+  "resolutions": {
+    "legacy-peer-deps": true
   }
 }

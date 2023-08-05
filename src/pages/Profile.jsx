@@ -34,6 +34,9 @@ import axios from "axios";
 import Tokenized from "./tokenized";
 import LikedItems from "./LikedItems";
 import MyCollections from "./myCollections";
+import {toast} from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class LazyNFT {
   constructor(i, d, l) {
@@ -49,9 +52,10 @@ const Profile = () => {
   const [createModalShow, setCreateModalShow] = useState(false);
 
   const [displayName, setDisplayName] = useState("");
-  const [facebookLink, setFacbookLink] = useState("");
-  const [discordLink, setDiscordLink] = useState("");
+  const [facebookLink, setFacebookLink] = useState("");
+  const [instagramLink, setInstagramLink] = useState("");
   const [twitterLink, setTwitterLink] = useState("");
+  const [discordLink, setDiscordLink] = useState("");
   const [pdpLink, setPdpLink] = useState("");
   const [coverLink, setCoverLink] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -114,8 +118,9 @@ const Profile = () => {
       setUserBio(dt.bio);
       setPdpLink(dt.pdpLink);
       setCoverLink(dt.cover_link);
-      setFacbookLink(dt.Facebook);
+      setFacebookLink(dt.Facebook);
       setTwitterLink(dt.Twitter);
+      setInstagramLink(dt.instagram);
       setDiscordLink(dt.Discord);
       setAccountType(dt.accountType);
       setArtistType(dt.artistType);
@@ -176,6 +181,34 @@ const Profile = () => {
     });
   }
 
+    const handleTwitterIconClick = () => {
+        if (twitterLink && twitterLink !== "No account shared yet ...") {
+            window.open(twitterLink, "_blank");
+        } else {
+            toast.error("No twitter account shared yet...", {
+                position: toast.POSITION.TOP_CENTER,
+            });
+        }
+    };
+  const handleInstagramIconClick = () => {
+    if (instagramLink && instagramLink !== "No account shared yet") {
+      window.open(instagramLink, "_blank");
+    } else {
+      toast.error("No instagram account shared yet...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+  const handleFacebookIconClick = () => {
+    if (facebookLink && facebookLink !== "No account shared yet ...") {
+      window.open(facebookLink, "_blank");
+    } else {
+      toast.error("No facebook account shared yet...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+
   return (
     <div className="authors-2">
       <HeaderStyle2 />
@@ -201,17 +234,17 @@ const Profile = () => {
                   {accountType === "artist" ? `${artistType ? artistType : "Artist"}` : "Member"}
                 </p>
                 <div className="userSocialsContainer">
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-facebook"
+                  <i onClick={handleFacebookIconClick}
+                     style={{fontSize: "1.8em"}}
+                     className="fab fa-facebook"
                   ></i>
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-twitter"
+                  <i onClick={handleTwitterIconClick}
+                     style={{fontSize: "1.8em"}}
+                     className="fab fa-twitter"
                   ></i>
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-instagram"
+                  <i onClick={handleInstagramIconClick}
+                     style={{fontSize: "1.8em"}}
+                     className="fab fa-instagram"
                   ></i>
                 </div>
                 <div className="folContainer">
@@ -272,19 +305,16 @@ const Profile = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Offers Made
-                        </p>
+                        <p className="tagLinkDropdownItemText">Owned</p>
                       </Dropdown.Item>
                       <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Offers Received
-                        </p>
+                        <p className="tagLinkDropdownItemText">Liked Items</p>
                       </Dropdown.Item>
                       <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Pending Tokenization
-                        </p>
+                        <p className="tagLinkDropdownItemText">Offers Made</p>
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">Offers Received</p>
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -406,6 +436,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
       <CreateModal
         show={createModalShow}
         onHide={() => setCreateModalShow(false)}
