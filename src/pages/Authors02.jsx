@@ -139,10 +139,29 @@ const Authors02 = () => {
     const artistsRef = ref(db, "artists/");
     await get(artistsRef).then(async (snapshot) => {
       let dt = snapshot.val();
-      console.log('sssss dt', dt);
       for (let artistKey in dt) {
         let a = dt[artistKey];
-        console.log('sssss a', a);
+        if (a.slug == slug) {
+          setName(a.name);
+          setBio(a.description);
+          setPdp(a.pdpLink);
+          setCover(a.coverLink);
+          setFacebookLink(a.facebook);
+          setInstagramLink(a.instagram);
+          setTwitterLink(a.twitter);
+          setWebsite(a.website);
+          setArtistType(a.artistType);
+        }
+      }
+    });
+  }
+
+  async function getUserData(slug) {
+    const usersRef = ref(db, "users/");
+    await get(usersRef).then(async (snapshot) => {
+      let dt = snapshot.val();
+      for (let userKey in dt) {
+        let a = dt[userKey];
         if (a.slug == slug) {
           setName(a.name);
           setBio(a.description);
@@ -159,9 +178,17 @@ const Authors02 = () => {
   }
 
   useEffect(() => {
-    const windowUrl = window.location.search;
-    const slug = windowUrl.toString().split("=")[1];
-    getArtistData(slug);
+    const url = new URL(window.location.href);
+    const queryParams = new URLSearchParams(url.search);
+    if (queryParams.has("artist")) {
+      const artistValue = queryParams.get("artist");
+      getArtistData(artistValue);
+    } else if (queryParams.has("user")) {
+      const userValue = queryParams.get("user");
+      getUserData(userValue);
+    } else {
+      console.log("URL doesn't contain artist or user query parameter.");
+    }
   }, []);
 
   const [menuTab] = useState([

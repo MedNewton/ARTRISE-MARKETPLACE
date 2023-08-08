@@ -32,132 +32,79 @@ import { AiOutlineBell } from "react-icons/ai";
 
 import { BiCoinStack } from "react-icons/bi";
 import axios from "axios";
-
-class LazyNFTListing {
-  constructor(i, d, p, on, oi) {
-    this.id = i;
-    this.data = d;
-    this.price = p;
-    this.ownerName = on;
-    this.ownerImage = oi;
-  }
-}
-
+import { useArtworkContext } from '../../Store/ArtworkContext';
 
 const HeaderStyle2 = () => {
-
+  const { artists, lazyListed, users } = useArtworkContext();
 
   const { contract } = useContract(
       "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
       "marketplace"
   );
 
-
-  // const history = useHistory();
-
-
-  const [artists, setArtists] = useState([]);
   const [artistSearchList, setArtistSearchList] = useState([]);
   const [searchingArray, setSearchingArray] = useState([]);
   const [artWorks, setArtWorks] = useState([]);
-  const [lazyListed, setLazyListed] = useState([]);
+  const [processedLazyListed, setProcessedLazyListed] = useState([]);
+  const [processedUsers, setProcessedUsers] = useState([]);
   const { data: listings, isLoading, error } = useListings(contract);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-
-  async function getArtists() {
-    let ARTISTS = [];
-    const artistsRef = ref(db, 'artists/');
-    const snapshot = await get(artistsRef);
-    let dt = snapshot.val();
-    for (let artistKey in dt) {
-      let a = dt[artistKey];
-      if (a.name !== "Armin Simon") {
-        let artist = {
-          "name": a.name,
-          "type": a.artistType,
-          "pdpLink": a.pdpLink,
-          "img1": a.img1,
-          "img2": a.img2,
-          "img3": a.img3,
-          "img4": a.img4,
-          "slug": a.slug
-        }
-        ARTISTS.push(artist);
-      }
-    }
-    setArtists(ARTISTS);
-  }
-  async function getLazyOwned(adr) {
-    const listingsRef = ref(db, "listings/");
-    const snapshot = await get(listingsRef);
-    let dt = snapshot.val();
-    let lazyNFTs = [];
-    for (let i in dt) {
-      let listing = dt[i];
-      if (i > 27) {
-        let listingArtworkId = listing.artwork_id;
-        let price = listing.price;
-        let artworkRef = ref(db, "artworks/" + listingArtworkId);
-        const artworkSnapshot = await get(artworkRef);
-        let artwork = artworkSnapshot.val();
-        let ipfsURI = artwork.ipfsURI;
-        let owner = artwork.owner;
-        let ownerRef = ref(db, "users/" + owner);
-        const ownerSnapshot = await get(ownerRef);
-        let ownerData = ownerSnapshot.val();
-        let ownerName = ownerData.displayName;
-        let ownerImage = ownerData.pdpLink;
-        try {
-          let res = await axios.get(artwork.ipfsURI);
-          let lazyNFT = new LazyNFTListing(i, res.data, price, ownerName, ownerImage);
-          lazyNFTs.push(lazyNFT);
-        } catch (error) {
-          console.log("error");
-        }
-      }
-    }
-    setLazyListed(lazyNFTs);
-  }
   const getArtworkForSearch = () => {
     if (listings) {
       let data = listings.map((artworkItem) => {
-        return { "name": artworkItem.asset.name, "id": artworkItem.id, "type": "Artwork" };
+        return { "name": artworkItem.asset.name, "id": artworkItem.id, "type": "Artwork", "isDynamic": false  };
       });
       setArtWorks(data);
     }
   };
+
+  const getLazyListedForSearch = () => {
+    if (lazyListed) {
+      let data = lazyListed.map((artworkItem) => {
+        return { "name": artworkItem?.data?.name, "id": artworkItem?.artworkId, "type": "Artwork", "isDynamic": true };
+      });
+      setProcessedLazyListed(data);
+    }
+  };
+
   const getArtistsForSearch = () => {
     if (artists) {
       let data = artists.map((artist) => {
-        return { "name": artist.name, "id": artist.slug, "type": "Artist" };
+        return { "name": artist.name, "id": artist.slug, "type": "Artist" , "isDynamic": false };
       });
       setArtistSearchList(data);
     }
   };
+
+  const getUsersForSearch = () => {
+    if (users) {
+      let data = users.map((user) => {
+        return { "name": user.name, "id": user.slug, "type": "Artist", "isDynamic": true };
+      });
+      setProcessedUsers(data);
+    }
+  };
+
   const getSearchElements = () => {
-    const newArray = [...artWorks, ...artistSearchList];
+    const newArray = [...artWorks, ...artistSearchList, ...processedUsers, ...processedLazyListed];
     const uniqueArray = Array.from(new Set(newArray));
     setSearchingArray(uniqueArray);
   };
 
   useEffect(() => {
-    getLazyOwned();
-    getArtists();
-  }, []);
-
-  useEffect(() => {
     getArtworkForSearch();
     getArtistsForSearch();
-  }, [listings, artists]);
+    getLazyListedForSearch();
+    getUsersForSearch();
+
+  }, [listings, artists, lazyListed, users]);
 
   useEffect(() => {
     getSearchElements();
-  }, [artWorks, artistSearchList]);
-
-  // console.log("wwwwww here in headerStyle2 searchingArray",searchingArray)
+  }, [artWorks, artistSearchList,processedUsers,processedLazyListed]);
 
   const handleSearch = (event) => {
     const searchValue = event.target.value.toLowerCase();
@@ -186,14 +133,6 @@ const HeaderStyle2 = () => {
     setSearchQuery(''); // Clear the search query after clicking on an item
     setSearchResults([]); // Clear the search results after clicking on an item
   };
-
-  // useEffect(() => {
-    // console.log(artists)
-  // }, [artists])
-
-
-
-  // Impact IDENTIFICATION CODE :
 
   useEffect(() => {
     window.ire("identify", { customerId: localStorage.getItem("UserKey") });
@@ -543,16 +482,20 @@ const HeaderStyle2 = () => {
 
                                 >
                                   {result.type === "Artwork" ?
+
                                       <Link
-                                          to={{
+                                          to={result.isDynamic ? {
+                                            pathname: "/artwork-dettails",
+                                            search: `?id=${result.id}`,
+                                          } : {
                                             pathname: "/item-details-01",
                                             search: `?listing=${result.id}`,
                                           }}
                                       >
                                         <p>{result.name}</p>
                                         <p className="search-item-detail">{result.type}</p>
-                                      </Link> :<Link
-                                          to={"/authors-02?artist=" + result.id}
+                                      </Link> : <Link
+                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
                                       >
                                         <p>{result.name}</p>
                                         <p>{result.type}</p>
@@ -906,22 +849,25 @@ const HeaderStyle2 = () => {
 
                                 >
                                   {result.type === "Artwork" ?
+
                                       <Link
-                                          to={{
+                                          to={result.isDynamic ? {
+                                            pathname: "/artwork-dettails",
+                                            search: `?id=${result.id}`,
+                                          } : {
                                             pathname: "/item-details-01",
                                             search: `?listing=${result.id}`,
                                           }}
                                       >
                                         <p>{result.name}</p>
                                         <p className="search-item-detail">{result.type}</p>
-                                      </Link> :<Link
-                                          to={"/authors-02?artist=" + result.id}
+                                      </Link> : <Link
+                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
                                       >
                                         <p>{result.name}</p>
                                         <p>{result.type}</p>
                                       </Link>
                                   }
-
                                 </div>
                             ))}
                           </div>
@@ -1220,16 +1166,20 @@ const HeaderStyle2 = () => {
 
                                 >
                                   {result.type === "Artwork" ?
+
                                       <Link
-                                          to={{
+                                          to={result.isDynamic ? {
+                                            pathname: "/artwork-dettails",
+                                            search: `?id=${result.id}`,
+                                          } : {
                                             pathname: "/item-details-01",
                                             search: `?listing=${result.id}`,
                                           }}
                                       >
                                         <p>{result.name}</p>
                                         <p className="search-item-detail">{result.type}</p>
-                                      </Link> :<Link
-                                          to={"/authors-02?artist=" + result.id}
+                                      </Link> : <Link
+                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
                                       >
                                         <p>{result.name}</p>
                                         <p>{result.type}</p>

@@ -11,96 +11,19 @@ import { Accordion } from "react-bootstrap-accordion";
 import axios from "axios";
 import db from "../../firebase";
 import { ref, get } from "firebase/database";
-
-class LazyNFTListing {
-  constructor(i, d, p, on, oi, ai) {
-    this.id = i;
-    this.data = d;
-    this.price = p;
-    this.ownerName = on;
-    this.ownerImage = oi;
-    this.artworkId = ai;
-  }
-}
+import { useArtworkContext } from '../../Store/ArtworkContext';
 
 const Artworks = (props) => {
+  const {lazyListed} = useArtworkContext();
   const data = props.data;
-
   const [openPanel, setOpenPanel] = useState(false);
-
   const address = useAddress();
-
   const { contract } = useContract(
     "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
     "marketplace"
   );
   const { data: listings, isLoading, error } = useListings(contract);
   const [usdPriceInEth, setUsdPriceInEth] = useState();
-
-  const [lazyListed, setLazyListed] = useState([]);
-  const [users, setUsers] = useState([]);
-
-  async function getLazyOwned() {
-    const listingsRef = ref(db, "listings/");
-    await get(listingsRef).then(async (snapshot) => {
-      let dt = snapshot.val();
-      const usersData = {}; // Use an object to collect user data with their artworks
-      for (let i in dt) {
-        let listing = dt[i];
-        if (i > 27) {
-          let listingArtworkId = listing.artwork_id;
-          let price = listing.price;
-          let artworkRef = ref(db, "artworks/" + listingArtworkId);
-          await get(artworkRef).then(async (snapshot) => {
-            let artwork = snapshot.val();
-            let ipfsURI = artwork.ipfsURI;
-            let owner = artwork.owner;
-            let ownerRef = ref(db, "users/" + owner);
-            await get(ownerRef).then(async (snapshot) => {
-              let owner = snapshot.val();
-              let ownerName = owner.displayName;
-              let ownerImage = owner.pdpLink;
-              try {
-                const response = await fetch(ipfsURI);
-                if (response.ok) {
-                  const data = await response.json();
-                  const lazyNFT = new LazyNFTListing(
-                      i,
-                      data,
-                      price,
-                      ownerName,
-                      ownerImage,
-                      listingArtworkId
-                  );
-                  if (!usersData[ownerName]) {
-                    usersData[ownerName] = {
-                      displayName: ownerName,
-                      pdpLink: ownerImage,
-                      artworks: [{ img: data.image, listingId: i }]
-                    };
-                  } else {
-                    usersData[ownerName].artworks.push({ img: data.image, listingId: i });
-                  }
-                  setLazyListed((prevState) => [...prevState, lazyNFT]);
-                } else {
-                  console.log('Network response was not ok');
-                }
-              } catch (error) {
-                console.log(error);
-              }
-            });
-          });
-        }
-      }
-      // Convert the usersData object into an array and set the state
-      const usersArray = Object.values(usersData);
-      setUsers(usersArray);
-    });
-  }
-
-  useEffect(() => {
-    getLazyOwned();
-  }, []);
 
   useEffect(() => {
     async function fetchPrice() {
