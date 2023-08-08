@@ -195,23 +195,19 @@ const TodayPicks = (props) => {
                           </div>
                           <div className="price">
                             <span>Price</span>
-                            <h5>
-                              $3500
+                            <h6>
                               <small
-                                style={{
-                                  fontWeight: "400",
-                                  color: "grey",
-                                  fontSize: "0.7em",
-                                  fontStyle: "italic",
-                                }}
+                                  style={{
+                                    fontWeight: "600",
+                                    color: "black",
+                                    fontSize: "0.8em",
+                                    fontStyle: "italic",
+                                  }}
                               >
-                                &nbsp;
-                                {"(" +
-                                  (3500 / usdPriceInEth).toFixed(2).toString() +
-                                  ")"}{" "}
-                                ETH&nbsp;
+                                $3500 ≈ {(3500 / usdPriceInEth).toFixed(2)} ETH
                               </small>
-                            </h5>
+
+                            </h6>
                           </div>
                         </div>
                         <div className="card-bottom">

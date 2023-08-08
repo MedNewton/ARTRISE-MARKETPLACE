@@ -38,11 +38,13 @@ const Artworks = (props) => {
   const [usdPriceInEth, setUsdPriceInEth] = useState();
 
   const [lazyListed, setLazyListed] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  async function getLazyOwned(adr) {
+  async function getLazyOwned() {
     const listingsRef = ref(db, "listings/");
     await get(listingsRef).then(async (snapshot) => {
       let dt = snapshot.val();
+      const usersData = {}; // Use an object to collect user data with their artworks
       for (let i in dt) {
         let listing = dt[i];
         if (i > 27) {
@@ -59,24 +61,40 @@ const Artworks = (props) => {
               let ownerName = owner.displayName;
               let ownerImage = owner.pdpLink;
               try {
-                let res = await axios.get(artwork.ipfsURI);
-                let lazyNFT = new LazyNFTListing(
-                  i,
-                  res.data,
-                  price,
-                  ownerName,
-                  ownerImage,
-                  listingArtworkId
-                );
-                console.log(lazyNFT);
-                setLazyListed((prevState) => [...prevState, lazyNFT]);
+                const response = await fetch(ipfsURI);
+                if (response.ok) {
+                  const data = await response.json();
+                  const lazyNFT = new LazyNFTListing(
+                      i,
+                      data,
+                      price,
+                      ownerName,
+                      ownerImage,
+                      listingArtworkId
+                  );
+                  if (!usersData[ownerName]) {
+                    usersData[ownerName] = {
+                      displayName: ownerName,
+                      pdpLink: ownerImage,
+                      artworks: [{ img: data.image, listingId: i }]
+                    };
+                  } else {
+                    usersData[ownerName].artworks.push({ img: data.image, listingId: i });
+                  }
+                  setLazyListed((prevState) => [...prevState, lazyNFT]);
+                } else {
+                  console.log('Network response was not ok');
+                }
               } catch (error) {
-                console.log("error");
+                console.log(error);
               }
             });
           });
         }
       }
+      // Convert the usersData object into an array and set the state
+      const usersArray = Object.values(usersData);
+      setUsers(usersArray);
     });
   }
 
@@ -228,7 +246,6 @@ const Artworks = (props) => {
                 <SideBar></SideBar>
               </SlidingPane>
             </div>
-
             {!isLoading && listings ? (
               listings?.map((listing) => {
                 if (
@@ -294,19 +311,19 @@ const Artworks = (props) => {
                           </div>
                           <div className="price">
                             <span>Price</span>
-                            <h5>
+                            <h6>
                               <small
                                 style={{
-                                  fontWeight: "400",
-                                  color: "grey",
-                                  fontSize: "0.7em",
+                                  fontWeight: "600",
+                                  color: "black",
+                                  fontSize: "0.8em",
                                   fontStyle: "italic",
                                 }}
                               >
-                                &nbsp;(3500$)&nbsp;
+                                $3500 ≈ {(3500 / usdPriceInEth).toFixed(2)} ETH
                               </small>
-                              {(3500 / usdPriceInEth).toFixed(2)} ETH
-                            </h5>
+
+                            </h6>
                           </div>
                         </div>
                         <div className="card-bottom">
@@ -396,20 +413,23 @@ const Artworks = (props) => {
                           </div>
                           <div className="price">
                             <span>Price</span>
-                            <h5>
-                              ${(listing.price * usdPriceInEth).toFixed(2)}
+                            <h6>
                               <small
-                                style={{
-                                  fontWeight: "400",
-                                  color: "grey",
-                                  fontSize: "0.7em",
-                                  fontStyle: "italic",
-                                }}
+                                  style={{
+                                    fontWeight: "600",
+                                    color: "black",
+                                    fontSize: "0.8em",
+                                    fontStyle: "italic",
+                                  }}
                               >
+                              ${(listing.price * usdPriceInEth).toFixed(2)}
+                              
                                 &nbsp;
-                                {" / (" + listing.price + ")"} ETH&nbsp;
+                                {" ≈ "}
+                                &nbsp;
+                                {listing.price} ETH
                               </small>
-                            </h5>
+                            </h6>
                           </div>
                         </div>
                         <div className="card-bottom">
