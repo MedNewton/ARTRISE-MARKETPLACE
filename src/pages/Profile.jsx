@@ -89,9 +89,9 @@ const Profile = () => {
         let lazyArtwork = dt[i];
         let listable = false;
         if(lazyArtwork.listed === "no") listable = true;
-        if (lazyArtwork.owner === adr && lazyArtwork.type === "lazyMinted") {
+        if (lazyArtwork.owner.toString() === adr.toString() && lazyArtwork.type.toString() === "lazyMinted") {
           
-          console.log(lazyArtwork.ipfsURI);
+          console.log("ipfs : "+lazyArtwork.ipfsURI);
           try {
             let res = await axios.get(lazyArtwork.ipfsURI);
             let lazyNFT = new LazyNFT(i, res.data, listable);
