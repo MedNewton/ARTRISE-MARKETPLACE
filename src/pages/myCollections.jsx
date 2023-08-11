@@ -63,8 +63,8 @@ const MyCollections = () => {
       setAccountType(dt.accountType);
       setSlug(dt.slug);
       let following =
-        Object.entries(dt.followedArtists).length +
-        Object.entries(dt.following).length;
+          Object.entries(dt.followedArtists).length +
+          Object.entries(dt.following).length;
       let followers = Object.entries(dt.followers).length;
       setUserFollowers(followers - 1);
       setUserFollowing(following - 2);
@@ -110,147 +110,11 @@ const MyCollections = () => {
   }, []);
 
   return (
-    <div>
-      <HeaderStyle2 />
-
-      <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row profilePadding ">
-            <div
-              className="row userCoverSection"
-              id="userCover"
-              style={{ backgroundImage: `url(${coverLink})` }}
-            ></div>
-            <div className="col-md-12 col-lg-12 col-sm-12 col-12 profileInfoSection">
-              <div className="row">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-12 pdpContainer">
-                  <div className="pdpSpace" id="pdp">
-                    <img src={pdpLink} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className="userDataContainer">
-                <h5 className="userName">{displayName}</h5>
-                <p className="userAttribution">
-                  {accountType == "artist" ? "Artist" : "Member"}
-                </p>
-                <div className="userSocialsContainer">
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-facebook"
-                  ></i>
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-twitter"
-                  ></i>
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-instagram"
-                  ></i>
-                </div>
-                <div className="folContainer">
-                  <div className="ContainerofFollowers">
-                    <h5 className="dataOfFollowers">{userFollowers}</h5>
-                    <h5 className="titleOfFollowers">followers</h5>
-                  </div>
-                  <div className="ContainerofFollowing">
-                    <h5 className="dataOfFollowing">{userFollowing}</h5>
-                    <h5 className="titleOfFollowing">following</h5>
-                  </div>
-                </div>
-                <div className="userButtonsContainer">
-                  {slug == urlSlug ? (
-                    ""
-                  ) : (
-                    <div className="followUserBtn">
-                      <i className="fa fa-user-plus"></i>
-                      <h5>Follow</h5>
-                    </div>
-                  )}
-                  {slug == urlSlug ? (
-                    <div
-                      className="followUserBtn"
-                      onClick={() => {
-                        window.location.href = "/edit-profile";
-                      }}
-                    >
-                      <i className="fa fa-pen"></i>
-                      <h5 style={{ whiteSpace: "nowrap" }}>Edit info</h5>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <div className="shareUserBtn">
-                    <i className="fa fa-share-alt"></i>
-                  </div>
-                  <div className="shareUserBtn">
-                    <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-12">
-                  <div className="row tagLinksBar">
-                    <div className="col-12 tlBar">
-                      <Link to={"/profile?id=" + urlSlug}>
-                        <div className="tagLink">Owned</div>
-                      </Link>
-                      <Link to={"/tokenized?id=" + urlSlug}>
-                        <div className="tagLink">Tokenized</div>
-                      </Link>
-                      <Link to={"/likedItems?id=" + urlSlug}>
-                        <div className="tagLink">Liked items</div>
-                      </Link>
-                      {accountType == "artist" ? (
-                        <Link to={"/myCollections?id=" + urlSlug}>
-                          <div className="tagLink tagLinkSelected">
-                            My collections
-                          </div>
-                        </Link>
-                      ) : (
-                        ""
-                      )}
-
-                      <div className="tagLink">
-                        <Dropdown>
-                          <Dropdown.Toggle id="profileTabDropdown">
-                            <i
-                              className="fa fa-ellipsis-h"
-                              aria-hidden="true"
-                            ></i>
-                          </Dropdown.Toggle>
-
-                          <Dropdown.Menu>
-                            <Dropdown.Item href="/">
-                              <p className="tagLinkDropdownItemText">
-                                Offers Made
-                              </p>
-                            </Dropdown.Item>
-                            <Dropdown.Item href="/">
-                              <p className="tagLinkDropdownItemText">
-                                Offers Received
-                              </p>
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                              href={"/pending-tokenizations?id=" + urlSlug}
-                            >
-                              <p className="tagLinkDropdownItemText">
-                                Pending Tokenization
-                              </p>
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {address ? (
-              myCollections.map((collection, id) => {
-                if (collection) {
-                  return (
+      <div   className='profile-tabPanel-item'>
+        {address ? (
+            myCollections.map((collection, id) => {
+              if (collection) {
+                return (
                     <div
                       key={id}
                       className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
@@ -287,8 +151,8 @@ const MyCollections = () => {
                 }
               })
             ) : (
-              <div style={{ width: "100%" }}>
-                <div className="noArtworks">
+              <div>
+                <div>
                   <img
                     src="https://cdn.dribbble.com/users/1693462/screenshots/3504905/media/e76b879fc2bb9ec2a1f92da0732eb608.gif"
                     alt=""
@@ -310,14 +174,7 @@ const MyCollections = () => {
               </div>
             )}
           </div>
-        </div>
-      </div>
-      <CreateModal
-        show={createModalShow}
-        onHide={() => setCreateModalShow(false)}
-      />
-      <Footer />
-    </div>
+
   );
 };
 

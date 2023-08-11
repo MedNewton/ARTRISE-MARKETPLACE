@@ -1378,7 +1378,7 @@ cursor: pointer;
 .userCoverSection{
   height: 38vh;
   width: 100%;
-  background-position: bottom center;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   margin-bottom: -7%;
@@ -1389,7 +1389,6 @@ cursor: pointer;
 }
 
 .userNameBar{
-  display: flex;
   display: flex;
     flex-wrap: wrap;
     align-content: center;
@@ -2658,3 +2657,25 @@ a{
   font-weight: 700;
   padding: 0.6% 50px 1%;
 }
+.profile-tabPanel-item{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+
+
+
+.multi-select {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--primary-color2);
+  /*padding-top: 10px;*/
+  /*padding-bottom: 10px;*/
+  border-radius: 8px;
+}
+
+
+

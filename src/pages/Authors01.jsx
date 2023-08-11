@@ -10,50 +10,13 @@ import db from '../firebase';
 import storage from '../storage';
 import { ref, onValue, get, update, set, child } from "firebase/database";
 
-
+import { useArtworkContext } from '../Store/ArtworkContext';
 
 const Authors01 = () => {
     
     const [data] = useState(popularCollectionData);
 
-    const [artists, setArtists] = useState([]);
-
-    async function getArtists(){
-        let ARTISTS = [];
-        const artistsRef = ref(db, 'artists/');
-        await get(artistsRef).then(async(snapshot) => {
-            let dt = snapshot.val();
-            for(let artistKey in dt){
-                let a = dt[artistKey];
-                if(a.name != "Armin Simon"){
-                    let artist = {
-                        "name": a.name,
-                        "type": a.artistType,
-                        "pdpLink": a.pdpLink,
-                        "img1": a.img1,
-                        "img2": a.img2,
-                        "img3": a.img3,
-                        "img4": a.img4,
-                        "slug": a.slug
-                    }
-                    
-                    setArtists(current=>[...current, artist]);
-                }
-                
-            }
-        })
-    }
-
-    useEffect(() => {
-
-      getArtists();
-      
-    }, [])
-    
-    useEffect(() => {
-        console.log(artists)
-    }, [artists])
-    
+    const { artists, users } = useArtworkContext();
 
     const [visible , setVisible] = useState(20);
     const showMoreItems = () => {
@@ -76,13 +39,9 @@ const Authors01 = () => {
         console.log(selectedTags);
     }
 
-
-
     return (
         <div className='authors'>
             <HeaderStyle2 />
-            
-
             <section className="tf-section our-creater dark-style2">
                 <div className="themesflat-container"
                 style={{
@@ -167,6 +126,47 @@ const Authors01 = () => {
                                                         </div>
                                                         <div className="bottom-img">
                                                             <img src={item.img4} alt="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : ("")
+                        }
+                        {
+                            users.length > 0 ? (
+                                users.slice(0,visible).map((item,index) => (
+                                    <div key={index} className="col-lg-4 col-md-6 col-12">
+                                        <div className="sc-card-collection style-2">
+                                            <div className="card-bottom">
+                                                <div className="author">
+                                                    <div className="sc-author-box style-2">
+                                                        <div className="author-avatar">
+                                                            <img src={item?.pdpLink} alt="" className='avatar' />
+                                                            <div className="badge"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="content">
+                                                        <h4><Link to={"/authors-02?user="+item?.slug}>{item?.name}</Link></h4>
+                                                        <h5 className='artistCategory'>{item?.type}</h5>
+                                                    </div>
+                                                </div>
+                                                <Link to={"/authors-02?user="+item?.slug} className="sc-button fl-button pri-3"><span>Follow</span></Link>
+                                            </div>
+                                            <Link to={"/authors-02?user="+item?.slug}>
+                                                <div className="media-images-collection">
+                                                    <div className="box-left">
+                                                        <img src={item.artworks[0]?.img} alt="" />
+                                                    </div>
+                                                    <div className="box-right">
+                                                        <div className="top-img">
+                                                            <img src={item.artworks[1]?.img ? item.artworks[1].img : item.artworks[0].img} alt="" />
+                                                            <img src={item.artworks[2]?.img ? item.artworks[2].img: item.artworks[0].img} alt="" />
+                                                        </div>
+                                                        <div className="bottom-img">
+                                                            <img src={item.artworks[3]?.img ? item.artworks[3].img :item.artworks[0].img} alt="" />
                                                         </div>
                                                     </div>
                                                 </div>

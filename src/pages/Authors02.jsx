@@ -50,6 +50,7 @@ import ArtworksTom from "../components/layouts/TomWhiteArtworks";
 import ArtworksOdibo from "../components/layouts/ArtworksOdibo";
 import ArtworksVilte from "../components/layouts/ArtworksVilte";
 import Dropdown from "react-bootstrap/Dropdown";
+import {toast, ToastContainer} from "react-toastify";
 
 function importAll(r) {
   return r.keys().map(r);
@@ -125,11 +126,11 @@ const Authors02 = () => {
   const [pdp, setPdp] = useState("");
   const [bio, setBio] = useState("");
   const [cover, setCover] = useState("");
-  const [twitter, setTwitter] = useState("");
   const [website, setWebsite] = useState("");
-  const [instagram, setInstagram] = useState("");
-  const [facebook, setFacebook] = useState("");
   const [artistType, setArtistType] = useState('');
+  const [facebookLink, setFacebookLink] = useState("");
+  const [instagramLink, setInstagramLink] = useState("");
+  const [twitterLink, setTwitterLink] = useState("");
 
   let url = window.location.href.toString();
   let artistName = url.split("?artist=")[1];
@@ -145,9 +146,30 @@ const Authors02 = () => {
           setBio(a.description);
           setPdp(a.pdpLink);
           setCover(a.coverLink);
-          setFacebook(a.facebook);
-          setInstagram(a.instagram);
-          setTwitter(a.twitter);
+          setFacebookLink(a.facebook);
+          setInstagramLink(a.instagram);
+          setTwitterLink(a.twitter);
+          setWebsite(a.website);
+          setArtistType(a.artistType);
+        }
+      }
+    });
+  }
+
+  async function getUserData(slug) {
+    const usersRef = ref(db, "users/");
+    await get(usersRef).then(async (snapshot) => {
+      let dt = snapshot.val();
+      for (let userKey in dt) {
+        let a = dt[userKey];
+        if (a.slug == slug) {
+          setName(a.name);
+          setBio(a.description);
+          setPdp(a.pdpLink);
+          setCover(a.coverLink);
+          setFacebookLink(a.facebook);
+          setInstagramLink(a.instagram);
+          setTwitterLink(a.twitter);
           setWebsite(a.website);
           setArtistType(a.artistType);
         }
@@ -156,9 +178,17 @@ const Authors02 = () => {
   }
 
   useEffect(() => {
-    const windowUrl = window.location.search;
-    const slug = windowUrl.toString().split("=")[1];
-    getArtistData(slug);
+    const url = new URL(window.location.href);
+    const queryParams = new URLSearchParams(url.search);
+    if (queryParams.has("artist")) {
+      const artistValue = queryParams.get("artist");
+      getArtistData(artistValue);
+    } else if (queryParams.has("user")) {
+      const userValue = queryParams.get("user");
+      getUserData(userValue);
+    } else {
+      console.log("URL doesn't contain artist or user query parameter.");
+    }
   }, []);
 
   const [menuTab] = useState([
@@ -252,6 +282,34 @@ const Authors02 = () => {
     }
   }
 
+  const handleTwitterIconClick = () => {
+    if (twitterLink && twitterLink !== "No account shared yet ...") {
+      window.open(twitterLink, "_blank");
+    } else {
+      toast.error("No twitter account shared yet...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+  const handleInstagramIconClick = () => {
+    if (instagramLink && instagramLink !== "No account shared yet") {
+      window.open(instagramLink, "_blank");
+    } else {
+      toast.error("No instagram account shared yet...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+  const handleFacebookIconClick = () => {
+    if (facebookLink && facebookLink !== "No account shared yet ...") {
+      window.open(facebookLink, "_blank");
+    } else {
+      toast.error("No facebook account shared yet...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+
   return (
     <div className="authors-2">
       <HeaderStyle2 />
@@ -279,9 +337,18 @@ const Authors02 = () => {
                   <h5 className="userName">{name}</h5>
                   <p className="userAttribution">{artistType ?artistType : "Artist"}</p>
                   <div className="userSocialsContainer">
-                    <i class="fab fa-facebook"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-instagram"></i>
+                    <i onClick={handleFacebookIconClick}
+                       style={{fontSize: "1.8em"}}
+                       className="fab fa-facebook"
+                    ></i>
+                    <i onClick={handleTwitterIconClick}
+                       style={{fontSize: "1.8em"}}
+                       className="fab fa-twitter"
+                    ></i>
+                    <i onClick={handleInstagramIconClick}
+                       style={{fontSize: "1.8em"}}
+                       className="fab fa-instagram"
+                    ></i>
                   </div>
                   <div className="userButtonsContainer">
                     <div className="followUserBtn">
@@ -525,6 +592,7 @@ const Authors02 = () => {
       ) : (
         ""
       )}
+      <ToastContainer />
       <CardModal show={modalShow} onHide={() => setModalShow(false)} />
       <Footer />
     </div>

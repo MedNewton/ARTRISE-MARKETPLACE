@@ -391,7 +391,7 @@ const CreateItem = () => {
 
       <div className="tf-create-item tf-section">
         <div className="themesflat-container">
-          <div className="row ">
+          <div className="row" style={{paddingLeft:"0.5%"}}>
             <div
               className="col-md-12"
               style={{ marginBottom: "5%", marginTop: "2%" }}

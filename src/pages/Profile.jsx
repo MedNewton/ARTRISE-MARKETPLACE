@@ -31,6 +31,12 @@ import {
 import CreateModal from "../components/layouts/createModal";
 import Dropdown from "react-bootstrap/Dropdown";
 import axios from "axios";
+import Tokenized from "./tokenized";
+import LikedItems from "./LikedItems";
+import MyCollections from "./myCollections";
+import {toast} from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class LazyNFT {
   constructor(i, d, l) {
@@ -46,9 +52,10 @@ const Profile = () => {
   const [createModalShow, setCreateModalShow] = useState(false);
 
   const [displayName, setDisplayName] = useState("");
-  const [facebookLink, setFacbookLink] = useState("");
-  const [discordLink, setDiscordLink] = useState("");
+  const [facebookLink, setFacebookLink] = useState("");
+  const [instagramLink, setInstagramLink] = useState("");
   const [twitterLink, setTwitterLink] = useState("");
+  const [discordLink, setDiscordLink] = useState("");
   const [pdpLink, setPdpLink] = useState("");
   const [coverLink, setCoverLink] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -89,9 +96,9 @@ const Profile = () => {
         let lazyArtwork = dt[i];
         let listable = false;
         if(lazyArtwork.listed === "no") listable = true;
-        if (lazyArtwork.owner.toString() === adr.toString() && lazyArtwork.type.toString() === "lazyMinted") {
+        if (lazyArtwork.owner === adr && lazyArtwork.type === "lazyMinted") {
           
-          console.log("ipfs : "+lazyArtwork.ipfsURI);
+          console.log(lazyArtwork.ipfsURI);
           try {
             let res = await axios.get(lazyArtwork.ipfsURI);
             let lazyNFT = new LazyNFT(i, res.data, listable);
@@ -111,8 +118,9 @@ const Profile = () => {
       setUserBio(dt.bio);
       setPdpLink(dt.pdpLink);
       setCoverLink(dt.cover_link);
-      setFacbookLink(dt.Facebook);
+      setFacebookLink(dt.Facebook);
       setTwitterLink(dt.Twitter);
+      setInstagramLink(dt.instagram);
       setDiscordLink(dt.Discord);
       setAccountType(dt.accountType);
       setArtistType(dt.artistType);
@@ -173,6 +181,34 @@ const Profile = () => {
     });
   }
 
+    const handleTwitterIconClick = () => {
+        if (twitterLink && twitterLink !== "No account shared yet ...") {
+            window.open(twitterLink, "_blank");
+        } else {
+            toast.error("No twitter account shared yet...", {
+                position: toast.POSITION.TOP_CENTER,
+            });
+        }
+    };
+  const handleInstagramIconClick = () => {
+    if (instagramLink && instagramLink !== "No account shared yet") {
+      window.open(instagramLink, "_blank");
+    } else {
+      toast.error("No instagram account shared yet...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+  const handleFacebookIconClick = () => {
+    if (facebookLink && facebookLink !== "No account shared yet ...") {
+      window.open(facebookLink, "_blank");
+    } else {
+      toast.error("No facebook account shared yet...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+
   return (
     <div className="authors-2">
       <HeaderStyle2 />
@@ -198,17 +234,17 @@ const Profile = () => {
                   {accountType === "artist" ? `${artistType ? artistType : "Artist"}` : "Member"}
                 </p>
                 <div className="userSocialsContainer">
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-facebook"
+                  <i onClick={handleFacebookIconClick}
+                     style={{fontSize: "1.8em"}}
+                     className="fab fa-facebook"
                   ></i>
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-twitter"
+                  <i onClick={handleTwitterIconClick}
+                     style={{fontSize: "1.8em"}}
+                     className="fab fa-twitter"
                   ></i>
-                  <i
-                    style={{ fontSize: "1.8em" }}
-                    className="fab fa-instagram"
+                  <i onClick={handleInstagramIconClick}
+                     style={{fontSize: "1.8em"}}
+                     className="fab fa-instagram"
                   ></i>
                 </div>
                 <div className="folContainer">
@@ -253,12 +289,12 @@ const Profile = () => {
               </div>
             </div>
             <Tabs style={{width: "100%"}}>
-              <TabList  style={{padding: "0 0 0 0"}}>
-                <Tab key={1} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Owned</Tab>
-                <Link to={"/tokenized?id=" + urlSlug}><Tab key={2}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Tokenized</Tab></Link>
-                <Link to={"/likedItems?id=" + urlSlug}><Tab key={3}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Liked items</Tab></Link>
-                {accountType === "artist" ? <Link to={"/myCollections?id=" + urlSlug}><Tab key={4} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Collections</Tab></Link> : ""}
-                <Tab key={5}><div className="tagLink">
+              <TabList style={{padding: "0 0 0 0"}}>
+                <Tab key={0} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Owned</Tab>
+                <Tab key={1}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Tokenized</Tab>
+                <Tab key={2}  style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Liked items</Tab>
+                {accountType === "artist" ? <Tab key={3} style={{fontSize: '16px',padding:'0.6% 50px 1%'}}>Collections</Tab> : ""}
+                <Tab key={4}><div className="tagLink">
                   <Dropdown>
                     <Dropdown.Toggle id="profileTabDropdown">
                       <i
@@ -269,128 +305,138 @@ const Profile = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Offers Made
-                        </p>
+                        <p className="tagLinkDropdownItemText">Owned</p>
                       </Dropdown.Item>
                       <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Offers Received
-                        </p>
+                        <p className="tagLinkDropdownItemText">Liked Items</p>
                       </Dropdown.Item>
                       <Dropdown.Item href="/">
-                        <p className="tagLinkDropdownItemText">
-                          Pending Tokenization
-                        </p>
+                        <p className="tagLinkDropdownItemText">Offers Made</p>
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/">
+                        <p className="tagLinkDropdownItemText">Offers Received</p>
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
                 </Tab>
               </TabList>
-            {!isLoading && ownedNFTs && address
-              ? ownedNFTs.map((nft) => {
-                  if (nft.metadata.id != 0) {
-                    return (
-                      <div
-                        key={nft.metadata.id}
-                        className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-                      >
-                        <div className={`sc-card-product`}>
-                          <div className="card-media">
-                            <img src={nft.metadata.image} alt="" />
-                            <Link
-                              to="/"
-                              className="wishlist-button heart"
-                              hidden
+            <TabPanel key={0}>
+
+              {!isLoading && ownedNFTs && address
+                  ? ownedNFTs.map((nft) => {
+                    if (nft.metadata.id != 0) {
+                      return (
+                          <div
+                              key={nft.metadata.id}
+                              className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+                          >
+                            <div className={`sc-card-product`}>
+                              <div className="card-media">
+                                <img src={nft.metadata.image} alt="" />
+                                <Link
+                                    to="/"
+                                    className="wishlist-button heart"
+                                    hidden
+                                >
+                                  <span className="number-like">10</span>
+                                </Link>
+                                <div className="coming-soon" hidden>
+                                  10
+                                </div>
+                              </div>
+                              <div className="card-title">
+                                <h5 className="style2">{nft.metadata.name}</h5>
+                              </div>
+                              <div className="card-bottom">
+                                <Link to={"/"} className="buyNowBtn">
+                                  <button className="sc-button style bag fl-button pri-3 no-bg">
+                                    <span>List this NFT</span>
+                                  </button>
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                      );
+                    }
+                  })
+                  : ""}
+              {address
+                  ? lazyOwned.map((nft, index) => {
+                    if (nft) {
+                      let id = nft.id;
+                      if(nft.listable){
+                        return (
+                            <div
+                                key={index}
+                                className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
                             >
-                              <span className="number-like">10</span>
-                            </Link>
-                            <div className="coming-soon" hidden>
-                              10
+                              <div className={`sc-card-product`}>
+                                <div className="card-media">
+                                  <Link to={"/private-display?id=" + id}>
+                                    <img src={nft.data.image} alt="" />
+                                  </Link>
+                                </div>
+                                <div className="card-title">
+                                  <Link to={"/private-display?id=" + id}>
+                                    <h5 className="style2">{nft.data.name}</h5>
+                                  </Link>
+                                </div>
+                                <div className="card-bottom">
+                                  <Link
+                                      to={"/private-display?id=" + id}
+                                      className="buyNowBtn"
+                                  >
+                                    <button className="sc-button style bag fl-button pri-3 no-bg">
+                                      <span>List this NFT</span>
+                                    </button>
+                                  </Link>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="card-title">
-                            <h5 className="style2">{nft.metadata.name}</h5>
-                          </div>
-                          <div className="card-bottom">
-                            <Link to={"/"} className="buyNowBtn">
-                              <button className="sc-button style bag fl-button pri-3 no-bg">
-                                <span>List this NFT</span>
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-                })
-              : ""}
-            {address
-              ? lazyOwned.map((nft, index) => {
-                  if (nft) {
-                    let id = nft.id;
-                    if(nft.listable){
-                      return (
-                        <div
-                          key={index}
-                          className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-                        >
-                          <div className={`sc-card-product`}>
-                            <div className="card-media">
-                              <Link to={"/private-display?id=" + id}>
-                                <img src={nft.data.image} alt="" />
-                              </Link>
+                        );
+                      }
+                      else{
+                        return (
+                            <div
+                                key={index}
+                                className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+                            >
+                              <div className={`sc-card-product`}>
+                                <div className="card-media">
+                                  <Link to={"/artwork-dettails?id=" + id}>
+                                    <img src={nft.data.image} alt="" />
+                                  </Link>
+                                </div>
+                                <div className="card-title">
+                                  <Link to={"/artwork-dettails?id=" + id}>
+                                    <h5 className="style2">{nft.data.name}</h5>
+                                  </Link>
+                                </div>
+
+                              </div>
                             </div>
-                            <div className="card-title">
-                              <Link to={"/private-display?id=" + id}>
-                                <h5 className="style2">{nft.data.name}</h5>
-                              </Link>
-                            </div>
-                            <div className="card-bottom">
-                              <Link
-                                to={"/private-display?id=" + id}
-                                className="buyNowBtn"
-                              >
-                                <button className="sc-button style bag fl-button pri-3 no-bg">
-                                  <span>List this NFT</span>
-                                </button>
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      );
+                        );
+                      }
+
                     }
-                    else{
-                      return (
-                        <div
-                          key={index}
-                          className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-                        >
-                          <div className={`sc-card-product`}>
-                            <div className="card-media">
-                              <Link to={"/artwork-dettails?id=" + id}>
-                                <img src={nft.data.image} alt="" />
-                              </Link>
-                            </div>
-                            <div className="card-title">
-                              <Link to={"/artwork-dettails?id=" + id}>
-                                <h5 className="style2">{nft.data.name}</h5>
-                              </Link>
-                            </div>
-                            
-                          </div>
-                        </div>
-                      );
-                    }
-                    
-                  }
-                })
-              : ""}
-              </Tabs>
+                  })
+                  : ""}
+            </TabPanel>
+            <TabPanel key = {1}>
+              <Tokenized/>
+            </TabPanel>
+            <TabPanel key = {2}>
+              <LikedItems/>
+            </TabPanel>
+            <TabPanel key = {3}>
+              <MyCollections/>
+            </TabPanel>
+            </Tabs>
           </div>
         </div>
       </div>
+      <ToastContainer />
       <CreateModal
         show={createModalShow}
         onHide={() => setCreateModalShow(false)}
