@@ -951,13 +951,14 @@ const Artwork = () => {
                         <span className="heading">Price <small className="shippingDetails">(late minting gas not included)</small></span>
                         <div className="price">
                           <div className="price-box">
-                            <h5>
+                          <h6>
                               ${(usdPriceInEth * price).toFixed(2).toString()}
-                              <span className="smallPrice">
-                                {" "}
-                                {" / " + price.toString()} ETH{" "}
-                              </span>
-                              <BsFillQuestionCircleFill
+                              &nbsp;
+                              {" ≈ "}
+                              &nbsp;
+                              {price.toString()} ETH
+                            &nbsp;
+                            <BsFillQuestionCircleFill
                                 color="#000"
                                 size={12}
                                 className="smallpriceQuestion"
@@ -968,8 +969,8 @@ const Artwork = () => {
                                     text: "In order to protect users from unexpected market swings,\nARTRISE implemented the notion of flexible price NFTs\nto keep all the artworks aligned with the actual cryptocurrencies market prices.",
                                   });
                                 }}
-                              />
-                            </h5>
+                            />
+                          </h6>
                           </div>
                         </div>
                       </div>

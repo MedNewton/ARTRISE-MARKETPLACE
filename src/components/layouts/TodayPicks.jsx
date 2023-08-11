@@ -7,22 +7,11 @@ import { useAddress, useContract, useListings } from "@thirdweb-dev/react";
 import axios from "axios";
 import db from "../../firebase";
 import { ref, get } from "firebase/database";
-
-class LazyNFTListing {
-  constructor(i, d, p, on, oi) {
-    this.id = i;
-    this.data = d;
-    this.price = p;
-    this.ownerName = on;
-    this.ownerImage = oi;
-  }
-}
+import { useArtworkContext } from '../../Store/ArtworkContext';
 
 const TodayPicks = (props) => {
+  const {lazyListed} = useArtworkContext();
   const data = props.data;
-
-  const address = useAddress();
-
   const { contract } = useContract(
     "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
     "marketplace"
@@ -30,51 +19,6 @@ const TodayPicks = (props) => {
   const { data: listings, isLoading, error } = useListings(contract);
 
   const [usdPriceInEth, setUsdPriceInEth] = useState();
-  const [lazyListed, setLazyListed] = useState([]);
-
-  async function getLazyOwned(adr) {
-    const listingsRef = ref(db, "listings/");
-    await get(listingsRef).then(async (snapshot) => {
-      let dt = snapshot.val();
-      for (let i in dt) {
-        let listing = dt[i];
-        if (i > 27) {
-          let listingArtworkId = listing.artwork_id;
-          let price = listing.price;
-          let artworkRef = ref(db, "artworks/" + listingArtworkId);
-          await get(artworkRef).then(async (snapshot) => {
-            let artwork = snapshot.val();
-            let ipfsURI = artwork.ipfsURI;
-            let owner = artwork.owner;
-            let ownerRef = ref(db, "users/" + owner);
-            await get(ownerRef).then(async (snapshot) => {
-              let owner = snapshot.val();
-              let ownerName = owner.displayName;
-              let ownerImage = owner.pdpLink;
-              try {
-                let res = await axios.get(artwork.ipfsURI);
-                let lazyNFT = new LazyNFTListing(
-                  i,
-                  res.data,
-                  price,
-                  ownerName,
-                  ownerImage
-                );
-                console.log(lazyNFT);
-                setLazyListed((prevState) => [...prevState, lazyNFT]);
-              } catch (error) {
-                console.log("error");
-              }
-            });
-          });
-        }
-      }
-    });
-  }
-
-  useEffect(() => {
-    getLazyOwned();
-  }, []);
 
   useEffect(() => {
     async function fetchPrice() {
@@ -101,8 +45,6 @@ const TodayPicks = (props) => {
       console.log("This will be logged on unmount");
     };
   }, []);
-
-  //this.setState(data);
 
   const [visible, setVisible] = useState(8);
   const showMoreItems = () => {
@@ -195,23 +137,19 @@ const TodayPicks = (props) => {
                           </div>
                           <div className="price">
                             <span>Price</span>
-                            <h5>
-                              $3500
+                            <h6>
                               <small
-                                style={{
-                                  fontWeight: "400",
-                                  color: "grey",
-                                  fontSize: "0.7em",
-                                  fontStyle: "italic",
-                                }}
+                                  style={{
+                                    fontWeight: "600",
+                                    color: "black",
+                                    fontSize: "0.8em",
+                                    fontStyle: "italic",
+                                  }}
                               >
-                                &nbsp;
-                                {"(" +
-                                  (3500 / usdPriceInEth).toFixed(2).toString() +
-                                  ")"}{" "}
-                                ETH&nbsp;
+                                $3500 ≈ {(3500 / usdPriceInEth).toFixed(2)} ETH
                               </small>
-                            </h5>
+
+                            </h6>
                           </div>
                         </div>
                         <div className="card-bottom">
@@ -248,6 +186,100 @@ const TodayPicks = (props) => {
                 ></img>
               </div>
             )}
+            {!isLoading && listings
+                ? lazyListed.map((listing, index) => {
+                  console.log(listing)
+                  return (
+                      <div
+                          key={index}
+                          className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+                      >
+                        <div className={`sc-card-product`}>
+                          <div className="card-media">
+                            <Link
+                                to={"/artwork-dettails?id=" + listing.artworkId}
+                            >
+                              <img src={listing.data.image} alt="" />
+                            </Link>
+                            <Link
+                                to="/login"
+                                className="wishlist-button heart"
+                                hidden
+                            >
+                              <span className="number-like">10</span>
+                            </Link>
+                            <div className="coming-soon" hidden>
+                              10
+                            </div>
+                          </div>
+                          <div className="card-title">
+                            <h5 className="style2">
+                              <Link
+                                  to={"/artwork-dettails?id=" + listing.artworkId}
+                              >
+                                {listing.data.name}
+                              </Link>
+                            </h5>
+                          </div>
+                          <div className="meta-info">
+                            <div className="author">
+                              <div className="avatar">
+                                <img src={listing.ownerImage} alt="" />
+                              </div>
+                              <div className="info">
+                                <span>Owned By</span>
+                                <h6>
+                                  {" "}
+                                  <Link to="/Artists/Yann_Faisant">
+                                    {listing.ownerName}
+                                  </Link>{" "}
+                                </h6>
+                              </div>
+                            </div>
+                            <div className="price">
+                              <span>Price</span>
+                              <h6>
+                                <small
+                                    style={{
+                                      fontWeight: "600",
+                                      color: "black",
+                                      fontSize: "0.8em",
+                                      fontStyle: "italic",
+                                    }}
+                                >
+                                  ${(listing.price * usdPriceInEth).toFixed(2)}
+
+                                  &nbsp;
+                                  {" ≈ "}
+                                  &nbsp;
+                                  {listing.price} ETH
+                                </small>
+                              </h6>
+                            </div>
+                          </div>
+                          <div className="card-bottom">
+                            <Link
+                                to={"/artwork-dettails?id=" + listing.artworkId}
+                                className="buyNowBtn"
+                            >
+                              <button className="sc-button style bag fl-button pri-3 no-bg">
+                                <span>Buy now</span>
+                              </button>
+                            </Link>
+
+                            <Link
+                                to="/activity-01"
+                                className="view-history reload"
+                                hidden
+                            >
+                              View History
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                  );
+                })
+                : ""}
 
             {visible < data.length && (
               <div

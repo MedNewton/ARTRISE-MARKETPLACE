@@ -532,14 +532,14 @@ const ItemDetails01 = (props) => {
                                 <div className="price-box">
                                   <h5>
                                     $3500
-                                    <span className="smallPrice">
+                                    <>
                                       {" "}
-                                      {" / " +
+                                      {" ≈ " +
                                         (3500 / usdPriceInEth)
                                           .toFixed(2)
                                           .toString()}{" "}
                                       ETH{" "}
-                                    </span>
+                                    </>
                                     <BsFillQuestionCircleFill
                                       color="#000"
                                       size={12}
@@ -920,12 +920,6 @@ const ItemDetails01 = (props) => {
                                   <h5>
                                     $1800
                                     <small
-                                      style={{
-                                        fontWeight: "400",
-                                        color: "grey",
-                                        fontSize: "0.7em",
-                                        fontStyle: "italic",
-                                      }}
                                     >
                                       {weiToEther(
                                         listing.buyoutPrice

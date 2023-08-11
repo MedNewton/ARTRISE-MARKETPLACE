@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {ConnectWallet, useAddress, useContract, useListings} from "@thirdweb-dev/react";
 import menus from "../../pages/menu";
 import DarkMode from "./DarkMode";
-import logodark from "../../assets/images/logo/logo_dark.png";
+import logodark from "../../assets/images/logo/logo_dark_new.png";
 import avt from "../../assets/images/avatar/avt-2.jpg";
 import not from "../../assets/images/avatar/not.png";
 import coin from "../../assets/images/logo/coin.svg";
@@ -32,132 +32,79 @@ import { AiOutlineBell } from "react-icons/ai";
 
 import { BiCoinStack } from "react-icons/bi";
 import axios from "axios";
-
-class LazyNFTListing {
-  constructor(i, d, p, on, oi) {
-    this.id = i;
-    this.data = d;
-    this.price = p;
-    this.ownerName = on;
-    this.ownerImage = oi;
-  }
-}
-
+import { useArtworkContext } from '../../Store/ArtworkContext';
 
 const HeaderStyle2 = () => {
-
+  const { artists, lazyListed, users } = useArtworkContext();
 
   const { contract } = useContract(
       "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
       "marketplace"
   );
 
-
-  // const history = useHistory();
-
-
-  const [artists, setArtists] = useState([]);
   const [artistSearchList, setArtistSearchList] = useState([]);
   const [searchingArray, setSearchingArray] = useState([]);
   const [artWorks, setArtWorks] = useState([]);
-  const [lazyListed, setLazyListed] = useState([]);
+  const [processedLazyListed, setProcessedLazyListed] = useState([]);
+  const [processedUsers, setProcessedUsers] = useState([]);
   const { data: listings, isLoading, error } = useListings(contract);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-
-  async function getArtists() {
-    let ARTISTS = [];
-    const artistsRef = ref(db, 'artists/');
-    const snapshot = await get(artistsRef);
-    let dt = snapshot.val();
-    for (let artistKey in dt) {
-      let a = dt[artistKey];
-      if (a.name !== "Armin Simon") {
-        let artist = {
-          "name": a.name,
-          "type": a.artistType,
-          "pdpLink": a.pdpLink,
-          "img1": a.img1,
-          "img2": a.img2,
-          "img3": a.img3,
-          "img4": a.img4,
-          "slug": a.slug
-        }
-        ARTISTS.push(artist);
-      }
-    }
-    setArtists(ARTISTS);
-  }
-  async function getLazyOwned(adr) {
-    const listingsRef = ref(db, "listings/");
-    const snapshot = await get(listingsRef);
-    let dt = snapshot.val();
-    let lazyNFTs = [];
-    for (let i in dt) {
-      let listing = dt[i];
-      if (i > 27) {
-        let listingArtworkId = listing.artwork_id;
-        let price = listing.price;
-        let artworkRef = ref(db, "artworks/" + listingArtworkId);
-        const artworkSnapshot = await get(artworkRef);
-        let artwork = artworkSnapshot.val();
-        let ipfsURI = artwork.ipfsURI;
-        let owner = artwork.owner;
-        let ownerRef = ref(db, "users/" + owner);
-        const ownerSnapshot = await get(ownerRef);
-        let ownerData = ownerSnapshot.val();
-        let ownerName = ownerData.displayName;
-        let ownerImage = ownerData.pdpLink;
-        try {
-          let res = await axios.get(artwork.ipfsURI);
-          let lazyNFT = new LazyNFTListing(i, res.data, price, ownerName, ownerImage);
-          lazyNFTs.push(lazyNFT);
-        } catch (error) {
-          console.log("error");
-        }
-      }
-    }
-    setLazyListed(lazyNFTs);
-  }
   const getArtworkForSearch = () => {
     if (listings) {
       let data = listings.map((artworkItem) => {
-        return { "name": artworkItem.asset.name, "id": artworkItem.id, "type": "Artwork" };
+        return { "name": artworkItem.asset.name, "id": artworkItem.id, "type": "Artwork", "isDynamic": false  };
       });
       setArtWorks(data);
     }
   };
+
+  const getLazyListedForSearch = () => {
+    if (lazyListed) {
+      let data = lazyListed.map((artworkItem) => {
+        return { "name": artworkItem?.data?.name, "id": artworkItem?.artworkId, "type": "Artwork", "isDynamic": true };
+      });
+      setProcessedLazyListed(data);
+    }
+  };
+
   const getArtistsForSearch = () => {
     if (artists) {
       let data = artists.map((artist) => {
-        return { "name": artist.name, "id": artist.slug, "type": "Artist" };
+        return { "name": artist.name, "id": artist.slug, "type": "Artist" , "isDynamic": false };
       });
       setArtistSearchList(data);
     }
   };
+
+  const getUsersForSearch = () => {
+    if (users) {
+      let data = users.map((user) => {
+        return { "name": user.name, "id": user.slug, "type": "Artist", "isDynamic": true };
+      });
+      setProcessedUsers(data);
+    }
+  };
+
   const getSearchElements = () => {
-    const newArray = [...artWorks, ...artistSearchList];
+    const newArray = [...artWorks, ...artistSearchList, ...processedUsers, ...processedLazyListed];
     const uniqueArray = Array.from(new Set(newArray));
     setSearchingArray(uniqueArray);
   };
 
   useEffect(() => {
-    getLazyOwned();
-    getArtists();
-  }, []);
-
-  useEffect(() => {
     getArtworkForSearch();
     getArtistsForSearch();
-  }, [listings, artists]);
+    getLazyListedForSearch();
+    getUsersForSearch();
+
+  }, [listings, artists, lazyListed, users]);
 
   useEffect(() => {
     getSearchElements();
-  }, [artWorks, artistSearchList]);
-
-  // console.log("wwwwww here in headerStyle2 searchingArray",searchingArray)
+  }, [artWorks, artistSearchList,processedUsers,processedLazyListed]);
 
   const handleSearch = (event) => {
     const searchValue = event.target.value.toLowerCase();
@@ -186,14 +133,6 @@ const HeaderStyle2 = () => {
     setSearchQuery(''); // Clear the search query after clicking on an item
     setSearchResults([]); // Clear the search results after clicking on an item
   };
-
-  // useEffect(() => {
-    // console.log(artists)
-  // }, [artists])
-
-
-
-  // Impact IDENTIFICATION CODE :
 
   useEffect(() => {
     window.ire("identify", { customerId: localStorage.getItem("UserKey") });
@@ -437,7 +376,7 @@ const HeaderStyle2 = () => {
                   <div id="site-logo" className="clearfix">
                     <div id="site-logo-inner">
                       <Link to="/" rel="home" className="main-logo">
-                        <img id="logo_header" src={logodark} alt="nft-gaming" />
+                        <img id="logo_header" src={logodark} alt="nft-gaming" style={{width:'auto'}}/>
                       </Link>
                     </div>
                   </div>
@@ -543,16 +482,20 @@ const HeaderStyle2 = () => {
 
                                 >
                                   {result.type === "Artwork" ?
+
                                       <Link
-                                          to={{
+                                          to={result.isDynamic ? {
+                                            pathname: "/artwork-dettails",
+                                            search: `?id=${result.id}`,
+                                          } : {
                                             pathname: "/item-details-01",
                                             search: `?listing=${result.id}`,
                                           }}
                                       >
                                         <p>{result.name}</p>
                                         <p className="search-item-detail">{result.type}</p>
-                                      </Link> :<Link
-                                          to={"/authors-02?artist=" + result.id}
+                                      </Link> : <Link
+                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
                                       >
                                         <p>{result.name}</p>
                                         <p>{result.type}</p>
@@ -800,7 +743,7 @@ const HeaderStyle2 = () => {
                   <div id="site-logo" className="clearfix">
                     <div id="site-logo-inner">
                       <Link to="/" rel="home" className="main-logo">
-                        <img id="logo_header" src={logodark} alt="nft-gaming" />
+                        <img id="logo_header" src={logodark} alt="nft-gaming" style={{width:'auto'}} />
                       </Link>
                     </div>
                   </div>
@@ -906,22 +849,25 @@ const HeaderStyle2 = () => {
 
                                 >
                                   {result.type === "Artwork" ?
+
                                       <Link
-                                          to={{
+                                          to={result.isDynamic ? {
+                                            pathname: "/artwork-dettails",
+                                            search: `?id=${result.id}`,
+                                          } : {
                                             pathname: "/item-details-01",
                                             search: `?listing=${result.id}`,
                                           }}
                                       >
                                         <p>{result.name}</p>
                                         <p className="search-item-detail">{result.type}</p>
-                                      </Link> :<Link
-                                          to={"/authors-02?artist=" + result.id}
+                                      </Link> : <Link
+                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
                                       >
                                         <p>{result.name}</p>
                                         <p>{result.type}</p>
                                       </Link>
                                   }
-
                                 </div>
                             ))}
                           </div>
@@ -1137,7 +1083,7 @@ const HeaderStyle2 = () => {
                   <div id="site-logo" className="clearfix">
                     <div id="site-logo-inner">
                       <Link to="/" rel="home" className="main-logo">
-                        <img id="logo_header" src={logodark} alt="" />
+                        <img id="logo_header" src={logodark} alt="" style={{width:'auto'}} />
                       </Link>
                     </div>
                   </div>
@@ -1203,79 +1149,47 @@ const HeaderStyle2 = () => {
                     </div>
                   </nav>
                   <div className="question-form">
-                    <form action="#" method="get">
+                    <div className="">
                       <input
-                        type="text"
-                        placeholder="Type to search...3"
-                        required
+                          type="text"
+                          placeholder="Type to search..."
+                          value={searchQuery}
+                          onChange={handleSearch}
                       />
-                      <button type="submit">
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <mask
-                            id="mask0_334_638"
-                            maskUnits="userSpaceOnUse"
-                            x="1"
-                            y="1"
-                            width="18"
-                            height="17"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M1.66699 1.66666H17.6862V17.3322H1.66699V1.66666Z"
-                              fill="white"
-                              stroke="white"
-                            />
-                          </mask>
-                          <g mask="url(#mask0_334_638)">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M9.67711 2.87312C5.9406 2.87312 2.90072 5.84505 2.90072 9.49903C2.90072 13.153 5.9406 16.1257 9.67711 16.1257C13.4128 16.1257 16.4527 13.153 16.4527 9.49903C16.4527 5.84505 13.4128 2.87312 9.67711 2.87312ZM9.67709 17.3322C5.26039 17.3322 1.66699 13.8182 1.66699 9.49902C1.66699 5.17988 5.26039 1.66666 9.67709 1.66666C14.0938 1.66666 17.6864 5.17988 17.6864 9.49902C17.6864 13.8182 14.0938 17.3322 9.67709 17.3322Z"
-                              fill="white"
-                            />
-                            <path
-                              d="M9.67711 2.37312C5.67512 2.37312 2.40072 5.55836 2.40072 9.49903H3.40072C3.40072 6.13174 6.20607 3.37312 9.67711 3.37312V2.37312ZM2.40072 9.49903C2.40072 13.4396 5.67504 16.6257 9.67711 16.6257V15.6257C6.20615 15.6257 3.40072 12.8664 3.40072 9.49903H2.40072ZM9.67711 16.6257C13.6784 16.6257 16.9527 13.4396 16.9527 9.49903H15.9527C15.9527 12.8664 13.1472 15.6257 9.67711 15.6257V16.6257ZM16.9527 9.49903C16.9527 5.5584 13.6783 2.37312 9.67711 2.37312V3.37312C13.1473 3.37312 15.9527 6.1317 15.9527 9.49903H16.9527ZM9.67709 16.8322C5.52595 16.8322 2.16699 13.5316 2.16699 9.49902H1.16699C1.16699 14.1048 4.99484 17.8322 9.67709 17.8322V16.8322ZM2.16699 9.49902C2.16699 5.46656 5.52588 2.16666 9.67709 2.16666V1.16666C4.9949 1.16666 1.16699 4.8932 1.16699 9.49902H2.16699ZM9.67709 2.16666C13.8282 2.16666 17.1864 5.46649 17.1864 9.49902H18.1864C18.1864 4.89327 14.3593 1.16666 9.67709 1.16666V2.16666ZM17.1864 9.49902C17.1864 13.5316 13.8282 16.8322 9.67709 16.8322V17.8322C14.3594 17.8322 18.1864 14.1047 18.1864 9.49902H17.1864Z"
-                              fill="white"
-                            />
-                          </g>
-                          <mask
-                            id="mask1_334_638"
-                            maskUnits="userSpaceOnUse"
-                            x="13"
-                            y="13"
-                            width="6"
-                            height="6"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M14.2012 14.2999H18.3333V18.3333H14.2012V14.2999Z"
-                              fill="white"
-                              stroke="white"
-                            />
-                          </mask>
-                          <g mask="url(#mask1_334_638)">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M17.7166 18.3333C17.5596 18.3333 17.4016 18.2746 17.2807 18.1572L14.3823 15.3308C14.1413 15.0952 14.1405 14.7131 14.3815 14.4774C14.6217 14.2402 15.0123 14.2418 15.2541 14.4758L18.1526 17.303C18.3935 17.5387 18.3944 17.9199 18.1534 18.1556C18.0333 18.2746 17.8746 18.3333 17.7166 18.3333Z"
-                              fill="white"
-                            />
-                            <path
-                              d="M17.7166 18.3333C17.5595 18.3333 17.4016 18.2746 17.2807 18.1572L14.3823 15.3308C14.1413 15.0952 14.1405 14.7131 14.3815 14.4774C14.6217 14.2402 15.0123 14.2418 15.2541 14.4758L18.1526 17.303C18.3935 17.5387 18.3944 17.9199 18.1534 18.1556C18.0333 18.2746 17.8746 18.3333 17.7166 18.3333"
-                              stroke="white"
-                            />
-                          </g>
-                        </svg>
-                      </button>
-                    </form>
+                      {searchResults.length > 0 && (
+                          <div className="search-dropdown">
+                            {searchResults.map((result) => (
+                                <div
+                                    key={result.id}
+                                    className="search-item"
+                                    onClick={() => handleItemClick(result)}
+
+                                >
+                                  {result.type === "Artwork" ?
+
+                                      <Link
+                                          to={result.isDynamic ? {
+                                            pathname: "/artwork-dettails",
+                                            search: `?id=${result.id}`,
+                                          } : {
+                                            pathname: "/item-details-01",
+                                            search: `?listing=${result.id}`,
+                                          }}
+                                      >
+                                        <p>{result.name}</p>
+                                        <p className="search-item-detail">{result.type}</p>
+                                      </Link> : <Link
+                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
+                                      >
+                                        <p>{result.name}</p>
+                                        <p>{result.type}</p>
+                                      </Link>
+                                  }
+                                </div>
+                            ))}
+                          </div>
+                      )}
+                    </div>
                   </div>
                   <div className="flat-search-btn flex">
                     <div className="admin_active hideElement" id="header_admin">

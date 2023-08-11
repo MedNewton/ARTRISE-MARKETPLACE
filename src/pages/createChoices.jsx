@@ -17,12 +17,12 @@ const CreateChoices = () => {
             <HeaderStyle2 />
             <div className="tf-create-item tf-section">
                 <div className="themesflat-container">
-                    <div className="row profilePadding ">
+                    <div className="row profilePadding " style={{paddingLeft:'0.5%'}}>
                     <div className="col-md-12" style={{ marginBottom: '5%' }}>
                             <h2 className="tf-title style4 mg-bt-38 ourArtists" style={{marginTop: "5%", fontWeight: "700"}}>
                                 Create</h2>
                         </div>
-                        <div className='createChoiceBoxesWrapper'>
+                        <div className='createChoiceBoxesWrapper' style={{paddingLeft:'1%'}}>
                         <div className="row createChoiceBox" style={{paddingRight: "5%"}} onClick={() =>{setCreateModalShow(true)}}>
                             <div className="col-md-6 createChoiceTextBox">
                                 <h5 className="createChoiceTitle">Create a collection</h5>

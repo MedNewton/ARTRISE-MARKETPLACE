@@ -11,78 +11,19 @@ import { Accordion } from "react-bootstrap-accordion";
 import axios from "axios";
 import db from "../../firebase";
 import { ref, get } from "firebase/database";
-
-class LazyNFTListing {
-  constructor(i, d, p, on, oi, ai) {
-    this.id = i;
-    this.data = d;
-    this.price = p;
-    this.ownerName = on;
-    this.ownerImage = oi;
-    this.artworkId = ai;
-  }
-}
+import { useArtworkContext } from '../../Store/ArtworkContext';
 
 const Artworks = (props) => {
+  const {lazyListed} = useArtworkContext();
   const data = props.data;
-
   const [openPanel, setOpenPanel] = useState(false);
-
   const address = useAddress();
-
   const { contract } = useContract(
     "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
     "marketplace"
   );
   const { data: listings, isLoading, error } = useListings(contract);
   const [usdPriceInEth, setUsdPriceInEth] = useState();
-
-  const [lazyListed, setLazyListed] = useState([]);
-
-  async function getLazyOwned(adr) {
-    const listingsRef = ref(db, "listings/");
-    await get(listingsRef).then(async (snapshot) => {
-      let dt = snapshot.val();
-      for (let i in dt) {
-        let listing = dt[i];
-        if (i > 27) {
-          let listingArtworkId = listing.artwork_id;
-          let price = listing.price;
-          let artworkRef = ref(db, "artworks/" + listingArtworkId);
-          await get(artworkRef).then(async (snapshot) => {
-            let artwork = snapshot.val();
-            let ipfsURI = artwork.ipfsURI;
-            let owner = artwork.owner;
-            let ownerRef = ref(db, "users/" + owner);
-            await get(ownerRef).then(async (snapshot) => {
-              let owner = snapshot.val();
-              let ownerName = owner.displayName;
-              let ownerImage = owner.pdpLink;
-              try {
-                let res = await axios.get(artwork.ipfsURI);
-                let lazyNFT = new LazyNFTListing(
-                  i,
-                  res.data,
-                  price,
-                  ownerName,
-                  ownerImage,
-                  listingArtworkId
-                );
-                console.log(lazyNFT);
-                setLazyListed((prevState) => [...prevState, lazyNFT]);
-              } catch (error) {
-                console.log("error");
-              }
-            });
-          });
-        }
-      }
-    });
-  }
-
-  useEffect(() => {
-    getLazyOwned();
-  }, []);
 
   useEffect(() => {
     async function fetchPrice() {
@@ -228,7 +169,6 @@ const Artworks = (props) => {
                 <SideBar></SideBar>
               </SlidingPane>
             </div>
-
             {!isLoading && listings ? (
               listings?.map((listing) => {
                 if (
@@ -294,19 +234,19 @@ const Artworks = (props) => {
                           </div>
                           <div className="price">
                             <span>Price</span>
-                            <h5>
+                            <h6>
                               <small
                                 style={{
-                                  fontWeight: "400",
-                                  color: "grey",
-                                  fontSize: "0.7em",
+                                  fontWeight: "600",
+                                  color: "black",
+                                  fontSize: "0.8em",
                                   fontStyle: "italic",
                                 }}
                               >
-                                &nbsp;(3500$)&nbsp;
+                                $3500 ≈ {(3500 / usdPriceInEth).toFixed(2)} ETH
                               </small>
-                              {(3500 / usdPriceInEth).toFixed(2)} ETH
-                            </h5>
+
+                            </h6>
                           </div>
                         </div>
                         <div className="card-bottom">
@@ -396,20 +336,23 @@ const Artworks = (props) => {
                           </div>
                           <div className="price">
                             <span>Price</span>
-                            <h5>
-                              ${(listing.price * usdPriceInEth).toFixed(2)}
+                            <h6>
                               <small
-                                style={{
-                                  fontWeight: "400",
-                                  color: "grey",
-                                  fontSize: "0.7em",
-                                  fontStyle: "italic",
-                                }}
+                                  style={{
+                                    fontWeight: "600",
+                                    color: "black",
+                                    fontSize: "0.8em",
+                                    fontStyle: "italic",
+                                  }}
                               >
+                              ${(listing.price * usdPriceInEth).toFixed(2)}
+                              
                                 &nbsp;
-                                {" / (" + listing.price + ")"} ETH&nbsp;
+                                {" ≈ "}
+                                &nbsp;
+                                {listing.price} ETH
                               </small>
-                            </h5>
+                            </h6>
                           </div>
                         </div>
                         <div className="card-bottom">
