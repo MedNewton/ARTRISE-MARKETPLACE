@@ -268,8 +268,11 @@
 }
 
 .sc-card-product .card-media{
+  max-height: 200px;
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .physicalMediaPreview{
@@ -436,11 +439,11 @@
 }
 
 .ourArtists{
-  margin-top: 10%;
+  margin-top:15%;
   text-align: left;
   margin-bottom: 3%;
   margin-left: 0%;
-  font-size: 5em;
+  font-size: 3em;
 }
 
 .browse{
@@ -1812,8 +1815,8 @@ a{
 }
 
 .subTitleCreate{
-  font-size: 1.8em;
-  font-weight: 700;
+  font-size: 1.5em;
+  font-weight: 500;
   color: #3b3b3b;
 }
 
@@ -2675,6 +2678,55 @@ a{
   /*padding-top: 10px;*/
   /*padding-bottom: 10px;*/
   border-radius: 8px;
+}
+.selected-Duration{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+
+.radio-container {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-button {
+  display: flex;
+  gap:10px;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 15px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  width: 100%;
+  font-size: 1.5em;
+  font-weight: 500;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.radio-button:hover {
+  border-color: #999;
+}
+
+/*.radio-button input[type="radio"] {*/
+/*  display: none;*/
+/*}*/
+
+.radio-button div {
+  margin-left: 10px;
+}
+
+/* Replace with appropriate icon classes */
+.icon-fl-tag {
+  /* Add your icon styling here */
+}
+
+.icon-fl-icon-22 {
+  /* Add your icon styling here */
 }
 
 

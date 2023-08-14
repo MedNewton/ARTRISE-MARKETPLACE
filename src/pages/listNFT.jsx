@@ -12,14 +12,64 @@ import db from "../firebase";
 import { ref, set, update } from "firebase/database";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
 
 const ListItem = () => {
   const [price, setPrice] = useState(0);
-  const [shippingPrice, setShippingPrice] = useState(0);
   const [auctionPrice, setAuctionprice] = useState(0);
   const [minBid, setMinBid] = useState(0);
+  const [selectedMethod, setSelectedMethod] = useState("");
+  const [shippingOption, setShippingOption] = useState("free");
+  const [shippingPrice, setShippingPrice] = useState("");
+  const [selectedDuration, setSelectedDuration] = useState(null);
+  const [customStartDate, setCustomStartDate] = useState(null);
+  const [customEndDate, setCustomEndDate] = useState(null);
 
-  function getRandomInteger(min, max) {
+    const shippingOptions = [
+        { value: "free", label: "Free Shipping" },
+        { value: "fees", label: "Add Shipping Fees" },
+    ];
+    const durationOptions = [
+        { value: "custom", label: "Custom" },
+        { value: "1_hour", label: "1 Hour" },
+        { value: "6_hours", label: "6 Hours" },
+        { value: "1_day", label: "1 Day" },
+        { value: "3_days", label: "3 Days" },
+        { value: "7_days", label: "7 Days" },
+        { value: "1_Month", label: "1 Month" },
+        { value: "3_Months", label: "3 Months" },
+        { value: "7_Months", label: "7 Months" }
+    ];
+
+
+    const handleDurationChange = (selectedOption) => {
+        setSelectedDuration(selectedOption.value);
+    };
+
+    const handleCustomStartDateChange = (e) => {
+        setCustomStartDate(e.target.value);
+    };
+
+    const handleCustomEndDateChange = (e) => {
+        setCustomEndDate(e.target.value);
+    };
+
+    // Calculate duration in days, hours, and minutes
+    let durationDays = 0;
+    let durationHours = 0;
+    let durationMinutes = 0;
+
+    if (selectedDuration === "custom" && customStartDate && customEndDate) {
+        const startDate = new Date(customStartDate);
+        const endDate = new Date(customEndDate);
+        const diffInMillis = endDate - startDate;
+
+        durationDays = Math.floor(diffInMillis / (1000 * 60 * 60 * 24));
+        durationHours = Math.floor((diffInMillis % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        durationMinutes = Math.floor((diffInMillis % (1000 * 60 * 60)) / (1000 * 60));
+    }
+
+    function getRandomInteger(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -87,13 +137,13 @@ const ListItem = () => {
       <HeaderStyle2 />
 
       <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row">
+        <div className="themesflat-container" style={{display: "flex",flexDirection: "column", alignItems: "center"}}>
+          <div className="row" style={{maxWidth: "60%"}}>
             <div
               className="col-md-12"
               style={{ marginBottom: "5%", marginTop: "2%" }}
             >
-              <h2 className="tf-title style4 mg-bt-38 ourArtists">
+              <h2 className=" style4 mg-bt-38 ourArtists">
                 List your NFT
               </h2>
               <h5 className="subTitleCreate">
@@ -104,50 +154,101 @@ const ListItem = () => {
             <div className="col-xl-12 col-lg-12 col-md-12 col-12">
               <div className="form-create-item">
                 <div className="flat-tabs tab-create-item">
-                  <h4 className="title-create-item">Select method</h4>
-                  <Tabs>
-                    <TabList>
-                      <Tab>
-                        <span className="icon-fl-tag"></span>Fixed Price
-                      </Tab>
-                      <Tab>
-                        <span className="icon-fl-icon-22"></span>Open For Bids
-                      </Tab>
-                    </TabList>
+                    <div>
+                    <h4 className="title-create-item">Select method</h4>
+                    <div class="radio-container">
+                        <label className="radio-button">
+                            <div style={{display:'flex',gap:'10px'}}>
+                                <span class="icon-fl-tag"></span>
+                                <span>Fixed Price</span>
+                            </div>
+                            <input type="radio" name="pricing" value="fixed" checked={selectedMethod === "fixed"} onChange={()=>setSelectedMethod("fixed")}/>
 
-                    <TabPanel>
-                      <form action="#">
-                        <h4 className="title-create-item">Price</h4>
-                        <input
-                          type="number"
-                          placeholder="Enter price for one item (ETH)"
-                          onChange={(e) => {setPrice(e.target.value)}}
-                        />
-                        <input
-                          type="number"
-                          placeholder="Enter price for shipping cost"
-                          onChange={(e) => {setShippingPrice(e.target.value)}}
-                        />
+                        </label>
+                        <label className="radio-button">
+                            <div style={{display:'flex',gap:'10px'}}>
+                                <span class="icon-fl-icon-22"></span>
+                                <span>Open For Bids</span>
+                            </div>
+                            <input type="radio" name="pricing" value="bids" checked={selectedMethod === "bids"} onChange={()=>setSelectedMethod("bids")}/>
+                        </label>
+                    </div>
+                    </div>
+                    {selectedMethod === "fixed" && (
+                        <form action="#">
+                            <div>
+                            <h4 className="title-create-item">Price</h4>
+                            <input
+                                type="number"
+                                placeholder="Enter price for one item (ETH)"
+                                onChange={(e) => {setPrice(e.target.value)}}
+                            />
+                            </div>
+                            <div>
+                                <h4 className="title-create-item">Shipping Price:</h4>
+                                <Select
+                                    className='multi-select'
+                                    options={shippingOptions}
+                                    value={shippingOptions.find(option => option.value === shippingOption)}
+                                    onChange={(selectedOption) => setShippingOption(selectedOption.value)}
+                                />
+                                {shippingOption === "fees" && (
+                                    <input
+                                        style={{marginTop:"10px"}}
+                                        type="number"
+                                        placeholder="Enter price for shipping cost"
+                                        value={shippingPrice}
+                                        onChange={(e) => setShippingPrice(e.target.value)}
+                                    />
+                                )}
+                            </div>
 
-                        <div className="listButton" onClick={(e)=>{listForFixedPrice();}}>List this item</div>
-                      </form>
-                    </TabPanel>
-                    <TabPanel>
-                      <form action="#">
-                        <h4 className="title-create-item">Price</h4>
-                        <input
-                          type="number"
-                          placeholder="Enter price for one item (ETH)"
-                          onChange={(e)=>{setAuctionprice(e.target.value)}}
-                        />
+                            <div className="listButton" onClick={(e)=>{listForFixedPrice();}}>List this item</div>
+                        </form>
+                    )}
+                    {selectedMethod === "bids" && (
+                        <form action="#">
+                            <div>
+                                <h4 className="title-create-item">Duration:</h4>
+                                <Select
+                                    className='multi-select'
+                                    options={durationOptions}
+                                    value={durationOptions.find(option => option.value === selectedDuration)}
+                                    onChange={handleDurationChange}
+                                />
 
-                        <h4 className="title-create-item">Minimum bid</h4>
-                        <input type="number" placeholder="enter minimum bid" onChange={(e)=>{setMinBid(e.target.value)}}/>
+                                {selectedDuration === "custom" && (
+                                    <div className="selected-Duration">
+                                        <input type="datetime-local" style={{marginBottom:"0px"}} onChange={handleCustomStartDateChange} />
+                                        <p>   -   </p>
+                                        <input type="datetime-local" style={{marginBottom:"0px"}} onChange={handleCustomEndDateChange} />
+                                    </div>
+                                )}
 
-                        <div className="listButton">List this item</div>
-                      </form>
-                    </TabPanel>
-                  </Tabs>
+
+                                {/* Display calculated duration */}
+                                {selectedDuration === "custom" && customStartDate && customEndDate && (
+                                    <div style={{padding:"20px 0px"}}>
+                                        <p>Duration: {durationDays} days, {durationHours} hours, {durationMinutes} minutes</p>
+                                    </div>
+                                )}
+                            </div>
+
+
+                            <h4 className="title-create-item">Price</h4>
+                            <input
+                                type="number"
+                                placeholder="Enter price for one item (ETH)"
+                                onChange={(e)=>{setAuctionprice(e.target.value)}}
+                            />
+
+                            <h4 className="title-create-item">Minimum bid</h4>
+                            <input type="number" placeholder="enter minimum bid" onChange={(e)=>{setMinBid(e.target.value)}}/>
+
+                            <div className="listButton">List this item</div>
+                        </form>
+                    )}
+
                 </div>
               </div>
             </div>
