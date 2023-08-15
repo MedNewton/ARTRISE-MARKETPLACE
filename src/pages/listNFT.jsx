@@ -20,7 +20,7 @@ const ListItem = () => {
   const [minBid, setMinBid] = useState(0);
   const [selectedMethod, setSelectedMethod] = useState("");
   const [shippingOption, setShippingOption] = useState("free");
-  const [shippingPrice, setShippingPrice] = useState("");
+  const [shippingPrice, setShippingPrice] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(null);
   const [customStartDate, setCustomStartDate] = useState(null);
   const [customEndDate, setCustomEndDate] = useState(null);
@@ -54,20 +54,26 @@ const ListItem = () => {
         setCustomEndDate(e.target.value);
     };
 
-    // Calculate duration in days, hours, and minutes
-    let durationDays = 0;
-    let durationHours = 0;
-    let durationMinutes = 0;
+    const calculateDuration = () => {
+        if (selectedDuration === "custom" && customStartDate && customEndDate) {
+            const startDate = new Date(customStartDate);
+            const endDate = new Date(customEndDate);
+            const diffInMillis = endDate - startDate;
 
-    if (selectedDuration === "custom" && customStartDate && customEndDate) {
-        const startDate = new Date(customStartDate);
-        const endDate = new Date(customEndDate);
-        const diffInMillis = endDate - startDate;
+            const durationDays = Math.floor(diffInMillis / (1000 * 60 * 60 * 24));
+            const durationHours = Math.floor((diffInMillis % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const durationMinutes = Math.floor((diffInMillis % (1000 * 60 * 60)) / (1000 * 60));
 
-        durationDays = Math.floor(diffInMillis / (1000 * 60 * 60 * 24));
-        durationHours = Math.floor((diffInMillis % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        durationMinutes = Math.floor((diffInMillis % (1000 * 60 * 60)) / (1000 * 60));
-    }
+            return `Duration: ${durationDays} days, ${durationHours} hours, ${durationMinutes} minutes`;
+        }
+
+        const predefinedDuration = durationOptions.find(option => option.value === selectedDuration);
+        if (predefinedDuration) {
+            return `Duration: ${predefinedDuration.label}`;
+        }
+
+        return "Duration: N/A";
+    };
 
     function getRandomInteger(min, max) {
     min = Math.ceil(min);
@@ -168,7 +174,7 @@ const ListItem = () => {
                         <label className="radio-button">
                             <div style={{display:'flex',gap:'10px'}}>
                                 <span class="icon-fl-icon-22"></span>
-                                <span>Open For Bids</span>
+                                <span>Timed Auction</span>
                             </div>
                             <input type="radio" name="pricing" value="bids" checked={selectedMethod === "bids"} onChange={()=>setSelectedMethod("bids")}/>
                         </label>
@@ -176,7 +182,7 @@ const ListItem = () => {
                     </div>
                     {selectedMethod === "fixed" && (
                         <form action="#">
-                            <div>
+                            <div className='mt-4 '>
                             <h4 className="title-create-item">Price</h4>
                             <input
                                 type="number"
@@ -185,7 +191,7 @@ const ListItem = () => {
                             />
                             </div>
                             <div>
-                                <h4 className="title-create-item">Shipping Price:</h4>
+                                <h4 className="mb-4">Shipping Price:</h4>
                                 <Select
                                     className='multi-select'
                                     options={shippingOptions}
@@ -194,7 +200,7 @@ const ListItem = () => {
                                 />
                                 {shippingOption === "fees" && (
                                     <input
-                                        style={{marginTop:"10px"}}
+                                        className='mt-4'
                                         type="number"
                                         placeholder="Enter price for shipping cost"
                                         value={shippingPrice}
@@ -202,14 +208,30 @@ const ListItem = () => {
                                     />
                                 )}
                             </div>
+                            <div className="summary-main">
+                                <h4  className="mb-4">Summary</h4>
+                                <div className="summary-details">
+                                <h5 className="subTitleCreate">Price</h5>
+                                <h5 className="subTitleCreate">{price}</h5>
+                                </div>
+                                <div className="summary-details">
+                                    <h5 className="subTitleCreate">Shipping Price</h5>
+                                    <h5 className="subTitleCreate">{shippingOption === "free" ? "Free Shipping" : shippingPrice}</h5>
+                                </div>
+                                <div className="summary-details">
+                                    <h5 className="subTitleCreate">Service Fee</h5>
+                                    <h5 className="subTitleCreate">2.5%</h5>
+                                </div>
 
-                            <div className="listButton" onClick={(e)=>{listForFixedPrice();}}>List this item</div>
+                            </div>
+
+                            <div className="listButton" onClick={(e)=>{listForFixedPrice()}}>List this item</div>
                         </form>
                     )}
                     {selectedMethod === "bids" && (
                         <form action="#">
-                            <div>
-                                <h4 className="title-create-item">Duration:</h4>
+                            <div className='mt-4'>
+                                <h4 className="mb-4">Duration:</h4>
                                 <Select
                                     className='multi-select'
                                     options={durationOptions}
@@ -219,31 +241,43 @@ const ListItem = () => {
 
                                 {selectedDuration === "custom" && (
                                     <div className="selected-Duration">
-                                        <input type="datetime-local" style={{marginBottom:"0px"}} onChange={handleCustomStartDateChange} />
-                                        <p>   -   </p>
-                                        <input type="datetime-local" style={{marginBottom:"0px"}} onChange={handleCustomEndDateChange} />
+                                        <input type="datetime-local" style={{ marginBottom: "0px" }} onChange={handleCustomStartDateChange} />
+                                        <p> - </p>
+                                        <input type="datetime-local" style={{ marginBottom: "0px" }} onChange={handleCustomEndDateChange} />
                                     </div>
                                 )}
-
-
-                                {/* Display calculated duration */}
                                 {selectedDuration === "custom" && customStartDate && customEndDate && (
-                                    <div style={{padding:"20px 0px"}}>
-                                        <p>Duration: {durationDays} days, {durationHours} hours, {durationMinutes} minutes</p>
+                                    <div style={{ padding: "20px 0px" }}>
+                                        <p>{calculateDuration()}</p>
                                     </div>
                                 )}
                             </div>
 
+                            <div className='mt-4 '>
+                                <h4 className="mb-4">Starting Price</h4>
+                                <input
+                                    className="mb-0"
+                                    type="number"
+                                    placeholder="Enter price for one item (ETH)"
+                                    onChange={(e)=>{setAuctionprice(e.target.value)}}
+                                />
+                            </div>
 
-                            <h4 className="title-create-item">Price</h4>
-                            <input
-                                type="number"
-                                placeholder="Enter price for one item (ETH)"
-                                onChange={(e)=>{setAuctionprice(e.target.value)}}
-                            />
-
-                            <h4 className="title-create-item">Minimum bid</h4>
-                            <input type="number" placeholder="enter minimum bid" onChange={(e)=>{setMinBid(e.target.value)}}/>
+                            <div className="summary-main">
+                                <h4  className="mb-4">Summary</h4>
+                                <div className="summary-details">
+                                    <h5 className="subTitleCreate">Duration</h5>
+                                    <h5 className="subTitleCreate">{selectedDuration === "custom" ? calculateDuration(): selectedDuration}</h5>
+                                </div>
+                                <div className="summary-details">
+                                    <h5 className="subTitleCreate">Starting Price</h5>
+                                    <h5 className="subTitleCreate">{auctionPrice}</h5>
+                                </div>
+                                <div className="summary-details">
+                                    <h5 className="subTitleCreate">Service Fee</h5>
+                                    <h5 className="subTitleCreate">2.5%</h5>
+                                </div>
+                            </div>
 
                             <div className="listButton">List this item</div>
                         </form>

@@ -170,7 +170,7 @@
 .listButton{
   width: 50%;
   height: fit-content;
-  padding: 1% 0%;
+  padding: 2% 0%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1779,14 +1779,16 @@ a{
 }
 
 .artisticBox{
-  width: 40%;
   margin-bottom: 2%;
   margin-top: 2%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+  border: 1px solid rgba(138, 138, 160, 0.3);
+  border-radius: 8px;
+  padding: 1%;
 }
 
 .insideCountdown span{
@@ -2705,28 +2707,48 @@ a{
   font-weight: 500;
   flex-direction: row;
   justify-content: space-between;
+  border-radius: 8px;
 
 }
-
 .radio-button:hover {
   border-color: #999;
 }
 
-/*.radio-button input[type="radio"] {*/
-/*  display: none;*/
-/*}*/
-
 .radio-button div {
   margin-left: 10px;
 }
-
-/* Replace with appropriate icon classes */
-.icon-fl-tag {
-  /* Add your icon styling here */
+.summary-main {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.summary-details {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px #d7d7d7 solid;
+  padding: 5px;
 }
 
-.icon-fl-icon-22 {
-  /* Add your icon styling here */
+.uploadFile-form{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center
+
+}
+
+.uploadFile-button {
+  background-color: #030303 !important;
+  color: #fff !important;
+  border-color: #030303 !important;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 48px;
+  text-align: center;
+  border-radius: 30px;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
 
