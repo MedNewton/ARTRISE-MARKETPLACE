@@ -51,6 +51,8 @@ import ArtworksOdibo from "../components/layouts/ArtworksOdibo";
 import ArtworksVilte from "../components/layouts/ArtworksVilte";
 import Dropdown from "react-bootstrap/Dropdown";
 import {toast, ToastContainer} from "react-toastify";
+import {useAccount} from "wagmi";
+
 
 function importAll(r) {
   return r.keys().map(r);
@@ -115,13 +117,15 @@ allArtworksImages.forEach((element) => {
 
 const Authors02 = () => {
   const [openPanel, setOpenPanel] = useState(false);
+  const { address, isConnected } = useAccount();
+  const currentUserKey = address ? address : localStorage.getItem("UserKey");
 
   const { contract } = useContract(
     "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
     "marketplace"
   );
   const { data: listings, isLoading, error } = useListings(contract);
-
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [pdp, setPdp] = useState("");
   const [bio, setBio] = useState("");
@@ -131,6 +135,11 @@ const Authors02 = () => {
   const [facebookLink, setFacebookLink] = useState("");
   const [instagramLink, setInstagramLink] = useState("");
   const [twitterLink, setTwitterLink] = useState("");
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [followed, setFollowed] = useState(false);
+  const [followedText, setFollowedText] = useState("Follow");
+  const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
 
   let url = window.location.href.toString();
   let artistName = url.split("?artist=")[1];
@@ -142,6 +151,7 @@ const Authors02 = () => {
       for (let artistKey in dt) {
         let a = dt[artistKey];
         if (a.slug == slug) {
+          setId(artistKey);
           setName(a.name);
           setBio(a.description);
           setPdp(a.pdpLink);
@@ -163,6 +173,7 @@ const Authors02 = () => {
       for (let userKey in dt) {
         let a = dt[userKey];
         if (a.slug == slug) {
+          setId(userKey);
           setName(a.name);
           setBio(a.description);
           setPdp(a.pdpLink);
@@ -172,9 +183,22 @@ const Authors02 = () => {
           setTwitterLink(a.twitter);
           setWebsite(a.website);
           setArtistType(a.artistType);
+          setFollowers(a.followers);
+          setFollowing(a.following);
         }
       }
     });
+  }
+
+  async function getCurrentUserData() {
+    const usersRef = ref(db, "users/" + currentUserKey);
+    await get(usersRef).then(async (snapshot) => {
+      let dt = snapshot.val();
+      setCurrentUserFollowing(dt.following);
+    });
+    if(currentUserFollowing.includes(id)){
+      setFollowedText("Unfollow");
+    }
   }
 
   useEffect(() => {
@@ -190,6 +214,10 @@ const Authors02 = () => {
       console.log("URL doesn't contain artist or user query parameter.");
     }
   }, []);
+
+  useEffect(()=>{
+    getCurrentUserData();
+  },[id])
 
   const [menuTab] = useState([
     {
@@ -265,23 +293,45 @@ const Authors02 = () => {
     }
   }
 
-  const address = useAddress();
 
-  const [followed, setFollowed] = useState(false);
-  const [followedText, setFollowedText] = useState("Follow");
-  const [followedColor, setFollowedColor] = useState("#FFF");
-  const [followedBG, setFollowedBG] = useState("transparent");
-
-  function followUnfollow(e) {
-    if (followedText == "Follow") {
+  async function followUnfollow() {
+    if (followedText === "Follow") {
+      const tempFollowersArray = [...followers,currentUserKey]
+      setFollowers(tempFollowersArray)
+      await update(ref(db, "users/" + id), {
+        followers: tempFollowersArray
+      }).catch(error => {
+            console.error('error:', error);
+          });
+      const tempFollowingArray = [...currentUserFollowing, id]
+      setCurrentUserFollowing(tempFollowingArray)
+      await update(ref(db, "users/" + currentUserKey), {
+        following: tempFollowingArray
+      }).catch(error => {
+            console.error('error:', error);
+          });
       setFollowed(true);
       setFollowedText("Unfollow");
-    } else if (followedText == "Unfollow") {
+    }
+     else if (followedText === "Unfollow") {
+      const tempFollowersArray = followers.filter(e => e !== currentUserKey)
+      setFollowers(tempFollowersArray)
+      await update(ref(db, "users/" + id), {
+        followers: tempFollowersArray
+      }).catch(error => {
+            console.error('error:', error);
+          });
+      const tempFollowingArray = currentUserFollowing.filter(e => e !== id)
+      setCurrentUserFollowing(tempFollowingArray)
+      await update(ref(db, "users/" + currentUserKey), {
+        following: tempFollowingArray
+      }).catch(error => {
+            console.error('error:', error);
+          });
       setFollowed(false);
       setFollowedText("Follow");
     }
   }
-
   const handleTwitterIconClick = () => {
     if (twitterLink && twitterLink !== "No account shared yet ...") {
       window.open(twitterLink, "_blank");
@@ -351,9 +401,9 @@ const Authors02 = () => {
                     ></i>
                   </div>
                   <div className="userButtonsContainer">
-                    <div className="followUserBtn">
+                    <div className="followUserBtn" onClick={followUnfollow}>
                       <i class="fa fa-user-plus"></i>
-                      <h5>Follow</h5>
+                      <h5>{followedText}</h5>
                     </div>
 
                     <div className="shareUserBtn">
@@ -600,3 +650,5 @@ const Authors02 = () => {
 };
 
 export default Authors02;
+
+

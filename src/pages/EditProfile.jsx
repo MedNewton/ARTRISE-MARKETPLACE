@@ -273,6 +273,16 @@ const EditProfile = () => {
             });
     };
 
+    const signInWithInstagram = async () => {
+        const clientId = '598885152450695';
+        const redirectUri = encodeURIComponent('https://localhost:3000/');
+        const popup = window.open(
+            `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`,
+            '_blank',
+            'width=500,height=600'
+        );
+    };
+
     const handleSelectChange = (selectedOptionsInMultiSelect) => {
         const optionsArray = getSelectedString(selectedOptionsInMultiSelect);
         setArtistType(optionsArray);
@@ -464,9 +474,10 @@ const EditProfile = () => {
                                                                 text={(twitterLink === "No account shared yet ..." || "") ? "Verify with Twitter" : "Verified"}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    signInWithTwitter();
+                                                                    if(twitterLink !== "Verified"){
+                                                                        signInWithTwitter();
+                                                                    }
                                                                 }}
-                                                                disabled={twitterLink !== "No account shared yet ..."}
                                                                 style={twitterLink !== "No account shared yet ..." ?
                                                                     {
                                                                         cursor: "context-menu",
@@ -477,7 +488,7 @@ const EditProfile = () => {
                                                                 text={instagram === "No account shared yet" ? "Verify with Instagram" : "Verified"}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    signInWithTwitter();
+                                                                    signInWithInstagram();
                                                                 }}
                                                                 disabled={instagram !== "No account shared yet"}
                                                                 style={instagram !== "No account shared yet" ?
