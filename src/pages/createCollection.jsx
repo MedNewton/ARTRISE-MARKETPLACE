@@ -247,20 +247,55 @@ const CreateCollection = () => {
       <HeaderStyle2 />
 
       <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row " style={{ padding: "0px 3%" }}>
+        <div className="themesflat-container"   style={{maxWidth: "60%",display: "flex",flexDirection: "column", alignItems: "center"}}  >
+          <div className="row ">
             <div
               className="col-md-12"
               style={{ marginBottom: "5%", marginTop: "2%" }}
             >
-              <h2 className="tf-title style4 mg-bt-38 ourArtists">
+              <h2 className="tf-title style4 mg-bt-20 ourArtists">
                 Create a collection
               </h2>
               <h5 className="subTitleCreate">
                 Deploying your own smart contract
               </h5>
             </div>
-            <div className="col-xl-8 col-lg-8 col-md-8 col-8">
+
+            <div  className="col-xl-12 col-lg-12 col-md-12 col-12">
+              <div className="sc-card-product" style={{display: 'flex', flexDirection: "column", alignItems: 'center'}}>
+                <h4 className="title-create-item">
+                  Main picture <small>(preview)</small>
+                </h4>
+                <div className="card-media collectionCoverPreview" style={{maxWidth:"40%"}}>
+                  <img src={mediaPreview} alt="" />
+                </div>
+              </div>
+              <form action="#" className="uploadFile-form mb-35">
+                <div>
+                <h4 className="mb-4">
+                  Upload collection main picture
+                </h4>
+                  <span>
+                      (PNG, JPG, WEBP or AVIF. Max 200mb)
+                    </span>
+                </div>
+                <div>
+                  <label className="uploadFile-button" htmlFor="file">Upload Picture</label>
+                  <input
+                      type="file"
+                      name="file"
+                      style={{display: "none"}}
+                      id="file"
+                      onChange={(e) => {
+                        setMedia(e.target.files[0]);
+                        setMediaPreview(URL.createObjectURL(e.target.files[0]));
+                      }}
+                  />
+                </div>
+              </form>
+            </div>
+
+            <div  className="col-xl-12 col-lg-12 col-md-12 col-12">
               <div className="sc-card-product">
                 <h4 className="title-create-item">
                   Cover picture <small>(preview)</small>
@@ -269,173 +304,145 @@ const CreateCollection = () => {
                   <img src={coverPreview} alt="" />
                 </div>
               </div>
-            </div>
-            <div className="col-xl-4 col-lg-4 col-md-4 col-4">
-              <div className="sc-card-product">
-                <h4 className="title-create-item">
-                  Main picture <small>(preview)</small>
-                </h4>
-                <div className="card-media collectionCoverPreview">
-                  <img src={mediaPreview} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-12 col-lg-12 col-md-12 col-12">
-              <div className="form-create-item">
-                <form action="#">
-                  <h4 className="title-create-item">Upload cover picture</h4>
-                  <label className="uploadFile">
-                    <span className="filename">
-                      PNG, JPG, WEBP or AVIF. Max 200mb.
+
+              <form action="#" className="uploadFile-form  mb-35">
+                <div>
+                  <h4 className="mb-4">
+                    Upload cover picture
+                  </h4>
+                  <span>
+                      (PNG, JPG, WEBP or AVIF. Max 200mb)
                     </span>
-                    <input
+                </div>
+                <div>
+                  <label className="uploadFile-button" htmlFor="coverPicture">Upload Picture</label>
+                  <input
                       type="file"
-                      className="inputfile form-control uploadNFTMediaBtn"
                       name="file"
+                      style={{display: "none"}}
+                      id="coverPicture"
                       onChange={(e) => {
                         setCover(e.target.files[0]);
                         setCoverPreview(URL.createObjectURL(e.target.files[0]));
                       }}
-                    />
-                  </label>
-                </form>
-                <form action="#">
-                  <h4 className="title-create-item">
-                    Upload collection main picture
-                  </h4>
-                  <label className="uploadFile">
-                    <span className="filename">
-                      PNG, JPG, WEBP or AVIF. Max 200mb.
-                    </span>
-                    <input
-                      type="file"
-                      className="inputfile form-control uploadNFTMediaBtn"
-                      name="file"
-                      onChange={(e) => {
-                        setMedia(e.target.files[0]);
-                        setMediaPreview(URL.createObjectURL(e.target.files[0]));
-                      }}
-                    />
-                  </label>
-                </form>
-                <div className="flat-tabs tab-create-item">
-                  <Tabs>
-                    <TabList>
-                      <Tab></Tab>
-                    </TabList>
-                    <TabPanel>
-                      <form action="#">
-                        <h4 className="title-create-item">Collection Type</h4>
-                        <div className="artisticBox">
-                          <h4 className="title-create-item">
-                            Personal Collection
-                          </h4>
-                          <Toggle
-                            checked={artisticCollection}
-                            onChange={(e) => {
-                              setArtisticCollection(!artisticCollection);
-                              
-                            }}
-                          />
-                          <h4 className="title-create-item">
-                            Artistic Collection
-                          </h4>
-                        </div>
-                        <h4 className="title-create-item">Name</h4>
-                        <input
-                          type="text"
-                          placeholder="Collection name"
-                          onChange={(e) => {
-                            setTitle(e.target.value);
-                          }}
-                        />
-
-                        <h4 className="title-create-item">Symbol</h4>
-                        <input
-                          type="text"
-                          placeholder="Collection symbol"
-                          onChange={(e) => {
-                            setSymbol(e.target.value);
-                          }}
-                        />
-
-                        <h4 className="title-create-item">Description</h4>
-                        <textarea
-                          placeholder="e.g. “This is a single NFT ...”"
-                          onChange={(e) => {
-                            setDescription(e.target.value);
-                          }}
-                        ></textarea>
-
-                        <h4 className="title-create-item">Artist Biography</h4>
-                        <textarea
-                          placeholder={bio}
-                          onChange={(e) => {
-                            setBio(e.target.value);
-                          }}
-                        ></textarea>
-
-                        <h4 className="title-create-item">
-                          External Link{" "}
-                          <small style={{ fontWeight: "500" }}>
-                            (if available)
-                          </small>
-                        </h4>
-                        <input
-                          type="text"
-                          placeholder="External Link"
-                          onChange={(e) => {
-                            setExternalLink(e.target.value);
-                          }}
-                        />
-
-                        <div className="row">
-                          <div className="col-8">
-                            <h4 className="title-create-item">
-                              Royalties recipient address
-                            </h4>
-                            <input
-                              type="text"
-                              placeholder="The address that will recieve royalties on secondary sales."
-                              onChange={(e) => {
-                                setRoyaltiesRecipient(e.target.value);
-                              }}
-                              defaultValue={address}
-                            />
-                          </div>
-                          <div className="col-4">
-                            <h4 className="title-create-item">
-                              Royalties percentage
-                            </h4>
-                            <input
-                              type="number"
-                              placeholder="Percentage of royalties on every secondary sale"
-                              className="percentageInput"
-                              defaultValue={10}
-                              disabled
-                            />
-                          </div>
-                        </div>
-
-                        <div
-                          id="mintBtn"
-                          className="btn btn-primary"
-                          data-toggle="modal"
-                          data-target="#popup_bid_success"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                          onClick={() => {
-                            deployNFTCollection();
-                          }}
-                        >
-                          Deploy and create collection
-                        </div>
-                      </form>
-                    </TabPanel>
-                    
-                  </Tabs>
+                  />
                 </div>
-              </div>
+              </form>
+            </div>
+
+            <div className="col-xl-12 col-lg-12 col-md-12 col-12  flat-tabs tab-create-item">
+
+              <form action="#">
+                <h4 className="title-create-item">Collection Name</h4>
+                <input
+                    type="text"
+                    placeholder="Collection name"
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                    }}
+                />
+
+                <h4 className="title-create-item">Collection Type</h4>
+                <div className="artisticBox">
+                  <h4>
+                    Personal Collection
+                  </h4>
+                  <Toggle
+                      checked={artisticCollection}
+                      onChange={(e) => {
+                        setArtisticCollection(!artisticCollection);
+
+                      }}
+                  />
+                  <h4>
+                    Artistic Collection
+                  </h4>
+                </div>
+
+
+                <h4 className="title-create-item">Collection Symbol</h4>
+                <input
+                    type="text"
+                    placeholder="Collection symbol"
+                    onChange={(e) => {
+                      setSymbol(e.target.value);
+                    }}
+                />
+
+                <h4 className="title-create-item">Collection Description</h4>
+                <textarea
+                    placeholder="e.g. “This is a single NFT ...”"
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                    }}
+                ></textarea>
+
+                <h4 className="title-create-item">
+                  External Link{" "}
+                  <small style={{fontWeight: "500"}}>
+                    (if available)
+                  </small>
+
+                </h4>
+                <input
+                    type="text"
+                    placeholder="External Link"
+                    onChange={(e) => {
+                      setExternalLink(e.target.value);
+                    }}
+                />
+
+                <h4 className="title-create-item">Artist Biography</h4>
+                <textarea
+                    placeholder={bio}
+                    onChange={(e) => {
+                      setBio(e.target.value);
+                    }}
+                ></textarea>
+
+                <div className="row">
+                  <div className="col-8">
+                    <h4 className="title-create-item">
+                      Royalties recipient address
+                    </h4>
+                    <input
+                        type="text"
+                        placeholder="The address that will recieve royalties on secondary sales."
+                        onChange={(e) => {
+                          setRoyaltiesRecipient(e.target.value);
+                        }}
+                        defaultValue={address}
+                    />
+                  </div>
+                  <div className="col-4">
+                    <h4 className="title-create-item">
+                      Royalties percentage
+                    </h4>
+                    <input
+                        type="number"
+                        placeholder="Percentage of royalties on every secondary sale"
+                        className="percentageInput"
+                        defaultValue={10}
+                        disabled
+                    />
+                  </div>
+                </div>
+
+                <div
+                    id="mintBtn"
+                    className="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#popup_bid_success"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => {
+                      deployNFTCollection();
+                    }}
+                >
+                  Deploy and create collection
+                </div>
+              </form>
+
             </div>
           </div>
         </div>

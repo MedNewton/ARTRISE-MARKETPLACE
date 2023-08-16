@@ -22,24 +22,70 @@ import SeperatingHeader1 from '../components/layouts/SeperatingHeader1';
 import SeperatingHeader2 from '../components/layouts/SeperatingHeader2';
 
 import { useContract, useMarketplace, useListings } from "@thirdweb-dev/react";
+import {ref, update} from "firebase/database";
+import db from "../firebase";
+import {useAccount} from "wagmi";
+
 
 const Home01 = () => {
 
     const nav = useNavigate();
+    const { address, isConnected } = useAccount();
 
-
-    
-
-    /*useEffect(() => {
-        async function getListings() {
-            try {
-                console.log(listings);
-            } catch (error) {
-                console.log(error);
-            }
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        if (code) {
+            fetchUserProfile(code);
         }
-        getListings();
-    });*/
+    }, []);
+
+    const fetchUserProfile = async (code) => {
+        const url = 'https://api.instagram.com/oauth/access_token';
+        const clientId = 598885152450695;
+        const clientSecret = 'fcc5f83f14fb0da19a2e7d7f495fcb6f';
+        const redirectUri = 'https://localhost:3000/';
+        const formData = new URLSearchParams();
+        formData.append('client_id', clientId);
+        formData.append('client_secret', clientSecret);
+        formData.append('grant_type', 'authorization_code');
+        formData.append('redirect_uri', redirectUri);
+        formData.append('code', code);
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData.toString(),
+        })
+            .then(response => response.json())
+            .then(data => {
+                fetchUserProfileInfo(data.access_token);
+            })
+            .catch(error => {
+                console.error('error:', error);
+            });
+
+    };
+
+    const fetchUserProfileInfo = async (accessToken) => {
+        try {
+        const response = await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${accessToken}`);
+        const data = await response.json();
+        if (data.username) {
+            const userProfileLink = `https://www.instagram.com/${data.username}`;
+            const userKey = address ? address : localStorage.getItem("UserKey");
+            await update(ref(db, "users/" + userKey), {
+                Instagram: userProfileLink,
+            });
+            window.close();
+        }
+            return null;
+        } catch (error) {
+            window.close();
+            return null;
+        }
+    };
 
     useEffect(() => {
         async function getUserInfo()
@@ -80,23 +126,6 @@ const Home01 = () => {
             <Footer />
         </div>
     );
-
-    /*
-    return (
-        <div className='home-1'>
-            <HeaderStyle2 />
-            <Slider data={heroSliderData} />
-            <TodayPicks data={todayPickData} />
-            <LiveAuction data={liveAuctionData} />
-            <PopularCollection data={popularCollectionData} />
-            <SeperatingHeader1/>
-            <TopSeller data={topSellerData} />
-            
-            <Create />
-            <Footer />
-        </div>
-    ); 
-    */
 }
 
 export default Home01;
