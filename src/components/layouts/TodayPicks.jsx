@@ -188,7 +188,6 @@ const TodayPicks = (props) => {
             )}
             {!isLoading && listings
                 ? lazyListed.map((listing, index) => {
-                  console.log(listing)
                   return (
                       <div
                           key={index}

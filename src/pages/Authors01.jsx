@@ -11,12 +11,16 @@ import storage from '../storage';
 import { ref, onValue, get, update, set, child } from "firebase/database";
 
 import { useArtworkContext } from '../Store/ArtworkContext';
+import { useArtistContext } from '../Store/ArtistContext';
+
 
 const Authors01 = () => {
     
     const [data] = useState(popularCollectionData);
 
-    const { artists, users } = useArtworkContext();
+    const { users } = useArtworkContext();
+    const {artists} = useArtistContext();
+
 
     const [visible , setVisible] = useState(20);
     const showMoreItems = () => {

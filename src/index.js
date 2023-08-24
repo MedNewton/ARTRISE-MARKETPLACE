@@ -11,7 +11,11 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon } from 'wagmi/chains'
 import { Gnosis, Ethereum } from "@thirdweb-dev/chains";
 
-import { ArtworkProvider } from './Store/ArtworkContext';
+import { ArtworkProvider } from './Store/ArtworkProvider';
+import { ArtistProvider } from './Store/ArtistProvider';
+import { ProfileProvider } from './Store/ProfileProvider';
+
+
 
 
 const chains = [arbitrum, mainnet, polygon];
@@ -35,6 +39,8 @@ const activeChainId = ChainId.Mainnet;
 root.render(
   <BrowserRouter>
       <ArtworkProvider>
+          <ArtistProvider>
+              <ProfileProvider>
       <WagmiConfig client={wagmiClient}>
       <ThirdwebProvider 
       activeChain={"ethereum"}
@@ -44,6 +50,8 @@ root.render(
       </ThirdwebProvider>
     </WagmiConfig>
     <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+              </ProfileProvider>
+          </ArtistProvider>
       </ArtworkProvider>
   </BrowserRouter>
 );

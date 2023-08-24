@@ -219,8 +219,8 @@ const ListItem = () => {
                                     <h5 className="subTitleCreate">{shippingOption === "free" ? "Free Shipping" : shippingPrice}</h5>
                                 </div>
                                 <div className="summary-details">
-                                    <h5 className="subTitleCreate">Service Fee</h5>
-                                    <h5 className="subTitleCreate">2.5%</h5>
+                                    <h5 className="subTitleCreate">ArtRise fees after sale</h5>
+                                    <h5 className="subTitleCreate">15%</h5>
                                 </div>
 
                             </div>
@@ -274,8 +274,8 @@ const ListItem = () => {
                                     <h5 className="subTitleCreate">{auctionPrice}</h5>
                                 </div>
                                 <div className="summary-details">
-                                    <h5 className="subTitleCreate">Service Fee</h5>
-                                    <h5 className="subTitleCreate">2.5%</h5>
+                                    <h5 className="subTitleCreate">ArtRise fees after sale</h5>
+                                    <h5 className="subTitleCreate">15%</h5>
                                 </div>
                             </div>
 

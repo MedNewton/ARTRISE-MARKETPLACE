@@ -22,11 +22,6 @@ import {
 } from "@thirdweb-dev/react";
 import { useAccount } from "wagmi";
 import Swal from "sweetalert2";
-import {
-  ref as SRef,
-  getDownloadURL,
-  uploadBytesResumable,
-} from "firebase/storage";
 
 import CreateModal from "../components/layouts/createModal";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -37,20 +32,13 @@ import MyCollections from "./myCollections";
 import {toast} from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-class LazyNFT {
-  constructor(i, d, l) {
-    this.id = i;
-    this.data = d;
-    this.listable = l;
-  }
-}
+import { useProfileContext } from '../Store/ProfileContext';
 
 const Profile = () => {
   const nav = useNavigate();
+  const {profileData, lazyOwned} = useProfileContext();
 
   const [createModalShow, setCreateModalShow] = useState(false);
-
   const [displayName, setDisplayName] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
   const [instagramLink, setInstagramLink] = useState("");
@@ -66,53 +54,9 @@ const Profile = () => {
   const [slug, setSlug] = useState("");
   const [urlSlug, setUrlSlug] = useState("");
   const { address, isConnected } = useAccount();
-  const [lazyOwned, setLazyOwned] = useState([]);
   const [artistType, setArtistType] = useState("");
 
-  const [menuTab] = useState([
-    {
-      class: "active",
-      name: "Owned",
-    },
-    {
-      class: "",
-      name: "Tokenized",
-    },
-    {
-      class: "",
-      name: "Liked items",
-    },
-    {
-      class: "",
-      name: "Collections",
-    },
-  ]);
-
-  async function getLazyOwned(adr) {
-    const artworksRef = ref(db, "artworks/");
-    await get(artworksRef).then(async (snapshot) => {
-      let dt = snapshot.val();
-      for (let i in dt) {
-        let lazyArtwork = dt[i];
-        let listable = false;
-        if(lazyArtwork.listed === "no") listable = true;
-        if (lazyArtwork.owner === adr && lazyArtwork.type === "lazyMinted") {
-          
-          console.log(lazyArtwork.ipfsURI);
-          try {
-            let res = await axios.get(lazyArtwork.ipfsURI);
-            let lazyNFT = new LazyNFT(i, res.data, listable);
-            setLazyOwned((prevState) => [...prevState, lazyNFT]);
-          } catch (error) {console.log("error")}
-        }
-      }
-    });
-  }
-
-  async function getUserData(adr) {
-    const ThisUserRef = ref(db, "users/" + adr);
-    await get(ThisUserRef).then(async (snapshot) => {
-      let dt = snapshot.val();
+  async function setUserData(dt) {
       setDisplayName(dt.displayName);
       setUserEmail(dt.email);
       setUserBio(dt.bio);
@@ -131,32 +75,14 @@ const Profile = () => {
       let followers = Object.entries(dt.followers).length;
       setUserFollowers(followers - 1);
       setUserFollowing(following - 2);
-
       document.getElementById("pdp").style.backgroundImage = dt.pdpLink;
-    });
   }
 
   useEffect(() => {
-    let url = window.location.href.toString();
-    if (url.includes("?")) {
-      let s = url.split("?id=")[1].toString();
-      setUrlSlug(s);
-    } else {
-      nav("/");
+    setUserData(profileData);
+    if(address){
     }
-    if (address) {
-      getUserData(address);
-      getLazyOwned(address);
-    } else {
-      if (
-        localStorage.getItem("twitter") ||
-        localStorage.getItem("google") ||
-        localStorage.getItem("facebook")
-      ) {
-        getUserData(localStorage.getItem("UserKey").toString());
-      }
-    }
-  }, []);
+  }, [profileData]);
 
   const { contract } = useContract(
     "0xa6F0F91BF6e9bEdF044C3e989C6cB2e0376b40fC",
@@ -235,20 +161,20 @@ const Profile = () => {
                 </p>
                 <div className="userSocialsContainer">
                   <i onClick={handleFacebookIconClick}
-                     style={{fontSize: "1.8em"}}
+                     style={{fontSize: "1.8em", cursor:'pointer'}}
                      className="fab fa-facebook"
                   ></i>
                   <i onClick={handleTwitterIconClick}
-                     style={{fontSize: "1.8em"}}
+                     style={{fontSize: "1.8em", cursor:'pointer'}}
                      className="fab fa-twitter"
                   ></i>
                   <i onClick={handleInstagramIconClick}
-                     style={{fontSize: "1.8em"}}
+                     style={{fontSize: "1.8em", cursor:'pointer'}}
                      className="fab fa-instagram"
                   ></i>
                 </div>
                 <div className="folContainer">
-                  <div className="ContainerofFollowers">
+                  <div className="ContainerofFollowers" onClick={handleFollowersButtonClick}>
                     <h5 className="dataOfFollowers">{userFollowers}</h5>
                     <h5 className="titleOfFollowers">followers</h5>
                   </div>
@@ -258,15 +184,7 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className="userButtonsContainer">
-                  {slug == urlSlug ? (
-                    ""
-                  ) : (
-                    <div className="followUserBtn">
-                      <i className="fa fa-user-plus"></i>
-                      <h5>Follow</h5>
-                    </div>
-                  )}
-                  {slug == urlSlug ? (
+
                     <div
                       className="followUserBtn"
                       onClick={() => {
@@ -276,9 +194,6 @@ const Profile = () => {
                       <i className="fa fa-pen"></i>
                       <h5 style={{ whiteSpace: "nowrap" }}>Edit info</h5>
                     </div>
-                  ) : (
-                    ""
-                  )}
                   <div className="shareUserBtn">
                     <i className="fa fa-share-alt"></i>
                   </div>

@@ -33,9 +33,11 @@ import { AiOutlineBell } from "react-icons/ai";
 import { BiCoinStack } from "react-icons/bi";
 import axios from "axios";
 import { useArtworkContext } from '../../Store/ArtworkContext';
+import { useArtistContext } from '../../Store/ArtistContext';
 
 const HeaderStyle2 = () => {
-  const { artists, lazyListed, users } = useArtworkContext();
+  const {lazyListed, users } = useArtworkContext();
+  const {artists} = useArtistContext();
 
   const { contract } = useContract(
       "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
@@ -246,6 +248,7 @@ const HeaderStyle2 = () => {
 
   async function passwordlessLogin(snapshot) {
     let key = snapshot.key;
+    localStorage.setItem("slug", snapshot.val().slug)
     localStorage.setItem("UserKey", snapshot.key);
     localStorage.setItem("name", snapshot.val().displayName);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
