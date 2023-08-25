@@ -174,7 +174,7 @@ const Profile = () => {
                   ></i>
                 </div>
                 <div className="folContainer">
-                  <div className="ContainerofFollowers" onClick={handleFollowersButtonClick}>
+                  <div className="ContainerofFollowers">
                     <h5 className="dataOfFollowers">{userFollowers}</h5>
                     <h5 className="titleOfFollowers">followers</h5>
                   </div>
