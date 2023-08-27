@@ -16,7 +16,7 @@ class LazyNFTListing {
 
 export const ArtworkProvider = ({children}) => {
     const [lazyListed, setLazyListed] = useState([]);
-    const [users, setUsers] = useState([]);
+    const [userArtist, setUserArtist] = useState([]);
 
     async function fetchLazyOwned() {
         const listingsRef = ref(db, "listings/");
@@ -81,7 +81,7 @@ export const ArtworkProvider = ({children}) => {
             }
             // Convert the usersData object into an array and set the state
             const usersArray = Object.values(usersData);
-            setUsers(usersArray);
+            setUserArtist(usersArray);
         });
     }
 
@@ -90,7 +90,7 @@ export const ArtworkProvider = ({children}) => {
     }, []);
 
     return (
-        <ArtworkContext.Provider value={{lazyListed, users}}>
+        <ArtworkContext.Provider value={{lazyListed, userArtist}}>
             {children}
         </ArtworkContext.Provider>
     );
