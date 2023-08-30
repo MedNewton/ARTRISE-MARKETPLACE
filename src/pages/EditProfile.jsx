@@ -472,12 +472,12 @@ const EditProfile = () => {
                                                         </h4>
                                                         <div className='d-flex'>
                                                             <TwitterLoginButton
-                                                                text={(twitterLink === "No account shared yet ..." || "") ? "Verify with Twitter" : "Verified"}
+                                                                text={twitterLink === "No account shared yet ..." || twitterLink === "" || twitterLink === " " ? "Verify with Twitter" : "Verified"}
                                                                 icon= {() =><img src={xTwitter} alt="X" />}
                                                                 activeStyle={{ background: "#2a2a2a"}}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    if(twitterLink === "No account shared yet ..." || ""){signInWithTwitter()}
+                                                                    if(twitterLink === "No account shared yet ..." || twitterLink === "" || twitterLink === " "){signInWithTwitter()}
                                                                 }}
                                                                 style={twitterLink !== "No account shared yet ..." ?
                                                                     {cursor: "context-menu",fontSize: "16px",background: "black",

@@ -102,80 +102,86 @@ const Authors01 = () => {
                             artists.length > 0 ? (
                                 artists.slice(0,visible).map((item,index) => (
                                     <div key={index} className="col-lg-4 col-md-6 col-12">
-                                        <div className="sc-card-collection style-2">
-                                            <div className="card-bottom">
-                                                <div className="author">
-                                                    <div className="sc-author-box style-2">
-                                                        <div className="author-avatar">
-                                                            <img src={item.pdpLink} alt="" className='avatar' />
-                                                        <div className="badge"></div>
+                                        <Link to={"/authors-02?artist=" + item.slug}>
+                                            <div className="sc-card-collection style-2">
+                                                <div className="card-bottom">
+                                                    <div className="author">
+                                                        <div className="sc-author-box style-2">
+                                                            <div className="author-avatar">
+                                                                <img src={item.pdpLink} alt="" className='avatar'/>
+                                                                <div className="badge"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="content">
+                                                            <h4>{item.name}</h4>
+                                                            <h5 className='artistCategory'>{item.type}</h5>
+                                                        </div>
                                                     </div>
-                                                    </div>
-                                                    <div className="content">
-                                                        <h4><Link to={"/authors-02?artist="+item.slug}>{item.name}</Link></h4>
-                                                        <h5 className='artistCategory'>{item.type}</h5>
-                                                    </div>
+                                                    <div className="sc-button fl-button pri-3"><span>Follow</span></div>
                                                 </div>
-                                                <Link to={"/authors-02?artist="+item.slug} className="sc-button fl-button pri-3"><span>Follow</span></Link>
-                                            </div>
-                                            <Link to={"/authors-02?artist="+item.slug}>
                                                 <div className="media-images-collection">
                                                     <div className="box-left">
-                                                        <img src={item.img1} alt="" />
+                                                        <img src={item.img1} alt=""/>
                                                     </div>
                                                     <div className="box-right">
                                                         <div className="top-img">
-                                                            <img src={item.img2} alt="" />
-                                                            <img src={item.img3} alt="" />
+                                                            <img src={item.img2} alt=""/>
+                                                            <img src={item.img3} alt=""/>
                                                         </div>
                                                         <div className="bottom-img">
-                                                            <img src={item.img4} alt="" />
+                                                            <img src={item.img4} alt=""/>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </Link>
-                                        </div>
+                                            </div>
+                                        </Link>
                                     </div>
                                 ))
                             ) : ("")
                         }
                         {
                             userArtist.length > 0 ? (
-                                userArtist.slice(0,visible).map((item,index) => (
+                                userArtist.slice(0, visible).map((item, index) => (
                                     <div key={index} className="col-lg-4 col-md-6 col-12">
-                                        <div className="sc-card-collection style-2">
-                                            <div className="card-bottom">
-                                                <div className="author">
-                                                    <div className="sc-author-box style-2">
-                                                        <div className="author-avatar">
-                                                            <img src={item?.pdpLink} alt="" className='avatar' />
-                                                            <div className="badge"></div>
+                                        <Link to={"/displayProfile?artist=" + item?.userId}>
+                                            <div className="sc-card-collection style-2">
+                                                <div className="card-bottom">
+                                                    <div className="author">
+                                                        <div className="sc-author-box style-2">
+                                                            <div className="author-avatar">
+                                                                <img src={item?.pdpLink} alt="" className='avatar'/>
+                                                                <div className="badge"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="content">
+                                                            <h4>{item?.name}</h4>
+                                                            <h5 className='artistCategory'>{item?.artistType}</h5>
                                                         </div>
                                                     </div>
-                                                    <div className="content">
-                                                        <h4><Link to={"/authors-02?user="+item?.slug}>{item?.name}</Link></h4>
-                                                        <h5 className='artistCategory'>{item?.type}</h5>
-                                                    </div>
+                                                    <div className="sc-button fl-button pri-3"><span>Follow</span></div>
                                                 </div>
-                                                <Link to={"/authors-02?user="+item?.slug} className="sc-button fl-button pri-3"><span>Follow</span></Link>
-                                            </div>
-                                            <Link to={"/authors-02?user="+item?.slug}>
                                                 <div className="media-images-collection">
                                                     <div className="box-left">
-                                                        <img src={item.artworks[0]?.img} alt="" />
+                                                        <img src={item.artworks[0]?.img} alt=""/>
                                                     </div>
                                                     <div className="box-right">
                                                         <div className="top-img">
-                                                            <img src={item.artworks[1]?.img ? item.artworks[1].img : item.artworks[0].img} alt="" />
-                                                            <img src={item.artworks[2]?.img ? item.artworks[2].img: item.artworks[0].img} alt="" />
+                                                            <img
+                                                                src={item.artworks[1]?.img ? item.artworks[1].img : item.artworks[0].img}
+                                                                alt=""/>
+                                                            <img
+                                                                src={item.artworks[2]?.img ? item.artworks[2].img : item.artworks[0].img}
+                                                                alt=""/>
                                                         </div>
                                                         <div className="bottom-img">
-                                                            <img src={item.artworks[3]?.img ? item.artworks[3].img :item.artworks[0].img} alt="" />
+                                                            <img
+                                                                src={item.artworks[3]?.img ? item.artworks[3].img : item.artworks[0].img}
+                                                                alt=""/>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </Link>
-                                        </div>
+                                            </div>
+                                        </Link>
                                     </div>
                                 ))
                             ) : ("")

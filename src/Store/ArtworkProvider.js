@@ -4,12 +4,13 @@ import db from "../firebase";
 import {ArtworkContext} from './ArtworkContext';
 
 class LazyNFTListing {
-    constructor(i, d, p, on, oi, ai) {
+    constructor(i, d, p, on, oi, oid, ai,) {
         this.id = i;
         this.data = d;
         this.price = p;
         this.ownerName = on;
         this.ownerImage = oi;
+        this.ownerId = oid;
         this.artworkId = ai;
     }
 }
@@ -34,14 +35,15 @@ export const ArtworkProvider = ({children}) => {
                     await get(artworkRef).then(async (snapshot) => {
                         let artwork = snapshot.val();
                         let ipfsURI = artwork.ipfsURI;
-                        let owner = artwork.owner;
-                        let ownerRef = ref(db, "users/" + owner);
+                        let artworkOwner = artwork.owner;
+                        let ownerRef = ref(db, "users/" + artworkOwner);
                         await get(ownerRef).then(async (snapshot) => {
                             let owner = snapshot.val();
                             let ownerName = owner.displayName;
                             let ownerImage = owner.pdpLink;
                             let ownerType = owner.artistType;
                             let ownerSlug = owner.slug;
+                            let ownerId = artworkOwner;
                             try {
                                 const response = await fetch(ipfsURI);
                                 if (response.ok) {
@@ -52,16 +54,28 @@ export const ArtworkProvider = ({children}) => {
                                         price,
                                         ownerName,
                                         ownerImage,
+                                        ownerId,
                                         listingArtworkId
                                     );
 
                                     if (!usersData[ownerName]) {
                                         usersData[ownerName] = {
-                                            name: owner.name,
-                                            pdpLink: owner.pdpLink,
-                                            slug: owner.slug,
-                                            type: owner.type,
-
+                                            userId: artworkOwner,
+                                            name: owner?.name,
+                                            bio: owner?.bio,
+                                            pdpLink: owner?.pdpLink,
+                                            cover_link: owner?.cover_link,
+                                            Facebook: owner?.Facebook,
+                                            Instagram: owner?.Instagram,
+                                            Twitter:owner?.Twitter,
+                                            website: owner?.website,
+                                            artistType:owner?.artistType,
+                                            followedArtists: owner?.followedArtists,
+                                            followedCollections: owner?.followedCollections,
+                                            followers:owner?.followers,
+                                            following:owner?.following,
+                                            slug: owner?.slug,
+                                            verified: owner?.verified,
                                             artworks: [{img: data.image, listingId: i}]
                                         };
                                     } else {

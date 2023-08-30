@@ -13,14 +13,29 @@ export const UserProvider = ({children}) => {
             let dt = snapshot.val();
             for (let userKey in dt) {
                 let a = dt[userKey];
-                console.log("useruseruseruseruser a",a)
+                if(a.verified === "no" || a.verified === false || a.verified === ""){
                     let userItem = {
-                        "name": a.name,
-                        "type": a.accountType,
-                        "pdpLink": a.pdpLink,
-                        "slug": a.slug
+                        userId: userKey,
+                        name: a?.name,
+                        bio: a?.bio,
+                        pdpLink: a?.pdpLink,
+                        cover_link: a?.cover_link,
+                        Facebook: a?.Facebook,
+                        Instagram: a?.Instagram,
+                        Twitter:a?.Twitter,
+                        website: a?.website,
+                        artistType:a?.artistType,
+                        followedArtists: a?.followedArtists,
+                        followedCollections: a?.followedCollections,
+                        followers:a?.followers,
+                        following:a?.following,
+                        slug: a?.slug,
+                        verified: a?.verified,
+                        artworks: undefined
                     }
                     setUser(current => [...current, userItem]);
+                }else{
+                }
             }
         })
     }

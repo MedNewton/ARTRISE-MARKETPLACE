@@ -172,19 +172,19 @@ const Authors02 = () => {
       let dt = snapshot.val();
       for (let userKey in dt) {
         let a = dt[userKey];
-        if (a.slug == slug) {
+        if (a.slug === slug) {
           setId(userKey);
-          setName(a.name);
-          setBio(a.description);
-          setPdp(a.pdpLink);
-          setCover(a.coverLink);
-          setFacebookLink(a.facebook);
-          setInstagramLink(a.instagram);
-          setTwitterLink(a.twitter);
-          setWebsite(a.website);
-          setArtistType(a.artistType);
-          setFollowers(a.followers);
-          setFollowing(a.following);
+          setName(a?.name);
+          setBio(a?.description);
+          setPdp(a?.pdpLink);
+          setCover(a?.coverLink);
+          setFacebookLink(a?.facebook);
+          setInstagramLink(a?.instagram);
+          setTwitterLink(a?.twitter);
+          setWebsite(a?.website);
+          setArtistType(a?.artistType);
+          setFollowers(a?.followers);
+          setFollowing(a?.following);
         }
       }
     });
@@ -364,17 +364,16 @@ const Authors02 = () => {
     <div className="authors-2">
       <HeaderStyle2 />
       {name != "" ? (
-        <section className="tf-section authors">
-          <div className="themesflat-container">
-            <div className="row profilePadding">
+
+          <>
               <div
-                className="row userCoverSection"
+                  className="userCoverSection"
                 id="userCover"
                 style={{ backgroundImage: `url(${cover})` }}
               ></div>
-              <div className="col-md-12 col-lg-12 col-sm-12 col-12 profileInfoSection">
-                <div className="row">
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-12 pdpContainer">
+              <div className="profileInfoSection">
+                <div>
+                  <div className="pdpContainer">
                     <div className="pdpSpace artistpdpSpace" id="pdp">
                       <img src={pdp} alt="" />
                     </div>
@@ -416,8 +415,8 @@ const Authors02 = () => {
                 </div>
                 <Tabs>
                   <TabList style={{padding: "0 0 0 0"}}>
-                    {menuTab.map((item, index) => (
-                      <Tab style={{fontSize: '16px',padding:'0.6% 50px 1%'}} key={index}>{item.name}</Tab>
+                    {menuTab?.map((item, index) => (
+                      <Tab style={{fontSize: '16px',padding:'0.6% 50px 1%'}} key={index}>{item?.name}</Tab>
                     ))}
                     <Tab><div className="tagLink">
                       <Dropdown>
@@ -455,9 +454,8 @@ const Authors02 = () => {
                     </Tab>
                   </TabList>
 
-                  <div className="content-tab">
-                    <div className="content-inner">
-                      <div className="row">
+
+
                         <TabPanel key={0}>
                           {artistName == "Yann_FAISANT" ? (
                             <ArtworksRaw data={todayPickData} />
@@ -628,17 +626,17 @@ const Authors02 = () => {
                         <TabPanel key={2}>
                           {artistName == "Yann_FAISANT" ? <DropsRaw /> : ""}
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel key={3}>
                           <h5 className="bioTabText">{bio}</h5>
                         </TabPanel>
-                      </div>
-                    </div>
-                  </div>
+
+
+
                 </Tabs>
               </div>
-            </div>
-          </div>
-        </section>
+
+          </>
+
       ) : (
         ""
       )}

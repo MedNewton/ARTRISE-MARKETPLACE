@@ -60,6 +60,7 @@ import LazyDisplay from "./lazyDisplay";
 import ListItem from "./listNFT";
 import Artwork from "./artwork";
 import CollectionItems from "./collectionItems";
+import DisplayProfile from "./DisplayProfile";
 
 const routes = [
   { path: '/', component: <Home01 />},
@@ -124,6 +125,7 @@ const routes = [
   { path: '/tokenized', component: <Tokenized />},
   { path: '/myCollections', component: <MyCollections />},
   { path: '/pending-tokenizations', component: <MyPendingArtworks />},
+  { path: '/displayProfile', component:<DisplayProfile/>},
 ]
 
 export default routes;
