@@ -143,19 +143,16 @@ const CreatePublicCollection = () => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log("yay progress",progress);
       },
       (error) => {
         alert(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("yay downloadURL",downloadURL);
           mediaURL = downloadURL;
           // setMediaURL(downloadURL);
           resolve();
         }).catch((error)=>{
-          console.log("yay error",error)
           reject(error);
         })
       })
@@ -177,19 +174,16 @@ const CreatePublicCollection = () => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log("yay progress",progress);
       },
       (error) => {
         alert(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("yay downloadURL",downloadURL);
           coverURL = downloadURL;
           // setCoverURL(downloadURL);
           resolve();
         }).catch((error)=>{
-          console.log("yay error",error)
           reject(error);
         })
       })
@@ -239,7 +233,6 @@ const CreatePublicCollection = () => {
 
 
       }catch(error){
-        console.log("yay An error occurred:",error);
         setLoadingOverlay(false);
       }
 

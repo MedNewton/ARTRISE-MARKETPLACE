@@ -12,6 +12,7 @@ import Toggle from "react-styled-toggle";
 import {InstagramLoginButton, TwitterLoginButton} from "react-social-login-buttons";
 
 import {FaDiscord, FaFacebook, FaGlobeAfrica, FaInstagram, FaTiktok, FaTwitter, FaYoutube,} from "react-icons/fa";
+import xTwitter from "../assets/images/svg/xTwitter.svg"
 
 import auth from "../auth";
 import {signInWithPopup, TwitterAuthProvider} from "firebase/auth";
@@ -469,33 +470,27 @@ const EditProfile = () => {
                                                         <h4 className="title-infor-account">
                                                             Verify your account
                                                         </h4>
-                                                        <div style={{display: "flex"}}>
+                                                        <div className='d-flex'>
                                                             <TwitterLoginButton
                                                                 text={(twitterLink === "No account shared yet ..." || "") ? "Verify with Twitter" : "Verified"}
+                                                                icon= {() =><img src={xTwitter} alt="X" />}
+                                                                activeStyle={{ background: "#2a2a2a"}}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    if(twitterLink !== "Verified"){
-                                                                        signInWithTwitter();
-                                                                    }
+                                                                    if(twitterLink === "No account shared yet ..." || ""){signInWithTwitter()}
                                                                 }}
                                                                 style={twitterLink !== "No account shared yet ..." ?
-                                                                    {
-                                                                        cursor: "context-menu",
-                                                                        fontSize: "16px",
-                                                                    } : {fontSize: "16px"}}
+                                                                    {cursor: "context-menu",fontSize: "16px",background: "black",
+                                                                } : {background:"black",fontSize: "16px"}}
                                                             />
                                                             <InstagramLoginButton
                                                                 text={instagram === "No account shared yet" ? "Verify with Instagram" : "Verified"}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    signInWithInstagram();
+                                                                    if(instagram === "No account shared yet" || ""){signInWithInstagram()}
                                                                 }}
-                                                                disabled={instagram !== "No account shared yet"}
                                                                 style={instagram !== "No account shared yet" ?
-                                                                    {
-                                                                        cursor: "context-menu",
-                                                                        fontSize: "16px",
-                                                                    } : {fontSize: "16px"}}
+                                                                    { cursor: "context-menu",fontSize: "16px"} : {fontSize: "16px"}}
                                                             />
                                                         </div>
                                                     </div>

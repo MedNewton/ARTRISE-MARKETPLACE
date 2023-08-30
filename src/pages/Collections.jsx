@@ -8,54 +8,18 @@ import topSellerData from "../assets/fake-data/data-top-seller";
 import popularCollectionData from "../assets/fake-data/data-popular-collection";
 import db from "../firebase";
 import { get, ref } from "firebase/database";
+import { useCollectionsContext } from "../Store/CollectionsContext";
+
+
 const Collections = () => {
-  const [collections, setCollections] = useState([]);
-
-  async function getCollections() {
-    let collectionID = window.location.href.toString().split("id=")[1];
-    const collectionRef = ref(db, "collections/");
-    await get(collectionRef).then(async (snapshot) => {
-      let collections = snapshot.val();
-      for (let i in collections) {
-        let dt = collections[i];
-        let ownerID = dt.owner;
-        let ownerName = "";
-        let ownerImage = "";
-        const ownerRef = ref(db, "users/" + ownerID);
-        await get(ownerRef).then((snap) => {
-          let ownerDt = snap.val();
-          ownerName = ownerDt.displayName;
-          ownerImage = ownerDt.pdpLink;
-        });
-        let collection = {
-          image: dt.image,
-          cover: dt.cover,
-          name: dt.name,
-          description: dt.description,
-          owner: dt.owner,
-          createdAt: dt.createdAt,
-          owner_name: ownerName,
-          owner_image: ownerImage,
-          id: i,
-        };
-        console.log(collection);
-        setCollections((prevState) => [...prevState, collection]);
-      }
-    });
-  }
-
+  const {collections} = useCollectionsContext();
   const [data] = useState(popularCollectionData);
-
   const [visible, setVisible] = useState(6);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 3);
   };
 
   const selectedTags = [];
-
-  useEffect(() => {
-    getCollections();
-  }, []);
 
   function editTags(val, target) {
     if (selectedTags.includes(val)) {
@@ -193,7 +157,7 @@ const Collections = () => {
                 </div>
               </div>
             ))}
-            {collections.map((collection, index) => {
+            {collections?.map((collection, index) => {
               return (
                 <div key={index} className="col-lg-4 col-md-6 col-12">
                   <div className="sc-card-collection style-2">

@@ -33,9 +33,17 @@ import { AiOutlineBell } from "react-icons/ai";
 import { BiCoinStack } from "react-icons/bi";
 import axios from "axios";
 import { useArtworkContext } from '../../Store/ArtworkContext';
+import { useArtistContext } from '../../Store/ArtistContext';
+import { useCollectionsContext } from "../../Store/CollectionsContext";
+import {useUserContext} from "../../Store/UserContext";
 
 const HeaderStyle2 = () => {
-  const { artists, lazyListed, users } = useArtworkContext();
+  const {lazyListed, userArtist } = useArtworkContext();
+  const {artists} = useArtistContext();
+  const {collections} = useCollectionsContext();
+  const {user} = useUserContext();
+
+  const navigate = useNavigate();
 
   const { contract } = useContract(
       "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
@@ -43,10 +51,12 @@ const HeaderStyle2 = () => {
   );
 
   const [artistSearchList, setArtistSearchList] = useState([]);
+  const [userSearchList, setUserSearchList] = useState([]);
   const [searchingArray, setSearchingArray] = useState([]);
   const [artWorks, setArtWorks] = useState([]);
   const [processedLazyListed, setProcessedLazyListed] = useState([]);
-  const [processedUsers, setProcessedUsers] = useState([]);
+  const [processedUserArtist, setProcessedUserArtist] = useState([]);
+  const [collectionList, setCollectionList]= useState([]);
   const { data: listings, isLoading, error } = useListings(contract);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -78,18 +88,34 @@ const HeaderStyle2 = () => {
       setArtistSearchList(data);
     }
   };
+  const getUserForSearch = () => {
+    if (user) {
+      let data = user.map((userItem) => {
+        return { "name": userItem.name, "id": userItem.slug, "type": "Member" , "isDynamic": false };
+      });
+      setUserSearchList(data);
+    }
+  };
 
-  const getUsersForSearch = () => {
-    if (users) {
-      let data = users.map((user) => {
+  const getUserArtistForSearch = () => {
+    if (userArtist) {
+      let data = userArtist.map((user) => {
         return { "name": user.name, "id": user.slug, "type": "Artist", "isDynamic": true };
       });
-      setProcessedUsers(data);
+      setProcessedUserArtist(data);
+    }
+  };
+  const getCollectionsForSearch = () => {
+    if (collections) {
+      let data = collections.map((collection) => {
+        return { "name": collection.name, "id": collection.id, "type": "Collection" , "isDynamic": true };
+      });
+      setCollectionList(data);
     }
   };
 
   const getSearchElements = () => {
-    const newArray = [...artWorks, ...artistSearchList, ...processedUsers, ...processedLazyListed];
+    const newArray = [...artWorks, ...artistSearchList, ...processedUserArtist, ...processedLazyListed, ...collectionList, ...userSearchList];
     const uniqueArray = Array.from(new Set(newArray));
     setSearchingArray(uniqueArray);
   };
@@ -97,14 +123,16 @@ const HeaderStyle2 = () => {
   useEffect(() => {
     getArtworkForSearch();
     getArtistsForSearch();
+    getUserForSearch();
     getLazyListedForSearch();
-    getUsersForSearch();
+    getUserArtistForSearch();
+    getCollectionsForSearch();
 
-  }, [listings, artists, lazyListed, users]);
+  }, [listings, artists, lazyListed, userArtist, collections, user]);
 
   useEffect(() => {
     getSearchElements();
-  }, [artWorks, artistSearchList,processedUsers,processedLazyListed]);
+  }, [artWorks, artistSearchList, processedUserArtist, processedLazyListed, collectionList, userSearchList]);
 
   const handleSearch = (event) => {
     const searchValue = event.target.value.toLowerCase();
@@ -124,10 +152,23 @@ const HeaderStyle2 = () => {
 
   const handleItemClick = (item) => {
     if (item.type === 'Artwork') {
-      // history.push(`/artwork/${item.id}`);
-
+      if(item.isDynamic){
+        navigate(`/artwork-dettails?id=${item.id}`)
+      }else{
+        navigate(`/item-details-01?listing=${item.id}`)
+      }
     } else if (item.type === 'Artist') {
-      // history.push(`/artist/${item.id}`);
+      if(item.isDynamic){
+        navigate(`/authors-02?user=${item.id}`)
+      }else{
+        navigate(`/authors-02?artist=${item.id}`)
+      }
+    }else if (item.type === 'Collection') {
+      if(item.isDynamic){
+        navigate(`/`)
+      }else{
+        navigate(`/`)
+      }
     }
     // You can add more cases for other types if needed
     setSearchQuery(''); // Clear the search query after clicking on an item
@@ -246,6 +287,7 @@ const HeaderStyle2 = () => {
 
   async function passwordlessLogin(snapshot) {
     let key = snapshot.key;
+    localStorage.setItem("slug", snapshot.val().slug)
     localStorage.setItem("UserKey", snapshot.key);
     localStorage.setItem("name", snapshot.val().displayName);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
@@ -361,6 +403,8 @@ const HeaderStyle2 = () => {
       localStorage.removeItem("followingYann");
       nav("/");
     };
+
+    console.log("searchingArraysearchingArray", searchingArray);
 
     return (
       <header
@@ -479,28 +523,9 @@ const HeaderStyle2 = () => {
                                     key={result.id}
                                     className="search-item"
                                     onClick={() => handleItemClick(result)}
-
                                 >
-                                  {result.type === "Artwork" ?
-
-                                      <Link
-                                          to={result.isDynamic ? {
-                                            pathname: "/artwork-dettails",
-                                            search: `?id=${result.id}`,
-                                          } : {
-                                            pathname: "/item-details-01",
-                                            search: `?listing=${result.id}`,
-                                          }}
-                                      >
-                                        <p>{result.name}</p>
-                                        <p className="search-item-detail">{result.type}</p>
-                                      </Link> : <Link
-                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
-                                      >
-                                        <p>{result.name}</p>
-                                        <p>{result.type}</p>
-                                      </Link>
-                                  }
+                                  <p>{result.name}</p>
+                                  <p className="search-item-detail">{result.type}</p>
                                 </div>
                             ))}
                           </div>
@@ -846,28 +871,9 @@ const HeaderStyle2 = () => {
                                     key={result.id}
                                     className="search-item"
                                     onClick={() => handleItemClick(result)}
-
                                 >
-                                  {result.type === "Artwork" ?
-
-                                      <Link
-                                          to={result.isDynamic ? {
-                                            pathname: "/artwork-dettails",
-                                            search: `?id=${result.id}`,
-                                          } : {
-                                            pathname: "/item-details-01",
-                                            search: `?listing=${result.id}`,
-                                          }}
-                                      >
-                                        <p>{result.name}</p>
-                                        <p className="search-item-detail">{result.type}</p>
-                                      </Link> : <Link
-                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
-                                      >
-                                        <p>{result.name}</p>
-                                        <p>{result.type}</p>
-                                      </Link>
-                                  }
+                                  <p>{result.name}</p>
+                                  <p className="search-item-detail">{result.type}</p>
                                 </div>
                             ))}
                           </div>
@@ -1163,28 +1169,9 @@ const HeaderStyle2 = () => {
                                     key={result.id}
                                     className="search-item"
                                     onClick={() => handleItemClick(result)}
-
                                 >
-                                  {result.type === "Artwork" ?
-
-                                      <Link
-                                          to={result.isDynamic ? {
-                                            pathname: "/artwork-dettails",
-                                            search: `?id=${result.id}`,
-                                          } : {
-                                            pathname: "/item-details-01",
-                                            search: `?listing=${result.id}`,
-                                          }}
-                                      >
-                                        <p>{result.name}</p>
-                                        <p className="search-item-detail">{result.type}</p>
-                                      </Link> : <Link
-                                          to={result.isDynamic ? "/authors-02?user=" + result.id : "/authors-02?artist=" + result.id}
-                                      >
-                                        <p>{result.name}</p>
-                                        <p>{result.type}</p>
-                                      </Link>
-                                  }
+                                  <p>{result.name}</p>
+                                  <p className="search-item-detail">{result.type}</p>
                                 </div>
                             ))}
                           </div>

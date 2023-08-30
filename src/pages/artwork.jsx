@@ -29,10 +29,11 @@ import { ethers } from "ethers";
 import { icons } from "react-icons";
 
 class LazyNFT {
-  constructor(i, d, o) {
+  constructor(i, d, o, c) {
     this.id = i;
     this.data = d;
     this.owner = o;
+    this.collection = c;
   }
 }
 
@@ -74,10 +75,16 @@ const Artwork = () => {
     let nftID = window.location.href.toString().split("id=")[1];
     const artworkRef = ref(db, "artworks/" + nftID);
     await get(artworkRef).then(async (snapshot) => {
+      let collectionID = snapshot.val().collection;
       let key = snapshot.key;
       let IPFS_URL = snapshot.val().ipfsURI;
       setIpfsURL(IPFS_URL);
       let data = await axios.get(IPFS_URL);
+      let collection;
+      let collectionRef = ref(db, "collections/" + collectionID);
+      await get(collectionRef).then(async (snapshot) => {
+        collection = snapshot.val();
+      })
       let ownerID = snapshot.val().owner;
       setOwnerAddress(ownerID);
       const userRef = ref(db, "users/" + ownerID);
@@ -885,7 +892,7 @@ const Artwork = () => {
                       {nft.data.name}
                     </h2>
                     <h5 className="style2 collectionName">
-                      ARTRISE Shared Collection
+                      {nft?.collection?.name ? nft?.collection?.name : "ARTRISE Shared Collection"}
                     </h5>
                     <div className="meta-item">
                       <div className="left">
