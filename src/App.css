@@ -2804,3 +2804,8 @@ padding: 0 2% 0 2%;
   margin-right: 5px;
 }
 
+Collections-filter-wrapper{
+  display:flex;
+  flex-direction: row;
+}
+

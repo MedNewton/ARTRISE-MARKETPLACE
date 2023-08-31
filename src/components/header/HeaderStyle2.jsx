@@ -62,6 +62,9 @@ const HeaderStyle2 = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
+  const currentUserSlug = localStorage.getItem("Slug");
+  const currentUserUserKey = localStorage.getItem("UserKey");
+
   const getArtworkForSearch = () => {
     if (listings) {
       let data = listings.map((artworkItem) => {
@@ -159,7 +162,11 @@ const HeaderStyle2 = () => {
       }
     } else if (item?.type === 'Artist') {
       if(item?.isDynamic){
-        navigate(`/displayProfile?artist=${item?.id}`)
+        if(item?.id === currentUserUserKey){
+          navigate(`/profile?id=${currentUserSlug}`);
+        }else{
+          navigate(`/displayProfile?artist=${item?.id}`)
+        }
       }else{
         navigate(`/authors-02?artist=${item?.id}`)
       }
@@ -170,7 +177,11 @@ const HeaderStyle2 = () => {
         navigate(`/`)
       }
     }else if (item?.type === 'Member') {
+      if(item.id === currentUserUserKey){
+        navigate(`/profile?id=${currentUserSlug}`);
+      }else{
         navigate(`/displayProfile?member=${item?.id}`)
+      }
     }
     // You can add more cases for other types if needed
     setSearchQuery(''); // Clear the search query after clicking on an item
