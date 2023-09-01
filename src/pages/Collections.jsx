@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Header from "../components/header/Header";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
@@ -12,12 +12,18 @@ import { useCollectionsContext } from "../Store/CollectionsContext";
 
 
 const Collections = () => {
+
+  const navigate = useNavigate();
+
   const {collections} = useCollectionsContext();
   const [data] = useState(popularCollectionData);
   const [visible, setVisible] = useState(6);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 3);
   };
+
+  const currentUserSlug = localStorage.getItem("Slug");
+  const currentUserUserKey = localStorage.getItem("UserKey");
 
   const selectedTags = [];
 
@@ -34,6 +40,15 @@ const Collections = () => {
 
     console.log(selectedTags);
   }
+
+  const handleUserNameClick = (id) => {
+        if(id === currentUserUserKey){
+          navigate(`/profile?id=${currentUserSlug}`);
+        }else{
+          navigate(`/displayProfile?artist=${id}`)
+        }
+  };
+
   return (
     <div className="authors">
       <HeaderStyle2 />
@@ -166,7 +181,7 @@ const Collections = () => {
                         <div className="sc-author-box style-2">
                           <div className="author-avatar">
                             <img
-                              src={collection.image}
+                              src={collection.owner_image}
                               alt=""
                               className="avatar"
                             />
@@ -175,20 +190,19 @@ const Collections = () => {
                         </div>
                         <div className="content">
                           <h4>
-                            <Link to="">
+                            <Link to={`/collection?id=${collection?.id}`}>
                               {collection.name}
                             </Link>
                           </h4>
                           <p>
                             By{" "}
-                            <Link to="">
-                              <span className="authorName">{collection.owner_name}</span>
-                            </Link>
+                              <span onClick={()=>handleUserNameClick(collection?.owner)} className="authorName">{collection.owner_name}</span>
                           </p>
                         </div>
                       </div>
                     </div>
-                    <Link to="/author-02">
+
+                    <Link to={`/collection?id=${collection?.id}`}>
                       <div className="media-images-collection">
                         <div className="box-left">
                           <img

@@ -284,7 +284,6 @@ const DisplayProfile = () => {
                                    className="fab fa-instagram"
                                 ></i>
                             </div>
-                            {(verified === "yes" || verified === true) ? (
                                 <div className="userButtonsContainer">
                                     <div className="followUserBtn" onClick={followUnfollow}>
                                         <i class="fa fa-user-plus"></i>
@@ -298,15 +297,14 @@ const DisplayProfile = () => {
                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                     </div>
                                 </div>
-                            ) : <></>}
                         </div>
                         <Tabs>
-                            <TabList style={{padding: "0 0 0 0"}}>
+                            <TabList style={{padding: "0 0 0 2%", columnGap: '100px', display: 'flex',alignItems: 'center'}} >
                                 {menuTab?.map((item, index) => (
-                                    <Tab style={{fontSize: '16px', padding: '0.6% 50px 1%'}}
+                                    <Tab style={{fontSize: '16px', padding: '15px 0px 15px 0px'}}
                                          key={index}>{item?.name}</Tab>
                                 ))}
-                                <Tab>
+                                <Tab style={{padding: '0% 0px 0% 0px'}}>
                                     <div className="tagLink">
                                         <Dropdown>
                                             <Dropdown.Toggle id="profileTabDropdown">
@@ -344,7 +342,6 @@ const DisplayProfile = () => {
                             </TabList>
                             <TabPanel key={0}>
                                 <DisplayArtworks data={userArtworks}/>
-                                {/*<div>hello</div>*/}
                             </TabPanel>
                             <TabPanel key={1}>
                                 <DisplayCollections data={userCollections}/>

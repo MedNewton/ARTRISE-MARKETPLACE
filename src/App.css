@@ -2751,7 +2751,7 @@ a{
 
 .artist-profile-wrapper {
   width: 100%;
-padding: 0 2% 0 2%;
+padding: 1% 2% 0 2%;
 }
 
 .artist-artworks-wrapper {
@@ -2809,3 +2809,30 @@ Collections-filter-wrapper{
   flex-direction: row;
 }
 
+.collection-page-Image{
+  background-image: url('https://i.seadn.io/gae/YCFtj9LoBESLlVYFnaFhCDylBOPzlmPsa6QHhbBmlnnOmnCKkpOjjDsTvfzF1T_fn-Cf4B6E-rXRqKM1UWXdvEA7wBHeE5fXLKh-4bk?auto=format&w=256');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 200px;
+  width: 200px;
+  /*margin-left: 5%;*/
+  margin-left:2%;
+  margin-top: -10%;
+  border-radius: 30px;
+  padding: 10px;
+  border: solid 5px #d9d9d9;
+}
+.collection-page-wrapper{
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 100%;
+  padding: 1% 2% 0 2%;
+}
+.flex-row-align-center{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

@@ -2,13 +2,23 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
+import {useNavigate } from "react-router-dom";
+
 
 const DisplayCollections = (props) => {
     const data = props?.data;
 
+    const navigate = useNavigate();
+
+    const handleOnClick = (index, collection) =>{
+        navigate(`/collection?id=${collection?.id}`)
+
+
+    }
+
     return (
         <div className='artist-profile-wrapper'>
-            <div className='Collections-filter-wrapper' style={{margin: "40px 0 40px 0"}}>
+            <div className='Collections-filter-wrapper'>
                 <div
                     className="tag"
                 >
@@ -39,7 +49,7 @@ const DisplayCollections = (props) => {
             <div className='d-flex flex-wrap flex-row' style={{gap: '20px'}}>
                 {data?.map((collection, index) => {
                     return (
-                        <div key={index} style={{maxWidth: "400px"}}>
+                        <div key={index} style={{maxWidth: "400px"}} onClick={()=>{handleOnClick(index, collection)}} >
                             <div className="sc-card-collection style-2">
                                 <div className="card-bottom">
                                     <div className="author">

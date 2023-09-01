@@ -172,7 +172,7 @@ const HeaderStyle2 = () => {
       }
     }else if (item?.type === 'Collection') {
       if(item?.isDynamic){
-        navigate(`/`)
+        navigate(`/collection?id=${item?.id}`)
       }else{
         navigate(`/`)
       }
