@@ -275,8 +275,8 @@ const EditProfile = () => {
     };
 
     const signInWithInstagram = async () => {
-        const clientId = '598885152450695';
-        const redirectUri = encodeURIComponent('https://localhost:3000/');
+        const clientId = '276266121931752'; //instagram app id
+        const redirectUri = encodeURIComponent('https://marketplace.artrise.io/');
         const popup = window.open(
             `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`,
             '_blank',
