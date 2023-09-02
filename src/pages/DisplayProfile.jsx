@@ -18,11 +18,13 @@ import {useArtistContext} from "../Store/ArtistContext";
 import {useCollectionsContext} from "../Store/CollectionsContext";
 import {useUserContext} from "../Store/UserContext";
 
+
 const DisplayProfile = () => {
 
     const {lazyListed, userArtist} = useArtworkContext();
     const {collections} = useCollectionsContext();
-    const {user} = useUserContext();
+    const {user, allMemberArtists} = useUserContext();
+
     const {address, isConnected} = useAccount();
     const currentUserKey = address ? address : localStorage.getItem("UserKey");
     const {contract} = useContract(
@@ -48,6 +50,8 @@ const DisplayProfile = () => {
     const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
     const [userArtworks, setUserArtworks] = useState([]);
     const [userCollections, setUserCollections] = useState([]);
+    const [followersList, setFollowersList] = useState([]);
+    const [followingList, setFollowingList] = useState([]);
 
     async function getArtistData(id) {
         for (const a of userArtist) {
@@ -63,9 +67,9 @@ const DisplayProfile = () => {
                 setTwitterLink(a?.Twitter);
                 setWebsite(a?.website);
                 setArtistType(a?.artistType);
-                setFollowers(a?.followers);
-                setFollowing(a?.following);
-                setFollowedArtists(a?.followedArtists);
+                handleSetFollowers(a?.followers);
+                handleSetFollowing(a?.followedArtists);
+                handleSetFollowing(a?.following);
             }
         }
     }
@@ -85,9 +89,9 @@ const DisplayProfile = () => {
                 setTwitterLink(a?.Twitter);
                 setWebsite(a?.website);
                 setArtistType(a?.artistType);
-                setFollowers(a?.followers);
-                setFollowing(a?.following);
-                setFollowedArtists(a?.followedArtists);
+                handleSetFollowers(a?.followers);
+                handleSetFollowing(a?.followedArtists);
+                handleSetFollowing(a?.following);
                 // setUserArtworks(a?.artworks);
             }
         }
@@ -117,6 +121,32 @@ const DisplayProfile = () => {
                 setUserCollections((prevState) => [...prevState, a]);
             }
         }
+    }
+
+    const handleSetFollowers = (array) => {
+        setFollowersList((prevState) =>{
+            let updatedList = [...prevState];
+            for (let val of array) {
+                const found = allMemberArtists.find((user)=>user.userId === val);
+                if (found && (updatedList.findIndex((obj)=> obj.userId === found.userId) === -1)) {
+                    updatedList.push(found);
+                }
+            }
+            return updatedList;
+        })
+    }
+
+    const handleSetFollowing = (array) => {
+        setFollowingList((prevState) =>{
+            let updatedList = [...prevState];
+            for (let val of array) {
+                const found = allMemberArtists.find((user)=>user.userId === val);
+                if (found && (updatedList.findIndex((obj)=> obj.userId === found.userId) === -1)) {
+                    updatedList.push(found);
+                }
+            }
+            return updatedList;
+        })
     }
 
     useEffect(() => {
@@ -283,6 +313,16 @@ const DisplayProfile = () => {
                                    style={{fontSize: "1.8em"}}
                                    className="fab fa-instagram"
                                 ></i>
+                            </div>
+                            <div className="folContainer">
+                                <div className="ContainerofFollowers" >
+                                    <h5 className="dataOfFollowers">{followersList.length}</h5>
+                                    <h5 className="titleOfFollowers">followers</h5>
+                                </div>
+                                <div className="ContainerofFollowing" >
+                                    <h5 className="dataOfFollowing">{followingList.length}</h5>
+                                    <h5 className="titleOfFollowing">following</h5>
+                                </div>
                             </div>
                                 <div className="userButtonsContainer">
                                     <div className="followUserBtn" onClick={followUnfollow}>
