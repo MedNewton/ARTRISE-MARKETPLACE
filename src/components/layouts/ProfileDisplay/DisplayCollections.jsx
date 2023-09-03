@@ -17,7 +17,7 @@ const DisplayCollections = (props) => {
     }
 
     return (
-        <div className='artist-profile-wrapper'>
+        <div className='artist-profile-wrapper display-collections-wrapper' >
             <div className='Collections-filter-wrapper'>
                 <div
                     className="tag"

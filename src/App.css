@@ -2836,3 +2836,8 @@ Collections-filter-wrapper{
   flex-direction: row;
   align-items: center;
 }
+.display-collections-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
