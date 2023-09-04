@@ -61,7 +61,7 @@ export const ProfileProvider = ({children}) => {
                 localStorage.getItem("google") ||
                 localStorage.getItem("facebook")
             ) {
-                getUserData(localStorage.getItem("slug").toString());
+                getUserData(localStorage.getItem("UserKey").toString());
             }
         }
     }, []);

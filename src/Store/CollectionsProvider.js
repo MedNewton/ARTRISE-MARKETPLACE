@@ -33,6 +33,7 @@ export const CollectionsProvider = ({children}) => {
                     owner_name: ownerName,
                     owner_image: ownerImage,
                     id: i,
+                    artworks: dt?.artworks
                 };
                 setCollections((prevState) => [...prevState, collection]);
             }

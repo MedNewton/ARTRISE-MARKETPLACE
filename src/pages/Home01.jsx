@@ -42,9 +42,9 @@ const Home01 = () => {
 
     const fetchUserProfile = async (code) => {
         const url = 'https://api.instagram.com/oauth/access_token';
-        const clientId = 598885152450695;
-        const clientSecret = 'fcc5f83f14fb0da19a2e7d7f495fcb6f';
-        const redirectUri = 'https://localhost:3000/';
+        const clientId = 276266121931752; // instagram app id
+        const clientSecret = 'b5bdd5a389495eb95d172aa76cdc2928';
+        const redirectUri = 'https://marketplace.artrise.io/';
         const formData = new URLSearchParams();
         formData.append('client_id', clientId);
         formData.append('client_secret', clientSecret);

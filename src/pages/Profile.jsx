@@ -1,31 +1,18 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate, withRouter } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate} from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import "react-sliding-pane/dist/react-sliding-pane.css";
-
-import Header from "../components/header/Header";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
-import avt from "../assets/images/avatar/avata_profile.jpg";
-import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
-import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
-import yann from "../assets/images/avatar/yann.jpg";
-import db from "../firebase";
-import storage from "../storage";
-import { ref, onValue, get, update, set, child } from "firebase/database";
 import {
-  useAddress,
   useContract,
   useOwnedNFTs,
-  useConnectedWallet,
 } from "@thirdweb-dev/react";
 import { useAccount } from "wagmi";
-import Swal from "sweetalert2";
 
 import CreateModal from "../components/layouts/createModal";
 import Dropdown from "react-bootstrap/Dropdown";
-import axios from "axios";
 import Tokenized from "./tokenized";
 import LikedItems from "./LikedItems";
 import MyCollections from "./myCollections";
@@ -33,11 +20,15 @@ import {toast} from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useProfileContext } from '../Store/ProfileContext';
+import { useUserContext } from '../Store/UserContext';
+import { useArtistContext } from '../Store/ArtistContext';
+import Modal from 'react-bootstrap/Modal';
 
 const Profile = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const {profileData, lazyOwned} = useProfileContext();
-
+  const {allMemberArtists} = useUserContext();
+  const {artists} = useArtistContext();
   const [createModalShow, setCreateModalShow] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
@@ -48,13 +39,18 @@ const Profile = () => {
   const [coverLink, setCoverLink] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userBio, setUserBio] = useState("");
-  const [userFollowers, setUserFollowers] = useState("0");
-  const [userFollowing, setUserFollowing] = useState("0");
+  const [followersList, setFollowersList] = useState([]);
+  const [followingList, setFollowingList] = useState([]);
   const [accountType, setAccountType] = useState("");
   const [slug, setSlug] = useState("");
   const [urlSlug, setUrlSlug] = useState("");
   const { address, isConnected } = useAccount();
   const [artistType, setArtistType] = useState("");
+  const [show, setShow] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   async function setUserData(dt) {
       setDisplayName(dt.displayName);
@@ -69,12 +65,9 @@ const Profile = () => {
       setAccountType(dt.accountType);
       setArtistType(dt.artistType);
       setSlug(dt.slug);
-      let following =
-        Object.entries(dt.followedArtists).length +
-        Object.entries(dt.following).length;
-      let followers = Object.entries(dt.followers).length;
-      setUserFollowers(followers - 1);
-      setUserFollowing(following - 2);
+      handleSetFollowers(dt?.followers);
+      handleSetFollowingArtists(dt?.followedArtists);
+      handleSetFollowing(dt?.following);
       document.getElementById("pdp").style.backgroundImage = dt.pdpLink;
   }
 
@@ -91,23 +84,8 @@ const Profile = () => {
 
   const { data: ownedNFTs, isLoading, error } = useOwnedNFTs(contract, address);
 
-  async function becomeArtist() {
-    await update(ref(db, "users/" + address), {
-      accountType: "artist",
-      creator: "pending",
-    });
 
-    setAccountType("artist");
-    window.open("//forms.gle/dVamYz7mYkfz7EaW7", "_blank");
-    Swal.fire({
-      icon: "success",
-      title: "Gongratulations !",
-      text: "You are now part of the Artrise artists community. You can start creating your own collections and minting artworks.",
-      confirmButtonText: "Let's go !",
-    });
-  }
-
-    const handleTwitterIconClick = () => {
+  const handleTwitterIconClick = () => {
         if (twitterLink && twitterLink !== "No account shared yet ...") {
             window.open(twitterLink, "_blank");
         } else {
@@ -134,6 +112,57 @@ const Profile = () => {
       });
     }
   };
+  const handleSetFollowers = (array) => {
+    setFollowersList((prevState) =>{
+      let updatedList = [...prevState];
+      for (let val of array) {
+        const found = allMemberArtists.find((user)=>user.userId === val);
+        if (found && (updatedList.findIndex((obj)=> obj.userId === found.userId) === -1)) {
+          updatedList.push({'name':found.name, 'userId':found.userId, 'type':(found?.verified ? "Artist" : "Member"), 'isDynamic':true});
+        }
+      }
+      return updatedList;
+    })
+  };
+  const handleSetFollowing = (array) => {
+    setFollowingList((prevState) =>{
+      let updatedList = [...prevState];
+      for (let val of array) {
+        const found = allMemberArtists.find((user)=>user.userId === val);
+        if (found && (updatedList.findIndex((obj)=> obj.userId === found.userId) === -1)) {
+          updatedList.push({'name':found.name, 'userId':found.userId, 'type':(found?.verified ? "Artist" : "Member"), 'isDynamic':true});
+        }
+      }
+      return updatedList;
+    })
+  };
+  const handleSetFollowingArtists = (array) => {
+    setFollowingList((prevState) =>{
+      let updatedList = [...prevState];
+      for (let val of array) {
+        const found = artists.find((user)=>user.slug === val);
+        if (found && (updatedList.findIndex((obj)=> obj.userId === found.slug) === -1)) {
+          updatedList.push({'name':found?.name, 'userId':found?.slug, 'type':'Artist', 'isDynamic':false});
+
+        }
+      }
+      return updatedList;
+    })
+  };
+  function handleFollowersClick() {
+    setShowFollowers(!showFollowers);
+    handleShow();
+  };
+  function handleFollowingClick() {
+    handleShow();
+  };
+  function followerFollowingItemClick (item) {
+    if(item?.verified){
+      navigate(`/displayProfile?artist=${item?.userId}`)
+    }else{
+      navigate(`/displayProfile?member=${item?.userId}`)
+    }
+  };
 
   return (
     <div className="authors-2">
@@ -144,7 +173,7 @@ const Profile = () => {
             <div
               className="row userCoverSection"
               id="userCover"
-              style={{ backgroundImage: `url(${coverLink})` }}
+              style={{ height:"30vh", backgroundImage: `url(${coverLink})` }}
             ></div>
             <div className="col-md-12 col-lg-12 col-sm-12 col-12 profileInfoSection">
               <div className="row">
@@ -174,12 +203,12 @@ const Profile = () => {
                   ></i>
                 </div>
                 <div className="folContainer">
-                  <div className="ContainerofFollowers">
-                    <h5 className="dataOfFollowers">{userFollowers}</h5>
+                  <div className="ContainerofFollowers" onClick = {()=>{handleFollowersClick()}}>
+                    <h5 className="dataOfFollowers">{followersList.length}</h5>
                     <h5 className="titleOfFollowers">followers</h5>
                   </div>
-                  <div className="ContainerofFollowing">
-                    <h5 className="dataOfFollowing">{userFollowing}</h5>
+                  <div className="ContainerofFollowing"  onClick = {()=>{handleFollowingClick()}}>
+                    <h5 className="dataOfFollowing">{followingList.length}</h5>
                     <h5 className="titleOfFollowing">following</h5>
                   </div>
                 </div>
@@ -352,6 +381,27 @@ const Profile = () => {
         </div>
       </div>
       <ToastContainer />
+
+      <>
+        <Modal show={show} onHide={()=>{
+          setShowFollowers(false);
+          handleClose()}}>
+          <Modal.Header closeButton>
+            <Modal.Title>{showFollowers ? <h3>Followers</h3> : <h4>Following</h4>}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{paddingTop:'0px'}}>
+
+            {showFollowers ? followersList : followingList.map((item, index)=>{
+              return(
+              <div className="search-item" key={index} onClick={() =>followerFollowingItemClick(item)}>
+              <h5>{item?.name}</h5>
+              <p  className="search-item-detail">{item?.verified ? "Artist" : "Member"}</p>
+              </div>
+              )
+            })}
+          </Modal.Body>
+        </Modal>
+      </>
       <CreateModal
         show={createModalShow}
         onHide={() => setCreateModalShow(false)}

@@ -316,7 +316,7 @@ const CreateItem = () => {
         return metadataUrl;
     }
 
-    async function getCollectionID(){
+    async function getCollectionID(newID) {
         if (artistCollections.length === 0) {
             try {
                 const newCollectionID = (
@@ -336,13 +336,24 @@ const CreateItem = () => {
                     artisticCollection: true,
                     address: newCollectionID,
                     createdAt: createdAt,
+                    artworks: [newID]
                 })
                 toast.success("Collection Created!", toastOptions);
                 return newCollectionID;
             } catch (error) {
                 console.log("error", error)
             }
-        }else if(artistCollections.length > 0){
+        } else if (artistCollections.length > 0) {
+            const collRef = await ref(db, "collections/" + collectionID);
+            let existingArtworksInCollection = [];
+            await get(collRef).then((snapshot) => {
+                let dt = snapshot.val();
+                existingArtworksInCollection = dt?.artworks;
+            })
+            existingArtworksInCollection.push(newID);
+            await update(collRef, {
+                artworks: [...existingArtworksInCollection]
+            })
             return collectionID;
         }
     }
@@ -357,18 +368,17 @@ const CreateItem = () => {
                 + "\nIPFS PUBLIC URI: " + localStorage.getItem("newURI")
         })
         toast.info("Minting ...", toastOptions);
-        const collID = await getCollectionID();
+        const collID = await getCollectionID(newID);
         await set(artworksRef, {
             type: "lazyMinted",
             ipfsURI: localStorage.getItem("newURI"),
             owner: address.toString(),
             collection: collID,
             listed: "no"
-        }).then(() => {
-            toast.success("Minted ! redirecting you to homepage...", toastOptions);
-            delay(8000);
-            window.location.href = '/';
         })
+        toast.success("Minted ! redirecting you to homepage...", toastOptions);
+        delay(8000);
+        window.location.href = '/';
     }
 
     async function mintButtonClickHandler() {

@@ -62,6 +62,9 @@ const HeaderStyle2 = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
+  const currentUserSlug = localStorage.getItem("Slug");
+  const currentUserUserKey = localStorage.getItem("UserKey");
+
   const getArtworkForSearch = () => {
     if (listings) {
       let data = listings.map((artworkItem) => {
@@ -91,7 +94,7 @@ const HeaderStyle2 = () => {
   const getUserForSearch = () => {
     if (user) {
       let data = user.map((userItem) => {
-        return { "name": userItem.name, "id": userItem.slug, "type": "Member" , "isDynamic": false };
+        return { "name": userItem.name, "id": userItem.userId, "type": "Member" , "isDynamic": false };
       });
       setUserSearchList(data);
     }
@@ -100,7 +103,7 @@ const HeaderStyle2 = () => {
   const getUserArtistForSearch = () => {
     if (userArtist) {
       let data = userArtist.map((user) => {
-        return { "name": user.name, "id": user.slug, "type": "Artist", "isDynamic": true };
+        return { "name": user.name, "id": user.userId, "type": "Artist", "isDynamic": true };
       });
       setProcessedUserArtist(data);
     }
@@ -135,13 +138,13 @@ const HeaderStyle2 = () => {
   }, [artWorks, artistSearchList, processedUserArtist, processedLazyListed, collectionList, userSearchList]);
 
   const handleSearch = (event) => {
-    const searchValue = event.target.value.toLowerCase();
+    const searchValue = event?.target?.value?.toLowerCase();
     setSearchQuery(searchValue);
     if (searchValue) {
-      const searchWords = searchValue.split(' ');
-      const filteredResults = searchingArray.filter((item) =>
-          searchWords.every((word) =>
-              item.name.toLowerCase().includes(word)
+      const searchWords = searchValue?.split(' ');
+      const filteredResults = searchingArray?.filter((item) =>
+          searchWords?.every((word) =>
+              item?.name?.toLowerCase()?.includes(word)
           )
       );
       setSearchResults(filteredResults);
@@ -151,23 +154,33 @@ const HeaderStyle2 = () => {
   };
 
   const handleItemClick = (item) => {
-    if (item.type === 'Artwork') {
-      if(item.isDynamic){
-        navigate(`/artwork-dettails?id=${item.id}`)
+    if (item?.type === 'Artwork') {
+      if(item?.isDynamic){
+        navigate(`/artwork-dettails?id=${item?.id}`)
       }else{
-        navigate(`/item-details-01?listing=${item.id}`)
+        navigate(`/item-details-01?listing=${item?.id}`)
       }
-    } else if (item.type === 'Artist') {
-      if(item.isDynamic){
-        navigate(`/authors-02?user=${item.id}`)
+    } else if (item?.type === 'Artist') {
+      if(item?.isDynamic){
+        if(item?.id === currentUserUserKey){
+          navigate(`/profile?id=${currentUserSlug}`);
+        }else{
+          navigate(`/displayProfile?artist=${item?.id}`)
+        }
       }else{
-        navigate(`/authors-02?artist=${item.id}`)
+        navigate(`/authors-02?artist=${item?.id}`)
       }
-    }else if (item.type === 'Collection') {
-      if(item.isDynamic){
-        navigate(`/`)
+    }else if (item?.type === 'Collection') {
+      if(item?.isDynamic){
+        navigate(`/collection?id=${item?.id}`)
       }else{
         navigate(`/`)
+      }
+    }else if (item?.type === 'Member') {
+      if(item.id === currentUserUserKey){
+        navigate(`/profile?id=${currentUserSlug}`);
+      }else{
+        navigate(`/displayProfile?member=${item?.id}`)
       }
     }
     // You can add more cases for other types if needed
@@ -1162,9 +1175,9 @@ const HeaderStyle2 = () => {
                           value={searchQuery}
                           onChange={handleSearch}
                       />
-                      {searchResults.length > 0 && (
+                      {searchResults?.length > 0 && (
                           <div className="search-dropdown">
-                            {searchResults.map((result) => (
+                            {searchResults?.map((result) => (
                                 <div
                                     key={result.id}
                                     className="search-item"
