@@ -87,7 +87,7 @@ const Collection = () => {
                     <div className='flex-row-align-center'>
                         <div className='flex-row-align-center'>
                             <p className='mg-r-12'>Artworks</p>
-                            <h5>{collectionArtworksIds ? collectionArtworksIds.length.toString() : ""}</h5>
+                            <h5>{collectionArtworksIds ? collectionArtworksIds.length.toString() : "0"}</h5>
                         </div>
                         <h4 style={{paddingLeft: '10px', paddingRight: '10px'}}>-</h4>
                         <div className='flex-row-align-center'>
