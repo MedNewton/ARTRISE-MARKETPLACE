@@ -90,7 +90,9 @@ const DisplayArtworks = (props) => {
                                 {filterOptions[section].map((option) => (
                                     <label className="filter-option" key={option.id}>
                                         <input
+                                            className='filter-checkbox-input'
                                             type="checkbox"
+                                            style={{color:'black'}}
                                             checked={filterState[section][option.id] || false}
                                             onChange={() => handleOptionChange(section, option.id)}
                                         />

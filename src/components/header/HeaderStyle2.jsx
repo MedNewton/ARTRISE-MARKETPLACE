@@ -5,6 +5,9 @@ import {ConnectWallet, useAddress, useContract, useListings} from "@thirdweb-dev
 import menus from "../../pages/menu";
 import DarkMode from "./DarkMode";
 import logodark from "../../assets/images/logo/logo_dark_new.png";
+import cart from '../../assets/images/icon/cart.png';
+import notification from '../../assets/images/icon/notification.png';
+import profile from '../../assets/images/icon/profile.png';
 import avt from "../../assets/images/avatar/avt-2.jpg";
 import not from "../../assets/images/avatar/not.png";
 import coin from "../../assets/images/logo/coin.svg";
@@ -431,10 +434,11 @@ const HeaderStyle2 = () => {
               <div id="site-header-inner">
                 <div className="wrap-box flex">
                   <div id="site-logo" className="clearfix">
-                    <div id="site-logo-inner">
+                    <div id="site-logo-inner" className='d-flex' style={{gap: '5%'}}>
                       <Link to="/" rel="home" className="main-logo">
-                        <img id="logo_header" src={logodark} alt="nft-gaming" style={{width:'auto'}}/>
+                        <img id="logo_header" src={logodark} alt="ArtRise" style={{width:'auto', height:'auto'}} />
                       </Link>
+                      <div className='beta-tag-styles'>Beta</div>
                     </div>
                   </div>
                   <div
@@ -567,12 +571,11 @@ const HeaderStyle2 = () => {
                     </div>
                     <div className="separator"></div>
                     <div className="admin_active" id="header_admin">
-                      <div className="header_avatar">
+                      <div className="header_avatar" style={{display:'flex', gap:'1vw', alignItems:'flex-start'}}>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownNotifButton">
-                            <AiOutlineBell size={25} />
+                            <img style={{ height: '20px', width: '20px'}} src={notification}/>
                           </Dropdown.Toggle>
-
                           <Dropdown.Menu
                             align={"end"}
                             style={{ marginTop: "1vh" }}
@@ -584,18 +587,11 @@ const HeaderStyle2 = () => {
                         </Dropdown>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownMenuButton">
-                            <img
-                              className="avatar"
-                              src={
-                                "https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg="
-                              }
-                              alt="avatar"
-                            />
+                            <img style={{ height: '20px', width: '20px'}} src={profile}/>
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu
                             align={"end"}
-                            style={{ marginTop: "1vh" }}
                           >
                             <Dropdown.Item href={"/profile?id=" + slug}>
                               <FaRegUser size={15} />
@@ -652,6 +648,24 @@ const HeaderStyle2 = () => {
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
+                        <Dropdown>
+                          <Dropdown.Toggle id="dropdownCartButton">
+                            <img style={{ height: '20px', width: '20px'}} src={cart}/>
+                          </Dropdown.Toggle>
+
+                          <Dropdown.Menu
+                              align={"end"}
+                              style={{ marginTop: "1vh" }}
+                          >
+                            <Dropdown.Item href={"/profile?id=" + slug}>
+                              No Items in Cart
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                        <Dropdown>
+                          <DarkMode />
+                        </Dropdown>
+
 
                         <div className="avatar_popup mt-20" ref={avtToggle}>
                           <div className="d-flex align-items-center mt-10">
@@ -738,7 +752,6 @@ const HeaderStyle2 = () => {
             </div>
           </div>
         </div>
-        <DarkMode />
       </header>
     );
   } else if (
@@ -779,10 +792,11 @@ const HeaderStyle2 = () => {
               <div id="site-header-inner">
                 <div className="wrap-box flex">
                   <div id="site-logo" className="clearfix">
-                    <div id="site-logo-inner">
+                    <div id="site-logo-inner" className='d-flex' style={{gap: '5%'}}>
                       <Link to="/" rel="home" className="main-logo">
-                        <img id="logo_header" src={logodark} alt="nft-gaming" style={{width:'auto'}} />
+                        <img id="logo_header" src={logodark} alt="ArtRise" style={{width:'auto', height:'auto'}} />
                       </Link>
+                      <div className='beta-tag-styles'>Beta</div>
                     </div>
                   </div>
                   <div
@@ -909,15 +923,14 @@ const HeaderStyle2 = () => {
                     </div>
                     <div className="separator"></div>
                     <div className="admin_active" id="header_admin">
-                      <div className="header_avatar">
+                      <div className="header_avatar" style={{display:'flex', gap:'1vw', alignItems:'flex-start'}}>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownNotifButton">
-                            <AiOutlineBell size={25} />
+                            <img style={{ height: '20px', width: '20px'}} src={notification}/>
                           </Dropdown.Toggle>
-
                           <Dropdown.Menu
-                            align={"end"}
-                            style={{ marginTop: "1vh" }}
+                              align={"end"}
+                              style={{ marginTop: "1vh" }}
                           >
                             <Dropdown.Item href={"/profile?id=" + slug}>
                               No new notifications
@@ -925,41 +938,33 @@ const HeaderStyle2 = () => {
                           </Dropdown.Menu>
                         </Dropdown>
                         <Dropdown>
-                          <Dropdown.Toggle
-                            id="dropdownMenuButton"
-                            style={{ marginRight: "2.8vw" }}
-                          >
-                            <img
-                              className="avatar"
-                              src={UserPdpLink}
-                              alt="avatar"
-                            />
+                          <Dropdown.Toggle id="dropdownMenuButton">
+                            <img style={{ height: '20px', width: '20px'}} src={profile}/>
                           </Dropdown.Toggle>
-
                           <Dropdown.Menu
-                            align={"end"}
-                            style={{ marginTop: "1vh" }}
+                              align={"end"}
+                              style={{ marginTop: "1vh" }}
                           >
                             <Dropdown.Item href={"/profile?id=" + slug}>
                               <FaRegUser size={15} />
                               Profile
                             </Dropdown.Item>
                             {accountType == "user" ? (
-                              <Dropdown.Item href="/tokenize">
-                                <BiCoinStack size={15} />
-                                Tokenize
-                              </Dropdown.Item>
+                                <Dropdown.Item href="/tokenize">
+                                  <BiCoinStack size={15} />
+                                  Tokenize
+                                </Dropdown.Item>
                             ) : (
-                              ""
+                                ""
                             )}
 
                             {accountType == "artist" ? (
-                              <Dropdown.Item href="/creator-choice">
-                                <FaPlus size={15} />
-                                Create
-                              </Dropdown.Item>
+                                <Dropdown.Item href="/creator-choice">
+                                  <FaPlus size={15} />
+                                  Create
+                                </Dropdown.Item>
                             ) : (
-                              ""
+                                ""
                             )}
 
                             <Dropdown.Item href="/referral-program">
@@ -994,7 +999,23 @@ const HeaderStyle2 = () => {
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
-                        <DarkMode />
+                        <Dropdown>
+                          <Dropdown.Toggle id="dropdownCartButton">
+                            <img style={{ height: '20px', width: '20px'}} src={cart}/>
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu
+                              align={"end"}
+                              style={{ marginTop: "1vh" }}
+                          >
+                            <Dropdown.Item href={"/profile?id=" + slug}>
+                              No Items in Cart
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                        <Dropdown>
+                          <DarkMode />
+                        </Dropdown>
+
                         <div className="avatar_popup mt-20" ref={avtToggle}>
                           <div className="d-flex align-items-center mt-10">
                             <div className="info ml-12">
@@ -1100,10 +1121,11 @@ const HeaderStyle2 = () => {
               <div id="site-header-inner">
                 <div className="wrap-box flex">
                   <div id="site-logo" className="clearfix">
-                    <div id="site-logo-inner">
+                    <div id="site-logo-inner" className='d-flex' style={{gap: '5%'}}>
                       <Link to="/" rel="home" className="main-logo">
-                        <img id="logo_header" src={logodark} alt="" style={{width:'auto'}} />
+                        <img id="logo_header" src={logodark} alt="ArtRise" style={{width:'auto', height:'auto'}} />
                       </Link>
+                      <div className='beta-tag-styles'>Beta</div>
                     </div>
                   </div>
                   <div
@@ -1213,7 +1235,7 @@ const HeaderStyle2 = () => {
                         }}
                         className="nonConnectedJoinBtn"
                       >
-                        <span>Join us</span>
+                        <span>Join</span>
                       </Link>
                       <Link
                         to="/"

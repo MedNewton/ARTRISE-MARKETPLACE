@@ -12,7 +12,7 @@ const JoinChoicesModal = (props) => {
       <Modal.Header closeButton></Modal.Header>
 
       <div className="modal-body space-y-20 pd-40">
-        <h3>Join Us</h3>
+        <h3>Join</h3>
         <p className="text-center">
           <span className="price color-popup" style={{ fontWeight: "600" }}>
             Become part of the world's first community of hybrid NFTs
