@@ -143,7 +143,6 @@ const Profile = () => {
         const found = artists.find((user)=>user.slug === val);
         if (found && (updatedList.findIndex((obj)=> obj.userId === found.slug) === -1)) {
           updatedList.push({'name':found?.name, 'userId':found?.slug, 'type':'Artist', 'isDynamic':false});
-
         }
       }
       return updatedList;
@@ -157,12 +156,16 @@ const Profile = () => {
     handleShow();
   };
   function followerFollowingItemClick (item) {
-    if(item?.verified){
+    if(item.isDynamic){
+    if(item.type === "Artist"){
       navigate(`/displayProfile?artist=${item?.userId}`)
-    }else{
+    }else if (item.type === 'Member'){
       navigate(`/displayProfile?member=${item?.userId}`)
     }
-  };
+    }else if(item.isDynamic === false){
+      navigate(`/authors-02?artist=${item?.userId}`)
+    }
+  }
 
   return (
     <div className="authors-2">
@@ -395,7 +398,7 @@ const Profile = () => {
               return(
               <div className="search-item" key={index} onClick={() =>followerFollowingItemClick(item)}>
               <h5>{item?.name}</h5>
-              <p  className="search-item-detail">{item?.verified ? "Artist" : "Member"}</p>
+              <p  className="search-item-detail">{item.type}</p>
               </div>
               )
             })}
