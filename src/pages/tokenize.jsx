@@ -230,7 +230,6 @@ const Tokenize = () => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log("uploading main image");
       },
       (error) => {
         console.log(error);
@@ -244,7 +243,6 @@ const Tokenize = () => {
 
     Promise.all(pr)
       .then(() => {
-        console.log("uploaded main image");
         console.log(mainMediaUrl);
         console.log(physicalMediaURLs);
       })
@@ -269,7 +267,6 @@ const Tokenize = () => {
           const progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
-          console.log("uploading physical images");
         },
         (error) => {
           console.log(error);
@@ -421,9 +418,7 @@ const Tokenize = () => {
                   </h4>
                   <div className="artisticBox">
                     <Toggle onChange={()=>{
-                      console.log("i am collectionCheckButton before", collectionCheckButton)
                       setCollectionCheckButton(!collectionCheckButton);
-                      console.log("i am collectionCheckButton after", collectionCheckButton)
                     }}/>
                   </div>
                   {collectionCheckButton &&

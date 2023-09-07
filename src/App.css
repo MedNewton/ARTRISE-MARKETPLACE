@@ -439,7 +439,7 @@
 }
 
 .ourArtists{
-  margin-top:15%;
+  margin-top:10%;
   text-align: left;
   margin-bottom: 3%;
   margin-left: 0%;
@@ -592,8 +592,6 @@
 
 .referralInbfoBox{
   width: 100%;
-  height: 500px;
-  margin-top: 2vh;
 }
 
 .table-responsive{
@@ -819,10 +817,8 @@ border-top-right-radius: 10px !important;
 }
 
 .dropsPageTitle{
-  margin-top: 10%;
+  margin: 10% 2% 3% 2%;
   text-align: left;
-  margin-bottom: 3%;
-  margin-left: 1%;
   font-size: 5em;
 }
 
@@ -1018,18 +1014,24 @@ border-top-right-radius: 10px !important;
 
 #dropdownMenuButton {
   box-shadow: #020202 0px 0px 4px 0.5px;
-  background-color: #fff;
   border-radius: 10px;
-  border-color: #fff;
-  padding: 8px 8px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: transparent;
+  border-width: 0px;
 }
 
 #dropdownCartButton{
   box-shadow: #020202 0px 0px 4px 0.5px;
-  background-color: #fff;
   border-radius: 10px;
-  border-color: #fff;
-  padding: 8px 8px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: transparent;
+  border-width: 0px;
 }
 
 #profileTabDropdown{
@@ -1739,6 +1741,7 @@ a{
   font-size: 1.5em;
   margin-top: 5% !important;
   margin-bottom: 3% !important;
+  line-height: 25px;
 }
 
 .createChoiceImageBox{
@@ -1761,9 +1764,9 @@ a{
 }
 
 .referralImage{
-  height: 40vh;
-  background-color: #aeaeae;
-  box-shadow: 0px 0px 20px 1px #aeaeae;
+  height: 30vh;
+  background-color: #f1f1f1;
+  box-shadow: 0px 0px 5px 1px #f1f1f1;
   border: solid 3px #fff;
   border-radius: 10px;
 }
@@ -1902,10 +1905,12 @@ a{
 
 #dropdownNotifButton{
   box-shadow: #020202 0px 0px 4px 0.5px;
-  background-color: #fff;
-  border-radius: 10px;
-  border-color: #fff;
-  padding: 8px 8px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: transparent;
+  border-width: 0px;
 }
 
 .is_dark .tf-button-submit{
@@ -2752,7 +2757,7 @@ a{
 
 .artist-profile-wrapper {
   width: 100%;
-padding: 1% 2% 0 2%;
+padding: 1% 2% 1% 2%;
 }
 
 .artist-artworks-wrapper {
@@ -2846,6 +2851,11 @@ Collections-filter-wrapper{
   flex-direction: row;
   align-items: center;
 }
+.flex-column-gap20{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .display-collections-wrapper{
   display: flex;
   flex-direction: column;
@@ -2864,4 +2874,56 @@ Collections-filter-wrapper{
   color: black;
   padding: 4px 8px;
   border-radius: 20px;
+}
+
+.refer-friend-button{
+  background-color: #030303;
+  color: #fff;
+  border-color: transparent;
+  width: 200px;
+}
+.referral-modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.referral-link-wrapper {
+  background-color: rgb(236, 238, 239);
+  display: flex;
+  align-items: center;
+  border-radius: 100px;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.referral-home-wrapper{
+  display: flex;
+  flex-direction: column;
+  padding: 10% 15% 5%;
+  gap: 50px;
+}
+.artists-page-title {
+  margin-top: 10%;
+  text-align: left;
+  margin-bottom: 2%;
+  margin-left: 2%;
+  font-size: 3em;
+}
+.browse-page-title {
+  margin-top: 10%;
+  text-align: left;
+  margin-bottom: 2%;
+  margin-left: 2%;
+  font-size: 3em;
+}
+.drop-page-header-wrapper{
+  display: flex;
+  flex-direction: column;
+  padding: 10% 2% 5%;
+  gap: 50px;
+}
+
+.drop-page-sections-wrapper{
+  display: flex;
+  flex-direction: column;
+  padding: 0% 1% 10%;
 }

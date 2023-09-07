@@ -70,73 +70,61 @@ const Drops = () => {
     }
 
     return (
-        <div className='home-1'>
+        <div>
             <HeaderStyle2 />
-            <section className="tf-section our-creater dark-style2">
-                <div className="themesflat-container"
-                style={{
-                    paddingLeft: "1%",
-                    paddingRight: "1%",
-                    marginLeft: "0px",
-                    marginRight: "0px",
-                    width: "100%"
-                }}
-                >
-                    <div className="row">
-                        <div className="col-md-12">
-                            <h2 className="tf-title style4 mg-bt-38 dropsPageTitle">
-                                Drops</h2>
-                        </div>
-                        <div className="col-md-12 col-sm-12 mobileTags">
-                        <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="painter">
-                                        Painter
-                                    </div>
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="photographer">
-                                        Photographer
-                                    </div>
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="sculpturer">
-                                        Sculpturer
-                                    </div>
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="ceramic_artist">
-                                        Ceramic artist
-                                    </div>
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="others">
-                                        Others
-                                    </div>
-                        </div>
-                        <div className="col-12">
-                            <div className="row tagsBar">
-                                <div className="col-12">
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="sculpturer">
-                                        Sculptors
-                                    </div>
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="painter">
-                                        Painters
-                                    </div>
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="photographer">
-                                        Photographers
-                                    </div>
-                                    
-                                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="others">
-                                        Others
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <LiveAuction2 data={liveAuctionData2} />
-                        </div>
-                        <div className="col-md-12">
-                            <LiveAuction data={liveAuctionData} />
-                        </div>
-                        <div className="col-md-12">
-                        <ComingSoon data={ComingSoonData} />
-                        </div>
-                        
+            <div className='drop-page-header-wrapper'>
+                <div>
+                    <h2>Drops</h2>
+                </div>
+
+                <div className="col-md-12 col-sm-12 mobileTags">
+                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="painting">
+                        Painting
+                    </div>
+                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="photography">
+                        Photography
+                    </div>
+                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="sculpture">
+                        Sculpture
+                    </div>
+                    <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="others">
+                        Others...
                     </div>
                 </div>
-            </section>
-            
+                <div >
+                    <div>
+                        <div >
+                            <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="painting">
+                                Painting
+                            </div>
+                            <div className='tag' onClick={(e) => editTags(e.target.id, e.target)}
+                                 id="photography">
+                                Photography
+                            </div>
+                            <div className='tag' onClick={(e) => editTags(e.target.id, e.target)}
+                                 id="sculpture">
+                                Sculpture
+                            </div>
+                            <div className='tag' onClick={(e) => editTags(e.target.id, e.target)} id="others">
+                                Others...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div className="col-md-12">
+                    <LiveAuction2 data={liveAuctionData2} />
+                </div>
+            <div  className='drop-page-sections-wrapper'>
+                <div>
+                    <div className="col-md-12">
+                        <LiveAuction data={liveAuctionData} />
+                    </div>
+                    <div className="col-md-12">
+                        <ComingSoon data={ComingSoonData} />
+                    </div>
+                </div>
+            </div>
             <Footer />
         </div>
     );

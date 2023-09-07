@@ -193,7 +193,6 @@ const HeaderStyle2 = () => {
 
   useEffect(() => {
     window.ire("identify", { customerId: localStorage.getItem("UserKey") });
-    console.log("impact test");
   }, []);
 
   const { isOpen, open, close, setDefaultChain } = useWeb3Modal();
@@ -420,8 +419,6 @@ const HeaderStyle2 = () => {
       nav("/");
     };
 
-    console.log("searchingArraysearchingArray", searchingArray);
-
     return (
       <header
         id="header_main"
@@ -574,7 +571,7 @@ const HeaderStyle2 = () => {
                       <div className="header_avatar" style={{display:'flex', gap:'1vw', alignItems:'flex-start'}}>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownNotifButton">
-                            <img style={{ height: '20px', width: '20px'}} src={notification}/>
+                            <img style={{padding:'4px'}} src={notification}/>
                           </Dropdown.Toggle>
                           <Dropdown.Menu
                             align={"end"}
@@ -587,7 +584,7 @@ const HeaderStyle2 = () => {
                         </Dropdown>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownMenuButton">
-                            <img style={{ height: '20px', width: '20px'}} src={profile}/>
+                            <img className="avatar" src={UserPdpLink ? UserPdpLink : profile}/>
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu
@@ -650,7 +647,7 @@ const HeaderStyle2 = () => {
                         </Dropdown>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownCartButton">
-                            <img style={{ height: '20px', width: '20px'}} src={cart}/>
+                            <img style={{padding:'4px'}} src={cart}/>
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu
@@ -926,7 +923,7 @@ const HeaderStyle2 = () => {
                       <div className="header_avatar" style={{display:'flex', gap:'1vw', alignItems:'flex-start'}}>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownNotifButton">
-                            <img style={{ height: '20px', width: '20px'}} src={notification}/>
+                            <img style={{padding:'4px'}} src={notification}/>
                           </Dropdown.Toggle>
                           <Dropdown.Menu
                               align={"end"}
@@ -939,11 +936,11 @@ const HeaderStyle2 = () => {
                         </Dropdown>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownMenuButton">
-                            <img style={{ height: '20px', width: '20px'}} src={profile}/>
+                            <img className="avatar" src={UserPdpLink ? UserPdpLink : profile}/>
                           </Dropdown.Toggle>
+
                           <Dropdown.Menu
                               align={"end"}
-                              style={{ marginTop: "1vh" }}
                           >
                             <Dropdown.Item href={"/profile?id=" + slug}>
                               <FaRegUser size={15} />
@@ -988,11 +985,12 @@ const HeaderStyle2 = () => {
                               Settings
                             </Dropdown.Item>
                             <Dropdown.Item
-                              href="/"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                Logout();
-                              }}
+                                href=""
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  disconnect();
+                                  Logout();
+                                }}
                             >
                               <FaSignOutAlt size={15} />
                               Logout
@@ -1001,8 +999,9 @@ const HeaderStyle2 = () => {
                         </Dropdown>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownCartButton">
-                            <img style={{ height: '20px', width: '20px'}} src={cart}/>
+                            <img style={{padding:'4px'}} src={cart}/>
                           </Dropdown.Toggle>
+
                           <Dropdown.Menu
                               align={"end"}
                               style={{ marginTop: "1vh" }}

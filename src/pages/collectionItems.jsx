@@ -52,8 +52,6 @@ const CollectionItems = () => {
         let ownerDt = snap.val();
         ownerName = ownerDt.displayName;
         ownerImage = ownerDt.pdpLink;
-        console.log("pdp : "+ownerDt.pdpLink);
-        console.log(ownerDt.displayName);
         setOwnerImage(ownerDt.pdpLink);
         setOwnerName(ownerDt.displayName);
       });

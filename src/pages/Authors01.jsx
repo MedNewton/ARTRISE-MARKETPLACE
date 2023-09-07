@@ -13,22 +13,15 @@ import { ref, onValue, get, update, set, child } from "firebase/database";
 import { useArtworkContext } from '../Store/ArtworkContext';
 import { useArtistContext } from '../Store/ArtistContext';
 
-
 const Authors01 = () => {
-    
     const [data] = useState(popularCollectionData);
-
     const { userArtist } = useArtworkContext();
     const {artists} = useArtistContext();
-
-
     const [visible , setVisible] = useState(20);
     const showMoreItems = () => {
         setVisible((prevValue) => prevValue + 3);
     }
-
     const selectedTags = [];
-
     function editTags(val, target){
         if(selectedTags.includes(val)){
             selectedTags.pop(val);
@@ -39,8 +32,6 @@ const Authors01 = () => {
             target.classList.remove('tag');
             target.classList.add('selectedTag');
         }
-    
-        console.log(selectedTags);
     }
 
     return (
@@ -49,8 +40,8 @@ const Authors01 = () => {
             <section className="tf-section our-creater dark-style2">
                 <div className="themesflat-container"
                 style={{
-                    paddingLeft: "1%",
-                    paddingRight: "1%",
+                    paddingLeft: "2%",
+                    paddingRight: "2%",
                     marginLeft: "0px",
                     marginRight: "0px",
                     width: "100%"

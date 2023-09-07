@@ -1,25 +1,27 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
-import { Modal } from "react-bootstrap";
-import Form from 'react-bootstrap/Form';
-
-import { useSDK } from '@thirdweb-dev/react';
-
-import Swal from 'sweetalert2';
+import {useState, useEffect} from 'react';
+import {Modal} from "react-bootstrap";
 
 import db from '../../firebase';
-import { ref, onValue, get, update, set, child } from "firebase/database";
-import { useAccount } from "wagmi";
+import {ref, get} from "firebase/database";
+import {useAccount} from "wagmi";
+import {ToastContainer, toast} from "react-toastify";
 
+const toastOptions = {
+    position: "top-center",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+}
 const ReferralModal = (props) => {
+    const {address, isConnected} = useAccount();
+    const [referralLink, setReferralLink] = useState("");
 
-    const { address, isConnected } = useAccount();
-    const [referralLink, setReferralLink] = useState("")
-    const share_url = window.location.href;
-    const title = "Artrise"
-
-    async function getReferralCode(){
+    async function getReferralCode() {
         const ThisUserRef = ref(db, "users/" + address);
         await get(ThisUserRef).then(async (snapshot) => {
             let dt = snapshot.val();
@@ -29,43 +31,61 @@ const ReferralModal = (props) => {
     }
 
     useEffect(() => {
-      getReferralCode();
+        getReferralCode();
     }, [])
-    
 
+    return (
+        <Modal
+            show={props.show}
+            onHide={props.onHide}
+        >
+            <Modal.Header closeButton></Modal.Header>
+            <div className="modal-body referral-modal-wrapper" >
+                <h4>Refer a friend to ArtRise</h4>
+                <p>Integrate your original physical artwork and turn it into a Hybrid NFT. Simply
+                    upload a photo of your artwork, fill out the artwork details and properties
+                    and we'll take care of the rest.</p>
+                <h5>Referral Link</h5>
+                <div className='d-flex'>
+                    <div
+                        className="btn btn-light referral-link-wrapper">
+                        <p className='pd-15'>{referralLink}</p>
+                        <div className="btn btn-primary" onClick={(e) => {
+                            e.preventDefault();
+                            navigator.clipboard.writeText(referralLink.toString())
+                            toast.success("Copied to Clipboard", toastOptions);
+                        }}>Copy
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="modal-body referral-modal-wrapper" >
+                <h5>Referral a member</h5>
+                <p>Integrate your original physical artwork and turn it into a Hybrid NFT. Simply
+                    upload a photo of your artwork, fill out the artwork details and properties
+                    and we'll take care of the rest.</p>
+            </div>
+            <div className="modal-body referral-modal-wrapper">
+                <h5>Referral an artist</h5>
+                <p>Integrate your original physical artwork and turn it into a Hybrid NFT. Simply
+                    upload a photo of your artwork, fill out the artwork details and properties
+                    and we'll take care of the rest.</p>
+            </div>
+            <ToastContainer
+                position="top-left"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+        </Modal>
 
-
-return (
-
-    <Modal
-    show={props.show}
-    onHide={props.onHide}
-  >
-    <Modal.Header closeButton></Modal.Header>
-
-    <div className="modal-body space-y-20 pd-40">
-        <p className="text-center"><span className="price color-popup">Refer a friend</span>
-        </p>
-        <p className="text-center ">By sending the link bellow to your friends and connections, you can invite them to join the ARTRISE community, and win great rewards!.</p>
-        <Form.Control type="text" placeholder={referralLink} readOnly />
-        <Link style={{display: "flex"}}
-        onClick={(e)=>{
-            e.preventDefault();
-            navigator.clipboard.writeText(referralLink.toString())
-            
-            Swal.fire({
-                icon: "success",
-                title: "Copied to clipboard",
-            });  
-        }}
-        ><div id='createCollection' className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close">Copy to clipboard</div></Link>
-        
-        
-
-    </div>
-    </Modal>
-    
-  );
+    );
 };
 
 export default ReferralModal;

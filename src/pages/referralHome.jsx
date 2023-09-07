@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate, withRouter } from "react-router-dom";
+import React, {useRef, useState, useEffect} from "react";
+import {Link, useNavigate, withRouter} from "react-router-dom";
 import Header from "../components/header/Header";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
@@ -8,146 +8,148 @@ import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
 import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
 import db from "../firebase";
 import storage from "../storage";
-import { ref, onValue, get, update, set, child } from "firebase/database";
-import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
+import {ref, onValue, get, update, set, child} from "firebase/database";
+import {ConnectWallet, useAddress} from "@thirdweb-dev/react";
 
 import Table from "react-bootstrap/Table";
 
 import {
-  ref as SRef,
-  getDownloadURL,
-  uploadBytesResumable,
+    ref as SRef,
+    getDownloadURL,
+    uploadBytesResumable,
 } from "firebase/storage";
 
 import ReferralModal from "../components/layouts/referralModal";
 
 const ReferralHome = () => {
-  const nav = useNavigate();
+    const [createModalShow, setCreateModalShow] = useState(false);
 
-  const address = useAddress();
-  const [createModalShow, setCreateModalShow] = useState(false);
-
-  return (
-    <div>
-      <HeaderStyle2 />
-
-      <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row profilePadding">
-            <div className="col-md-12" style={{ marginBottom: "3%" }}>
-              <h2 className="tf-title style4 mg-bt-38 ourArtists">Referral</h2>
-            </div>
-            <div className="referralContainer">
-              <div className="row referralBox">
-                <div className="col-md-6 referralBoxImage">
-                  <div className="referralImage"></div>
+    return (
+        <div>
+            <HeaderStyle2/>
+            <div className='referral-home-wrapper'>
+                <div className='flex-column-gap20'>
+                    <div>
+                        <h3>Referral</h3>
+                    </div>
+                    <div className='flex-row-align-center' style={{width: '100%', gap: "5%"}}>
+                        <div style={{width: '40%'}}>
+                            <div className="referralImage"></div>
+                        </div>
+                        <div className='flex-column-gap20' style={{width: '60%'}}>
+                            <h4>
+                                Spread the Rise of Hybrid Art - Join Our Referral Program
+                            </h4>
+                            <h6>
+                                Share the joy of art and be rewarded! Our referral program allows
+                                you to invite artists and art enthusiasts to ArtRise, and in return,
+                                you'll both unlock exciting benefits. Embrace the power of art and
+                                connections by joining our referral program today.
+                            </h6>
+                            <button
+                                className="refer-friend-button"
+                                id="submitBtn"
+                                type="button"
+                                onClick={() => {
+                                    setCreateModalShow(true);
+                                }}
+                            >
+                                Refer a friend
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div className="col-md-6 referralBoxText">
-                  <h5 className="referralBoxTitle">
-                    ARTRISE is a growing community !
-                  </h5>
-                  <h5 className="referralBoxLabel">
-                    Send your referral link to your fiends and invite them to
-                    join ARTRISE. on every refered memeber, you get amazing
-                    rewards!
-                  </h5>
-                  <button
-                    className="tf-button-submit mg-t-15"
-                    id="submitBtn"
-                    type="button"
-                    onClick={() => {
-                      setCreateModalShow(true);
-                    }}
-                  >
-                    Refer a friend
-                  </button>
+
+                <div className='flex-column-gap20'>
+                    <div>
+                        <h3>Referral rewards</h3>
+                    </div>
+                    <div>
+                        <h6>Empower Art, Earn Together</h6>
+                    </div>
+                    <div className='flex-row-align-center' style={{width: '100%', gap: "5%"}}>
+                        <div style={{width: '40%'}}>
+                            <div className="referralImage"></div>
+                        </div>
+                        <div className='flex-column-gap20' style={{width: '60%'}}>
+                            <h4>
+                                Referring a Member
+                            </h4>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% of member's purchase</p>
+                            </div>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% refund of the first purchase</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='flex-row-align-center' style={{width: '100%', gap: "5%"}}>
+                        <div style={{width: '40%'}}>
+                            <div className="referralImage"></div>
+                        </div>
+                        <div className='flex-column-gap20' style={{width: '60%'}}>
+                            <h4>
+                                Referring an Artists
+                            </h4>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% of the artist's sale</p>
+                            </div>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% of the artist's sale</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+
+                <div className="referralInbfoBox flex-column-gap20">
+                    <h3>Activity</h3>
+                    <Table striped bordered hover responsive style={{
+                        borderRadius: "15px"
+                    }}>
+                        <thead>
+                        <tr>
+                            <th>Referred</th>
+                            <th>Type</th>
+                            <th>Reward</th>
+                            <th>Collected</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>BVRTS</td>
+                            <td>Artist</td>
+                            <td>1% of artist's sale</td>
+                            <td>40$</td>
+                            <td>23/05/23</td>
+                        </tr>
+                        <tr>
+                            <td>Luiji</td>
+                            <td>Member</td>
+                            <td>1% of artist's sale</td>
+                            <td>20$</td>
+                            <td>18/05/23</td>
+                        </tr>
+                        <tr>
+                            <td>BVRTS</td>
+                            <td>Artist</td>
+                            <td>1% of artist's sale</td>
+                            <td>40$</td>
+                            <td>23/05/23</td>
+                        </tr>
+                        </tbody>
+                    </Table>
+                </div>
             </div>
-            <div className="referralInbfoBox">
-              <Table striped bordered hover responsive style={{
-                borderRadius: "15px"
-              }}>
-                <thead>
-                  <tr>
-                    <th>Referred</th>
-                    <th>By</th>
-                    <th>Referrer reward</th>
-                    <th>Function</th>
-                    <th>Referred reward</th>
-                    <th>Process</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Artist</td>
-                    <td>Artist / User / Collector</td>
-                    <td>1 artwork integration = 1 free mint + 1% of artist's sale</td>
-                    <td>Up to 10 & up to 3 months</td>
-                    <td>10 free mints  + 10 tickets</td>
-                    <td>from 15% to 16% for the artist</td>
-                  </tr>
-                  <tr>
-                    <td>Artist</td>
-                    <td>Artist / User / Collector</td>
-                    <td>1 artwork integration = 1 free mint + 3% of artist's sale</td>
-                    <td>Up to 50 & up to 3 months</td>
-                    <td>10 free mints  + 10 tickets</td>
-                    <td>from 15% to 17% for the artist</td>
-                  </tr>
-                  <tr>
-                    <td>Artist</td>
-                    <td>Artist / User / Collector</td>
-                    <td>1 artwork integration = 1 free mint + 5% of artist's sale</td>
-                    <td>Over 50% & up to 3 months</td>
-                    <td>10 free mints  + 10 tickets</td>
-                    <td>from 15% to 18% for the artist</td>
-                  </tr>
-                  <tr>
-                    <td>Artist</td>
-                    <td>Communities</td>
-                    <td>1 artwork integration = 5% of artist's sale</td>
-                    <td>Up to 3 months</td>
-                    <td>10 free mints  + 10 tickets</td>
-                    <td>from 15% to 20% for the artist</td>
-                  </tr>
-                  <tr>
-                    <td>User  / collector</td>
-                    <td>Artist / User / Collector</td>
-                    <td>Sale from referred = 5% of the platform fees on the sale</td>
-                    <td>Up to 10</td>
-                    <td>10 tickets</td>
-                    <td>5% of the ARTRISE fees</td>
-                  </tr>
-                  <tr>
-                    <td>User  / collector</td>
-                    <td>Artist / User / Collector</td>
-                    <td>Sale from referred = 7% of the platform fees on the sale</td>
-                    <td>Up to 50</td>
-                    <td>10 tickets</td>
-                    <td>7% of the ARTRISE fees</td>
-                  </tr>
-                  <tr>
-                    <td>User  / collector</td>
-                    <td>Artist / User / Collector</td>
-                    <td>Sale from referred = 10% of the platform fees on the sale</td>
-                    <td>Over 100</td>
-                    <td>10 tickets</td>
-                    <td>10% of the ARTRISE fees</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          </div>
+
+            <ReferralModal
+                show={createModalShow}
+                onHide={() => setCreateModalShow(false)}
+            />
+            <Footer/>
         </div>
-      </div>
-      <ReferralModal
-        show={createModalShow}
-        onHide={() => setCreateModalShow(false)}
-      />
-      <Footer />
-    </div>
-  );
+    );
 };
 
 export default ReferralHome;

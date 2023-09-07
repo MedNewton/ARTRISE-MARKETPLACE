@@ -21,7 +21,7 @@ const filterOptions = {
 
 const DisplayArtworks = (props) => {
     const data = props?.data;
-    const [visible, setVisible] = useState(8);
+    const [visible, setVisible] = useState(6);
     const showMoreItems = () => {
         setVisible((prevValue) => prevValue + 4);
     };
@@ -107,7 +107,7 @@ const DisplayArtworks = (props) => {
                 <div
                     className={showFilter ? 'd-flex flex-wrap flex-row artist-artworks-wrapper-collapsed' : 'd-flex flex-wrap flex-row artist-artworks-wrapper'}>
 
-                    {data.map((listing, index) => {
+                    {data.slice(0,visible).map((listing, index) => {
                         return (
                             <div key={index} style={{maxWidth: "300px"}}>
                                 <div className={`sc-card-product`}>
@@ -166,7 +166,6 @@ const DisplayArtworks = (props) => {
                                                     }}
                                                 >
                                                     ${(listing.price * usdPriceInEth).toFixed(2)}
-
                                                     &nbsp;
                                                     {" ≈ "}
                                                     &nbsp;
@@ -199,23 +198,21 @@ const DisplayArtworks = (props) => {
                     })}
 
                 </div>
-                {visible < data.length && (
-                    <div
-                        className="col-md-12 wrap-inner load-more text-center"
-                        hidden
-                    >
-                        <Link
-                            to="#"
-                            id="load-more"
-                            className="sc-button loadmore fl-button pri-3"
-                            onClick={showMoreItems}
-                        >
-                            <span>Load More</span>
-                        </Link>
-                    </div>
-                )}
             </div>
-
+            {visible < data.length && (
+                <div
+                    className="col-md-12 wrap-inner load-more text-center mb-20"
+                >
+                    <Link
+                        to="#"
+                        id="load-more"
+                        className="sc-button loadmore fl-button pri-3"
+                        onClick={showMoreItems}
+                    >
+                        <span>Load More</span>
+                    </Link>
+                </div>
+            )}
             <CardModal show={modalShow} onHide={() => setModalShow(false)}/>
         </div>
 

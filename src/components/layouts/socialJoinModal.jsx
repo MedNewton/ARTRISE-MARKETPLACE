@@ -52,7 +52,6 @@ const SocialJoinModal = (props) => {
 
   useEffect(() => {
     window.ire("identify", { customerId: localStorage.getItem("UserKey") });
-    console.log("impact test");
   }, []);
 
   async function passwordlessLogin(snapshot) {

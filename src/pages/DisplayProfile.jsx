@@ -77,7 +77,6 @@ const DisplayProfile = () => {
     async function getMemberData(id) {
         for (const a of user) {
             if (a.userId === id) {
-                console.log("abc  6 a:", a)
                 setId(a.userId);
                 setVerified(a?.verified)
                 setName(a?.name);

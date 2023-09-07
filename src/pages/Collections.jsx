@@ -57,8 +57,8 @@ const Collections = () => {
         <div
           className="themesflat-container"
           style={{
-            paddingLeft: "1%",
-            paddingRight: "1%",
+            paddingLeft: "2%",
+            paddingRight: "2%",
             marginLeft: "0px",
             marginRight: "0px",
             width: "100%",
