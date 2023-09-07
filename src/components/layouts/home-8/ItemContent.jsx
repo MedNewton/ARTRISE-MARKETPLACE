@@ -36,9 +36,13 @@ import { Accordion } from 'react-bootstrap-accordion'
 import SideBar from './SideBar';
 import DropsRaw from '../dropsRaw';
 import ArtworksRaw from '../artworksRaw';
+import DisplayArtworks from "../ProfileDisplay/DisplayArtworks";
+import { useArtworkContext } from '../../../Store/ArtworkContext';
+
 
 
 const ItemContent = () => {
+    const {lazyListed} = useArtworkContext();
 
     function weiToEther(wei){
         let ether = wei / 1000000000000000000;
@@ -550,20 +554,18 @@ const ItemContent = () => {
   return (
     
     <Fragment>
-        <div className="flat-tabs items">
-            <Tabs >
-                <TabList>
+        <div className="flat-tabs items" >
+            <Tabs  >
+                <TabList  style={{margin:'0px 2% 0px 2%'}}>
                     {
                         dataTab.map(data=> (
-                            <Tab key={data.id} >{data.title}</Tab>
+                            <Tab style={{marginRight:'20px',marginLeft:'20px'}}   key={data.id} >{data.title}</Tab>
                         ))
                     }
                 </TabList>
-                <TabPanel key={0}>
-                            <ArtworksRaw data={todayPickData}/>
-                            
-                            
-                        </TabPanel>
+                <TabPanel key={0} style={{padding:'95px 0px 0px 0px'}}>
+                    {lazyListed && <DisplayArtworks data={lazyListed}/>}
+                </TabPanel>
                         <TabPanel key={1}>
                         <div className="row">
                         <div className="col-12">
