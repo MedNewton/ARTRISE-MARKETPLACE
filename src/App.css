@@ -1014,18 +1014,24 @@ border-top-right-radius: 10px !important;
 
 #dropdownMenuButton {
   box-shadow: #020202 0px 0px 4px 0.5px;
-  background-color: #fff;
   border-radius: 10px;
-  border-color: #fff;
-  padding: 8px 8px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: transparent;
+  border-width: 0px;
 }
 
 #dropdownCartButton{
   box-shadow: #020202 0px 0px 4px 0.5px;
-  background-color: #fff;
   border-radius: 10px;
-  border-color: #fff;
-  padding: 8px 8px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: transparent;
+  border-width: 0px;
 }
 
 #profileTabDropdown{
@@ -1899,10 +1905,12 @@ a{
 
 #dropdownNotifButton{
   box-shadow: #020202 0px 0px 4px 0.5px;
-  background-color: #fff;
-  border-radius: 10px;
-  border-color: #fff;
-  padding: 8px 8px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: transparent;
+  border-width: 0px;
 }
 
 .is_dark .tf-button-submit{

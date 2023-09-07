@@ -25,13 +25,17 @@ import { useContract, useMarketplace, useListings } from "@thirdweb-dev/react";
 import {ref, update} from "firebase/database";
 import db from "../firebase";
 import {useAccount} from "wagmi";
-
+import DisplayArtworks from "../components/layouts/ProfileDisplay/DisplayArtworks";
+import {useArtworkContext} from "../Store/ArtworkContext";
+import {useProfileContext} from "../Store/ProfileContext";
+import profile from '../assets/images/icon/profile.png';
 
 const Home01 = () => {
-
-    const nav = useNavigate();
+    const {lazyListed} = useArtworkContext();
+    const {profileData} = useProfileContext();
     const { address, isConnected } = useAccount();
 
+    //function related to fetching user's instagram info 1
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -39,7 +43,7 @@ const Home01 = () => {
             fetchUserProfile(code);
         }
     }, []);
-
+    //function related to fetching user's instagram info 2
     const fetchUserProfile = async (code) => {
         const url = 'https://api.instagram.com/oauth/access_token';
         const clientId = 276266121931752; // instagram app id
@@ -65,9 +69,8 @@ const Home01 = () => {
             .catch(error => {
                 console.error('error:', error);
             });
-
     };
-
+    //function related to fetching user's instagram info 3
     const fetchUserProfileInfo = async (accessToken) => {
         try {
         const response = await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${accessToken}`);
@@ -88,21 +91,6 @@ const Home01 = () => {
     };
 
     useEffect(() => {
-        async function getUserInfo()
-        {
-            let userKey = localStorage.getItem('UserKey');
-            if(userKey && (userKey !== "") && (userKey !== " "))
-            {
-                let userName = localStorage.getItem('name');
-                let UserPdpLink = localStorage.getItem('pdpLink');
-            }
-        }
-        getUserInfo();
-        
-    }, []);
-
-    // Impact : 
-    useEffect(() => {
         window.ire('identify', { customerId: localStorage.getItem('UserKey') });
       }, []);
 
@@ -110,18 +98,29 @@ const Home01 = () => {
         <div className='home-1'>
             <HeaderStyle2 />
             <Slider data={heroSliderData} />
-            <TodayPicks data={todayPickData} />
+            <div>
+                <div>
+                    <h2 className="artists-page-title" style={{marginTop: '3%'}}>Artworks</h2>
+                </div>
+                {lazyListed && <DisplayArtworks data={lazyListed}/>}
+            </div>
             <LiveAuction data={liveAuctionData} />
             <LiveAuction2 data={liveAuctionData2} />
             <ComingSoon data={ComingSoonData} />
             <SeperatingHeader1/>
             <div className='btnDiv'>
-                <Link to={'//forms.gle/dVamYz7mYkfz7EaW7'}>
-                    <button className='artistButton'>Artist Application</button>
-                </Link>
-                
+                {profileData?.pdpLink ?
+                    <Link to={"/profile?id=" + profileData?.slug}>
+                        <div className="pdpSpace artistButton" id="pdp">
+                            <img onClick={() => {
+                            }} src={profileData?.pdpLink ? profileData?.pdpLink : profile} alt="User Profile"/>
+                        </div>
+                    </Link>
+                    :
+                    <Link to={'//forms.gle/dVamYz7mYkfz7EaW7'}>
+                        <button className='artistButton'>Artist Application</button>
+                    </Link>}
             </div>
-            
             <Create />
             <Footer />
         </div>

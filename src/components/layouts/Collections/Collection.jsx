@@ -25,7 +25,6 @@ const Collection = () => {
     async function getCollectionData(id) {
 
         for (let collection of collections) {
-            console.log("inside for loop collection:", collection);
             if (collection.id === id) {
                 setCover(collection.cover);
                 setName(collection.name);
