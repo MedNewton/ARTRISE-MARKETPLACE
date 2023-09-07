@@ -38,13 +38,13 @@ const ReferralHome = () => {
                         </div>
                         <div className='flex-column-gap20' style={{width: '60%'}}>
                             <h4>
-                                Integrate Your artwork
+                                Spread the Rise of Hybrid Art - Join Our Referral Program
                             </h4>
                             <h6>
-                                Integrate your original physical artwork and turn
-                                it into a Hybrid NFT. Simply upload a photo of
-                                your artwork, fill out the artwork details and
-                                properties and we'll take care of the rest.
+                                Share the joy of art and be rewarded! Our referral program allows
+                                you to invite artists and art enthusiasts to ArtRise, and in return,
+                                you'll both unlock exciting benefits. Embrace the power of art and
+                                connections by joining our referral program today.
                             </h6>
                             <button
                                 className="refer-friend-button"
@@ -64,20 +64,23 @@ const ReferralHome = () => {
                     <div>
                         <h3>Referral rewards</h3>
                     </div>
+                    <div>
+                        <h6>Empower Art, Earn Together</h6>
+                    </div>
                     <div className='flex-row-align-center' style={{width: '100%', gap: "5%"}}>
                         <div style={{width: '40%'}}>
                             <div className="referralImage"></div>
                         </div>
                         <div className='flex-column-gap20' style={{width: '60%'}}>
                             <h4>
-                                Refer a friend to become member
+                                Referring a Member
                             </h4>
-                            <h6>
-                                Inviter reward:
-                            </h6>
-                            <h6>
-                                Invitee reward:
-                            </h6>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% of member's purchase</p>
+                            </div>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% refund of the first purchase</p>
+                            </div>
                         </div>
                     </div>
 
@@ -87,14 +90,14 @@ const ReferralHome = () => {
                         </div>
                         <div className='flex-column-gap20' style={{width: '60%'}}>
                             <h4>
-                                Refer a friend to become artist
+                                Referring an Artists
                             </h4>
-                            <h6>
-                                Inviter reward:
-                            </h6>
-                            <h6>
-                                Invitee reward:
-                            </h6>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% of the artist's sale</p>
+                            </div>
+                            <div className='d-flex align-items-center'>
+                                <h6>Inviter reward:&emsp; </h6><p>5% of the artist's sale</p>
+                            </div>
                         </div>
                     </div>
                 </div>
