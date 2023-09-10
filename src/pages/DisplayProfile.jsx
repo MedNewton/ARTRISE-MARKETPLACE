@@ -18,13 +18,10 @@ import {useArtistContext} from "../Store/ArtistContext";
 import {useCollectionsContext} from "../Store/CollectionsContext";
 import {useUserContext} from "../Store/UserContext";
 
-
 const DisplayProfile = () => {
-
     const {lazyListed, userArtist} = useArtworkContext();
     const {collections} = useCollectionsContext();
     const {user, allMemberArtists} = useUserContext();
-
     const {address, isConnected} = useAccount();
     const currentUserKey = address ? address : localStorage.getItem("UserKey");
     const {contract} = useContract(
@@ -67,9 +64,9 @@ const DisplayProfile = () => {
                 setTwitterLink(a?.Twitter);
                 setWebsite(a?.website);
                 setArtistType(a?.artistType);
-                handleSetFollowers(a?.followers);
-                handleSetFollowing(a?.followedArtists);
-                handleSetFollowing(a?.following);
+                a?.followers && handleSetFollowers(a?.followers);
+                a?.followedArtists && handleSetFollowing(a?.followedArtists);
+                a?.following && handleSetFollowing(a?.following);
             }
         }
     }
@@ -88,23 +85,28 @@ const DisplayProfile = () => {
                 setTwitterLink(a?.Twitter);
                 setWebsite(a?.website);
                 setArtistType(a?.artistType);
-                handleSetFollowers(a?.followers);
-                handleSetFollowing(a?.followedArtists);
-                handleSetFollowing(a?.following);
+                a?.followers && handleSetFollowers(a?.followers);
+                a?.followedArtists && handleSetFollowing(a?.followedArtists);
+                a?.following && handleSetFollowing(a?.following);
                 // setUserArtworks(a?.artworks);
             }
         }
     }
 
     async function getCurrentUserData() {
-        const usersRef = ref(db, "users/" + currentUserKey);
-        await get(usersRef).then(async (snapshot) => {
-            let dt = snapshot.val();
-            setCurrentUserFollowing(dt.following);
-        });
-        if (currentUserFollowing.includes(id)) {
-            setFollowedText("Unfollow");
+        if(currentUserKey){
+            const usersRef = ref(db, "users/" + currentUserKey);
+            await get(usersRef).then(async (snapshot) => {
+                let dt = snapshot.val();
+                setCurrentUserFollowing(dt.following);
+            });
+            if (currentUserFollowing.includes(id)) {
+                setFollowedText("Unfollow");
+            }
+        }else{
+            setFollowedText("Login");
         }
+
     }
 
     async function getArtworks(id) {
@@ -114,6 +116,7 @@ const DisplayProfile = () => {
             }
         }
     }
+
     async function getCollections(id) {
         for (const a of collections) {
             if (a.owner === id) {

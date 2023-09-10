@@ -65,9 +65,9 @@ const Profile = () => {
       setAccountType(dt.accountType);
       setArtistType(dt.artistType);
       setSlug(dt.slug);
-      handleSetFollowers(dt?.followers);
-      handleSetFollowingArtists(dt?.followedArtists);
-      handleSetFollowing(dt?.following);
+      dt?.followers && handleSetFollowers(dt?.followers);
+      dt?.followedArtists && handleSetFollowingArtists(dt?.followedArtists);
+      dt?.following && handleSetFollowing(dt?.following);
       document.getElementById("pdp").style.backgroundImage = dt.pdpLink;
   }
 
@@ -116,9 +116,9 @@ const Profile = () => {
     setFollowersList((prevState) =>{
       let updatedList = [...prevState];
       for (let val of array) {
-        const found = allMemberArtists.find((user)=>user.userId === val);
-        if (found && (updatedList.findIndex((obj)=> obj.userId === found.userId) === -1)) {
-          updatedList.push({'name':found.name, 'userId':found.userId, 'type':(found?.verified ? "Artist" : "Member"), 'isDynamic':true});
+        const found = allMemberArtists?.find((user)=>user?.userId === val);
+        if (found && (updatedList?.findIndex((obj)=> obj?.userId === found?.userId) === -1)) {
+          updatedList?.push({'name':found?.name, 'userId':found.userId, 'type':(found?.verified ? "Artist" : "Member"), 'isDynamic':true});
         }
       }
       return updatedList;
@@ -128,9 +128,9 @@ const Profile = () => {
     setFollowingList((prevState) =>{
       let updatedList = [...prevState];
       for (let val of array) {
-        const found = allMemberArtists.find((user)=>user.userId === val);
-        if (found && (updatedList.findIndex((obj)=> obj.userId === found.userId) === -1)) {
-          updatedList.push({'name':found.name, 'userId':found.userId, 'type':(found?.verified ? "Artist" : "Member"), 'isDynamic':true});
+        const found = allMemberArtists?.find((user)=>user?.userId === val);
+        if (found && (updatedList?.findIndex((obj)=> obj?.userId === found?.userId) === -1)) {
+          updatedList?.push({'name':found?.name, 'userId':found?.userId, 'type':(found?.verified ? "Artist" : "Member"), 'isDynamic':true});
         }
       }
       return updatedList;
@@ -140,9 +140,9 @@ const Profile = () => {
     setFollowingList((prevState) =>{
       let updatedList = [...prevState];
       for (let val of array) {
-        const found = artists.find((user)=>user.slug === val);
-        if (found && (updatedList.findIndex((obj)=> obj.userId === found.slug) === -1)) {
-          updatedList.push({'name':found?.name, 'userId':found?.slug, 'type':'Artist', 'isDynamic':false});
+        const found = artists?.find((user)=>user?.slug === val);
+        if (found && (updatedList?.findIndex((obj)=> obj?.userId === found?.slug) === -1)) {
+          updatedList?.push({'name':found?.name, 'userId':found?.slug, 'type':'Artist', 'isDynamic':false});
         }
       }
       return updatedList;
@@ -156,13 +156,13 @@ const Profile = () => {
     handleShow();
   };
   function followerFollowingItemClick (item) {
-    if(item.isDynamic){
-    if(item.type === "Artist"){
+    if(item?.isDynamic){
+    if(item?.type === "Artist"){
       navigate(`/displayProfile?artist=${item?.userId}`)
-    }else if (item.type === 'Member'){
+    }else if (item?.type === 'Member'){
       navigate(`/displayProfile?member=${item?.userId}`)
     }
-    }else if(item.isDynamic === false){
+    }else if(item?.isDynamic === false){
       navigate(`/authors-02?artist=${item?.userId}`)
     }
   }
@@ -172,22 +172,22 @@ const Profile = () => {
       <HeaderStyle2 />
       <div className="tf-create-item tf-section" >
         <div className="themesflat-container" >
-          <div className="row profilePadding">
+          <div className="row">
             <div
-              className="row userCoverSection"
-              id="userCover"
-              style={{ height:"30vh", backgroundImage: `url(${coverLink})` }}
+                className="userCoverSection"
+                id="userCover"
+                style={{backgroundImage: `url(${coverLink ? coverLink : ""})`}}
             ></div>
             <div className="col-md-12 col-lg-12 col-sm-12 col-12 profileInfoSection">
-              <div className="row">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-12 pdpContainer">
-                  <div className="pdpSpace" id="pdp">
-                    <img src={pdpLink} alt="" />
+              <div>
+                <div className="pdpContainer">
+                  <div className="pdpSpace artistpdpSpace" id="pdp">
+                    <img src={pdpLink ? pdpLink : ""} alt="" />
                   </div>
                 </div>
               </div>
               <div className="userDataContainer">
-                <h5 className="userName">{displayName}</h5>
+                <h5 className="userName">{displayName ? displayName : "Unnamed"}</h5>
                 <p className="userAttribution">
                   {accountType === "artist" ? `${artistType ? artistType : "Artist"}` : "Member"}
                 </p>
@@ -207,11 +207,11 @@ const Profile = () => {
                 </div>
                 <div className="folContainer">
                   <div className="ContainerofFollowers" onClick = {()=>{handleFollowersClick()}}>
-                    <h5 className="dataOfFollowers">{followersList.length}</h5>
+                    <h5 className="dataOfFollowers">{followersList?.length}</h5>
                     <h5 className="titleOfFollowers">followers</h5>
                   </div>
                   <div className="ContainerofFollowing"  onClick = {()=>{handleFollowingClick()}}>
-                    <h5 className="dataOfFollowing">{followingList.length}</h5>
+                    <h5 className="dataOfFollowing">{followingList?.length}</h5>
                     <h5 className="titleOfFollowing">following</h5>
                   </div>
                 </div>
@@ -269,18 +269,17 @@ const Profile = () => {
                 </Tab>
               </TabList>
             <TabPanel key={0}>
-
               {!isLoading && ownedNFTs && address
-                  ? ownedNFTs.map((nft) => {
-                    if (nft.metadata.id != 0) {
+                  ? ownedNFTs?.map((nft) => {
+                    if (nft?.metadata?.id !== 0) {
                       return (
                           <div
-                              key={nft.metadata.id}
+                              key={nft?.metadata?.id}
                               className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
                           >
                             <div className={`sc-card-product`}>
                               <div className="card-media">
-                                <img src={nft.metadata.image} alt="" />
+                                <img src={nft?.metadata?.image} alt="" />
                                 <Link
                                     to="/"
                                     className="wishlist-button heart"
@@ -293,7 +292,7 @@ const Profile = () => {
                                 </div>
                               </div>
                               <div className="card-title">
-                                <h5 className="style2">{nft.metadata.name}</h5>
+                                <h5 className="style2">{nft?.metadata?.name}</h5>
                               </div>
                               <div className="card-bottom">
                                 <Link to={"/"} className="buyNowBtn">
@@ -308,11 +307,10 @@ const Profile = () => {
                     }
                   })
                   : ""}
-              {address
-                  ? lazyOwned.map((nft, index) => {
+              {address && lazyOwned?.map((nft, index) => {
                     if (nft) {
-                      let id = nft.id;
-                      if(nft.listable){
+                      let id = nft?.id;
+                      if(nft?.listable){
                         return (
                             <div
                                 key={index}
@@ -321,12 +319,12 @@ const Profile = () => {
                               <div className={`sc-card-product`}>
                                 <div className="card-media">
                                   <Link to={"/private-display?id=" + id}>
-                                    <img src={nft.data.image} alt="" />
+                                    <img src={nft?.data?.image} alt="" />
                                   </Link>
                                 </div>
                                 <div className="card-title">
                                   <Link to={"/private-display?id=" + id}>
-                                    <h5 className="style2">{nft.data.name}</h5>
+                                    <h5 className="style2">{nft?.data?.name}</h5>
                                   </Link>
                                 </div>
                                 <div className="card-bottom">
@@ -352,12 +350,12 @@ const Profile = () => {
                               <div className={`sc-card-product`}>
                                 <div className="card-media">
                                   <Link to={"/artwork-dettails?id=" + id}>
-                                    <img src={nft.data.image} alt="" />
+                                    <img src={nft?.data?.image} alt="" />
                                   </Link>
                                 </div>
                                 <div className="card-title">
                                   <Link to={"/artwork-dettails?id=" + id}>
-                                    <h5 className="style2">{nft.data.name}</h5>
+                                    <h5 className="style2">{nft?.data?.name}</h5>
                                   </Link>
                                 </div>
 
@@ -367,8 +365,7 @@ const Profile = () => {
                       }
 
                     }
-                  })
-                  : ""}
+                  })}
             </TabPanel>
             <TabPanel key = {1}>
               <Tokenized/>
@@ -394,7 +391,7 @@ const Profile = () => {
           </Modal.Header>
           <Modal.Body style={{paddingTop:'0px'}}>
 
-            {showFollowers ? followersList : followingList.map((item, index)=>{
+            {showFollowers ? followersList : followingList?.map((item, index)=>{
               return(
               <div className="search-item" key={index} onClick={() =>followerFollowingItemClick(item)}>
               <h5>{item?.name}</h5>
