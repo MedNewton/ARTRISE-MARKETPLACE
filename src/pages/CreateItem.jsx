@@ -484,9 +484,9 @@ const CreateItem = () => {
 
                                 <h4 className="title-create-item">
                                     Collection name{" "}
-                                    <small style={{fontWeight: "500"}}>
+                                    <p style={{fontWeight: "500"}}>
                                         {"This is the collection where your item will appear."}
-                                    </small>
+                                    </p>
                                 </h4>
                                 <Dropdown>
                                     <Dropdown.Toggle
@@ -637,10 +637,15 @@ const CreateItem = () => {
 
                                     <form action="#" className="uploadFile-form mb-35">
                                         <div>
-                                            <h4 className="mb-4">Upload physical images of the artwork</h4>
+                                            <h4 className="title-create-item">
+                                                Upload physical images of the artwork{" "}
+                                                <small style={{fontWeight: "500"}}>
+                                                    Upload 2 images: front and back.
+                                                </small>
+                                            </h4>
                                             <span>
-                      (PNG, JPG, GIF, WEBP or MP4. Max 200mb.)
-                    </span>
+                                              (PNG, JPG, GIF, WEBP or MP4. Max 200mb.)
+                                            </span>
                                         </div>
                                         <div>
                                             <label className="uploadFile-button" htmlFor="file">Upload file</label>

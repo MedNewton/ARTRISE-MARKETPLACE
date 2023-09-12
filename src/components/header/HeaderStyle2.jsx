@@ -589,6 +589,7 @@ const HeaderStyle2 = () => {
 
                           <Dropdown.Menu
                             align={"end"}
+                            style={{ marginTop: "1vh" }}
                           >
                             <Dropdown.Item href={"/profile?id=" + slug}>
                               <FaRegUser size={15} />

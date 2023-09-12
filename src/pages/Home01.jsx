@@ -108,7 +108,7 @@ const Home01 = () => {
             <LiveAuction2 data={liveAuctionData2} />
             <ComingSoon data={ComingSoonData} />
             <SeperatingHeader1/>
-            <div className='btnDiv'>
+            <div className='btnDiv' style={{padding:'20px 0px'}}>
                 {profileData?.pdpLink ?
                     <Link to={"/profile?id=" + profileData?.slug}>
                         <div className="pdpSpace artistButton" id="pdp">
