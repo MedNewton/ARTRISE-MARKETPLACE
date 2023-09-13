@@ -131,7 +131,7 @@ const routes = [
   { path: '/displayProfile', component:<DisplayProfile/>},
   { path: '/collection', component:<Collection/>},
   { path: '/learn', component:<Learn/>},
-  { path: '/learndetail', component: <LearnResourceDetail/>}
+  { path: '/learn/*', component: <LearnResourceDetail/>}
 
 ]
 

@@ -2965,14 +2965,17 @@ Collections-filter-wrapper{
 
 .article-container {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .article {
-  flex: 0 0 calc(33.33% - 10px);
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: calc(33.33% - 15px);
   text-align: left;
   transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  margin-top: 20px;
 }
 
 .article:hover {
@@ -3008,8 +3011,9 @@ Collections-filter-wrapper{
   line-height: 1.5;
   text-align: left;
 }
-.small-heading-text-style{
-  font-size: 1.5rem;
+
+.resource-article-date-text-style{
+  font-size: 1.2rem;
   letter-spacing: 1px;
 }
 .learn-resource-padding {
@@ -3022,8 +3026,12 @@ Collections-filter-wrapper{
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  padding-top: 50%;
+  padding-top: 100%;
   border: solid 10px #f6f6f6;
+  border-top-width: 35px;
+  border-bottom-width: 35px;
+  background-color: #f6f6f6;
+
 }
 
 .resource-image {
@@ -3033,6 +3041,7 @@ Collections-filter-wrapper{
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 20px;
 }
 
 
@@ -3042,7 +3051,9 @@ Collections-filter-wrapper{
   flex-direction: column;
 }
 .learn-resource-navigation {
-  margin: 15px 0;
+  margin: 15px 0px 45px 0px;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
 }
 
 .learn-resource-detail-article-wrapper {
@@ -3062,11 +3073,14 @@ Collections-filter-wrapper{
   border-radius: 5px;
 }
 .learn-resource-detail-headings-wrapper{
-  padding: 4% 0% 4% 8%;
+  padding: 4% 4% 4% 8%;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  line-height: normal;
 }
 .learn-resource-detail-paragraph {
   width: 70%;
-  padding: 10px 20px 0px 20px;
+  padding: 0px 10px 0px 20px;
 }
 .learn-article-title {
   font-size: 1.8rem;
