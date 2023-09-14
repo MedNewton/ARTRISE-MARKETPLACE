@@ -31,7 +31,7 @@ export const UserProvider = ({children}) => {
                         followers:a?.followers,
                         following:a?.following,
                         slug: a?.slug,
-                        verified: a?.verified,
+                        verified: false,
                         artworks: undefined
                     }
                     setUser(current => [...current, userItem]);

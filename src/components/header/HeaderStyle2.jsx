@@ -166,7 +166,7 @@ const HeaderStyle2 = () => {
     } else if (item?.type === 'Artist') {
       if(item?.isDynamic){
         if(item?.id === currentUserUserKey){
-          navigate(`/profile?id=${currentUserSlug}`);
+          navigate(`/displayProfile?artist=${currentUserUserKey}`);
         }else{
           navigate(`/displayProfile?artist=${item?.id}`)
         }
@@ -181,7 +181,7 @@ const HeaderStyle2 = () => {
       }
     }else if (item?.type === 'Member') {
       if(item.id === currentUserUserKey){
-        navigate(`/profile?id=${currentUserSlug}`);
+        navigate(`/displayProfile?member=${currentUserUserKey}`);
       }else{
         navigate(`/displayProfile?member=${item?.id}`)
       }
