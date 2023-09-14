@@ -496,7 +496,7 @@ const HeaderStyle2 = () => {
                         <Link to={"/referral-program"}>Referral</Link>
                       </li>
                       <li key={9} className="menu-item mobileOnly">
-                        <Link to={"/faq"}>Learn</Link>
+                        <Link to={"/learn"}>Learn</Link>
                       </li>
                       <li key={10} className="menu-item mobileOnly">
                         <Link to={"/ressources"} target="_blank">
@@ -617,7 +617,7 @@ const HeaderStyle2 = () => {
                               <FaLink size={15} />
                               Referral
                             </Dropdown.Item>
-                            <Dropdown.Item href="/faq">
+                            <Dropdown.Item href="/learn">
                               <FaBook size={15} />
                               Learn
                             </Dropdown.Item>
@@ -855,7 +855,7 @@ const HeaderStyle2 = () => {
                         <Link to={"/referral-program"}>Referral</Link>
                       </li>
                       <li key={10} className="menu-item mobileOnly">
-                        <Link to={"/faq"}>Learn</Link>
+                        <Link to={"/learn"}>Learn</Link>
                       </li>
                       <li key={11} className="menu-item mobileOnly">
                         <Link to={"/ressources"} target="_blank">
@@ -969,7 +969,7 @@ const HeaderStyle2 = () => {
                               <FaLink size={15} />
                               Referral
                             </Dropdown.Item>
-                            <Dropdown.Item href="/faq">
+                            <Dropdown.Item href="/learn">
                               <FaBook size={15} />
                               Learn
                             </Dropdown.Item>

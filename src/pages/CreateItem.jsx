@@ -194,12 +194,10 @@ const CreateItem = () => {
     function addTrait() {
         //traitsList.push(TraitForm("Property", "Value"));
         setTraits([...traits, TraitForm("Property", "Value")]);
-        console.log(traits);
     }
 
     function removeTrait(index) {
         setTraits(traits.filter((value, i) => i != index));
-        console.log(traits);
     }
 
     async function handleFileChange(e) {
@@ -238,7 +236,7 @@ const CreateItem = () => {
             );
             return response.data.IpfsHash;
         } catch (error) {
-            console.error("error", error);
+            toast.error("Problem while Uploading images to IPFS ...", toastOptions);
             throw error;
         }
     }
@@ -270,50 +268,57 @@ const CreateItem = () => {
                 localStorage.setItem("physicalImagesURLs", urls);
             }
         } catch (error) {
-            console.error("error", error);
+            toast.error("Problem while Uploading multiple images to IPFS ...", toastOptions);
             throw error;
         }
     }
 
     function createMetadata() {
-        toast.info("Creating metadata ...", toastOptions);
-        let urls = localStorage.getItem("physicalImagesURLs").split("|");
-        urls.shift();
-        console.log(urls);
-        const physicalImages = urls.map((url, index) => ({
-            image_title: `image ${index + 1}`,
-            image_url: url,
-        }));
+        try {
+            toast.info("Creating metadata ...", toastOptions);
+            let urls = localStorage.getItem("physicalImagesURLs").split("|");
+            urls.shift();
+            const physicalImages = urls.map((url, index) => ({
+                image_title: `image ${index + 1}`,
+                image_url: url,
+            }));
 
-        const metadata = {
-            name: title,
-            description: description,
-            image: localStorage.getItem("mainMediaURL").toString(),
-            external_link: externalLink,
-            physical_images: physicalImages,
-            attributes: traits,
-        };
-
-        console.log(metadata);
-        return metadata;
+            const metadata = {
+                name: title,
+                description: description,
+                image: localStorage.getItem("mainMediaURL").toString(),
+                external_link: externalLink,
+                physical_images: physicalImages,
+                attributes: traits,
+            };
+            return metadata;
+        } catch (error) {
+            toast.error("Problem occurred while Creating metadata ...", toastOptions);
+            throw error;
+        }
     }
 
     async function uploadMetadata(metadata) {
-        toast.info("Uploading metadata ...", toastOptions);
-        const response = await axios.post(
-            "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-            metadata,
-            {
-                headers: {
-                    pinata_api_key: "60828f433db3b1676e12",
-                    pinata_secret_api_key:
-                        "95b607311bab336cf4506cc84805ead472dff424782b1a3838e61fa35534b6fc",
-                },
-            }
-        );
-        const metadataUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-        localStorage.setItem('newURI', metadataUrl);
-        return metadataUrl;
+        try {
+            toast.info("Uploading metadata ...", toastOptions);
+            const response = await axios.post(
+                "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+                metadata,
+                {
+                    headers: {
+                        pinata_api_key: "60828f433db3b1676e12",
+                        pinata_secret_api_key:
+                            "95b607311bab336cf4506cc84805ead472dff424782b1a3838e61fa35534b6fc",
+                    },
+                }
+            );
+            const metadataUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+            localStorage.setItem('newURI', metadataUrl);
+            return metadataUrl;
+        } catch (error) {
+            toast.error("Problem occurred while Uploading metadata ...", toastOptions);
+            throw error;
+        }
     }
 
     async function getCollectionID(newID) {
@@ -341,7 +346,8 @@ const CreateItem = () => {
                 toast.success("Collection Created!", toastOptions);
                 return newCollectionID;
             } catch (error) {
-                console.log("error", error)
+                toast.error("Problem occurred while Creating Collection ...", toastOptions);
+                throw error;
             }
         } else if (artistCollections.length > 0) {
             const collRef = await ref(db, "collections/" + collectionID);
@@ -357,41 +363,56 @@ const CreateItem = () => {
             return collectionID;
         }
     }
+
     async function createLazyMintingNFT(uri) {
-        let newID = (Math.random() + 1).toString(36).substring(2);
-        const artworksRef = ref(db, "artworks/" + newID);
-        await signMessage({
-            message:
-                "Lazy minting \nThis action is signed by a public address wallet.\nThe asset generated by this action signature is not available for transfer of listing on secondary marketplaces, unless it has submitted a signed buying action "
-                +
-                "\nRarible Token ID : " + newID.toString()
-                + "\nIPFS PUBLIC URI: " + localStorage.getItem("newURI")
-        })
-        toast.info("Minting ...", toastOptions);
-        const collID = await getCollectionID(newID);
-        await set(artworksRef, {
-            type: "lazyMinted",
-            ipfsURI: localStorage.getItem("newURI"),
-            owner: address.toString(),
-            collection: collID,
-            listed: "no"
-        })
-        toast.success("Minted ! redirecting you to homepage...", toastOptions);
-        delay(8000);
-        window.location.href = '/';
+        try {
+            // Generate a new ID for the NFT
+            let newID = (Math.random() + 1).toString(36).substring(2);
+            // Define a reference to the artworks in the database
+            const artworksRef = ref(db, "artworks/" + newID);
+            // Sign a message (you might want to provide more context here)
+            await signMessage({
+                message: `Lazy minting\nThis action is signed by a public address wallet.\nThe asset generated by this action signature is not available for transfer or listing on secondary marketplaces, unless it has submitted a signed buying action\nRarible Token ID: ${newID.toString()}\nIPFS PUBLIC URI: ${localStorage.getItem("newURI")}`,
+            });
+            // Toast to inform the user
+            toast.info("Minting ...", toastOptions);
+            // Get the collection ID
+            const collID = await getCollectionID(newID);
+            // Set the artwork data in the database
+            await set(artworksRef, {
+                type: "lazyMinted",
+                ipfsURI: localStorage.getItem("newURI"),
+                owner: address.toString(),
+                collection: collID,
+                listed: "no",
+            });
+            // Toast to inform the user
+            toast.success("Minted! Redirecting you to the homepage...", toastOptions);
+            // Delay before redirecting (consider whether 8 seconds is necessary)
+            await delay(7000);
+            // Redirect to the homepage
+            window.location.href = '/';
+        } catch (error) {
+            toast.error("Problem occurred while adding artwork to DB ...", toastOptions);
+            throw error;
+        }
     }
 
     async function mintButtonClickHandler() {
-        setMintButtonDisabled(true);
-        toast.info(
-            "Uploading main NFT image to the IPFS ...",toastOptions
-        );
-        await uploadToIPFS(media);
-        await uploadMultipleToIPFS(physicalMedia);
-        let metadata = await createMetadata();
-        let uri = await uploadMetadata(metadata);
-        await createLazyMintingNFT(uri);
+        try {
+            setMintButtonDisabled(true);
+            toast.info("Uploading main NFT image to IPFS ...", toastOptions);
+            await uploadToIPFS(media);
+            await uploadMultipleToIPFS(physicalMedia);
+            let metadata = await createMetadata();
+            let uri = await uploadMetadata(metadata);
+            await createLazyMintingNFT(uri);
+        } catch (error) {
+            toast.error("Problem occurred while Minting Artwork ...", toastOptions);
+            throw error;
+        }
     }
+
 
     return (
         <div className="create-item">
