@@ -12,11 +12,11 @@ export const UserProvider = ({children}) => {
         const userRef = ref(db, 'users/');
         await get(userRef).then(async (snapshot) => {
             let dt = snapshot.val();
-            for (let userKey in dt) {
-                let a = dt[userKey];
+            for (let UserKey in dt) {
+                let a = dt[UserKey];
                 if(a.verified === "no" || a.verified === false || a.verified === ""){
                     let userItem = {
-                        userId: userKey,
+                        userId: UserKey,
                         name: a?.name,
                         bio: a?.bio,
                         pdpLink: a?.pdpLink,
@@ -31,13 +31,13 @@ export const UserProvider = ({children}) => {
                         followers:a?.followers,
                         following:a?.following,
                         slug: a?.slug,
-                        verified: a?.verified,
+                        verified: false,
                         artworks: undefined
                     }
                     setUser(current => [...current, userItem]);
                 }
                 let memberArtist = {
-                    userId: userKey,
+                    userId: UserKey,
                     name: a?.name,
                     bio: a?.bio,
                     pdpLink: a?.pdpLink,

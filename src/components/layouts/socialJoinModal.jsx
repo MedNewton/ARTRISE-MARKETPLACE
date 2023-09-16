@@ -361,12 +361,64 @@ const SocialJoinModal = (props) => {
       });
   };*/
 
-  function signInWithFacebook(response){
-    console.log(response)
-    let facebookUserData = response;
-    let facebookUserID = facebookUserData.id;
-    checkUserExistsFacebook(facebookUserID, facebookUserData);
+  async function signInWithFacebook(){
+    const provider = await new FacebookAuthProvider();
+    await signInWithPopup(auth, provider)
+        .then((response)=>{
+          let facebookUserData = response._tokenResponse;
+          let facebookUserID = facebookUserData.localId;
+          checkUserExistsFacebook(facebookUserID, facebookUserData);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+
+  //   <script>
+  //   window.fbAsyncInit = function() {
+  //     FB.init({
+  //       appId      : '{your-app-id}',
+  //       cookie     : true,
+  //       xfbml      : true,
+  //       version    : '{api-version}'
+  //     });
+  //
+  //     FB.AppEvents.logPageView();
+  //
+  //   };
+  //
+  //   (function(d, s, id){
+  //     var js, fjs = d.getElementsByTagName(s)[0];
+  //     if (d.getElementById(id)) {return;}
+  //     js = d.createElement(s); js.id = id;
+  //     js.src = "https://connect.facebook.net/en_US/sdk.js";
+  //     fjs.parentNode.insertBefore(js, fjs);
+  //   }(document, 'script', 'facebook-jssdk'));
+  // </script>
+
+
+
+    // <fb:login-button
+    // scope="public_profile,email"
+    // onlogin="checkLoginState();">
+    //     </fb:login-button>
+    //
+    //
+    //
+    // <fb:login-button
+    //     scope="public_profile,email"
+    //     onlogin="checkLoginState();">
+    // </fb:login-button>
+
   }
+
+
+  //previous code
+  // function signInWithFacebook(response){
+  //   console.log(response)
+  //   let facebookUserData = response;
+  //   let facebookUserID = facebookUserData.id;
+  //   checkUserExistsFacebook(facebookUserID, facebookUserData);
+  // }
 
 
   const onLoginStart = useCallback(() => {
@@ -406,6 +458,7 @@ const SocialJoinModal = (props) => {
         <LoginSocialFacebook
           appId="775659780546554"
           onResolve={({provider, data}) => {
+            console.log("asdf 0 i am in onResolve of SignUpWithFacebook with data:",data);
             signInWithFacebook(data)
           }}
           onReject={(error) => {
@@ -413,8 +466,13 @@ const SocialJoinModal = (props) => {
           }}
         >
           <FacebookLoginButton
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("asdf 0 i am in onResolve of SignUpWithFacebook with data:");
+                signInWithFacebook();
+              }}
             style={{
-              marginTop: "2vh",
+              marginTop: "10vh",
               marginBottom: "2vh",
               borderRadius: "20px",
             }}

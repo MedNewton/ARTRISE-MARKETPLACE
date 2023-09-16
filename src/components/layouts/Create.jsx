@@ -50,7 +50,7 @@ const Create = () => {
         
     ]
     return (
-        <section className="tf-box-icon create style1 tf-section">
+        <section className=" style1">
             <div className="themesflat-container"
             style={{
                 paddingLeft: "2%",

@@ -154,13 +154,20 @@
     width: calc(25% - 26px);
   }
   .sc-box-icon-inner.style3 {
-    padding-left: 80px;
+    /*padding-left: 80px;*/
+    padding: 0% 0% 0% 2%;
+    column-gap: 100px;
+    display: flex;
+    align-items: center;
 }
   
 }
 @media only screen and (max-width :1430px) {
   .authors-2 .react-tabs__tab-list {
-    padding: 0 2% 0 4.5%;
+    padding: 0px 0px 0px 2%;
+    column-gap: 100px;
+    display: flex;
+    align-items: center;
   }
   .tab-authors .author-profile {
     padding-bottom: 6.5%;
@@ -401,6 +408,7 @@
 }
 .authors-2 .react-tabs__tab {
   padding: 2.2% 54px 2.5%;
+  font-size: 16px;
 }
 .home-1 .sc-box-icon-inner {
   margin-left: -30px;

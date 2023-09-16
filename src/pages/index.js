@@ -62,6 +62,8 @@ import Artwork from "./artwork";
 import CollectionItems from "./collectionItems";
 import DisplayProfile from "./DisplayProfile";
 import Collection from "../components/layouts/Collections/Collection";
+import Learn from "./Learn";
+import LearnResourceDetail from "./LearnResourceDetail";
 
 const routes = [
   { path: '/', component: <Home01 />},
@@ -128,6 +130,9 @@ const routes = [
   { path: '/pending-tokenizations', component: <MyPendingArtworks />},
   { path: '/displayProfile', component:<DisplayProfile/>},
   { path: '/collection', component:<Collection/>},
+  { path: '/learn', component:<Learn/>},
+  { path: '/learn/*', component: <LearnResourceDetail/>}
+
 ]
 
 export default routes;

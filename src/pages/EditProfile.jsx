@@ -92,12 +92,12 @@ const EditProfile = () => {
     });
   }
     async function updateProfile() {
-        const userKey = address ? address : localStorage.getItem("UserKey");
+        const UserKey = address ? address : localStorage.getItem("UserKey");
         const isArtist = accountType === 'artist';
         const isVerified = verified === true;
 
         if (isArtist && isVerified) {
-            await update(ref(db, "users/" + userKey), {
+            await update(ref(db, "users/" + UserKey), {
                 Discord: discordLink,
                 Facebook: facebookLink,
                 Instagram: instagram,
@@ -131,7 +131,7 @@ const EditProfile = () => {
                 confirmButtonText: "Let's Verify!",
             });
         } else if (!isArtist) {
-            await update(ref(db, "users/" + userKey), {
+            await update(ref(db, "users/" + UserKey), {
                 Discord: discordLink,
                 Facebook: facebookLink,
                 Instagram: instagram,

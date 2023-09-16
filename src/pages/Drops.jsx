@@ -43,8 +43,8 @@ const Drops = () => {
     useEffect(() => {
         async function getUserInfo()
         {
-            let userKey = localStorage.getItem('UserKey');
-            if(userKey && (userKey !== "") && (userKey !== " "))
+            let UserKey = localStorage.getItem('UserKey');
+            if(UserKey && (UserKey !== "") && (UserKey !== " "))
             {
                 let userName = localStorage.getItem('name');
                 let UserPdpLink = localStorage.getItem('pdpLink');

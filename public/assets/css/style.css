@@ -1376,8 +1376,8 @@ header{
 
 .SeparatorTitle2{
     font-size: 5em !important;
-    margin-bottom: 50px !important;
-    margin-top: 150px !important;
+    /*margin-bottom: 50px !important;*/
+    /*margin-top: 50px !important;*/
 }
 
 .createSectionItems{

@@ -170,10 +170,10 @@ const Authors02 = () => {
     const usersRef = ref(db, "users/");
     await get(usersRef).then(async (snapshot) => {
       let dt = snapshot.val();
-      for (let userKey in dt) {
-        let a = dt[userKey];
+      for (let UserKey in dt) {
+        let a = dt[UserKey];
         if (a.slug === slug) {
-          setId(userKey);
+          setId(UserKey);
           setName(a?.name);
           setBio(a?.description);
           setPdp(a?.pdpLink);

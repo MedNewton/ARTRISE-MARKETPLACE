@@ -62,7 +62,7 @@ const WalletConnect = () => {
     )
 
     const nav = useNavigate();
-    const userKey = localStorage.getItem('UserKey');
+    const UserKey = localStorage.getItem('UserKey');
 
     const connectWallet = async (e) => {
         e.preventDefault();
