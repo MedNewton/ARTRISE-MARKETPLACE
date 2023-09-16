@@ -51,9 +51,9 @@ const Header = () => {
     
 
 
-    const userKey = localStorage.getItem('UserKey');
+    const UserKey = localStorage.getItem('UserKey');
 
-    if(userKey && (userKey !== "") && (userKey !== " "))
+    if(UserKey && (UserKey !== "") && (UserKey !== " "))
     {
         return (
             <header id="header_main" className="header_1 js-header" ref={headerRef} >

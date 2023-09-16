@@ -32,7 +32,11 @@ import profile from '../assets/images/icon/profile.png';
 
 const Home01 = () => {
     const {lazyListed} = useArtworkContext();
-    const {profileData} = useProfileContext();
+    const {profileData, lazyOwned, dispatch} = useProfileContext();
+    let UserKey = localStorage.getItem("UserKey");
+    let accountTypeChoice = localStorage.getItem("accountTypeChoice")
+
+
     const { address, isConnected } = useAccount();
 
     //function related to fetching user's instagram info 1
@@ -77,8 +81,8 @@ const Home01 = () => {
         const data = await response.json();
         if (data.username) {
             const userProfileLink = `https://www.instagram.com/${data.username}`;
-            const userKey = address ? address : localStorage.getItem("UserKey");
-            await update(ref(db, "users/" + userKey), {
+            const UserKey = address ? address : localStorage.getItem("UserKey");
+            await update(ref(db, "users/" + UserKey), {
                 Instagram: userProfileLink,
             });
             window.close();
@@ -109,17 +113,44 @@ const Home01 = () => {
             <ComingSoon data={ComingSoonData} />
             <SeperatingHeader1/>
             <div className='btnDiv' style={{padding:'20px 0px'}}>
-                {profileData?.pdpLink ?
-                    <Link to={"/profile?id=" + profileData?.slug}>
-                        <div className="pdpSpace artistButton" id="pdp">
-                            <img onClick={() => {
-                            }} src={profileData?.pdpLink ? profileData?.pdpLink : profile} alt="User Profile"/>
-                        </div>
-                    </Link>
+                {UserKey ?
+                    <>
+                        {accountTypeChoice === "artist" &&
+                            <Link to={"/displayProfile?artist=" + UserKey}>
+                                <div className="pdpSpace artistButton" id="pdp">
+                                    <img onClick={() => {
+                                    }} src={profileData?.pdpLink ? profileData?.pdpLink : profile} alt="User Profile"/>
+                                </div>
+                            </Link>
+                        }
+                        {accountTypeChoice === "user" &&
+                            <Link to={"/displayProfile?artist=" + UserKey}>
+                                <div className="pdpSpace artistButton" id="pdp">
+                                    <img onClick={() => {
+                                    }} src={profileData?.pdpLink ? profileData?.pdpLink : profile} alt="User Profile"/>
+                                </div>
+                            </Link>
+                        }
+                    </>
                     :
-                    <Link to={'//forms.gle/dVamYz7mYkfz7EaW7'}>
-                        <button className='artistButton'>Artist Application</button>
-                    </Link>}
+                    (
+                        <Link to={'//forms.gle/dVamYz7mYkfz7EaW7'}>
+                            <button className='artistButton'>Artist Application</button>
+                        </Link>
+                    )
+                }
+
+                {/*{profileData?.pdpLink ?*/}
+                {/*    <Link to={"/profile?id=" + profileData?.slug}>*/}
+                {/*        <div className="pdpSpace artistButton" id="pdp">*/}
+                {/*            <img onClick={() => {*/}
+                {/*            }} src={profileData?.pdpLink ? profileData?.pdpLink : profile} alt="User Profile"/>*/}
+                {/*        </div>*/}
+                {/*    </Link>*/}
+                {/*    :*/}
+                {/*    <Link to={'//forms.gle/dVamYz7mYkfz7EaW7'}>*/}
+                {/*        <button className='artistButton'>Artist Application</button>*/}
+                {/*    </Link>}*/}
             </div>
             <Create />
             <Footer />

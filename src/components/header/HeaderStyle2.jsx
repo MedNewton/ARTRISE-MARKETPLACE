@@ -52,6 +52,8 @@ const HeaderStyle2 = () => {
       "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
       "marketplace"
   );
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
 
   const [artistSearchList, setArtistSearchList] = useState([]);
   const [userSearchList, setUserSearchList] = useState([]);
@@ -66,7 +68,9 @@ const HeaderStyle2 = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   const currentUserSlug = localStorage.getItem("Slug");
-  const currentUserUserKey = localStorage.getItem("UserKey");
+  const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("UserKey"));
+  const accountTypeChoice = localStorage.getItem("accountTypeChoice");
+
 
   const getArtworkForSearch = () => {
     if (listings) {
@@ -94,6 +98,7 @@ const HeaderStyle2 = () => {
       setArtistSearchList(data);
     }
   };
+
   const getUserForSearch = () => {
     if (user) {
       let data = user.map((userItem) => {
@@ -111,6 +116,7 @@ const HeaderStyle2 = () => {
       setProcessedUserArtist(data);
     }
   };
+
   const getCollectionsForSearch = () => {
     if (collections) {
       let data = collections.map((collection) => {
@@ -195,6 +201,14 @@ const HeaderStyle2 = () => {
     window.ire("identify", { customerId: localStorage.getItem("UserKey") });
   }, []);
 
+  useEffect(() => {
+    if(address){
+      localStorage.setItem("accountTypeChoice", "artist");
+      localStorage.setItem("UserKey", address);
+      setCurrentUserUserKey(address);
+    }
+  }, [address]);
+
   const { isOpen, open, close, setDefaultChain } = useWeb3Modal();
 
   const [pdp, setPdp] = useState(
@@ -212,9 +226,6 @@ const HeaderStyle2 = () => {
   const [referee, setReferee] = useState("");
 
   const { pathname } = useLocation();
-
-  const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
 
   const nav = useNavigate();
   const headerRef = useRef(null);
@@ -280,7 +291,7 @@ const HeaderStyle2 = () => {
     setActiveIndex(index);
   };
 
-  const userKey = localStorage.getItem("UserKey");
+  // const UserKey = localStorage.getItem("UserKey");
   let referredBy = "";
 
   function checkForReferralCode() {
@@ -302,8 +313,10 @@ const HeaderStyle2 = () => {
 
   async function passwordlessLogin(snapshot) {
     let key = snapshot.key;
+    setCurrentUserUserKey(key);
+
     localStorage.setItem("slug", snapshot.val().slug)
-    localStorage.setItem("UserKey", snapshot.key);
+    // localStorage.setItem("UserKey", snapshot.key);
     localStorage.setItem("name", snapshot.val().displayName);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
     localStorage.setItem("followingYann", snapshot.val().followingYann);
@@ -405,20 +418,30 @@ const HeaderStyle2 = () => {
     let walletAddress = localStorage.getItem("walletAddress");
     let followingYann = localStorage.getItem("followingYann");
 
-    localStorage.setItem("walletAddress", address);
-
     // Header for connected users :
     const Logout = () => {
-      disconnect();
-      localStorage.removeItem("name");
-      localStorage.removeItem("pdpLink");
-      localStorage.removeItem("UserKey");
-      localStorage.removeItem("walletType");
-      localStorage.removeItem("walletAddress");
-      localStorage.removeItem("followingYann");
-      nav("/");
-    };
+      try {
+        disconnect();
+        localStorage.removeItem("walletType");
+        localStorage.removeItem("walletAddress");
+        localStorage.removeItem("accountTypeChoice");
+        localStorage.removeItem("wagmi.injected.shimDisconnect");
+        localStorage.removeItem("wagmi.wallet");
+        localStorage.removeItem("wagmi.connected");
+        localStorage.removeItem("walletAddress");
+        localStorage.removeItem("slug");
+        localStorage.removeItem("UserKey");
+        localStorage.removeItem("name");
+        localStorage.removeItem("pdpLink");
+        localStorage.removeItem("followingYann");
+        setCurrentUserUserKey(null);
 
+
+        nav("/");
+
+      } catch (error) {
+      }
+    }
     return (
       <header
         id="header_main"
@@ -514,6 +537,7 @@ const HeaderStyle2 = () => {
                           to={"/"}
                           onClick={(e) => {
                             e.preventDefault();
+                            disconnect();
                             Logout();
                           }}
                         >
@@ -571,7 +595,7 @@ const HeaderStyle2 = () => {
                       <div className="header_avatar" style={{display:'flex', gap:'1vw', alignItems:'flex-start'}}>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownNotifButton">
-                            <img style={{padding:'4px'}} src={notification}/>
+                            <img className="avatar" style={{padding:'6px', backgroundColor: 'white'}} src={notification}/>
                           </Dropdown.Toggle>
                           <Dropdown.Menu
                             align={"end"}
@@ -591,10 +615,29 @@ const HeaderStyle2 = () => {
                             align={"end"}
                             style={{ marginTop: "1vh" }}
                           >
-                            <Dropdown.Item href={"/profile?id=" + slug}>
-                              <FaRegUser size={15} />
-                              Profile
-                            </Dropdown.Item>
+                            {accountTypeChoice === "artist" && (
+                                <Dropdown.Item>
+                                  <Link to={"/displayProfile?artist=" + currentUserUserKey}>
+                                  <FaRegUser size={15} />
+                                  Profile
+                                  </Link>
+                                </Dropdown.Item>
+
+                            )}
+                            {accountTypeChoice === "user" && (
+
+                                <Dropdown.Item>
+                                  <Link to={"/displayProfile?member=" + currentUserUserKey}>
+                                    <FaRegUser size={15} />
+                                    Profile
+                                  </Link>
+                                </Dropdown.Item>
+
+                            )}
+                            {/*<Dropdown.Item href={"/profile?id=" + slug}>*/}
+                            {/*  <FaRegUser size={15} />*/}
+                            {/*  Profile*/}
+                            {/*</Dropdown.Item>*/}
                             {accountType == "user" ? (
                               <Dropdown.Item href="/tokenize">
                                 <BiCoinStack size={15} />
@@ -648,7 +691,7 @@ const HeaderStyle2 = () => {
                         </Dropdown>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownCartButton">
-                            <img style={{padding:'4px'}} src={cart}/>
+                            <img className="avatar" style={{padding:'6px', backgroundColor:'white'}} src={cart}/>
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu
@@ -763,19 +806,27 @@ const HeaderStyle2 = () => {
     let walletAddress = localStorage.getItem("walletAddress");
     let followingYann = localStorage.getItem("followingYann");
     let slug = localStorage.getItem("slug");
+    let UserKey = localStorage.getItem("UserKey")
 
     const Logout = () => {
-      localStorage.removeItem("name");
-      localStorage.removeItem("pdpLink");
-      localStorage.removeItem("UserKey");
-      localStorage.removeItem("walletType");
-      localStorage.removeItem("walletAddress");
-      localStorage.removeItem("followingYann");
-      localStorage.removeItem("twitter");
-      localStorage.removeItem("google");
-      localStorage.removeItem("facebook");
-      localStorage.removeItem("slug");
-      nav("/");
+      try {
+        localStorage.removeItem("name");
+        localStorage.removeItem("pdpLink");
+        localStorage.removeItem("UserKey");
+        localStorage.removeItem("walletType");
+        localStorage.removeItem("walletAddress");
+        localStorage.removeItem("followingYann");
+        localStorage.removeItem("twitter");
+        localStorage.removeItem("google");
+        localStorage.removeItem("facebook");
+        localStorage.removeItem("slug");
+        localStorage.removeItem("accountTypeChoice");
+        setCurrentUserUserKey(null);
+
+        nav("/");
+      } catch (error) {
+        console.error("An error occurred while logging out:", error);
+      }
     };
 
     return (
@@ -873,6 +924,7 @@ const HeaderStyle2 = () => {
                           to={"/"}
                           onClick={(e) => {
                             e.preventDefault();
+                            disconnect();
                             Logout();
                           }}
                         >
@@ -924,7 +976,7 @@ const HeaderStyle2 = () => {
                       <div className="header_avatar" style={{display:'flex', gap:'1vw', alignItems:'flex-start'}}>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownNotifButton">
-                            <img style={{padding:'4px'}} src={notification}/>
+                            <img className="avatar" style={{padding:'6px', backgroundColor: 'white'}} src={notification}/>
                           </Dropdown.Toggle>
                           <Dropdown.Menu
                               align={"end"}
@@ -943,10 +995,27 @@ const HeaderStyle2 = () => {
                           <Dropdown.Menu
                               align={"end"}
                           >
-                            <Dropdown.Item href={"/profile?id=" + slug}>
-                              <FaRegUser size={15} />
-                              Profile
-                            </Dropdown.Item>
+                            {accountTypeChoice === "artist" && (
+                                <Dropdown.Item>
+                                  <Link to={"/displayProfile?artist=" + currentUserUserKey}>
+                                    <FaRegUser size={15} />
+                                    Profile
+                                  </Link>
+                                </Dropdown.Item>
+                            )}
+                            {accountTypeChoice === "user" && (
+                                <Dropdown.Item>
+                                  <Link to={"/displayProfile?member=" + currentUserUserKey}>
+                                    <FaRegUser size={15} />
+                                    Profile
+                                  </Link>
+                                </Dropdown.Item>
+
+                            )}
+                            {/*<Dropdown.Item href={"/profile?id=" + slug}>*/}
+                            {/*  <FaRegUser size={15} />*/}
+                            {/*  Profile*/}
+                            {/*</Dropdown.Item>*/}
                             {accountType == "user" ? (
                                 <Dropdown.Item href="/tokenize">
                                   <BiCoinStack size={15} />
@@ -1000,7 +1069,7 @@ const HeaderStyle2 = () => {
                         </Dropdown>
                         <Dropdown>
                           <Dropdown.Toggle id="dropdownCartButton">
-                            <img style={{padding:'4px'}} src={cart}/>
+                            <img className="avatar" style={{padding:'6px', backgroundColor:'white'}} src={cart}/>
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu

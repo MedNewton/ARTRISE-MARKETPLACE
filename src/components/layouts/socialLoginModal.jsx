@@ -52,7 +52,9 @@ const SocialLoginModal = (props) => {
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
     localStorage.setItem("followingYann", snapshot.val().followingYann);
     localStorage.setItem("slug", snapshot.val().slug);
-    localStorage.setItem("twitter", true)
+    localStorage.setItem("twitter", true);
+    localStorage.setItem("accountTypeChoice", 'user');
+
     setPdp(snapshot.val().pdpLink);
     setAccountType(snapshot.val().accountType);
     setSlug(snapshot.val().slug)
@@ -67,7 +69,9 @@ const SocialLoginModal = (props) => {
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
     localStorage.setItem("followingYann", snapshot.val().followingYann);
     localStorage.setItem("slug", snapshot.val().slug);
-    localStorage.setItem("facebook", true)
+    localStorage.setItem("facebook", true);
+    localStorage.setItem("accountTypeChoice", 'user');
+
     setPdp(snapshot.val().pdpLink);
     setAccountType(snapshot.val().accountType);
     setSlug(snapshot.val().slug)
@@ -83,7 +87,11 @@ const SocialLoginModal = (props) => {
     localStorage.setItem("followingYann", snapshot.val().followingYann);
     localStorage.setItem("slug", snapshot.val().slug);
     localStorage.setItem("google", true)
-    
+    localStorage.setItem("verified", snapshot.val().verified);
+    localStorage.setItem("walletAddress", snapshot.val().wall);
+    localStorage.setItem("accountTypeChoice", 'user');
+
+
     setPdp(snapshot.val().pdpLink);
     setAccountType(snapshot.val().accountType);
     setSlug(snapshot.val().slug)

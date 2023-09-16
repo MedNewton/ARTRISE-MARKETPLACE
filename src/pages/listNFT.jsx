@@ -41,7 +41,6 @@ const ListItem = () => {
         { value: "7_Months", label: "7 Months" }
     ];
 
-
     const handleDurationChange = (selectedOption) => {
         setSelectedDuration(selectedOption.value);
     };
@@ -85,9 +84,9 @@ const ListItem = () => {
 
 
   async function listForFixedPrice(){
-    if(price === 0){
+    if(price <= 0){
         toast.error(
-            "NFT listing price can't be zero !",
+            "NFT listing price can't be zero or less !",
             {
               position: "top-left",
 
@@ -217,6 +216,10 @@ const ListItem = () => {
                                 <div className="summary-details">
                                     <h5 className="subTitleCreate">Shipping Price</h5>
                                     <h5 className="subTitleCreate">{shippingOption === "free" ? "Free Shipping" : shippingPrice}</h5>
+                                </div>
+                                <div className="summary-details">
+                                    <h5 className="subTitleCreate">Total</h5>
+                                    <h5 className="subTitleCreate">{shippingOption === "free" ? price : (parseFloat(price) + parseFloat(shippingPrice))}</h5>
                                 </div>
                                 <div className="summary-details">
                                     <h5 className="subTitleCreate">ArtRise fees after sale</h5>

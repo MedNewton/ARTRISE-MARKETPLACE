@@ -14,7 +14,6 @@ import db from "../../../firebase";
 import Modal from "react-bootstrap/Modal";
 
 const DisplayProfileInfo = ({artistData, allMemberArtists, currentUserData, currentUserKey}) => {
-    console.log("artistDataartistData", artistData)
     const navigate = useNavigate();
     const [followButtonText, setFollowButtonText] = useState("");
     const [followersArray, setFollowersArray] = useState([]);
@@ -142,7 +141,7 @@ const DisplayProfileInfo = ({artistData, allMemberArtists, currentUserData, curr
                     handleClose()
                 }}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{showFollowers ? <h3>Followers</h3> : <h4>Following</h4>}</Modal.Title>
+                        <Modal.Title>{showFollowers ? <h3>Followers</h3> : <h3>Following</h3>}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{paddingTop: '0px'}}>
                         {showFollowers ? (

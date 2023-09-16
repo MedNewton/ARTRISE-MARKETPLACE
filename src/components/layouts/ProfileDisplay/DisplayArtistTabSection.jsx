@@ -8,10 +8,8 @@ import {GetArtWorks, GetCollections}
 import {useContract, useOwnedNFTs} from "@thirdweb-dev/react";
 import {useAccount} from "wagmi";
 import DisplayLazyOwnedNfts from "./DisplayLazyOwnedNfts";
-import LikedItems from "../../../pages/LikedItems";
-import Tokenized from "../../../pages/tokenized";
-import MyCollections from "../../../pages/myCollections";
-
+import DisplayMyOwnedNfts from "./DisplayMyOwnedNfts";
+import DisplayMemberOwnedNfts from "./DisplayMemberOwnerNfts";
 
 const artistViewMenuTabs = [
     {
@@ -54,9 +52,7 @@ const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUs
 
     const [userArtworks, setUserArtworks] = useState([]);
     const [userCollections, setUserCollections] = useState([]);
-
     const {address, isConnected} = useAccount();
-
     const {contract} = useContract(
         "0xa6F0F91BF6e9bEdF044C3e989C6cB2e0376b40fC",
         "nft-collection"
@@ -68,6 +64,7 @@ const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUs
         const tempCollectionsList = GetCollections(artistData.userId, collections);
         setUserCollections(tempCollectionsList);
     }, [artistData, lazyListed, collections]);
+
     return (
         <>
             <Tabs>
@@ -143,7 +140,11 @@ const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUs
                     :
                     <>
                         <TabPanel key={0}>
-                            <DisplayArtworks data={userArtworks}/>
+                            {artistData?.userId === currentUserKey ?
+                                <DisplayMyOwnedNfts address={address}/>
+                                :
+                                <DisplayMemberOwnedNfts address={artistData?.userId} artistData={artistData}/>
+                            }
                         </TabPanel>
                         <TabPanel key={1}>
                             <div
