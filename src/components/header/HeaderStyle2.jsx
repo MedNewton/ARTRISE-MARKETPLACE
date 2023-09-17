@@ -31,14 +31,12 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 
-import { AiOutlineBell } from "react-icons/ai";
-
 import { BiCoinStack } from "react-icons/bi";
-import axios from "axios";
 import { useArtworkContext } from '../../Store/ArtworkContext';
 import { useArtistContext } from '../../Store/ArtistContext';
 import { useCollectionsContext } from "../../Store/CollectionsContext";
 import {useUserContext} from "../../Store/UserContext";
+import useLocalStorageUserKeyChange from "../../hooks/useLocalStorageUserKeyChange";
 
 const HeaderStyle2 = () => {
   const {lazyListed, userArtist } = useArtworkContext();
@@ -70,6 +68,12 @@ const HeaderStyle2 = () => {
   const currentUserSlug = localStorage.getItem("Slug");
   const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("UserKey"));
   const accountTypeChoice = localStorage.getItem("accountTypeChoice");
+
+  useLocalStorageUserKeyChange('UserKey', (newValue) => {
+    if (newValue) {
+      setCurrentUserUserKey(newValue);
+    }
+  });
 
 
   const getArtworkForSearch = () => {
@@ -403,6 +407,9 @@ const HeaderStyle2 = () => {
   async function mobileWalletClick(e) {
     e.preventDefault();
   }
+
+  console.log("hey i am currentUserUserKey:",currentUserUserKey)
+
 
   if (
     isConnected &&

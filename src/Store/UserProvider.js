@@ -8,6 +8,15 @@ export const UserProvider = ({children}) => {
     const [user, setUser] = useState([]);
     const [allMemberArtists, setAllMemberArtists] = useState([])
 
+    function mapVerifiedValue(verifiedValue) {
+        if (verifiedValue) {
+            if (verifiedValue === "yes" || verifiedValue === "true") {
+                return true;
+            }
+        }
+        return false;
+    };
+
     async function fetchUser() {
         const userRef = ref(db, 'users/');
         await get(userRef).then(async (snapshot) => {
@@ -36,6 +45,7 @@ export const UserProvider = ({children}) => {
                     }
                     setUser(current => [...current, userItem]);
                 }
+
                 let memberArtist = {
                     userId: UserKey,
                     name: a?.name,
@@ -52,7 +62,7 @@ export const UserProvider = ({children}) => {
                     followers:a?.followers,
                     following:a?.following,
                     slug: a?.slug,
-                    verified: a?.verified,
+                    verified: mapVerifiedValue(a?.verified),
                     artworks: undefined
                 }
                 setAllMemberArtists(prevState => [...prevState, memberArtist]);
