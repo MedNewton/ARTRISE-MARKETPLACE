@@ -1474,6 +1474,7 @@ cursor: pointer;
 }
 
 .is_dark .authors-2 .react-tabs__tab-list{
+  height: 10vh;
   background-color: #212121;
 }
 
@@ -3121,3 +3122,11 @@ Collections-filter-wrapper{
   flex-direction: row;
   justify-content: center;
 }
+
+.white-black-color-switch {
+  background-color: white;
+}
+.is_dark .white-black-color-switch {
+  background-color: black;
+}
+

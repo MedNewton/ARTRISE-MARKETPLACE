@@ -6296,7 +6296,7 @@ button.accordion-button {
 }
 
 .top-seller.home5 .react-tabs__tab-list li {
-  padding: 7px 31px;
+  /*padding: 7px 31px;*/
   border-radius: 100px;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -8096,7 +8096,7 @@ button.accordion-button {
 }
 
 .flat-tabs.items .react-tabs__tab-list li {
-  padding: 2% 5px 2% 5px;
+  /*padding: 2% 5px 2% 5px;*/
   position: relative;
   background: transparent;
   border: none;

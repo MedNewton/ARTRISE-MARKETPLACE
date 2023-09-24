@@ -162,17 +162,24 @@
 }
   
 }
-@media only screen and (max-width :1430px) {
+/*@media only screen and (max-width :2400px) {*/
   .authors-2 .react-tabs__tab-list {
     padding: 0px 0px 0px 2%;
     column-gap: 100px;
     display: flex;
     align-items: center;
   }
+
+.is_dark .authors-2 .react-tabs__tab-list {
+  padding: 0px 0px 0px 2%;
+  column-gap: 100px;
+  display: flex;
+  align-items: center;
+}
   .tab-authors .author-profile {
     padding-bottom: 6.5%;
   }
-}
+/*}*/
 @media only screen and (max-width: 1366px) {
   .swiper-button-next,
   .swiper-button-prev,

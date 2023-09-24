@@ -88,7 +88,7 @@ const SocialLoginModal = (props) => {
     localStorage.setItem("slug", snapshot.val().slug);
     localStorage.setItem("google", true)
     localStorage.setItem("verified", snapshot.val().verified);
-    localStorage.setItem("walletAddress", snapshot.val().wall);
+    localStorage.setItem("walletAddress", snapshot.val().walletAddress);
     localStorage.setItem("accountTypeChoice", 'user');
 
 

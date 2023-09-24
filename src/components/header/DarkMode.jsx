@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import imgsun from '../../assets/images/icon/sun.png'
 import imgmoon from '../../assets/images/icon/moon.png'
+import Dropdown from "react-bootstrap/Dropdown";
 
 const DarkMode = () => {
     let clickedClass = "clicked"
@@ -47,14 +48,15 @@ const DarkMode = () => {
         }
     }
     return (
+        <Dropdown>
         <div className="mode_switcher">
         <h6>Dark mode <strong>Available</strong></h6>
         <Link to="" 
             onClick={e => switchTheme(e)}  >
             <img id="themeIcon" src={imgsun} alt="" />
         </Link>
-
     </div>
+        </Dropdown>
     );
 }
 
