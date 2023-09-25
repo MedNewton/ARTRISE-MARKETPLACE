@@ -7809,7 +7809,8 @@ button.accordion-button {
   background: #000000 !important;
 }
 .is_dark .header_1.header_2.style2 {
-  background: transparent !important;
+  /*background: transparent !important;*/
+  background: black !important;;
 }
 
 .is_dark .header_1.header_2.style2.is-fixed {
