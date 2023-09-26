@@ -442,8 +442,8 @@
     height: 80px !important;
   }
   .header_2 .mode_switcher {
-    top: 25%;
-    right: 15% !important;
+    top: 0%;
+    right: 0% !important;
   }
   .side-bar.item {
     width: 100%;
@@ -682,7 +682,7 @@
   }
 
   .mode_switcher{
-    top: 90px;
+    /*top: 90px;*/
     display: block;
   }
   .flat-cart_item{

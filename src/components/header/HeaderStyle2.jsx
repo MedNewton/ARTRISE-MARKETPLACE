@@ -8,9 +8,6 @@ import LoginModal from "../layouts/loginModal";
 import JoinChoicesModal from "../layouts/joinChicesModal";
 import {useAccount, useDisconnect} from "wagmi";
 import {useWeb3Modal} from "@web3modal/react";
-import Dropdown from "react-bootstrap/Dropdown";
-
-import useLocalStorageUserKeyChange from "../../hooks/useLocalStorageUserKeyChange";
 import HeaderSearch from "./HeaderSearch/HeaderSearch"
 import RenderLogo from "./RenderLogo/RenderLogo";
 import RenderHomeExploreDropButtons from "./RenderHomeExporeDropButtons/RenderHomeExploreDropButtons";
@@ -20,27 +17,28 @@ import RenderProfileIcon from "./RenderProfileIcon/RenderProfileIcon";
 import RenderWalletAddress from "./RenderWalletAddressSection/RenderWalletAddress";
 import RenderConnectWalletAddress from "./RenderWalletAddressSection/RenderConnectWalletAddress";
 import RenderJoinLoginButton from "./RenderJoinLoginButton/RenderJoinLoginButton";
+import RenderBurgerMenuIcon from "./RenderBurgerMenu/RenderBurgerMenuIcon";
+import MobileVersionMenuModal from "./MenuModal/MobileVersionMenuModal";
+
+import {useMediaQuery} from 'react-responsive'
+import RenderSearchIconForMobileView from "./RenderSearchIconForMobileView/RenderSearchIconForMobileView";
+
 
 const HeaderStyle2 = () => {
 
+    const isDeviceMobile = useMediaQuery({query: '(max-width: 1224px)'})
+    const [showMenuModal, setShowMenuModal] = useState(false);
 
-    const { contract } = useContract(
+    const handleMenuModalClose = () => setShowMenuModal(false);
+    const handleShowMenuModal = () => setShowMenuModal(true);
+
+
+    const {contract} = useContract(
         "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
         "marketplace"
     );
     const {address, isConnected} = useAccount();
     const {disconnect} = useDisconnect();
-
-
-    // const currentUserSlug = localStorage.getItem("Slug");
-    // const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("UserKey"));
-    // const accountTypeChoice = localStorage.getItem("accountTypeChoice");
-    //
-    // useLocalStorageUserKeyChange('UserKey', (newValue) => {
-    //     if (newValue) {
-    //         setCurrentUserUserKey(newValue);
-    //     }
-    // });
 
 
     useEffect(() => {
@@ -52,7 +50,6 @@ const HeaderStyle2 = () => {
             localStorage.setItem("accountTypeChoice", "artist");
             localStorage.setItem("UserKey", address);
             localStorage.setItem("walletAddress", address);
-            // setCurrentUserUserKey(address);
         }
     }, [address]);
 
@@ -121,9 +118,6 @@ const HeaderStyle2 = () => {
 
     async function passwordlessLogin(snapshot) {
         let key = snapshot.key;
-        console.log("heeee i am in passwordless login with the key:",key)
-        // setCurrentUserUserKey(key);
-
         localStorage.setItem("slug", snapshot.val().slug)
         localStorage.setItem("UserKey", snapshot.key);
         localStorage.setItem("name", snapshot.val().displayName);
@@ -213,129 +207,161 @@ const HeaderStyle2 = () => {
         e.preventDefault();
     }
 
-    return(
-        <header
-            id="header_main"
-            className="header_1 header_2 style2 js-header"
-            ref={headerRef}
-        >
-            <div className="themesflat-container">
-            {/*<div >*/}
-                <div lassName="row">
-                {/*<div >*/}
-                    <div className="col-md-12 white-black-color-switch">
-                    {/*<div >*/}
-                        <div id="site-header-inner">
-                        {/*<div >*/}
-                            <div className="wrap-box flex">
-                            {/*<div >*/}
-                                <RenderLogo/>
-                                <RenderHomeExploreDropButtons/>
-                                <HeaderSearch/>
-                                {
-                                    (isConnected &&
-                                    !localStorage.getItem("twitter") &&
-                                    !localStorage.getItem("google") &&
-                                    !localStorage.getItem("facebook"))
-                                        ?
-                                        (
-                                            <>
-                                                {
-                                                    (() => {
-                                                        checkUserExists(address);
-                                                        // You can add any other code here if needed
-                                                    })
-                                                }
-                                                <div className="flat-search-btn flex">
-                                                {/*<div >*/}
-                                                    {
-                                                        address ? <RenderWalletAddress address={address} open={open}/> :
-                                                            <RenderConnectWalletAddress open={open}/>
+    return (
+        <>
+            <header
+                id="header_main"
+                className="header_1 header_2 style2 js-header"
+                ref={headerRef}
+            >
+                <div className="themesflat-container">
 
-                                                    }
-                                                    <div className="separator"></div>
-                                                    {/*<div></div>*/}
-                                                    <div className="admin_active" id="header_admin">
-                                                    {/*<div >*/}
-                                                        <div className="header_avatar" style={{
-                                                        // <div  style={{
-                                                            display: 'flex',
-                                                            gap: '1vw',
-                                                            alignItems: 'flex-start'
-                                                        }}>
-                                                            <RenderNotifyIcon/>
-                                                            <RenderProfileIcon
-                                                                UserPdpLink={localStorage.getItem("pdpLink") }
-                                                                disconnect={disconnect}
+                    <div className="row">
+
+                        <div className="col-md-12 white-black-color-switch">
+
+                            <div id="site-header-inner">
+
+                                <div className="wrap-box flex">
+
+                                    {isDeviceMobile &&
+                                        <div style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                            width:"100vw"
+                                        }}>
+                                            <div style={{display: "flex", gap: "5vw"}}>
+                                                <RenderBurgerMenuIcon handleShowMenuModal={handleShowMenuModal}/>
+                                                <RenderLogo/>
+                                            </div>
+                                            <div style={{display: "flex",gap:"2vw"}}>
+                                                <div style={{marginRight: "2vw"}}><RenderSearchIconForMobileView/></div>
+
+                                                <div style={{marginRight: "8vw"}}><RenderCartIcon /></div>
+
+                                                <DarkMode/>
+                                            </div>
+                                        </div>
+
+                                    }
+
+
+                                    {!isDeviceMobile &&
+                                        <>
+                                            <RenderLogo/>
+                                            <RenderHomeExploreDropButtons/>
+                                            <HeaderSearch/>
+                                            {
+                                                (isConnected &&
+                                                    !localStorage.getItem("twitter") &&
+                                                    !localStorage.getItem("google") &&
+                                                    !localStorage.getItem("facebook"))
+                                                    ?
+                                                    (
+                                                        <>
+                                                            {
+                                                                (() => {
+                                                                    checkUserExists(address);
+                                                                    // You can add any other code here if needed
+                                                                })
+                                                            }
+                                                            <div className="flat-search-btn flex">
+
+                                                                {
+                                                                    address ? <RenderWalletAddress address={address}
+                                                                                                   open={open}/> :
+                                                                        <RenderConnectWalletAddress open={open}/>
+
+                                                                }
+                                                                <div className="separator"></div>
+
+                                                                <div className="admin_active" id="header_admin">
+
+                                                                    <div className="header_avatar" style={{
+                                                                        display: 'flex',
+                                                                        gap: '1vw',
+                                                                        alignItems: 'flex-start'
+                                                                    }}>
+                                                                        <RenderNotifyIcon/>
+                                                                        <RenderProfileIcon
+                                                                            UserPdpLink={localStorage.getItem("pdpLink")}
+                                                                            disconnect={disconnect}
+                                                                        />
+                                                                        <RenderCartIcon/>
+                                                                        <DarkMode/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                    :
+                                                    localStorage.getItem("twitter") ||
+                                                    localStorage.getItem("google") ||
+                                                    localStorage.getItem("facebook")
+                                                        ?
+                                                        (
+                                                            <div className="flat-search-btn flex">
+
+                                                                <RenderConnectWalletAddress open={open}/>
+                                                                <div className="separator"></div>
+
+                                                                <div className="admin_active" id="header_admin">
+
+                                                                    <div className="header_avatar" style={{
+                                                                        display: 'flex',
+                                                                        gap: '1vw',
+                                                                        alignItems: 'flex-start'
+                                                                    }}>
+                                                                        <RenderNotifyIcon/>
+                                                                        <RenderProfileIcon
+                                                                            UserPdpLink={localStorage.getItem("pdpLink")}
+                                                                            disconnect={disconnect}
+                                                                        />
+                                                                        <RenderCartIcon/>
+                                                                        <DarkMode/>
+
+                                                                    </div>
+                                                                    <div className="nonConnectedBtnBox">
+
+                                                                        <div className="nonConnectedBtns"></div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+
+                                                        :
+                                                        (
+                                                            <RenderJoinLoginButton
+                                                                setJoinChoicesModalOpen={setJoinChoicesModalOpen}
+                                                                setLoginModalOpen={setLoginModalOpen}
                                                             />
-                                                            <RenderCartIcon/>
-                                                            <DarkMode />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )
-                                        :
-                                        localStorage.getItem("twitter") ||
-                                        localStorage.getItem("google") ||
-                                        localStorage.getItem("facebook")
-                                            ?
-                                            (
-                                                <div className="flat-search-btn flex">
-                                                {/*<div>*/}
-                                                    <RenderConnectWalletAddress open={open}/>
-                                                    <div className="separator"></div>
-                                                    {/*<div ></div>*/}
-                                                    <div className="admin_active" id="header_admin">
-                                                    {/*<div >*/}
-                                                        <div className="header_avatar" style={{
-                                                        // <div  style={{
-                                                            display: 'flex',
-                                                            gap: '1vw',
-                                                            alignItems: 'flex-start'
-                                                        }}>
-                                                            <RenderNotifyIcon/>
-                                                            <RenderProfileIcon
-                                                                UserPdpLink={localStorage.getItem("pdpLink") }
-                                                                disconnect={disconnect}
-                                                            />
-                                                            <RenderCartIcon/>
-                                                            <DarkMode />
+                                                        )
+                                            }
+                                        </>
+                                    }
+                                </div>
 
-                                                        </div>
-                                                        <div className="nonConnectedBtnBox">
-                                                        {/*<div >*/}
-                                                            <div className="nonConnectedBtns"></div>
-                                                            {/*<div ></div>*/}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-
-                                            :
-                                            (
-                                                <RenderJoinLoginButton
-                                                    setJoinChoicesModalOpen={setJoinChoicesModalOpen}
-                                                    setLoginModalOpen={setLoginModalOpen}
-                                                />
-                                    )
-                                }
-                                {/*<DarkMode />*/}
                             </div>
-
                         </div>
                     </div>
                 </div>
-            </div>
-            <JoinChoicesModal
-                show={joinChoicesModalOpen}
-                onHide={() => setJoinChoicesModalOpen(false)}
-            />
-            <LoginModal
-                show={loginModalOpen}
-                onHide={() => setLoginModalOpen(false)}
-            />
-        </header>
+                <JoinChoicesModal
+                    show={joinChoicesModalOpen}
+                    onHide={() => setJoinChoicesModalOpen(false)}
+                />
+                <LoginModal
+                    show={loginModalOpen}
+                    onHide={() => setLoginModalOpen(false)}
+                />
+            </header>
+            <MobileVersionMenuModal showMenuModal={showMenuModal} handleMenuModalClose={handleMenuModalClose}
+                                    handleShowMenuModal={handleShowMenuModal}/>
+
+
+        </>
+
     );
 
 

@@ -1033,6 +1033,16 @@ border-top-right-radius: 10px !important;
   background-color: transparent;
   border-width: 0px;
 }
+#dropdownSearchButton {
+  box-shadow: #020202 0px 0px 4px 0.5px;
+  border-radius: 10px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: transparent;
+  border-width: 0px;
+}
 
 #profileTabDropdown{
   width: fit-content;
@@ -3129,4 +3139,27 @@ Collections-filter-wrapper{
 .is_dark .white-black-color-switch {
   background-color: black;
 }
+
+/**/
+/**/
+/**/
+.accordion-border-color-transparent {
+border-color: transparent;
+  cursor:pointer;
+  width: 100%;
+}
+.accordion-card-background-border-color {
+background-color:transparent;
+display:flex;
+justify-content: space-between;
+  border-bottom-color:transparent;
+}
+.accordion-card-display-flex-font-large {
+display:flex;
+font-size:x-large;
+gap:20px;
+}
+
+
+
 
