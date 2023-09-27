@@ -7,7 +7,7 @@ const RenderCartIcon = () =>{
     return(
         <Dropdown>
             <Dropdown.Toggle id="dropdownCartButton">
-                <img className="avatar" style={{padding:'6px', backgroundColor:'white'}} src={cart}/>
+                <img className="avatar" style={{padding:'6px', backgroundColor:'white',borderRadius:'inherit'}} src={cart}/>
             </Dropdown.Toggle>
 
             <Dropdown.Menu

@@ -229,17 +229,19 @@ const HeaderStyle2 = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "space-between",
-                                            width:"100vw"
+                                            // width:"100vw"
+                                            width:"100%"
                                         }}>
-                                            <div style={{display: "flex", gap: "5vw"}}>
+                                            <div style={{display: "flex", gap: "5vw",width:"50%"}}>
                                                 <RenderBurgerMenuIcon handleShowMenuModal={handleShowMenuModal}/>
                                                 <RenderLogo/>
                                             </div>
-                                            <div style={{display: "flex",gap:"2vw"}}>
+                                            <div style={{display: "flex",gap:"5vw",width:"50%",flexDirection:"row",justifyContent:"flex-end"}}>
+                                                <div style={{display:"flex", gap: "2vw"}}>
                                                 <div style={{marginRight: "2vw"}}><RenderSearchIconForMobileView/></div>
 
                                                 <div style={{marginRight: "8vw"}}><RenderCartIcon /></div>
-
+                                                </div>
                                                 <DarkMode/>
                                             </div>
                                         </div>

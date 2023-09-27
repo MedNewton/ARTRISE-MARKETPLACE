@@ -2142,6 +2142,9 @@ a{
   .main-logo img, .main-logo h2{
     margin-left: -15%;
   }
+  .main-logo-mobile-version img, .main-logo-mobile-version h2{
+    margin-left: 0%;
+  }
   .AuctionsBg{
     border-radius: 0px;
     margin-bottom: 10%;
@@ -3154,6 +3157,16 @@ display:flex;
 justify-content: space-between;
   border-bottom-color:transparent;
 }
+.accordion-card-back-option-background-border-color {
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: #777777 solid 1px;
+  padding-bottom: 20px;
+}
+
+
+
 .accordion-card-display-flex-font-large {
 display:flex;
 font-size:x-large;
