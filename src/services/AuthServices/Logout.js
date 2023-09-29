@@ -2,14 +2,7 @@ import {useDisconnect} from "wagmi";
 import {useNavigate} from "react-router-dom";
 
 const Logout = async (disconnect, nav) => {
-    console.log("heeeeee :3")
-
-    // const {disconnect} = useDisconnect();
-    // const nav = useNavigate();
-
     try {
-        console.log("heeeeee :4")
-
         disconnect();
         localStorage.removeItem("walletType");
         localStorage.removeItem("walletAddress");
@@ -33,11 +26,11 @@ const Logout = async (disconnect, nav) => {
         localStorage.removeItem("twitter");
         localStorage.removeItem("google");
         localStorage.removeItem("facebook");
+        localStorage.removeItem("creator");
         nav("/");
         await window.location.reload(true);
+        localStorage.clear();
     } catch (error) {
-        console.log("heeeeee :5")
-
         // Handle errors if necessary
         console.error("Logout failed:", error);
     }

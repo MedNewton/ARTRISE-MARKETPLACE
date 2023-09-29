@@ -5,7 +5,7 @@ import DarkMode from "./DarkMode";
 import db from "../../firebase";
 import {ref, get, set} from "firebase/database";
 import LoginModal from "../layouts/loginModal";
-import JoinChoicesModal from "../layouts/joinChicesModal";
+import JoinChoicesModal from "../layouts/joinChoicesModal";
 import {useAccount, useDisconnect} from "wagmi";
 import {useWeb3Modal} from "@web3modal/react";
 import HeaderSearch from "./HeaderSearch/HeaderSearch"
@@ -358,8 +358,16 @@ const HeaderStyle2 = () => {
                     onHide={() => setLoginModalOpen(false)}
                 />
             </header>
-            <MobileVersionMenuModal showMenuModal={showMenuModal} handleMenuModalClose={handleMenuModalClose}
-                                    handleShowMenuModal={handleShowMenuModal}/>
+            <MobileVersionMenuModal
+                showMenuModal={showMenuModal}
+                handleMenuModalClose={handleMenuModalClose}
+                handleShowMenuModal={handleShowMenuModal}
+                joinChoicesModalOpen={joinChoicesModalOpen}
+                setJoinChoicesModalOpen={setJoinChoicesModalOpen}
+                loginModalOpen={loginModalOpen}
+                setLoginModalOpen={setLoginModalOpen}
+
+            />
 
 
         </>

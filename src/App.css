@@ -3173,6 +3173,33 @@ font-size:x-large;
 gap:20px;
 }
 
+.mobile-version-login-join-button {
+  color: inherit;
+  font-size: larger;
+  border: 1px solid black;
+  width: 12rem;
+  height: 4rem;
+  border-radius: 10rem;
+  background-color: transparent;
+  margin: 0px 10px;
+}
+.is_dark .mobile-version-login-join-button {
+  color: inherit;
+  font-size: larger;
+  border: 1px solid white;
+  width: 12rem;
+  height: 4rem;
+  border-radius: 10rem;
+  background-color: transparent;
+  margin: 0px 10px;
+}
+
+.mobile-version-switch-mode-button {
+  color: white;
+  font-size: larger;
+  height: 5rem;
+}
+
 
 
 
