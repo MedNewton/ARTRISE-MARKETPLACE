@@ -1633,10 +1633,10 @@ height: 100%;
     width: 133px;
     height: 56px;
 }
-.main-logo-mobile-version img {
-    width: 133px;
-    height: 56px;
-}
+/*.main-logo-mobile-version img {*/
+/*    width: 80px;*/
+/*    height: auto;*/
+/*}*/
 .main-logo img,
 .main-logo h2 {
     float: left;

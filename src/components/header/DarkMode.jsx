@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom'
 import imgsun from '../../assets/images/icon/sun.png'
 import imgmoon from '../../assets/images/icon/moon.png'
 import Dropdown from "react-bootstrap/Dropdown";
+import {useMediaQuery} from "react-responsive";
 
 const DarkMode = () => {
+
+    const isDeviceMobile = useMediaQuery({query: '(max-width: 1224px)'})
+
     let clickedClass = "clicked"
     let x = 0
     const body = document.body
@@ -49,8 +53,9 @@ const DarkMode = () => {
     }
     return (
         <Dropdown>
-        <div className="mode_switcher">
-        <h6>Dark mode <strong>Available</strong></h6>
+        <div className={isDeviceMobile ? "mode_switcher_mobile_version" : "mode_switcher"}>
+            {!isDeviceMobile &&<h6>Dark mode <strong>Available</strong></h6>}
+
         <Link to="" 
             onClick={e => switchTheme(e)}  >
             <img id="themeIcon" src={imgsun} alt="" />

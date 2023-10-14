@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import {useNavigate} from "react-router-dom";
 import {Logout} from "../../../services/AuthServices/Logout";
 import {useDisconnect} from "wagmi";
-import DisplayMenuLinks from "./MenuModalComponents/DisplayMainLinks";
+import DisplayMenuLinks from "./MenuModalComponents/DisplayMenuLinks";
 import DisplayExploreLinks from "./MenuModalComponents/DisplayExploreLinks";
 import DisplayProfileLinks from "./MenuModalComponents/DisplayProfileLinks";
 import JoinChoicesModal from "../../layouts/joinChoicesModal";
@@ -26,6 +26,8 @@ const MobileVersionMenuModal = ({
     const [ showExploreOptions, setShowExploreOptions] = useState(false);
     const [showProfileOptions, setShowProfileOptions] = useState(false);
 
+
+
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showJoinModal, setShowJoinModal] = useState(false);
     // const [showWalletMobileVersion,setShowWalletMobileVersion] = useState(false);
@@ -40,7 +42,10 @@ const MobileVersionMenuModal = ({
     return (
         <>
             <Modal show={showMenuModal} onHide={() => handleMenuModalClose()}>
-                {!showExploreOptions && !showProfileOptions && !showLoginModal && !showJoinModal &&
+                {!showExploreOptions &&
+                    !showProfileOptions &&
+                    !showLoginModal &&
+                    !showJoinModal &&
                     <DisplayMenuLinks
                         handleMenuModalClose={handleMenuModalClose}
                         setShowExploreOptions={setShowExploreOptions}
@@ -55,11 +60,8 @@ const MobileVersionMenuModal = ({
                         setJoinChoicesModalOpen={setJoinChoicesModalOpen}
                         loginModalOpen={loginModalOpen}
                         setLoginModalOpen={setLoginModalOpen}
-                        // setShowWalletMobileVersion={setShowWalletMobileVersion}
-                        // showWalletMobileVersion={showWalletMobileVersion}
                     />
                 }
-
                 {showExploreOptions &&
                     <DisplayExploreLinks
                         setShowExploreOptions={setShowExploreOptions}
@@ -67,7 +69,6 @@ const MobileVersionMenuModal = ({
                         handleMenuModalClose={handleMenuModalClose}
                     />
                 }
-
                 {showProfileOptions &&
                     <DisplayProfileLinks
                         setShowProfileOptions={setShowProfileOptions}
@@ -75,26 +76,7 @@ const MobileVersionMenuModal = ({
                         handleMenuModalClose={handleMenuModalClose}
                         logoutHandler={logoutHandler}
                     />
-
                 }
-
-
-
-                {/*{showJoinModal &&*/}
-                {/*    <JoinChoicesModal*/}
-                {/*        show={showJoinModal}*/}
-                {/*        onHide={() => setShowJoinModal(false)}*/}
-                {/*    />*/}
-                {/*}*/}
-
-                {/*{showLoginModal &&*/}
-                {/*    <LoginModal*/}
-                {/*        show={showLoginModal}*/}
-                {/*        onHide={() => setShowLoginModal(false)}*/}
-                {/*        // handleMenuModalClose={handleMenuModalClose}*/}
-                {/*    />*/}
-                {/*}*/}
-
             </Modal>
 
         </>

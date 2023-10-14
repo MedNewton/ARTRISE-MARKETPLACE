@@ -4,13 +4,13 @@ import {FaBars} from "react-icons/fa";
 
 const RenderBurgerMenuIcon = ({handleShowMenuModal}) => {
     return (
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center"}} onClick={
+        <div className="d-flex justify-content-center align-items-center"
+             onClick={
             () => {
                 handleShowMenuModal()
-                console.log("Burger Menu Icon clicked")
             }
         }>
-            <FaBars style={{width: "40px", height: "40px"}}/>
+            <FaBars style={{width: "30px", height: "30px"}}/>
         </div>
     )
 }

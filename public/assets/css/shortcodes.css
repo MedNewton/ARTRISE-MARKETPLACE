@@ -4729,6 +4729,19 @@ section.today-picks {
   align-items: center;
 }
 
+.mode_switcher_mobile_version a {
+  background: black;
+  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  min-width: 40px;
+  font-size: 16px;
+  /*margin-left: 10px;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .is_dark .mode_switcher a {
   background: white;
 }
