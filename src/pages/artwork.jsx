@@ -123,9 +123,10 @@ const Artwork = () => {
   }, []);
 
   const payForNFT = async () => {
-    //console.log(ownerAddress)
+    console.log(ownerAddress)
     console.log(nft);
     console.log(address);
+    if (address != null) {
     let userBalance = parseFloat(data.formatted);
     let totalToPay = price + shippingPrice / usdPriceInEth;
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
@@ -163,7 +164,7 @@ const Artwork = () => {
         setTransactionStatus("Error transferring ETH");
       }
     }
-  };
+  }};
 
   const handleMint = async () => {
     setLoading(true);
@@ -763,9 +764,13 @@ const Artwork = () => {
     );
 
     const metadataURI = ipfsURL;
+    if (address != null) {
+      
+    
     await raribleContract.methods
       .mintWithURI(address, metadataURI)
       .send({ from: address });
+    }
   };
 
   const [usdPriceInEth, setUsdPriceInEth] = useState();
@@ -1008,8 +1013,8 @@ const Artwork = () => {
                       className="sc-button loadmore style bag fl-button pri-3"
                       onClick={async (e) => {
                         e.preventDefault();
-                        //handleMint();
-                        //await payForNFT();
+                        handleMint();
+                        await payForNFT();
                       }}
                     >
                       <span>Buy now</span>
