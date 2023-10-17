@@ -167,7 +167,8 @@ const Artwork = () => {
         console.error("Error transferring ETH:", error);
         setTransactionStatus("Error transferring ETH");
       }
-    }}
+    }
+  }
   };
 
   const handleMint = async () => {
