@@ -1939,7 +1939,7 @@
 }
 
 .sc-btn-top .sc-button {
-  padding: 10px 35px 10px 32px;
+  padding: 7px 15px 7px 15px;
 }
 
 .connect-wal .sc-btn-top .sc-button {
@@ -4697,7 +4697,7 @@ section.today-picks {
 }
 .mode_switcher {
   display: flex;
-  position: absolute;
+  /*position: absolute;*/
   /*top: 21px;
   right: 11px;*/
   justify-content: center;
@@ -4723,7 +4723,7 @@ section.today-picks {
   height: 40px;
   min-width: 40px;
   font-size: 16px;
-  margin-left: 10px;
+  /*margin-left: 10px;*/
   display: flex;
   justify-content: center;
   align-items: center;
@@ -5745,7 +5745,7 @@ button.accordion-button {
 }
 
 .header_2 .flat-search-btn {
-  right: 132px;
+  /*right: 132px;*/
   width: 30%;
 }
 

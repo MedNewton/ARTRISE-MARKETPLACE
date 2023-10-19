@@ -16,7 +16,7 @@
 }
 @media only screen and (max-width: 1700px) {
   .flat-search-btn {
-    right: 80px !important;
+    /*right: 80px !important;*/
   }
   .home-7 .mainslider .swiper-button-prev ,
   .home-7 .mainslider .swiper-button-next {
@@ -693,7 +693,7 @@
   }
 
   .flat-search-btn{
-    right: 60px !important;
+    /*right: 60px !important;*/
   }
 
   .mainslider.home3 .image .img-bg {
@@ -1434,7 +1434,7 @@
   }
 
   .flat-search-btn{
-    right: 55px !important;
+    /*right: 55px !important;*/
   }
 
   .header-search {

@@ -99,7 +99,7 @@ const HeaderStyle2 = () => {
                         <div
                             className={isDeviceMobile ? "col-12-mobile-version white-black-color-switch" : "col-md-12 white-black-color-switch"}>
                             <div id="site-header-inner">
-                                <div className="wrap-box flex">
+                                <div className="wrap-box flex flex-row justify-content-between align-items-center">
                                     {isDeviceMobile && !showSearchField &&
                                         <div className="navbar-mobile-version-wrapper">
                                             <div
