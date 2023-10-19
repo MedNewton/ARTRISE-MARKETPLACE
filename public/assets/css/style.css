@@ -1614,7 +1614,7 @@ height: 100%;
 .flat-search-btn {
     display        : flex;
     padding        : 16px 0;
-    position: absolute;
+    /*position: absolute;*/
     right: 15px;
     top: 0;
     justify-content: end;
@@ -1633,13 +1633,26 @@ height: 100%;
     width: 133px;
     height: 56px;
 }
+/*.main-logo-mobile-version img {*/
+/*    width: 80px;*/
+/*    height: auto;*/
+/*}*/
 .main-logo img,
 .main-logo h2 {
     float: left;
     filter: brightness(0) !important;
 }
+.main-logo-mobile-version img,
+.main-logo-mobile-version h2 {
+    float: left;
+    filter: brightness(0) !important;
+}
 
 .is_dark .main-logo img{
+    filter: brightness(0) invert(1) !important;
+}
+
+.is_dark .main-logo-mobile-version img{
     filter: brightness(0) invert(1) !important;
 }
 

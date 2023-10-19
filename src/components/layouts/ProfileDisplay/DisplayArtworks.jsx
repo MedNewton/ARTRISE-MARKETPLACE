@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
+import {useMediaQuery} from "react-responsive";
 
 const filterOptions = {
     categories: [
@@ -27,6 +28,9 @@ const DisplayArtworks = (props) => {
     };
     const [modalShow, setModalShow] = useState(false);
     const [usdPriceInEth, setUsdPriceInEth] = useState();
+
+    const isDeviceMobile = useMediaQuery({query: '(max-width: 1224px)'})
+
 
     //handling filter states
     const [showFilter, setShowFilter] = useState(false);
@@ -105,11 +109,11 @@ const DisplayArtworks = (props) => {
                 )}
 
                 <div
-                    className={showFilter ? 'd-flex flex-wrap flex-row artist-artworks-wrapper-collapsed' : 'd-flex flex-wrap flex-row artist-artworks-wrapper'}>
+                    className={showFilter ? 'artist-artworks-wrapper-collapsed' : 'artist-artworks-wrapper'}>
 
                     {data.slice(0,visible).map((listing, index) => {
                         return (
-                            <div key={index} style={{maxWidth: "300px"}}>
+                            <div key={index} style={isDeviceMobile ? {maxWidth: "80vw"}:{maxWidth: "22vw"}}>
                                 <div className={`sc-card-product`}>
                                     <div className="card-media">
                                         <Link

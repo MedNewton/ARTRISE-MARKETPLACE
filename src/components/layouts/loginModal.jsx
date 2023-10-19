@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState} from 'react';
 import { Link } from 'react-router-dom'
 import { Modal } from "react-bootstrap";
 import { Web3Button} from "@web3modal/react";
@@ -7,16 +7,18 @@ import { useWeb3Modal } from "@web3modal/react";
 import SocialLoginModal from './socialLoginModal';
 
 
-const LoginModal = (props) => {
+const LoginModal = ({show,onHide}) => {
 
   const { isOpen, open, close, setDefaultChain } = useWeb3Modal();
   const [showSocialLoginModal, setShowSocialLoginModal] = useState(false);
 
+
+
   return (
 
     <Modal
-      show={props.show}
-      onHide={props.onHide}
+      show={show}
+      onHide={onHide}
     >
       <Modal.Header closeButton></Modal.Header>
 
@@ -32,7 +34,7 @@ const LoginModal = (props) => {
             Login using your wallet:
           </span>
         </p>
-        <div id='createCollection' onClick={async () => {props.onHide();await open();}} className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close">Connect wallet</div>
+        <div id='createCollection' onClick={async () => {onHide();await open();}} className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close">Connect wallet</div>
 
         <p className="text-center" style={{ marginTop: "10%", marginBottom: "0px !important" }}>
           <span className="price color-popup" style={{ fontWeight: "500", fontSize: "1.1em" }}>
@@ -46,7 +48,7 @@ const LoginModal = (props) => {
       <SocialLoginModal 
         show={showSocialLoginModal}
         onHide = {()=>{setShowSocialLoginModal(false)}}
-        hideParent = {()=>{props.onHide()}}
+        hideParent = {()=>{onHide()}}
       />
     </Modal>
 

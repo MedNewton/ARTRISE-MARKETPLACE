@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import Dropdown from "react-bootstrap/Dropdown";
-import profile from "../../../assets/images/icon/profile.png";
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import {FaBook, FaFileAlt, FaHandsHelping, FaLink, FaPlus, FaRegUser, FaSignOutAlt, FaSlidersH} from "react-icons/fa";
 import {BiCoinStack} from "react-icons/bi";
+import { Logout } from "../../../services/AuthServices/Logout";
 
 
 const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
@@ -16,33 +16,9 @@ const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
     );
 
 
-    const Logout = async () => {
+    const logoutHandler = async () => {
         try {
-            disconnect();
-            localStorage.removeItem("walletType");
-            localStorage.removeItem("walletAddress");
-            localStorage.removeItem("accountTypeChoice");
-            localStorage.removeItem("verified");
-            localStorage.removeItem("firebase:host:artrise-ffe4c-default-rtdb.firebaseio.com");
-            localStorage.removeItem("wagmi.cache");
-            localStorage.removeItem("wagmi.store");
-            localStorage.removeItem("W3M_VERSION");
-            localStorage.removeItem("W3M_VERSION");
-            localStorage.removeItem("__TW__/metamask/injected.shimDisconnect");
-            localStorage.removeItem("__TW__/coordinatorStorage/lastConnectedWallet");
-            localStorage.removeItem("wagmi.wallet");
-            localStorage.removeItem("wagmi.connected");
-            localStorage.removeItem("walletAddress");
-            localStorage.removeItem("slug");
-            localStorage.removeItem("UserKey");
-            localStorage.removeItem("name");
-            localStorage.removeItem("pdpLink");
-            localStorage.removeItem("followingYann");
-            localStorage.removeItem("twitter");
-            localStorage.removeItem("google");
-            localStorage.removeItem("facebook");
-            nav("/");
-            await window.location.reload(true);
+            await Logout(disconnect, nav);
         } catch (error) {
         }
     }
@@ -120,8 +96,7 @@ const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
                     href=""
                     onClick={(e) => {
                         e.preventDefault();
-                        disconnect();
-                        Logout();
+                        logoutHandler();
                     }}
                 >
                     <FaSignOutAlt size={15} />

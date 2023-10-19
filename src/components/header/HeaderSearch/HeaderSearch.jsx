@@ -1,55 +1,49 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useRef, useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import {ConnectWallet, useAddress, useContract, useListings} from "@thirdweb-dev/react";
-import { useAccount, useDisconnect } from "wagmi";
-import { useArtworkContext } from '../../../Store/ArtworkContext';
-import { useArtistContext } from '../../../Store/ArtistContext';
-import { useCollectionsContext } from "../../../Store/CollectionsContext";
+import {useAccount, useDisconnect} from "wagmi";
+import {useArtworkContext} from '../../../Store/ArtworkContext';
+import {useArtistContext} from '../../../Store/ArtistContext';
+import {useCollectionsContext} from "../../../Store/CollectionsContext";
 import {useUserContext} from "../../../Store/UserContext";
 import useLocalStorageUserKeyChange from "../../../hooks/useLocalStorageUserKeyChange";
+import {useMediaQuery} from "react-responsive";
 
 const HeaderSearch = () => {
-    const {lazyListed, userArtist } = useArtworkContext();
+    const isDeviceMobile = useMediaQuery({query: '(max-width: 1224px)'})
+    const {lazyListed, userArtist} = useArtworkContext();
     const {artists} = useArtistContext();
     const {collections} = useCollectionsContext();
     const {user} = useUserContext();
-
     const navigate = useNavigate();
 
-    const { contract } = useContract(
+    const {contract} = useContract(
         "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
         "marketplace"
     );
-    const { address, isConnected } = useAccount();
-    const { disconnect } = useDisconnect();
-
+    const {address, isConnected} = useAccount();
     const [artistSearchList, setArtistSearchList] = useState([]);
     const [userSearchList, setUserSearchList] = useState([]);
     const [searchingArray, setSearchingArray] = useState([]);
     const [artWorks, setArtWorks] = useState([]);
     const [processedLazyListed, setProcessedLazyListed] = useState([]);
     const [processedUserArtist, setProcessedUserArtist] = useState([]);
-    const [collectionList, setCollectionList]= useState([]);
-    const { data: listings, isLoading, error } = useListings(contract);
+    const [collectionList, setCollectionList] = useState([]);
+    const {data: listings, isLoading, error} = useListings(contract);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-
-    const currentUserSlug = localStorage.getItem("Slug");
     const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("UserKey"));
-    const accountTypeChoice = localStorage.getItem("accountTypeChoice");
-
     useLocalStorageUserKeyChange('UserKey', (newValue) => {
         if (newValue) {
             setCurrentUserUserKey(newValue);
         }
     });
 
-
     const getArtworkForSearch = () => {
         if (listings) {
             let data = listings.map((artworkItem) => {
-                return { "name": artworkItem.asset.name, "id": artworkItem.id, "type": "Artwork", "isDynamic": false  };
+                return {"name": artworkItem.asset.name, "id": artworkItem.id, "type": "Artwork", "isDynamic": false};
             });
             setArtWorks(data);
         }
@@ -58,7 +52,12 @@ const HeaderSearch = () => {
     const getLazyListedForSearch = () => {
         if (lazyListed) {
             let data = lazyListed.map((artworkItem) => {
-                return { "name": artworkItem?.data?.name, "id": artworkItem?.artworkId, "type": "Artwork", "isDynamic": true };
+                return {
+                    "name": artworkItem?.data?.name,
+                    "id": artworkItem?.artworkId,
+                    "type": "Artwork",
+                    "isDynamic": true
+                };
             });
             setProcessedLazyListed(data);
         }
@@ -67,7 +66,7 @@ const HeaderSearch = () => {
     const getArtistsForSearch = () => {
         if (artists) {
             let data = artists.map((artist) => {
-                return { "name": artist.name, "id": artist.slug, "type": "Artist" , "isDynamic": false };
+                return {"name": artist.name, "id": artist.slug, "type": "Artist", "isDynamic": false};
             });
             setArtistSearchList(data);
         }
@@ -76,7 +75,7 @@ const HeaderSearch = () => {
     const getUserForSearch = () => {
         if (user) {
             let data = user.map((userItem) => {
-                return { "name": userItem.name, "id": userItem.userId, "type": "Member" , "isDynamic": false };
+                return {"name": userItem.name, "id": userItem.userId, "type": "Member", "isDynamic": false};
             });
             setUserSearchList(data);
         }
@@ -85,7 +84,7 @@ const HeaderSearch = () => {
     const getUserArtistForSearch = () => {
         if (userArtist) {
             let data = userArtist.map((user) => {
-                return { "name": user.name, "id": user.userId, "type": "Artist", "isDynamic": true };
+                return {"name": user.name, "id": user.userId, "type": "Artist", "isDynamic": true};
             });
             setProcessedUserArtist(data);
         }
@@ -94,7 +93,7 @@ const HeaderSearch = () => {
     const getCollectionsForSearch = () => {
         if (collections) {
             let data = collections.map((collection) => {
-                return { "name": collection.name, "id": collection.id, "type": "Collection" , "isDynamic": true };
+                return {"name": collection.name, "id": collection.id, "type": "Collection", "isDynamic": true};
             });
             setCollectionList(data);
         }
@@ -138,31 +137,31 @@ const HeaderSearch = () => {
 
     const handleItemClick = (item) => {
         if (item?.type === 'Artwork') {
-            if(item?.isDynamic){
+            if (item?.isDynamic) {
                 navigate(`/artwork-dettails?id=${item?.id}`)
-            }else{
+            } else {
                 navigate(`/item-details-01?listing=${item?.id}`)
             }
         } else if (item?.type === 'Artist') {
-            if(item?.isDynamic){
-                if(item?.id === currentUserUserKey){
+            if (item?.isDynamic) {
+                if (item?.id === currentUserUserKey) {
                     navigate(`/displayProfile?artist=${currentUserUserKey}`);
-                }else{
+                } else {
                     navigate(`/displayProfile?artist=${item?.id}`)
                 }
-            }else{
+            } else {
                 navigate(`/authors-02?artist=${item?.id}`)
             }
-        }else if (item?.type === 'Collection') {
-            if(item?.isDynamic){
+        } else if (item?.type === 'Collection') {
+            if (item?.isDynamic) {
                 navigate(`/collection?id=${item?.id}`)
-            }else{
+            } else {
                 navigate(`/`)
             }
-        }else if (item?.type === 'Member') {
-            if(item.id === currentUserUserKey){
+        } else if (item?.type === 'Member') {
+            if (item.id === currentUserUserKey) {
                 navigate(`/displayProfile?member=${currentUserUserKey}`);
-            }else{
+            } else {
                 navigate(`/displayProfile?member=${item?.id}`)
             }
         }
@@ -171,43 +170,71 @@ const HeaderSearch = () => {
         setSearchResults([]); // Clear the search results after clicking on an item
     };
 
-
     useEffect(() => {
-        if(address){
+        if (address) {
             localStorage.setItem("accountTypeChoice", "artist");
             localStorage.setItem("UserKey", address);
             setCurrentUserUserKey(address);
         }
     }, [address]);
 
-
-
-        return (
-            <div className="question-form">
-                <div className="">
-                    <input
-                        type="text"
-                        placeholder="Type to search..."
-                        value={searchQuery}
-                        onChange={handleSearch}
-                    />
-                    {searchResults.length > 0 && (
-                        <div className="search-dropdown">
-                            {searchResults.map((result) => (
-                                <div
-                                    key={result.id}
-                                    className="search-item"
-                                    onClick={() => handleItemClick(result)}
-                                >
-                                    <p>{result.name}</p>
-                                    <p className="search-item-detail">{result.type}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+    return (
+        <>
+            {isDeviceMobile &&
+                <div className="question-form-mobile-version">
+                    <div >
+                        <input
+                            // type="text"
+                            className="question-form-mobile-version-input"
+                            placeholder="Type to search...mv"
+                            value={searchQuery}
+                            onChange={handleSearch}
+                        />
+                        {searchResults.length > 0 && (
+                            <div className="search-dropdown-mobile-version">
+                                {searchResults.map((result) => (
+                                    <div
+                                        key={result.id}
+                                        className="search-item"
+                                        onClick={() => handleItemClick(result)}
+                                    >
+                                        <p>{result.name}</p>
+                                        <p className="search-item-detail">{result.type}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
-        );
+            }
+            {!isDeviceMobile &&
+                <div className="question-form">
+                    <div className="">
+                        <input
+                            type="text"
+                            placeholder="Type to search..."
+                            value={searchQuery}
+                            onChange={handleSearch}
+                        />
+                        {searchResults.length > 0 && (
+                            <div className="search-dropdown">
+                                {searchResults.map((result) => (
+                                    <div
+                                        key={result.id}
+                                        className="search-item"
+                                        onClick={() => handleItemClick(result)}
+                                    >
+                                        <p>{result.name}</p>
+                                        <p className="search-item-detail">{result.type}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            }
+        </>
+    );
 
 };
 
