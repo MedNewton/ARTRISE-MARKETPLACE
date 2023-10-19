@@ -123,10 +123,10 @@ const Artwork = () => {
   }, []);
 
   const payForNFT = async () => {
-    console.log(ownerAddress)
+    //console.log(ownerAddress)
     console.log(nft);
     console.log(address);
-    if (address != null) {
+    if(address != null){
     let userBalance = parseFloat(data.formatted);
     let totalToPay = price + shippingPrice / usdPriceInEth;
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
@@ -770,8 +770,7 @@ const Artwork = () => {
     await raribleContract.methods
       .mintWithURI(address, metadataURI)
       .send({ from: address });
-    }
-  };
+  }};
 
   const [usdPriceInEth, setUsdPriceInEth] = useState();
 
