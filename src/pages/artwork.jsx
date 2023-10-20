@@ -1018,7 +1018,6 @@ const Artwork = () => {
                       className="sc-button loadmore style bag fl-button pri-3"
                       onClick={async (e) => {
                         e.preventDefault();
-                        // handleMint();
                         await payForNFT();
                       }}
                     >
