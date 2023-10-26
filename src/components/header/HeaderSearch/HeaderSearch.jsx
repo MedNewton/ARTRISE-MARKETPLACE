@@ -172,7 +172,7 @@ const HeaderSearch = () => {
 
     useEffect(() => {
         if (address) {
-            localStorage.setItem("accountTypeChoice", "artist");
+            // localStorage.setItem("accountTypeChoice", "artist");
             localStorage.setItem("UserKey", address);
             setCurrentUserUserKey(address);
         }

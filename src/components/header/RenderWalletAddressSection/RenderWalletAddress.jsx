@@ -25,8 +25,8 @@ const RenderWalletAddress = ({ address, open }) => {
                 className="sc-button header-slider style style-1 wallet fl-button pri-1"
             >
         <span>
-          {address.toString().slice(0, 6)}...
-            {address.toString().substring(address.toString().length - 3)}
+          {address?.toString()?.slice(0, 6)}...
+            {address?.toString()?.substring(address?.toString()?.length - 3)}
         </span>
             </Link>
         </div>

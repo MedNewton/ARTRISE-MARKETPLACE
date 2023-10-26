@@ -4730,7 +4730,7 @@ section.today-picks {
 }
 
 .mode_switcher_mobile_version a {
-  background: black;
+  background: red;
   border-radius: 10px;
   width: 30px;
   height: 30px;
@@ -4740,6 +4740,16 @@ section.today-picks {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.is_dark .mode_switcher_mobile_version a {
+
+  color:orange !important;
+  background: green;
+}
+.is_dark .mode_switcher_mobile_version img {
+
+  color:black !important;
 }
 
 .is_dark .mode_switcher a {

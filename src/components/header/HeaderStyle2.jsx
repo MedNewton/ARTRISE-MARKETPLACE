@@ -38,9 +38,10 @@ const HeaderStyle2 = () => {
 
     useEffect(() => {
         if (address) {
-            localStorage.setItem("accountTypeChoice", "artist");
+            // localStorage.setItem("accountTypeChoice", "artist");
             localStorage.setItem("UserKey", address);
             localStorage.setItem("walletAddress", address);
+            CheckUserExists(address, referee);
         }
     }, [address]);
 
@@ -137,12 +138,7 @@ const HeaderStyle2 = () => {
                                                     ?
                                                     (
                                                         <>
-                                                            {
-                                                                (() => {
-                                                                    CheckUserExists(address, referee);
-                                                                    // You can add any other code here if needed
-                                                                })
-                                                            }
+                                                           {/*{()=>{CheckUserExists(address, referee)}}*/}
                                                             <div className="flat-search-btn flex">
                                                                 {
                                                                     address ?
@@ -158,7 +154,7 @@ const HeaderStyle2 = () => {
                                                                     >
                                                                         <RenderNotifyIcon/>
                                                                         <RenderProfileIcon
-                                                                            UserPdpLink={localStorage.getItem("pdpLink")}
+                                                                            UserPdpLink={localStorage?.getItem("pdpLink")}
                                                                             disconnect={disconnect}
                                                                         />
                                                                         <RenderCartIcon/>

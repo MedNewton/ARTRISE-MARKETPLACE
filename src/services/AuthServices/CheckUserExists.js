@@ -1,11 +1,10 @@
-import {useDisconnect} from "wagmi";
-import {useNavigate} from "react-router-dom";
 import {get, ref, set} from "firebase/database";
 import db from "../../firebase";
 
 async function passwordlessLogin(snapshot) {
     let key = snapshot.key;
     localStorage.setItem("slug", snapshot.val().slug)
+    localStorage.setItem("accountTypeChoice", snapshot.val().accountType)
     localStorage.setItem("UserKey", snapshot.key);
     localStorage.setItem("name", snapshot.val().displayName);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
@@ -13,9 +12,9 @@ async function passwordlessLogin(snapshot) {
 }
 
 const CheckUserExists = async (adr, referee) => {
-
     const ThisUserRef = ref(db, "users/" + adr);
-    await get(ThisUserRef).then(async (snapshot) => {
+    try {
+        const snapshot = await get(ThisUserRef);
         let dt = snapshot.val();
         if (dt == null) {
             await set(ref(db, "users/" + adr), {
@@ -24,10 +23,10 @@ const CheckUserExists = async (adr, referee) => {
                 referralCode: (Math.random() + 1).toString(36).substring(2),
                 referrefBy: referee,
                 accountType: "user",
-                creator: "no",
+                creator: false,
                 email: "No email yet ...",
                 bio: "No Bio added yet ...",
-                verified: "no",
+                verified: false,
                 slug: (
                     Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
                 ).toString(),
@@ -83,7 +82,11 @@ const CheckUserExists = async (adr, referee) => {
         } else {
             await passwordlessLogin(snapshot);
         }
-    });
+    } catch(error){
+        console.log("Error in CheckUserExists:", error);
+        throw error; // Rethrow the error for higher-level handling if needed
+    }
+
 };
 
 export {CheckUserExists};

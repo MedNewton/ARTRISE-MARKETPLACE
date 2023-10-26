@@ -24,10 +24,10 @@ const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
     }
 
     const ArtistProfileHandler = () => {
-        nav("/displayProfile?artist=" + localStorage.getItem("UserKey"));
+        nav("/displayProfile?artist=" + localStorage?.getItem("UserKey"));
     }
     const UserProfileHandler = () => {
-        nav("/displayProfile?member=" + localStorage.getItem("UserKey"));
+        nav("/displayProfile?member=" + localStorage?.getItem("UserKey"));
     }
 
     return(
