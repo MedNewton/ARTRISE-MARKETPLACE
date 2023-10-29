@@ -158,9 +158,19 @@ const EditProfile = () => {
                 confirmButtonText: "Let's go!",
             });
         }
-        localStorage.setItem("name", displayName);
-        localStorage.setItem("pdpLink", pdpLink);
-        nav(-1);
+        await localStorage.setItem("name", displayName);
+        await localStorage.setItem("pdpLink", pdpLink);
+
+        setTimeout(function () {
+            window.location.reload(true);
+        }, 0);
+        if (localStorage.getItem("accountTypeChoice") === "artist") {
+            await nav("/displayProfile?artist=" + UserKey);
+        } else if (localStorage.getItem("accountTypeChoice") === "user") {
+            await nav("/displayProfile?member=" + UserKey);
+        } else {
+            await nav("/");
+        }
     }
 
 
