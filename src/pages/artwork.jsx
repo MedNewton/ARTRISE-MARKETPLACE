@@ -129,8 +129,10 @@ const Artwork = () => {
     if(address != null){
     let userBalance = parseFloat(data.formatted);
     let totalToPay = price + shippingPrice / usdPriceInEth;
+    // alert(totalToPay);  
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
-    if (userBalance <= totalToPay) {
+    // alert(totalToPayInWei);
+    if (userBalance < totalToPay) {
       Swal.fire({
         icon: "error",
         title: "Insufficient funds !",
@@ -145,6 +147,8 @@ const Artwork = () => {
           to: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
           value: totalToPayInWei,
         };
+        // alert(transaction);
+        console.log(transaction);
         const sendTransaction = await signer.sendTransaction(transaction);
         setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
         if (sendTransaction.hash) {
@@ -164,12 +168,14 @@ const Artwork = () => {
         setTransactionStatus("Error transferring ETH");
       }
     }
-  }};
+  }
+  };
 
   const handleMint = async () => {
     setLoading(true);
     setStatus("");
 
+    console.log('Handling Mint')
     const web3 = new Web3(window.ethereum);
 
     const raribleProtocolAddress = "0x9201a886740D193E315F1F1B2B193321D6701D07";
@@ -1012,7 +1018,6 @@ const Artwork = () => {
                       className="sc-button loadmore style bag fl-button pri-3"
                       onClick={async (e) => {
                         e.preventDefault();
-                        handleMint();
                         await payForNFT();
                       }}
                     >
