@@ -6,18 +6,13 @@ import {IoIosPhotos} from "react-icons/io";
 import {PiPaintBucketFill} from "react-icons/pi";
 import {RiMenuSearchFill} from "react-icons/ri";
 
-const DisplayExploreLinks = ({setShowExploreOptions, showExploreOptions, handleMenuModalClose}) => {
-
+const DisplayExploreLinks = ({
+                                 setShowExploreOptions,
+                                 showExploreOptions,
+                                 handleMenuModalClose
+                             }) => {
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "5vh",
-            alignItems: "center",
-            fontSize: "large",
-            padding: "5% 10%"
-        }}>
-
+        <div className="display-menu-links-wrapper">
             <div className="accordion-border-color-transparent">
                 <div className="accordion-card-back-option-background-border-color">
                     <Link to="/">

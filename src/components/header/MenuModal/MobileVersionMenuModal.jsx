@@ -6,31 +6,27 @@ import {useDisconnect} from "wagmi";
 import DisplayMenuLinks from "./MenuModalComponents/DisplayMenuLinks";
 import DisplayExploreLinks from "./MenuModalComponents/DisplayExploreLinks";
 import DisplayProfileLinks from "./MenuModalComponents/DisplayProfileLinks";
-import JoinChoicesModal from "../../layouts/joinChoicesModal";
-import LoginModal from "../../layouts/loginModal";
-
+import RenderNavBarOverMenu from "../NavBarOverTheMenu/RenderNavBarOverMenu";
 
 const MobileVersionMenuModal = ({
-                                    showMenuModal, 
-                                    handleMenuModalClose, 
+                                    showMenuModal,
+                                    handleMenuModalClose,
                                     handleShowMenuModal,
                                     joinChoicesModalOpen,
                                     setJoinChoicesModalOpen,
                                     loginModalOpen,
-                                    setLoginModalOpen
-}) => {
+                                    setLoginModalOpen,
+                                    setShowSearchField,
+                                    showSearchField
+                                }) => {
 
     const nav = useNavigate();
     const {disconnect} = useDisconnect();
 
-    const [ showExploreOptions, setShowExploreOptions] = useState(false);
+    const [showExploreOptions, setShowExploreOptions] = useState(false);
     const [showProfileOptions, setShowProfileOptions] = useState(false);
-
-
-
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showJoinModal, setShowJoinModal] = useState(false);
-    // const [showWalletMobileVersion,setShowWalletMobileVersion] = useState(false);
 
     const logoutHandler = async () => {
         try {
@@ -41,7 +37,16 @@ const MobileVersionMenuModal = ({
 
     return (
         <>
-            <Modal show={showMenuModal} onHide={() => handleMenuModalClose()}>
+            <Modal
+                show={showMenuModal}
+                onHide={() => handleMenuModalClose()}
+                dialogClassName="full-screen-modal"
+            >
+                <RenderNavBarOverMenu
+                    setShowSearchField={setShowSearchField}
+                    showSearchField={showSearchField}
+                    handleMenuModalClose={handleMenuModalClose}
+                />
                 {!showExploreOptions &&
                     !showProfileOptions &&
                     !showLoginModal &&
@@ -78,7 +83,6 @@ const MobileVersionMenuModal = ({
                     />
                 }
             </Modal>
-
         </>
     )
 }

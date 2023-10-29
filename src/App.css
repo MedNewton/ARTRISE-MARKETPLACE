@@ -65,8 +65,8 @@
 }
 
 .nonConnectedBtnBox{
-  position: absolute;
-  right: 30px;
+  /*position: absolute;*/
+  /*right: 30px;*/
   height: 100%;
   width: 20%;
   display: flex;
@@ -80,6 +80,7 @@
   height: 50% !important;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .nonConnectedLoginBtn{
@@ -88,7 +89,7 @@
   color: #020202;
   border-radius: 25px;
   padding: 3% 10%;
-  margin-left: 3%;
+  /*margin-left: 3%;*/
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2668,6 +2669,8 @@ a{
   justify-content: space-between;
   padding-top: 1vh;
   padding-bottom: 1vh;
+  padding-left: 2%;
+  padding-right: 2%;
   width: 100%;
 }
 .navbar-left-half-mobile-version-wrapper{
@@ -3255,10 +3258,14 @@ Collections-filter-wrapper{
 .display-menu-links-wrapper{
   display: flex;
   flex-direction: column;
-  gap: 2vh;
+  gap: 5vh;
   align-items: center;
   font-size: large;
-  padding: 5% 10%;
+  padding-left: 10%;
+  padding-right: 10%;
+  height: 80vh;
+  justify-content: center;
+
 }
 
 .accordion-border-color-transparent {
@@ -3331,6 +3338,31 @@ gap:20px;
   background-color: white;
   border-radius: inherit
 }
+
+.full-screen-modal {
+  width: 100vw;
+  height: 100vh !important;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.full-screen-modal .modal-content{
+  top: 0vh !important;
+  height: 100vh !important;
+  border-radius: 0px !important;
+  border: none !important;
+  background-color: #fff;
+  width: 100vw;
+  position: absolute !important;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 
 
 

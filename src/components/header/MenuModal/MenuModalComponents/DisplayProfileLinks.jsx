@@ -4,18 +4,14 @@ import {FaAngleLeft, FaBook, FaFileAlt, FaHandsHelping, FaLink, FaPlus, FaSignOu
 import {BsFillPersonFill} from "react-icons/bs";
 import {BiCoinStack} from "react-icons/bi";
 
-const DisplayProfileLinks = ({setShowProfileOptions, showProfileOptions, handleMenuModalClose, logoutHandler}) => {
-
+const DisplayProfileLinks = ({
+                                 setShowProfileOptions,
+                                 showProfileOptions,
+                                 handleMenuModalClose,
+                                 logoutHandler
+                             }) => {
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "3vh",
-            alignItems: "center",
-            fontSize: "large",
-            padding: "5% 10%"
-        }}>
-
+        <div className="display-menu-links-wrapper">
             <div className="accordion-border-color-transparent">
                 <div className="accordion-card-back-option-background-border-color">
                     <Link to="/">

@@ -84,7 +84,7 @@ const DisplayArtworks = (props) => {
                     ></path>
                 </svg>
             </div>
-            <div className='d-flex flex-row'>
+            <div className={isDeviceMobile ? 'd-flex flex-column' : 'd-flex flex-row'}>
                 {showFilter && (
                     <div className="filter-content">
                         {Object.keys(filterOptions).map((section) => (
@@ -113,7 +113,7 @@ const DisplayArtworks = (props) => {
 
                     {data.slice(0,visible).map((listing, index) => {
                         return (
-                            <div key={index} style={isDeviceMobile ? {maxWidth: "80vw"}:{maxWidth: "22vw"}}>
+                            <div key={index} style={isDeviceMobile ? {maxWidth: "45vw"}:{maxWidth: "22vw"}}>
                                 <div className={`sc-card-product`}>
                                     <div className="card-media">
                                         <Link

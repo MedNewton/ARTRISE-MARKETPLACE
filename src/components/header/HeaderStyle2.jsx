@@ -1,6 +1,4 @@
 import React, {useRef, useState, useEffect} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {useContract} from "@thirdweb-dev/react";
 import DarkMode from "./DarkMode";
 import LoginModal from "../layouts/loginModal";
 import JoinChoicesModal from "../layouts/joinChoicesModal";
@@ -40,9 +38,10 @@ const HeaderStyle2 = () => {
 
     useEffect(() => {
         if (address) {
-            localStorage.setItem("accountTypeChoice", "artist");
+            // localStorage.setItem("accountTypeChoice", "artist");
             localStorage.setItem("UserKey", address);
             localStorage.setItem("walletAddress", address);
+            CheckUserExists(address, referee);
         }
     }, [address]);
 
@@ -97,29 +96,27 @@ const HeaderStyle2 = () => {
                 <div className="themesflat-container">
                     <div className="row">
                         <div
-                            className={isDeviceMobile ? "col-12-mobile-version white-black-color-switch" : "col-md-12 white-black-color-switch"}>
+                            className={isDeviceMobile ?
+                                "col-12-mobile-version white-black-color-switch"
+                                :
+                                "col-md-12 white-black-color-switch"
+                            }>
                             <div id="site-header-inner">
                                 <div className="wrap-box flex flex-row justify-content-between align-items-center">
                                     {isDeviceMobile && !showSearchField &&
                                         <div className="navbar-mobile-version-wrapper">
                                             <div
                                                 className="navbar-left-half-mobile-version-wrapper">
-                                                <RenderBurgerMenuIcon handleShowMenuModal={handleShowMenuModal}/>
                                                 <RenderLogo/>
                                             </div>
                                             <div className="navbar-right-half-mobile-version-wrapper">
-                                                <div style={{display: "flex", gap: "3vw"}}>
-                                                    <div>
-                                                        <RenderSearchIconForMobileView
-                                                            setShowSearchField={setShowSearchField}
-                                                            showSearchField={showSearchField}
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <RenderCartIcon/>
-                                                    </div>
-                                                </div>
+                                                <RenderSearchIconForMobileView
+                                                    setShowSearchField={setShowSearchField}
+                                                    showSearchField={showSearchField}
+                                                    handleMenuModalClose={handleMenuModalClose}
+                                                />
                                                 <DarkMode/>
+                                                <RenderBurgerMenuIcon handleShowMenuModal={handleShowMenuModal}/>
                                             </div>
                                         </div>
                                     }
@@ -141,12 +138,7 @@ const HeaderStyle2 = () => {
                                                     ?
                                                     (
                                                         <>
-                                                            {
-                                                                (() => {
-                                                                    CheckUserExists(address, referee);
-                                                                    // You can add any other code here if needed
-                                                                })
-                                                            }
+                                                           {/*{()=>{CheckUserExists(address, referee)}}*/}
                                                             <div className="flat-search-btn flex">
                                                                 {
                                                                     address ?
@@ -162,7 +154,7 @@ const HeaderStyle2 = () => {
                                                                     >
                                                                         <RenderNotifyIcon/>
                                                                         <RenderProfileIcon
-                                                                            UserPdpLink={localStorage.getItem("pdpLink")}
+                                                                            UserPdpLink={localStorage?.getItem("pdpLink")}
                                                                             disconnect={disconnect}
                                                                         />
                                                                         <RenderCartIcon/>
@@ -231,6 +223,8 @@ const HeaderStyle2 = () => {
                 setJoinChoicesModalOpen={setJoinChoicesModalOpen}
                 loginModalOpen={loginModalOpen}
                 setLoginModalOpen={setLoginModalOpen}
+                setShowSearchField={setShowSearchField}
+                showSearchField={showSearchField}
             />
         </>
     );

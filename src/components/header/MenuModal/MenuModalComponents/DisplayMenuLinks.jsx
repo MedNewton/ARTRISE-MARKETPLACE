@@ -114,10 +114,7 @@ const DisplayMenuLinks = ({
                         ?
                         (<>
                                 {
-                                    (() => {
-                                        CheckUserExists(address, referee);
-                                        // You can add any other code here if needed
-                                    })
+                                        // CheckUserExists(address, referee)
                                 }
                                 <div className="accordion-border-color-transparent"
                                      onClick={() => setShowProfileOptions(!showProfileOptions)}>
