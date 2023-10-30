@@ -64,6 +64,7 @@ import DisplayProfile from "./DisplayProfile";
 import Collection from "../components/layouts/Collections/Collection";
 import Learn from "./Learn";
 import LearnResourceDetail from "./LearnResourceDetail";
+import OrderTracking from "./OrderTracking/OrderTracking";
 
 const routes = [
   { path: '/', component: <Home01 />},
@@ -131,7 +132,9 @@ const routes = [
   { path: '/displayProfile', component:<DisplayProfile/>},
   { path: '/collection', component:<Collection/>},
   { path: '/learn', component:<Learn/>},
-  { path: '/learn/*', component: <LearnResourceDetail/>}
+  { path: '/learn/*', component: <LearnResourceDetail/>},
+  { path: '/order/tracking', component: <OrderTracking/>}
+  
 
 ]
 
