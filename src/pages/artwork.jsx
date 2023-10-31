@@ -130,16 +130,17 @@ const Artwork = () => {
   const payForNFT = async () => {
     let nftID = window.location.href.toString().split("id=")[1];
     //console.log(ownerAddress)
-    console.log(nft);
-    console.log(address);
+    // console.log(nft);
+    // console.log(address);
     if(address != null){
     let userBalance = parseFloat(data.formatted);
-    // alert(price);
-    let totalToPay = (price + shippingPrice) / 1781.25;
-    // alert(totalToPay);  
+    // alert(userBalance);
+    // alert(usdPriceInEth);
+    let totalToPay = (price + shippingPrice.toFixed(2)) / 1806.96;
+    // alert(totalToPay.toFixed(6));  
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
-    alert(totalToPayInWei);
-    if (userBalance > totalToPay) {
+    // alert(totalToPayInWei);
+    if (userBalance < totalToPay) {
       Swal.fire({
         icon: "error",
         title: "Insufficient funds !",
@@ -190,6 +191,12 @@ const Artwork = () => {
         setTransactionStatus("Error transferring ETH");
       }
     }
+  }else{
+    Swal.fire({
+      icon: "error",
+      title: "Wallet Not Connected !",
+      text: "Please Connect Your Wallet in Order to Complete the Purchase",
+    });
   }
   };
 
