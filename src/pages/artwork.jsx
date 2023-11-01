@@ -136,7 +136,7 @@ const Artwork = () => {
     let userBalance = parseFloat(data.formatted);
     // alert(userBalance);
     // alert(usdPriceInEth);
-    let totalToPay = (price + shippingPrice.toFixed(2)) / 1806.96;
+    let totalToPay = price + shippingPrice.toFixed(2) / 1806.96;
     // alert(totalToPay.toFixed(6));  
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
     // alert(totalToPayInWei);
@@ -814,7 +814,7 @@ const Artwork = () => {
       const response = await axios.get(
         "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
       );
-      setUsdPriceInEth(parseFloat(response.data.USD));
+      setUsdPriceInEth(parseFloat(1806.96)); //response.data.USD
     }
     fetchPrice();
   }, [usdPriceInEth]);
@@ -824,7 +824,7 @@ const Artwork = () => {
       const response = await axios.get(
         "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
       );
-      setUsdPriceInEth(parseFloat(response.data.USD));
+      setUsdPriceInEth(parseFloat(1806.96)); //response.data.USD
     }, 30000);
   });
 
@@ -1047,7 +1047,8 @@ const Artwork = () => {
                       className="sc-button disabled  loadmore style bag fl-button pri-3"
                       onClick={async (e) => {
                         e.preventDefault();
-                        await payForNFT();
+                        // await payForNFT();
+                        await handleMint();
                       }}
                       
                     >
