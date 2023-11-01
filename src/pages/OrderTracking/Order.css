@@ -1,0 +1,86 @@
+.orders{
+    max-width: 100%;
+    padding: 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+.tf-section {
+padding-top: 100px !important;
+/* margin-top: 100px !important; */
+}
+
+/* -------- header_order */
+.header_order{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    flex-direction: column;
+}
+
+/* --- heading_order */
+/* .heading_order{
+    padding: 0px 30px;
+} */
+.heading_order h2{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 2px;
+    
+}
+.heading_order p{
+    font-size: 20px;
+    font-weight: 400;
+}
+/* -- menus */
+.menus{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+.p{
+    margin: 3px 0px;
+    padding: 7px 30px;
+    cursor: pointer;
+    border-radius: 10px 10px 0px 0px;
+    color: black;
+    font-size: 17px;
+    font-weight: bold;
+    z-index: 3;
+    border-bottom: 2px black;
+}
+.active-table{
+    border-top: 2px solid  black;
+    border-left: 2px solid  black;
+    border-right: 2px solid  black;
+    border-bottom: 3px solid white;
+}
+
+.noactive:hover{
+    /* border-top: 2px solid  #0046FE;
+    border-left: 2px solid  #0046FE;
+    border-right: 2px solid  #0046FE; */
+    background-color: black;
+    color: white;
+}
+
+/* ======= media  */
+@media(min-width : 1280px){
+    .orders{
+        max-width: 1280px;
+    }
+}
+
+@media(max-width: 991px){
+    .orders{
+        padding: 20px 2px;
+    }
+    .order_table{
+        width: 900px;
+    }
+    .order_main_container{
+        width: 100%;
+        overflow-x: auto;
+
+    }
+}

@@ -16,6 +16,8 @@ import {
   set,
   child,
   remove,
+  query,
+  equalTo,
 } from "firebase/database";
 import { useAccount, useBalance } from "wagmi";
 import axios from "axios";
@@ -38,11 +40,13 @@ class LazyNFT {
 }
 
 const Artwork = () => {
+  const [Listed, setListed] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [nft, setNFT] = useState();
   const [owner, setOwner] = useState();
   const [ownerAddress, setOwnerAddress] = useState("");
+  const [CollectionID, setCollectionID] = useState("");
   const [physicalImages, setPhysicalImages] = useState([]);
   const [ipfsURL, setIpfsURL] = useState("");
   const [price, setPrice] = useState(0);
@@ -76,6 +80,7 @@ const Artwork = () => {
     const artworkRef = ref(db, "artworks/" + nftID);
     await get(artworkRef).then(async (snapshot) => {
       let collectionID = snapshot.val().collection;
+      setCollectionID(collectionID)
       let key = snapshot.key;
       let IPFS_URL = snapshot.val().ipfsURI;
       setIpfsURL(IPFS_URL);
@@ -100,12 +105,12 @@ const Artwork = () => {
   async function getPrice() {
     let nftID = window.location.href.toString().split("id=")[1];
     let listingsRef = ref(db, "listings/");
-    let price = 0;
     await get(listingsRef).then(async (snapshot) => {
       let listings = snapshot.val();
       for (let i in listings) {
         let listing = listings[i];
         if (listing.artwork_id === nftID) {
+          setListed(true);
           setListingID(i);
           setPrice(listing.price);
           setShippingPrice(parseFloat(listing.shipping));
@@ -120,10 +125,13 @@ const Artwork = () => {
   }, []);
 
   const payForNFT = async () => {
+    let nftID = window.location.href.toString().split("id=")[1];
     if(address != null){
     let userBalance = parseFloat(data.formatted);
-    let totalToPay = price + shippingPrice / usdPriceInEth;
-    // alert(totalToPay);  
+    // alert(userBalance);
+    // alert(usdPriceInEth);
+    let totalToPay = (price + shippingPrice.toFixed(2)) / 1806.96;
+    // alert(totalToPay.toFixed(6));
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
     // alert(totalToPayInWei);
     if (userBalance < totalToPay) {
@@ -152,6 +160,21 @@ const Artwork = () => {
                 title: "The Artwork is now yours ! !",
                 text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
               });
+              let orderID =(Math.random() + 1).toString(36).substring(2);
+              let orderRef = ref(db,"orders/"+orderID);
+              set(orderRef,
+                {
+                  "artworkid" : nftID,
+                  "listingid" : listingID,
+                  "sellersid" : ownerAddress,
+                  "buyersid" : address,
+                  "price" : totalToPay,
+                  "Collectionid" : CollectionID,
+                  "buyersWallet" : address,
+                  "status": "Pending Shipping",
+                  "purchasedate" : Date().getTime()
+                });
+
             });
           });
         }
@@ -159,6 +182,12 @@ const Artwork = () => {
         setTransactionStatus("Error transferring ETH");
       }
     }
+  }else{
+    Swal.fire({
+      icon: "error",
+      title: "Wallet Not Connected !",
+      text: "Please Connect Your Wallet in Order to Complete the Purchase",
+    });
   }
   };
 
@@ -991,13 +1020,14 @@ const Artwork = () => {
 
                     <Link
                       to="/"
-                      className="sc-button loadmore style bag fl-button pri-3"
+                      className="sc-button disabled  loadmore style bag fl-button pri-3"
                       onClick={async (e) => {
                         e.preventDefault();
                         await payForNFT();
                       }}
+
                     >
-                      <span>Buy now</span>
+                      <span>{Listed? 'Buy Now' : 'Not Available'}</span>
                     </Link>
                     <div className="physicalImages">
                       <h5 className="physicalArtworksTitle">
