@@ -690,28 +690,14 @@ const LazyDisplay = () => {
                     <div className="flat-accordion2">
                       <Accordion key="0" title="Properties">
                         <div className="row propertiesBox">
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Width</p>
-                            <p className="attributeValue">50 cm</p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Height</p>
-                            <p className="attributeValue">65 cm</p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Technique</p>
-                            <p className="attributeValue">
-                              Mosaique resine epoxy
-                            </p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Shape</p>
-                            <p className="attributeValue">Rectangle</p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Weight</p>
-                            <p className="attributeValue">4,5 KG</p>
-                          </div>
+                          {nft?.data?.attributes?.map((attribute)=>{
+                            return(
+                                <div className="col-3 attr">
+                                  <p className="attributeTitle">{attribute?.trait_type}</p>
+                                  <p className="attributeValue">{attribute?.trait_value}</p>
+                                </div>
+                            )
+                          })}
                         </div>
                       </Accordion>
                       <Accordion key="1" title="About the artist">
