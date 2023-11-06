@@ -423,7 +423,6 @@ const CreateCollection = () => {
                         }}
                         defaultValue={royaltiesRecipient}
                     />
-                    {address}
                   </div>
                   <div className="col-4">
                     <h4 className="title-create-item">

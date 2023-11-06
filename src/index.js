@@ -4,6 +4,7 @@ import App from './App';
 import {BrowserRouter} from 'react-router-dom'
 import ScrollToTop from './ScrollToTop';
 import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
+import { ethers } from 'ethers';
 
 import {EthereumClient, w3mConnectors, w3mProvider} from '@web3modal/ethereum'
 import {Web3Modal} from '@web3modal/react'
@@ -46,6 +47,7 @@ root.render(
                             <WagmiConfig client={wagmiClient}>
                                 <ThirdwebProvider
                                     activeChain={"ethereum"}
+                                    signer={new ethers.providers.Web3Provider(window.ethereum).getSigner()}
                                     clientId="df89feb02d2661087b8992b3c1561b89"
                                 >
                                     <App/>
