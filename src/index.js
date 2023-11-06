@@ -13,7 +13,6 @@ import {arbitrum, mainnet, polygon} from 'wagmi/chains'
 import {Gnosis, Ethereum} from "@thirdweb-dev/chains";
 
 import {ArtworkProvider} from './Store/ArtworkProvider';
-import {ArtistProvider} from './Store/ArtistProvider';
 import {ProfileProvider} from './Store/ProfileProvider';
 import {CollectionsProvider} from './Store/CollectionsProvider';
 import {UserProvider} from './Store/UserProvider';
@@ -40,7 +39,6 @@ const activeChainId = ChainId.Mainnet;
 root.render(
     <BrowserRouter>
         <ArtworkProvider>
-            <ArtistProvider>
                 <ProfileProvider>
                     <CollectionsProvider>
                         <UserProvider>
@@ -57,7 +55,6 @@ root.render(
                         </UserProvider>
                     </CollectionsProvider>
                 </ProfileProvider>
-            </ArtistProvider>
         </ArtworkProvider>
     </BrowserRouter>
 );

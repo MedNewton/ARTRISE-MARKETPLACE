@@ -21,14 +21,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useProfileContext } from '../Store/ProfileContext';
 import { useUserContext } from '../Store/UserContext';
-import { useArtistContext } from '../Store/ArtistContext';
 import Modal from 'react-bootstrap/Modal';
 
 const Profile = () => {
   const navigate = useNavigate();
   const {profileData, lazyOwned} = useProfileContext();
   const {allMemberArtists} = useUserContext();
-  const {artists} = useArtistContext();
   const [createModalShow, setCreateModalShow] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
@@ -66,7 +64,6 @@ const Profile = () => {
       setArtistType(dt.artistType);
       setSlug(dt.slug);
       dt?.followers && handleSetFollowers(dt?.followers);
-      dt?.followedArtists && handleSetFollowingArtists(dt?.followedArtists);
       dt?.following && handleSetFollowing(dt?.following);
       document.getElementById("pdp").style.backgroundImage = dt.pdpLink;
   }
@@ -131,18 +128,6 @@ const Profile = () => {
         const found = allMemberArtists?.find((user)=>user?.userId === val);
         if (found && (updatedList?.findIndex((obj)=> obj?.userId === found?.userId) === -1)) {
           updatedList?.push({'name':found?.name, 'userId':found?.userId, 'type':(found?.verified ? "Artist" : "Member"), 'isDynamic':true});
-        }
-      }
-      return updatedList;
-    })
-  };
-  const handleSetFollowingArtists = (array) => {
-    setFollowingList((prevState) =>{
-      let updatedList = [...prevState];
-      for (let val of array) {
-        const found = artists?.find((user)=>user?.slug === val);
-        if (found && (updatedList?.findIndex((obj)=> obj?.userId === found?.slug) === -1)) {
-          updatedList?.push({'name':found?.name, 'userId':found?.slug, 'type':'Artist', 'isDynamic':false});
         }
       }
       return updatedList;
