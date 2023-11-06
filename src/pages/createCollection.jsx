@@ -34,10 +34,25 @@ const CreateCollection = () => {
   
 
   const sdk = useSDK();
-
   const [bio, setBio] = useState("")
-
   const connect = useMetamask();
+  const { address, isConnected } = useAccount();
+  const adr = useAddress();
+
+  const [title, setTitle] = useState("Collection name");
+  const [symbol, setSymbol] = useState("");
+  const [description, setDescription] = useState("");
+  const [externalLink, setExternalLink] = useState("");
+  const [artisticCollection, setArtisticCollection] = useState(false);
+  const [media, setMedia] = useState("");
+  const [mediaURL, setMediaURL] = useState("")
+  const [mediaPreview, setMediaPreview] = useState(img1);
+  const [cover, setCover] = useState()
+  const [coverURL, setCoverURL] = useState("")
+  const [coverPreview, setCoverPreview] = useState(img1)
+  const [primarySalesRecipient, setPrimarySalesRecipient] = useState("");
+  const [royaltiesRecipient, setRoyaltiesRecipient] = useState("");
+  const [royaltiesPercentage, setRoyaltiesPercentage] = useState(10);
 
   async function getArtistDescription(){
     let artistId = localStorage.getItem("UserKey");
@@ -50,27 +65,30 @@ const CreateCollection = () => {
       }
     })
   }
+  async function getWalletAddress(){
+    setRoyaltiesRecipient(await address);
+  }
 
-  useEffect(() => {
-    getArtistDescription();
-    connect();
+
+  useEffect(async () => {
+    await getArtistDescription();
+    await connect();
+    await getWalletAddress()
   }, []);
 
-  const adr = useAddress();
-
-  const { address, isConnected } = useAccount();
 
   function checkDeployMetadataError() {
-    connect();
     let errorsExist;
-    if (!title || title == "" || title == " " || title.length < 2) {
+    if (!title || title === "" || title === " " || title.length < 2) {
+
       Swal.fire({
         icon: "error",
         title: "Collection name error !",
         text: "The collection name cna't be empty.",
       });
       errorsExist = true;
-    } else if (!symbol || symbol == "" || symbol == " ") {
+    } else if (!symbol || symbol === "" || symbol === " ") {
+
       Swal.fire({
         icon: "error",
         title: "Collection symbol error !",
@@ -79,9 +97,10 @@ const CreateCollection = () => {
       errorsExist = true;
     } else if (
       !royaltiesRecipient ||
-      royaltiesRecipient == "" ||
-      royaltiesRecipient == " "
+      royaltiesRecipient === "" ||
+      royaltiesRecipient === " "
     ) {
+
       Swal.fire({
         icon: "error",
         title: "Royalties recipient error !",
@@ -90,8 +109,8 @@ const CreateCollection = () => {
       errorsExist = true;
     } else if (
       !royaltiesPercentage ||
-      royaltiesPercentage == "" ||
-      royaltiesPercentage == " "
+      royaltiesPercentage === "" ||
+      royaltiesPercentage === " "
     ) {
       Swal.fire({
         icon: "error",
@@ -158,10 +177,11 @@ const CreateCollection = () => {
   }
 
   async function deployNFTCollection() {
-    connect();
-    let metadataErrors = checkDeployMetadataError();
+    try{
+    await connect();
 
-    if (metadataErrors == false) {
+    let metadataErrors = await checkDeployMetadataError();
+    if (metadataErrors === false) {
       await sdk.deployer.deployNFTCollection({
         name: title,
         description: description,
@@ -198,6 +218,9 @@ const CreateCollection = () => {
         window.location.href = "/"
       })
     }
+    }catch (error) {
+      console.error("error occurred while minting a collection:",error)
+    }
 
     //await sdk.deployer.deployNFTCollection()
   }
@@ -225,20 +248,7 @@ const CreateCollection = () => {
     });
   }
 
-  const [title, setTitle] = useState("Collection name");
-  const [symbol, setSymbol] = useState("");
-  const [description, setDescription] = useState("");
-  const [externalLink, setExternalLink] = useState("");
-  const [artisticCollection, setArtisticCollection] = useState(false);
-  const [media, setMedia] = useState();
-  const [mediaURL, setMediaURL] = useState()
-  const [mediaPreview, setMediaPreview] = useState(img1);
-  const [cover, setCover] = useState()
-  const [coverURL, setCoverURL] = useState()
-  const [coverPreview, setCoverPreview] = useState(img1)
-  const [primarySalesRecipient, setPrimarySalesRecipient] = useState();
-  const [royaltiesRecipient, setRoyaltiesRecipient] = useState();
-  const [royaltiesPercentage, setRoyaltiesPercentage] = useState();
+
   
 
 
@@ -411,7 +421,7 @@ const CreateCollection = () => {
                         onChange={(e) => {
                           setRoyaltiesRecipient(e.target.value);
                         }}
-                        defaultValue={address}
+                        defaultValue={royaltiesRecipient}
                     />
                   </div>
                   <div className="col-4">
@@ -422,7 +432,7 @@ const CreateCollection = () => {
                         type="number"
                         placeholder="Percentage of royalties on every secondary sale"
                         className="percentageInput"
-                        defaultValue={10}
+                        defaultValue={royaltiesPercentage}
                         disabled
                     />
                   </div>
