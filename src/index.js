@@ -35,6 +35,18 @@ const root = createRoot(document.getElementById('root'));
 // This is the chainId your dApp will work on.
 const activeChainId = ChainId.Mainnet;
 
+const getSigner = async () =>{
+    let provider = null;
+    let signer = null;
+    if (window.ethereum == null) {
+        signer = ethers.getDefaultProvider().getSigner()
+        return signer;
+    } else {
+        signer = new ethers.providers(window.ethereum).getSigner()
+        return signer;
+    }
+}
+
 root.render(
     <BrowserRouter>
         <ArtworkProvider>
@@ -44,7 +56,7 @@ root.render(
                         <WagmiConfig client={wagmiClient}>
                             <ThirdwebProvider
                                 activeChain={"ethereum"}
-                                signer={new ethers.providers.Web3Provider(window.ethereum).getSigner()}
+                                signer={getSigner}
                                 clientId="df89feb02d2661087b8992b3c1561b89"
                             >
                                 <App/>
