@@ -192,12 +192,23 @@ const CreateItem = () => {
     const fileReader = new FileReader();
 
     function addTrait() {
-        //traitsList.push(TraitForm("Property", "Value"));
         setTraits([...traits, TraitForm("Property", "Value")]);
     }
 
     function removeTrait(index) {
-        setTraits(traits.filter((value, i) => i != index));
+        setTraits(traits.filter((_, i) => i !== index));
+    }
+
+    function handleTypeChange(index, event) {
+        const updatedTraits = [...traits];
+        updatedTraits[index].trait_type = event.target.value;
+        setTraits(updatedTraits);
+    }
+
+    function handleValueChange(index, event) {
+        const updatedTraits = [...traits];
+        updatedTraits[index].trait_value = event.target.value;
+        setTraits(updatedTraits);
     }
 
     async function handleFileChange(e) {
@@ -576,12 +587,16 @@ const CreateItem = () => {
                                                             <input
                                                                 type="text"
                                                                 placeholder={property.trait_type}
+                                                                value={property.trait_type}
+                                                                onChange={(event) => handleTypeChange(index, event)}
                                                             />
                                                         </div>
                                                         <div className="col-5">
                                                             <input
                                                                 type="text"
                                                                 placeholder={property.trait_value}
+                                                                value={property.trait_value}
+                                                                onChange={(event) => handleValueChange(index, event)}
                                                             />
                                                         </div>
                                                         <div className="col-2">

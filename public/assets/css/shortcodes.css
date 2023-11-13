@@ -1939,7 +1939,7 @@
 }
 
 .sc-btn-top .sc-button {
-  padding: 10px 35px 10px 32px;
+  padding: 7px 15px 7px 15px;
 }
 
 .connect-wal .sc-btn-top .sc-button {
@@ -4697,7 +4697,7 @@ section.today-picks {
 }
 .mode_switcher {
   display: flex;
-  position: absolute;
+  /*position: absolute;*/
   /*top: 21px;
   right: 11px;*/
   justify-content: center;
@@ -4723,10 +4723,33 @@ section.today-picks {
   height: 40px;
   min-width: 40px;
   font-size: 16px;
-  margin-left: 10px;
+  /*margin-left: 10px;*/
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.mode_switcher_mobile_version a {
+  background: red;
+  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  min-width: 40px;
+  font-size: 16px;
+  /*margin-left: 10px;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.is_dark .mode_switcher_mobile_version a {
+
+  color:orange !important;
+  background: green;
+}
+.is_dark .mode_switcher_mobile_version img {
+
+  color:black !important;
 }
 
 .is_dark .mode_switcher a {
@@ -5732,7 +5755,7 @@ button.accordion-button {
 }
 
 .header_2 .flat-search-btn {
-  right: 132px;
+  /*right: 132px;*/
   width: 30%;
 }
 

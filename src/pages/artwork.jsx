@@ -99,7 +99,6 @@ const Artwork = () => {
         setNFT(lazyNFT);
       });
     });
-    console.log(lazyNFT);
     return lazyNFT;
   }
 
@@ -115,7 +114,6 @@ const Artwork = () => {
           setListingID(i);
           setPrice(listing.price);
           setShippingPrice(parseFloat(listing.shipping));
-          console.log(listing.price);
         }
       }
     });
@@ -124,14 +122,10 @@ const Artwork = () => {
   useEffect(() => {
     getNFTData();
     getPrice();
-    console.log(shippingPrice);
   }, []);
 
   const payForNFT = async () => {
     let nftID = window.location.href.toString().split("id=")[1];
-    //console.log(ownerAddress)
-    // console.log(nft);
-    // console.log(address);
     if(address != null){
     let userBalance = parseFloat(data.formatted);
     // alert(userBalance);
@@ -155,8 +149,6 @@ const Artwork = () => {
           to: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
           value: totalToPayInWei,
         };
-        // alert(transaction);
-        console.log(transaction);
         const sendTransaction = await signer.sendTransaction(transaction);
         setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
         if (sendTransaction.hash) {
@@ -182,12 +174,11 @@ const Artwork = () => {
                   "status": "Pending Shipping",
                   "purchasedate" : Date().getTime()
                 });
-              
+
             });
           });
         }
       } catch (error) {
-        console.error("Error transferring ETH:", error);
         setTransactionStatus("Error transferring ETH");
       }
     }
@@ -204,7 +195,6 @@ const Artwork = () => {
     setLoading(true);
     setStatus("");
 
-    console.log('Handling Mint')
     const web3 = new Web3(window.ethereum);
 
     const raribleProtocolAddress = "0x9201a886740D193E315F1F1B2B193321D6701D07";
@@ -845,32 +835,18 @@ const Artwork = () => {
                     <div className="flat-accordion2">
                       <Accordion key="0" title="Properties">
                         <div className="row propertiesBox">
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Width</p>
-                            <p className="attributeValue">50 cm</p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Height</p>
-                            <p className="attributeValue">65 cm</p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Technique</p>
-                            <p className="attributeValue">
-                              Mosaique resine epoxy
-                            </p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Shape</p>
-                            <p className="attributeValue">Rectangle</p>
-                          </div>
-                          <div className="col-3 attr">
-                            <p className="attributeTitle">Weight</p>
-                            <p className="attributeValue">4,5 KG</p>
-                          </div>
+                          {nft?.data?.attributes?.map((attribute)=>{
+                            return(
+                                <div className="col-3 attr">
+                                  <p className="attributeTitle">{attribute?.trait_type}</p>
+                                  <p className="attributeValue">{attribute?.trait_value}</p>
+                                </div>
+                            )
+                          })}
                         </div>
                       </Accordion>
                       <Accordion key="1" title="About the artist">
-                        <p>{nft.owner.bio}</p>
+                        <p>{nft?.owner.bio}</p>
                       </Accordion>
                       <Accordion key="2" title="Details">
                         <div className="row">
@@ -1050,7 +1026,7 @@ const Artwork = () => {
                         // await payForNFT();
                         await handleMint();
                       }}
-                      
+
                     >
                       <span>{Listed? 'Buy Now' : 'Not Available'}</span>
                     </Link>
