@@ -65,6 +65,7 @@ import Collection from "../components/layouts/Collections/Collection";
 import Learn from "./Learn";
 import LearnResourceDetail from "./LearnResourceDetail";
 import OrderTracking from "./OrderTracking/OrderTracking";
+import ConfirmationPage from "./confirmationpage";
 
 const routes = [
   { path: '/', component: <Home01 />},
@@ -133,7 +134,8 @@ const routes = [
   { path: '/collection', component:<Collection/>},
   { path: '/learn', component:<Learn/>},
   { path: '/learn/*', component: <LearnResourceDetail/>},
-  { path: '/order/tracking', component: <OrderTracking/>}
+  { path: '/order/tracking', component: <OrderTracking/>},
+  { path: '/page/confirmation', component: <ConfirmationPage/>}
   
 
 ]
