@@ -1,24 +1,101 @@
 import React , { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/header/Header';
 import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
-import TopSeller from '../components/layouts/authors/TopSeller';
-import topSellerData from '../assets/fake-data/data-top-seller'
 import popularCollectionData from '../assets/fake-data/data-popular-collection';
-import db from '../firebase';
-import storage from '../storage';
-import { ref, onValue, get, update, set, child } from "firebase/database";
+import {get, ref} from "firebase/database";
+import db from "../firebase";
+import {useDispatch, useSelector} from "react-redux";
+import {SET_USERS, setUsers} from "../redux/actions/userActions";
 
-import { useArtworkContext } from '../Store/ArtworkContext';
+// import { useArtworkContext } from '../Store/ArtworkContext';
 
 const Authors01 = () => {
-    const [data] = useState(popularCollectionData);
-    const { userArtist } = useArtworkContext();
-    const [visible , setVisible] = useState(20);
-    const showMoreItems = () => {
-        setVisible((prevValue) => prevValue + 3);
+    let users = [];
+    let artists = [];
+    const dispatch = useDispatch();
+    const  artistsState= useSelector((state) => state.usersReducer.artists);
+    async function fetchUsers() {
+        const userRef = ref(db, 'users/');
+        await get(userRef).then(async (snapshot) => {
+            let dt = snapshot.val();
+            // console.log("redux dt:",dt)
+            for (let UserKey in dt) {
+                let a = dt[UserKey];
+                if(a?.verified){
+                    let userItem = {
+                        userId: UserKey,
+                        name: a?.name,
+                        email: a?.email,
+                        walletAddress: a?.walletAddress,
+                        bio: a?.bio,
+                        pdpLink: a?.pdpLink,
+                        cover_link: a?.cover_link,
+                        Facebook: a?.Facebook,
+                        Instagram: a?.Instagram,
+                        Twitter:a?.Twitter,
+                        website: a?.website,
+                        profileType: a?.profileType,
+                        artistType:a?.artistType,
+                        followedCollections: a?.followedCollections,
+                        followers:a?.followers,
+                        following:a?.following,
+                        slug: a?.slug,
+                        referralCode: a?.referralCode,
+                        referralBy: a?.referralBy,
+                        verified: a?.verified,
+                        socialMediaVerified: a?.socialMediaVerified,
+                        artRiseAdminVerified: a?.artRiseAdminVerified,
+                        artworks: a?.artworks
+                    }
+                    users.push(userItem);
+                }else if (!a?.verified){
+                    let userItem = {
+                        userId: UserKey,
+                        name: a?.name,
+                        email: a?.email,
+                        walletAddress: a?.walletAddress,
+                        bio: a?.bio,
+                        pdpLink: a?.pdpLink,
+                        cover_link: a?.cover_link,
+                        Facebook: a?.Facebook,
+                        Instagram: a?.Instagram,
+                        Twitter:a?.Twitter,
+                        website: a?.website,
+                        profileType: a?.profileType,
+                        artistType:a?.artistType,
+                        followedCollections: a?.followedCollections,
+                        followers:a?.followers,
+                        following:a?.following,
+                        slug: a?.slug,
+                        referralCode: a?.referralCode,
+                        referralBy: a?.referralBy,
+                        verified: a?.verified,
+                        socialMediaVerified: a?.socialMediaVerified,
+                        artRiseAdminVerified: a?.artRiseAdminVerified,
+                        artworks: a?.artworks
+                    }
+                    artists.push(userItem);
+                }
+
+            }
+
+        })
+        dispatch(setUsers({users, artists}));
     }
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+console.log("ggggg products state",artistsState)
+
+    // const [data] = useState(popularCollectionData);
+    // const { userArtist } = useArtworkContext();
+    // const [visible , setVisible] = useState(20);
+    // const showMoreItems = () => {
+    //     setVisible((prevValue) => prevValue + 3);
+    // }
     const selectedTags = [];
     function editTags(val, target){
         if(selectedTags.includes(val)){
@@ -88,8 +165,8 @@ const Authors01 = () => {
                         </div>
 
                         {
-                            userArtist.length > 0 ? (
-                                userArtist.slice(0, visible).map((item, index) => (
+                            // artistsState?.length > 0 ? (
+                                artistsState?.map((item, index) => (
                                     <div key={index} className="col-lg-4 col-md-6 col-12">
                                         <Link to={"/displayProfile?artist=" + item?.userId}>
                                             <div className="sc-card-collection style-2">
@@ -108,38 +185,46 @@ const Authors01 = () => {
                                                     </div>
                                                     <div className="sc-button fl-button pri-3"><span>Follow</span></div>
                                                 </div>
-                                                <div className="media-images-collection">
-                                                    <div className="box-left">
-                                                        <img src={item.artworks[0]?.img} alt=""/>
-                                                    </div>
-                                                    <div className="box-right">
-                                                        <div className="top-img">
-                                                            <img
-                                                                src={item.artworks[1]?.img ? item.artworks[1].img : item.artworks[0].img}
-                                                                alt=""/>
-                                                            <img
-                                                                src={item.artworks[2]?.img ? item.artworks[2].img : item.artworks[0].img}
-                                                                alt=""/>
-                                                        </div>
-                                                        <div className="bottom-img">
-                                                            <img
-                                                                src={item.artworks[3]?.img ? item.artworks[3].img : item.artworks[0].img}
-                                                                alt=""/>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {/*<div className="media-images-collection">*/}
+                                                {/*    <div className="box-left">*/}
+                                                {/*        <img src={item?.artworks[0]?.img} alt=""/>*/}
+                                                {/*    </div>*/}
+                                                {/*    <div className="box-right">*/}
+                                                {/*        <div className="top-img">*/}
+                                                {/*            <img*/}
+                                                {/*                src={item?.artworks[1]?.img ? item?.artworks[1]?.img : item?.artworks[0]?.img}*/}
+                                                {/*                alt=""/>*/}
+                                                {/*            <img*/}
+                                                {/*                src={item?.artworks[2]?.img ? item?.artworks[2]?.img : item?.artworks[0]?.img}*/}
+                                                {/*                alt=""/>*/}
+                                                {/*        </div>*/}
+                                                {/*        <div className="bottom-img">*/}
+                                                {/*            <img*/}
+                                                {/*                src={item?.artworks[3]?.img ? item?.artworks[3]?.img : item?.artworks[0]?.img}*/}
+                                                {/*                alt=""/>*/}
+                                                {/*        </div>*/}
+                                                {/*    </div>*/}
+                                                {/*</div>*/}
                                             </div>
                                         </Link>
                                     </div>
+                                // )
                                 ))
-                            ) : ("")
+                            // :
+                            // (
+                            //     <>I am empty</>
+                            // )
                         }
-                        {
-                        visible < data.length && 
-                        <div className="col-md-12 wrap-inner load-more text-center"> 
-                            <Link to="#" id="load-more" className="sc-button loadmore fl-button pri-3" onClick={showMoreItems}><span>Load More</span></Link>
-                        </div>
-                    }
+
+
+
+
+                    {/*    {*/}
+                    {/*    visible < data.length &&*/}
+                    {/*    <div className="col-md-12 wrap-inner load-more text-center">*/}
+                    {/*        <Link to="#" id="load-more" className="sc-button loadmore fl-button pri-3" onClick={showMoreItems}><span>Load More</span></Link>*/}
+                    {/*    </div>*/}
+                    {/*}*/}
                     </div>
                 </div>
             </section>

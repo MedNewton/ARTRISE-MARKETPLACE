@@ -15,6 +15,8 @@ import {ArtworkProvider} from './Store/ArtworkProvider';
 import {ProfileProvider} from './Store/ProfileProvider';
 import {CollectionsProvider} from './Store/CollectionsProvider';
 import {UserProvider} from './Store/UserProvider';
+import {Provider} from 'react-redux';
+import store from './redux/store'
 
 
 const chains = [arbitrum, mainnet, polygon];
@@ -48,6 +50,8 @@ const getSigner = async () =>{
 }
 
 root.render(
+    <useStrict>
+    <Provider store={store}>
     <BrowserRouter>
         <ArtworkProvider>
             <CollectionsProvider>
@@ -68,4 +72,6 @@ root.render(
             </CollectionsProvider>
         </ArtworkProvider>
     </BrowserRouter>
+    </Provider>
+    </useStrict>
 );
