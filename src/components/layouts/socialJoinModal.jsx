@@ -56,11 +56,11 @@ const SocialJoinModal = (props) => {
 
   async function passwordlessLogin(snapshot) {
     let key = snapshot.key;
-    localStorage.setItem("UserKey", snapshot.key);
-    localStorage.setItem("name", snapshot.val().displayName);
+    localStorage.setItem("slug", snapshot.val().slug)
+    localStorage.setItem("profileType", snapshot.val().profileType)
+    localStorage.setItem("userId", snapshot.key);
+    localStorage.setItem("name", snapshot.val().name);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
-    localStorage.setItem("followingYann", snapshot.val().followingYann);
-    localStorage.setItem("slug", snapshot.val().slug);
 
     setPdp(snapshot.val().pdpLink);
     setAccountType(snapshot.val().accountType);
@@ -87,51 +87,29 @@ const SocialJoinModal = (props) => {
           }
         );
         await set(ref(db, "users/" + adr), {
-          name: data.fullName.toString(),
-          displayName: data.screenName.toString(),
-          referralCode: (Math.random() + 1).toString(36).substring(2),
-          referrefBy: referee,
-          accountType: localStorage.getItem("accountTypeChoice").toString(),
-          creator: localStorage.getItem("creator").toString(),
-          email: "No email yet ...",
+          name: data?.fullName?.toString() ? data?.fullName?.toString() : data?.screenName?.toString() ? data?.screenName?.toString() : "UNNAMED",
+          email: "No Email added yet ...",
+          walletAddress: "",
           bio: "No Bio added yet ...",
-          verified: "no",
+          pdpLink: data?.photoUrl?.toString() ? data?.photoUrl?.toString() : "https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=",
+          cover_link: "https://images.unsplash.com/photo-1649836607840-3c74b50db7cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+          Facebook: "No Facebook added yet ...",
+          Instagram: "No Instagram added yet ...",
+          Twitter: data?.federatedId?.toString(),
+          website: "No Website added yet ...",
+          profileType: "member",
+          artistType: "member",
+          followedCollections: [],
+          followers: [],
+          following: [],
           slug: (
-            Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
+              Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
           ).toString(),
-          pdpLink: data.photoUrl.toString(),
-          cover_link:
-            "https://images.unsplash.com/photo-1649836607840-3c74b50db7cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
-          website: "No url shared yet ...",
-          Facebook: "No account shared yet ...",
-          Instagram: "No account shared yet",
-          Twitter: data.federatedId.toString(),
-          Discord: "No account shared yet ...",
-          Tiktok: "No account shared yet ...",
-          Youtube: "No account shared yet ...",
-          emailNotifications: false,
-          followedArtists: {
-            0: "res",
-          },
-          followedCollections: {
-            0: "res",
-          },
-          likedListings: {
-            0: "res",
-          },
-          following: {
-            0: "res",
-          },
-          followers: {
-            0: "res",
-          },
-          followingYann: false,
-          notifications: {
-            text: "Welcome to Artise",
-            link: "",
-            img: "",
-            seen: false,
-          },
+          referralCode: (Math.random() + 1).toString(36).substring(2),
+          referralBy: referee,
+          socialMediaVerified: false,
+          artRiseAdminVerified: false,
+          artworks: []
         });
         hide();
         hideParent();
@@ -159,51 +137,29 @@ const SocialJoinModal = (props) => {
       let dt = snapshot.val();
       if (dt == null) {
         await set(ref(db, "users/" + adr), {
-          name: data.fullName.toString(),
-          displayName: data.displayName.toString(),
-          referralCode: (Math.random() + 1).toString(36).substring(2),
-          referrefBy: referee,
-          accountType: localStorage.getItem("accountTypeChoice").toString(),
-          creator: localStorage.getItem("creator").toString(),
-          email: data.email,
+          name: data?.fullName?.toString() ? data?.fullName?.toString() : data?.displayName?.toString() ? data?.displayName?.toString() : "UNNAMED",
+          email: data?.email ? data?.email : "No Email added yet ...",
+          walletAddress: "",
           bio: "No Bio added yet ...",
-          verified: "no",
+          pdpLink: data?.photoUrl?.toString() ? data?.photoUrl?.toString() : "https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=",
+          cover_link: "https://images.unsplash.com/photo-1649836607840-3c74b50db7cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+          Facebook: "No Facebook added yet ...",
+          Instagram: "No Instagram added yet ...",
+          Twitter: data?.federatedId?.toString(),
+          website: "No Website added yet ...",
+          profileType: "member",
+          artistType: "member",
+          followedCollections: [],
+          followers: [],
+          following: [],
           slug: (
-            Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
+              Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
           ).toString(),
-          pdpLink: data.photoUrl.toString(),
-          cover_link:
-            "https://images.unsplash.com/photo-1649836607840-3c74b50db7cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
-          website: "No url shared yet ...",
-          Facebook: "No account shared yet ...",
-          Instagram: "No account shared yet",
-          Twitter: "No account shared yet ...",
-          Discord: "No account shared yet ...",
-          Tiktok: "No account shared yet ...",
-          Youtube: "No account shared yet ...",
-          emailNotifications: false,
-          followedArtists: {
-            0: "res",
-          },
-          followedCollections: {
-            0: "res",
-          },
-          likedListings: {
-            0: "res",
-          },
-          following: {
-            0: "res",
-          },
-          followers: {
-            0: "res",
-          },
-          followingYann: false,
-          notifications: {
-            text: "Welcome to Artise",
-            link: "",
-            img: "",
-            seen: false,
-          },
+          referralCode: (Math.random() + 1).toString(36).substring(2),
+          referralBy: referee,
+          socialMediaVerified: false,
+          artRiseAdminVerified: false,
+          artworks: []
         });
         window.ire(
           "trackConversion",
@@ -241,51 +197,30 @@ const SocialJoinModal = (props) => {
       let dt = snapshot.val();
       if (dt == null) {
         await set(ref(db, "users/" + adr), {
-          name: data.name,
-          displayName: data.name,
-          referralCode: (Math.random() + 1).toString(36).substring(2),
-          referrefBy: referee,
-          accountType: localStorage.getItem("accountTypeChoice").toString(),
-          creator: localStorage.getItem("creator").toString(),
-          email: data.email,
+
+          name: data?.name ? data?.name : "UNNAMED",
+          email: data?.email ? data?.email : "No Email added yet ...",
+          walletAddress: "",
           bio: "No Bio added yet ...",
-          verified: "no",
+          pdpLink: data?.picture?.data?.url?.toString() ? data?.picture?.data?.url?.toString() : "https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=",
+          cover_link: "https://images.unsplash.com/photo-1649836607840-3c74b50db7cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+          Facebook: "No Facebook added yet ...",
+          Instagram: "No Instagram added yet ...",
+          Twitter: "No Twitter added yet ...",
+          website: "No Website added yet ...",
+          profileType: "member",
+          artistType: "member",
+          followedCollections: [],
+          followers: [],
+          following: [],
           slug: (
-            Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
+              Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
           ).toString(),
-          pdpLink: data.picture.data.url.toString(),
-          cover_link:
-            "https://images.unsplash.com/photo-1649836607840-3c74b50db7cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
-          website: "No url shared yet ...",
-          Facebook: "No account shared yet ...",
-          Instagram: "No account shared yet",
-          Twitter: "No account shared yet ...",
-          Discord: "No account shared yet ...",
-          Tiktok: "No account shared yet ...",
-          Youtube: "No account shared yet ...",
-          emailNotifications: false,
-          followedArtists: {
-            0: "res",
-          },
-          followedCollections: {
-            0: "res",
-          },
-          likedListings: {
-            0: "res",
-          },
-          following: {
-            0: "res",
-          },
-          followers: {
-            0: "res",
-          },
-          followingYann: false,
-          notifications: {
-            text: "Welcome to Artise",
-            link: "",
-            img: "",
-            seen: false,
-          },
+          referralCode: (Math.random() + 1).toString(36).substring(2),
+          referralBy: referee,
+          socialMediaVerified: false,
+          artRiseAdminVerified: false,
+          artworks: []
         });
         window.ire(
           "trackConversion",

@@ -6,12 +6,12 @@ import { Web3Button } from "@web3modal/react";
 import { useWeb3Modal } from "@web3modal/react";
 import SocialJoinModal from "./socialJoinModal";
 
-const JoinModal = (props) => {
+const JoinModal = ({show,onHide}) => {
   const { isOpen, open, close, setDefaultChain } = useWeb3Modal();
   const [showSocialJoinModal, setShowSocialJoinModal] = useState(false);
 
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton></Modal.Header>
 
       <div className="modal-body space-y-20 pd-40">
@@ -30,8 +30,9 @@ const JoinModal = (props) => {
         <div
           id="createCollection"
           onClick={async () => {
-            props.onHide();
-            await open();
+            onHide();
+              localStorage.setItem("connectWithWalletOperation", "join");
+              await open();
           }}
           className="btn btn-primary"
           data-toggle="modal"
@@ -70,7 +71,7 @@ const JoinModal = (props) => {
           setShowSocialJoinModal(false);
         }}
         hideParent={() => {
-          props.onHide();
+          onHide();
         }}
       />
     </Modal>

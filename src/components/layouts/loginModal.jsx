@@ -34,7 +34,11 @@ const LoginModal = ({show,onHide}) => {
             Login using your wallet:
           </span>
         </p>
-        <div id='createCollection' onClick={async () => {onHide();await open();}} className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close">Connect wallet</div>
+        <div id='createCollection' onClick={async () => {
+          onHide();
+          localStorage.setItem("connectWithWalletOperation", "login");
+          await open()}}
+             className="btn btn-primary" data-toggle="modal" data-target="#popup_bid_success" data-dismiss="modal" aria-label="Close">Connect wallet</div>
 
         <p className="text-center" style={{ marginTop: "10%", marginBottom: "0px !important" }}>
           <span className="price color-popup" style={{ fontWeight: "500", fontSize: "1.1em" }}>

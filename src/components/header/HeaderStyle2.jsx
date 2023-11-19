@@ -26,6 +26,11 @@ const HeaderStyle2 = () => {
     const [showMenuModal, setShowMenuModal] = useState(false);
     const [showSearchField, setShowSearchField] = useState(false);
 
+    const [isWalletConnected, setIsWalletConnected] = useState(localStorage.getItem("walletAddress") !== null);
+    const [isTwitterConnected, setIsTwitterConnected] = useState(localStorage.getItem("twitter") !== null)
+    const [isGoogleConnected, setIsGoogleConnected] = useState(localStorage.getItem("google") !== null);
+    const [isFacebookConnected, setIsFacebookConnected] = useState(localStorage.getItem("facebook") !== null);
+
     const handleMenuModalClose = () => setShowMenuModal(false);
     const handleShowMenuModal = () => setShowMenuModal(true);
 
@@ -38,15 +43,24 @@ const HeaderStyle2 = () => {
 
     useEffect(() => {
         if (address) {
-            // localStorage.setItem("accountTypeChoice", "artist");
-            localStorage.setItem("UserKey", address);
-            localStorage.setItem("walletAddress", address);
-            CheckUserExists(address, referee);
+             CheckUserExists(address, referee).then(() => {
+            let walletConnectedState = localStorage.getItem("walletAddress");
+            if (walletConnectedState) setIsWalletConnected(true);
+            else setIsWalletConnected(false);
+            let twitterState = localStorage.getItem("twitter");
+            if (twitterState) setIsTwitterConnected(true);
+            else setIsTwitterConnected(false);
+            let googleState = localStorage.getItem("google");
+            if (googleState) setIsGoogleConnected(true);
+            else setIsGoogleConnected(false);
+            let facebookState = localStorage.getItem("facebook");
+            if (facebookState) setIsFacebookConnected(true);
+            else setIsFacebookConnected(false);
+             });
         }
     }, [address]);
 
     const {isOpen, open, close, setDefaultChain} = useWeb3Modal();
-    const [isTwitterConected, setIsTwitterConected] = useState(false);
     const [loginModalOpen, setLoginModalOpen] = useState();
     const [joinChoicesModalOpen, setJoinChoicesModalOpen] = useState();
     const [referee, setReferee] = useState("");
@@ -81,9 +95,6 @@ const HeaderStyle2 = () => {
 
     useEffect(() => {
         checkForReferralCode();
-        let twitterState = localStorage.getItem("twitter");
-        if (twitterState) setIsTwitterConected(true);
-        else setIsTwitterConected(false);
     }, []);
 
     return (
@@ -131,10 +142,10 @@ const HeaderStyle2 = () => {
                                             <RenderHomeExploreDropButtons/>
                                             <HeaderSearch/>
                                             {
-                                                (isConnected &&
-                                                    !localStorage.getItem("twitter") &&
-                                                    !localStorage.getItem("google") &&
-                                                    !localStorage.getItem("facebook"))
+                                                isWalletConnected &&
+                                                !isTwitterConnected &&
+                                                !isGoogleConnected &&
+                                                !isFacebookConnected
                                                     ?
                                                     (
                                                         <>
@@ -165,9 +176,10 @@ const HeaderStyle2 = () => {
                                                         </>
                                                     )
                                                     :
-                                                    localStorage.getItem("twitter") ||
-                                                    localStorage.getItem("google") ||
-                                                    localStorage.getItem("facebook")
+                                                    !isWalletConnected &&
+                                                    (isTwitterConnected ||
+                                                        isGoogleConnected ||
+                                                        isFacebookConnected)
                                                         ?
                                                         (
                                                             <div className="flat-search-btn flex">

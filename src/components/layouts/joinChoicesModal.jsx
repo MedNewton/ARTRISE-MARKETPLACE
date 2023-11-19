@@ -3,12 +3,12 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import JoinModal from "./joinModal";
 
-const JoinChoicesModal = (props) => {
+const JoinChoicesModal = ({show, onHide}) => {
   const [showJoinModal, setShowJoinModal] = useState(false);
 
 
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton></Modal.Header>
 
       <div className="modal-body space-y-20 pd-40">
@@ -67,9 +67,10 @@ const JoinChoicesModal = (props) => {
         show={showJoinModal}
         onHide={() => {
           setShowJoinModal(false);
+          onHide();
         }}
         hideParent={() => {
-          props.onHide();
+          onHide();
         }}
       />
     </Modal>
