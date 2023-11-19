@@ -8,7 +8,6 @@ import { Logout } from "../../../services/AuthServices/Logout";
 
 const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
 
-
     const nav = useNavigate();
 
     const [pdp, setPdp] = useState(
@@ -26,7 +25,7 @@ const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
     const ArtistProfileHandler = () => {
         nav("/displayProfile?artist=" + localStorage?.getItem("UserKey"));
     }
-    const UserProfileHandler = () => {
+    const MemberProfileHandler = () => {
         nav("/displayProfile?member=" + localStorage?.getItem("UserKey"));
     }
 
@@ -40,21 +39,20 @@ const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
                 align={"end"}
                 style={{ marginTop: "1vh" }}
             >
-                {localStorage.getItem("accountTypeChoice") === "artist" && (
+                {localStorage.getItem("profileType") === "artist" && (
                         <Dropdown.Item onClick={ArtistProfileHandler}>
                             <FaRegUser size={15}/>
                             Profile
                         </Dropdown.Item>
                 )}
-                {localStorage.getItem("accountTypeChoice") === "user" && (
-
-                    <Dropdown.Item  onClick={UserProfileHandler}>
+                {localStorage.getItem("profileType") === "member" && (
+                    <Dropdown.Item  onClick={MemberProfileHandler}>
                             <FaRegUser size={15} />
                             Profile
                     </Dropdown.Item>
 
                 )}
-                {(localStorage.getItem("accountTypeChoice") === "user" && localStorage.getItem("walletAddress")) ? (
+                {(localStorage.getItem("profileType") === "member" && localStorage.getItem("walletAddress")) ? (
                     <Dropdown.Item href="/tokenize">
                         <BiCoinStack size={15} />
                         Tokenize
@@ -63,7 +61,7 @@ const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
                     ""
                 )}
 
-                {(localStorage.getItem("accountTypeChoice") === "artist" && localStorage.getItem("walletAddress")) ? (
+                {(localStorage.getItem("profileType") === "artist" && localStorage.getItem("walletAddress")) ? (
                     <Dropdown.Item href="/creator-choice">
                         <FaPlus size={15} />
                         Create

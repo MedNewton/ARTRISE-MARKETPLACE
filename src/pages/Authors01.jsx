@@ -11,81 +11,8 @@ import {SET_USERS, setUsers} from "../redux/actions/userActions";
 // import { useArtworkContext } from '../Store/ArtworkContext';
 
 const Authors01 = () => {
-    let users = [];
-    let artists = [];
-    const dispatch = useDispatch();
+
     const  artistsState= useSelector((state) => state.usersReducer.artists);
-    async function fetchUsers() {
-        const userRef = ref(db, 'users/');
-        await get(userRef).then(async (snapshot) => {
-            let dt = snapshot.val();
-            // console.log("redux dt:",dt)
-            for (let UserKey in dt) {
-                let a = dt[UserKey];
-                if(a?.socialMediaVerified){
-                    let userItem = {
-                        userId: UserKey,
-                        name: a?.name,
-                        email: a?.email,
-                        walletAddress: a?.walletAddress,
-                        bio: a?.bio,
-                        pdpLink: a?.pdpLink,
-                        cover_link: a?.cover_link,
-                        Facebook: a?.Facebook,
-                        Instagram: a?.Instagram,
-                        Twitter:a?.Twitter,
-                        website: a?.website,
-                        profileType: a?.profileType,
-                        artistType:a?.artistType,
-                        followedCollections: a?.followedCollections,
-                        followers:a?.followers,
-                        following:a?.following,
-                        slug: a?.slug,
-                        referralCode: a?.referralCode,
-                        referralBy: a?.referralBy,
-                        socialMediaVerified: a?.socialMediaVerified,
-                        artRiseAdminVerified: a?.artRiseAdminVerified,
-                        artworks: a?.artworks
-                    }
-                    users.push(userItem);
-                }else if (!a?.verified){
-                    let userItem = {
-                        userId: UserKey,
-                        name: a?.name,
-                        email: a?.email,
-                        walletAddress: a?.walletAddress,
-                        bio: a?.bio,
-                        pdpLink: a?.pdpLink,
-                        cover_link: a?.cover_link,
-                        Facebook: a?.Facebook,
-                        Instagram: a?.Instagram,
-                        Twitter:a?.Twitter,
-                        website: a?.website,
-                        profileType: a?.profileType,
-                        artistType:a?.artistType,
-                        followedCollections: a?.followedCollections,
-                        followers:a?.followers,
-                        following:a?.following,
-                        slug: a?.slug,
-                        referralCode: a?.referralCode,
-                        referralBy: a?.referralBy,
-                        socialMediaVerified: a?.socialMediaVerified,
-                        artRiseAdminVerified: a?.artRiseAdminVerified,
-                        artworks: a?.artworks
-                    }
-                    artists.push(userItem);
-                }
-
-            }
-
-        })
-        dispatch(setUsers({users, artists}));
-    }
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
 
     // const [data] = useState(popularCollectionData);
     // const { userArtist } = useArtworkContext();
@@ -105,6 +32,8 @@ const Authors01 = () => {
             target.classList.add('selectedTag');
         }
     }
+
+
 
     return (
         <div className='authors'>

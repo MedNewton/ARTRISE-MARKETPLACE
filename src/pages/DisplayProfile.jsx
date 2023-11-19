@@ -14,9 +14,15 @@ import { useArtworkContext } from "../Store/ArtworkContext";
 import { useCollectionsContext } from "../Store/CollectionsContext";
 import { useUserContext } from "../Store/UserContext";
 import LoadingOverlay from "react-loading-overlay";
+import {useSelector} from "react-redux";
 
 const DisplayProfile = () => {
     const location = useLocation();
+
+    const  artistsState= useSelector((state) => state.usersReducer.artists);
+    const  userState= useSelector((state) => state.usersReducer.members);
+    const  allUsersState= useSelector((state) => state.usersReducer.allUsers);
+
     const { lazyListed, userArtist } = useArtworkContext();
     const { collections } = useCollectionsContext();
     const { user, allMemberArtists } = useUserContext();
@@ -32,7 +38,7 @@ const DisplayProfile = () => {
     const [loading, setLoading] = useState(true); // Loading state
 
     async function getArtistData(id) {
-        for (const a of userArtist) {
+        for (const a of allUsersState) {
             if (a.userId === id) {
                 setArtistData(a);
                 setLoading(false); // Set loading to false when data is available
@@ -41,7 +47,7 @@ const DisplayProfile = () => {
     }
 
     async function getMemberData(id) {
-        for (const a of allMemberArtists) {
+        for (const a of allUsersState) {
             if (a.userId === id) {
                 setArtistData(a);
                 setLoading(false); // Set loading to false when data is available
@@ -65,7 +71,6 @@ const DisplayProfile = () => {
                 if (currentUserKey) {
                     await getCurrentUserData();
                 }
-
                 const queryParams = new URLSearchParams(location.search);
                 if (queryParams.has("artist")) {
                     const userValue = queryParams.get("artist");
@@ -89,12 +94,14 @@ const DisplayProfile = () => {
             }
         };
         fetchData();
-    }, [location, currentUserKey, userArtist]);
-
+    }, [location, currentUserKey, allUsersState]);
+    console.log("artistsState artistsState",artistsState)
+    console.log("artistsState userState",userState)
+    console.log("artistsState allUsers",allUsersState)
+    console.log("artistsState currentUserData",currentUserData)
     return (
         <div className="authors-2">
             <HeaderStyle2 />
-
 
                 <LoadingOverlay
                     active={loading}
@@ -110,14 +117,12 @@ const DisplayProfile = () => {
                 >
                 <>
                     <div className="profileInfoSection">
-
-
-                        {artistData && allMemberArtists && (
+                        {artistData && allUsersState && (
                             <DisplayProfileInfo
                                 currentUserKey={currentUserKey}
                                 artistData={artistData}
                                 currentUserData={currentUserData}
-                                allMemberArtists={allMemberArtists}
+                                allMemberArtists={allUsersState}
                             />
                         )}
 
@@ -125,7 +130,7 @@ const DisplayProfile = () => {
 
 
 
-                        {artistData && allMemberArtists && (
+                        {artistData && allUsersState && (
                             <DisplayArtistTabSection
                                 artistData={artistData}
                                 lazyListed={lazyListed}

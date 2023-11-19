@@ -6,8 +6,8 @@ const Logout = async (disconnect, nav) => {
         disconnect();
         localStorage.removeItem("walletType");
         localStorage.removeItem("walletAddress");
-        localStorage.removeItem("accountTypeChoice");
-        localStorage.removeItem("verified");
+        localStorage.removeItem("profileType");
+        localStorage.removeItem("socialMediaVerified");
         localStorage.removeItem("firebase:host:artrise-ffe4c-default-rtdb.firebaseio.com");
         localStorage.removeItem("wagmi.cache");
         localStorage.removeItem("wagmi.store");

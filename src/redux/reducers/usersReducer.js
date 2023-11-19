@@ -7,8 +7,7 @@ switch (type){
     case usersActionTypes.GET_USERS:
         return state
     case usersActionTypes.SET_USERS:
-        return {...state, users:payload.users, artists:payload.artists}
-
+        return {...state, members:payload.members, artists:payload.artists, allUsers: payload.allUsers}
 
     case usersActionTypes.GET_SELECTED_USER:
         return state

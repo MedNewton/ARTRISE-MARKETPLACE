@@ -17,11 +17,14 @@ import xTwitter from "../assets/images/svg/xTwitter.svg"
 import auth from "../auth";
 import {signInWithPopup, TwitterAuthProvider} from "firebase/auth";
 import Select from 'react-select';
+import {useDispatch, useSelector} from "react-redux";
+import {setUsers} from "../redux/actions/userActions";
 
 const EditProfile = () => {
   const nav = useNavigate();
   const consumerKey = "wle1Pu0uJSwJlGsK32U7Njdeh";
   const consmerSecret = "L5uoxeBQDW65vPuN1hxdF4xSeao5GpIbTp9CO4fT8zGrkLtxVl";
+    const dispatch = useDispatch();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -82,7 +85,9 @@ const EditProfile = () => {
         else setAccountTypeChecked(false);
     });
   }
+
     async function updateProfile() {
+      // debugger
         const UserKey = address ? address : localStorage.getItem("UserKey");
         const isArtist = profileType === 'artist';
 
@@ -109,16 +114,14 @@ const EditProfile = () => {
                 text: "You are now part of the Artrise artists community. You can start creating your own collections and minting artworks.",
                 confirmButtonText: "Let's go!",
             });
-        }
-        else if (isArtist && !socialMediaVerified) {
+        } else if (isArtist && !socialMediaVerified) {
             await Swal.fire({
                 icon: "error",
                 title: "Failure!",
                 text: "To switch into an artist profile, you should verify your account with Twitter or Instagram.",
                 confirmButtonText: "Let's Verify!",
             });
-        }
-        else if (!isArtist) {
+        } else if (!isArtist) {
             await update(ref(db, "users/" + UserKey), {
                 name: name,
                 email: email,
@@ -145,24 +148,80 @@ const EditProfile = () => {
         await localStorage.setItem("name", name);
         await localStorage.setItem("pdpLink", pdpLink);
 
-        setTimeout(function () {
-            window.location.reload(true);
-        }, 0);
-        if (localStorage.getItem("profileType") === "artist") {
-            await nav("/displayProfile?artist=" + UserKey);
-        }
-        else if (localStorage.getItem("profileType") === "member") {
-            await nav("/displayProfile?member=" + UserKey);
-        }
-        else {
-            await nav("/");
-        }
+
+        const ThisUserRef = ref(db, "users/" + UserKey);
+        await get(ThisUserRef).then(async (snapshot) => {
+            let dt = snapshot.val();
+            setName(dt?.name ? dt?.name : "");
+            setWalletAddress(dt?.walletAddress ? dt?.walletAddress : "");
+            setPdpLink(dt?.pdpLink ? dt?.pdpLink : "");
+            setCover_link(dt?.cover_link ? dt?.cover_link : "");
+            setFacebook(dt?.Facebook ? dt?.Facebook : "");
+            setInstagram(dt?.Instagram ? dt?.Instagram : "");
+            setTwitter(dt?.Twitter ? dt?.Twitter : "");
+            setProfileType(dt?.profileType ? dt?.profileType : "");
+            setArtistType(dt?.artistType ? dt?.artistType : "");
+            setSocialMediaVerified(dt?.socialMediaVerified ? dt?.socialMediaVerified : false);
+            setArtRiseAdminVerified(dt?.artRiseAdminVerified ? dt?.artRiseAdminVerified : false);
+        }).then(async () => {
+
+            let members = [];
+            let artists = [];
+            let allUsers = [];
+            const userRef = ref(db, 'users/');
+            await get(userRef).then(async (snapshot) => {
+                let dt = snapshot.val();
+                for (let UserKey in dt) {
+                    let a = dt[UserKey];
+                    if (a?.socialMediaVerified && a?.profileType === "artist") {
+                        let artistItem = {
+                            userId: UserKey,
+                            ...a
+                        }
+                        artists.push(artistItem);
+                    } else if (!a?.socialMediaVerified) {
+                        let memberItem = {
+                            userId: UserKey,
+                            ...a
+                        }
+                        members.push(memberItem);
+                    }
+                    let userItem = {
+                        userId: UserKey,
+                        ...a
+                    }
+                    allUsers.push(userItem)
+                }
+            })
+            dispatch(setUsers({members, artists, allUsers}));
+
+            if (profileType === "artist") {
+                await nav("/displayProfile?artist=" + UserKey);
+            } else if (profileType === "member") {
+                await nav("/displayProfile?member=" + UserKey);
+            } else {
+                await nav("/");
+            }
+        })
+
+        // setTimeout(function () {
+        //     window.location.reload(true);
+        // }, 0);
+        // if (localStorage.getItem("profileType") === "artist") {
+        //     await nav("/displayProfile?artist=" + UserKey);
+        // }
+        // else if (localStorage.getItem("profileType") === "member") {
+        //     await nav("/displayProfile?member=" + UserKey);
+        // }
+        // else {
+        //     await nav("/");
+        // }
     }
 
     useEffect(() => {
-    if(address) getUserData(address);
-    else getUserData(localStorage.getItem("UserKey"));
-  }, []);
+        if (address) getUserData(address);
+        else getUserData(localStorage.getItem("UserKey"));
+    }, []);
 
     useEffect(() => {
         if(artistType) {

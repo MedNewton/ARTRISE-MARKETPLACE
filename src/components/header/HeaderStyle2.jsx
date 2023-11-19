@@ -20,6 +20,10 @@ import {CheckUserExists} from "../../services/AuthServices/CheckUserExists";
 import {useMediaQuery} from 'react-responsive'
 import RenderSearchIconForMobileView from "./RenderSearchIconForMobileView/RenderSearchIconForMobileView";
 import HeaderSearchForMobileView from "./HeaderSearch/HeaderSearchForMobileView";
+import {useDispatch, useSelector} from "react-redux";
+import {get, ref} from "firebase/database";
+import db from "../../firebase";
+import {setUsers} from "../../redux/actions/userActions";
 
 const HeaderStyle2 = () => {
     const isDeviceMobile = useMediaQuery({query: '(max-width: 1224px)'})
@@ -36,6 +40,46 @@ const HeaderStyle2 = () => {
 
     const {address, isConnected} = useAccount();
     const {disconnect} = useDisconnect();
+
+
+    let members = [];
+    let artists = [];
+    let allUsers = [];
+    const dispatch = useDispatch();
+    const  artistsState= useSelector((state) => state.usersReducer.artists);
+    const  userState= useSelector((state) => state.usersReducer.members);
+    async function fetchUsers() {
+        const userRef = ref(db, 'users/');
+        await get(userRef).then(async (snapshot) => {
+            let dt = snapshot.val();
+            for (let UserKey in dt) {
+                let a = dt[UserKey];
+                if(a?.socialMediaVerified && a?.profileType === "artist"){
+                    let artistItem = {
+                        userId: UserKey,
+                        ...a
+                    }
+                    artists.push(artistItem);
+                }else if (!a?.socialMediaVerified){
+                    let memberItem = {
+                        userId: UserKey,
+                        ...a
+                    }
+                    members.push(memberItem);
+                }
+                let userItem = {
+                    userId: UserKey,
+                    ...a
+                }
+                allUsers.push(userItem)
+            }
+        })
+        dispatch(setUsers({members, artists, allUsers}));
+    }
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     useEffect(() => {
         window.ire("identify", {customerId: localStorage.getItem("UserKey")});
@@ -96,6 +140,9 @@ const HeaderStyle2 = () => {
     useEffect(() => {
         checkForReferralCode();
     }, []);
+
+    console.log("artistsStateartistsState",artistsState)
+    console.log("artistsStateuserState",userState)
 
     return (
         <>
