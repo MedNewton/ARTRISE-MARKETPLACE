@@ -23,28 +23,23 @@ const EditProfile = () => {
   const consumerKey = "wle1Pu0uJSwJlGsK32U7Njdeh";
   const consmerSecret = "L5uoxeBQDW65vPuN1hxdF4xSeao5GpIbTp9CO4fT8zGrkLtxVl";
 
-  const [displayName, setDisplayName] = useState("");
-  const [facebookLink, setFacebookLink] = useState("");
-  const [discordLink, setDiscordLink] = useState("");
-  const [twitterLink, setTwitterLink] = useState("");
-  const [pdpLink, setPdpLink] = useState("");
-  const [coverLink, setCoverLink] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [discord, setDiscord] = useState("");
-  const [youtube, setYoutube] = useState("");
-  const [website, setWebsite] = useState("");
-  const [tiktok, setTiktok] = useState("");
-  const [instagram, setInstagram] = useState("");
-  const [userBio, setUserBio] = useState("");
-  const [name, setName] = useState("");
-  const [accountType, setAccountType] = useState("");
-  const [creator, setCreator] = useState("");
-  const [accountTypeChecked, setAccountTypeChecked] = useState(false);
-  const [verified, setVerified] = useState(false);
-  const [emailNotifications, setEmailNotifications] = useState(false);
-  const [artistType, setArtistType] = useState("");
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const { address, isConnected } = useAccount();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [walletAddress, setWalletAddress] = useState("");
+    const [bio, setBio] = useState("");
+    const [pdpLink, setPdpLink] = useState("");
+    const [cover_link, setCover_link] = useState("");
+    const [Facebook, setFacebook] = useState("");
+    const [Instagram, setInstagram] = useState("");
+    const [Twitter, setTwitter] = useState("");
+    const [website, setWebsite] = useState("");
+    const [profileType, setProfileType] = useState("");
+    const [artistType, setArtistType] = useState("");
+    const [socialMediaVerified, setSocialMediaVerified] = useState(false);
+    const [artRiseAdminVerified, setArtRiseAdminVerified] = useState(false);
+    const [accountTypeChecked, setAccountTypeChecked] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const { address, isConnected } = useAccount();
 
   const [provider, setProvider] = useState("");
   const [profile, setProfile] = useState(null);
@@ -69,53 +64,44 @@ const EditProfile = () => {
     const ThisUserRef = ref(db, "users/" + adr);
     await get(ThisUserRef).then(async (snapshot) => {
       let dt = snapshot.val();
-      setDisplayName(dt.displayName ? dt.displayName : "");
-      setUserEmail(dt.email ? dt.email : "");
-      setUserBio(dt.bio ? dt.bio : "");
-      setPdpLink(dt.pdpLink ? dt.pdpLink : "");
-      setCoverLink(dt.cover_link ? dt.cover_link : "");
-      setWebsite(dt.website ? dt.website : "");
-      setFacebookLink(dt.Facebook ? dt.Facebook : "");
-      setInstagram(dt.Instagram ? dt.Instagram : "");
-      setTwitterLink(dt.Twitter ? dt.Twitter : "");
-      setDiscordLink(dt.Discord ? dt.Discord : "");
-      setTiktok(dt.Tiktok ? dt.Tiktok : "");
-      setYoutube(dt.Youtube ? dt.Youtube : "");
-      setName(dt.name ? dt.name : "");
-      setVerified(dt.verified ? dt.verified : false);
-      setAccountType(dt.accountType ? dt.accountType : "user");
-      setCreator(dt.creator ? dt.creator : false);
-      setEmailNotifications(dt.emailNotifications ? dt.emailNotifications : false);
-      setArtistType(dt?.artistType ? dt?.artistType : "artist");
-      if (dt.accountType === "artist") setAccountTypeChecked(true);
-      else setAccountTypeChecked(false);
+        setName(dt?.name? dt?.name: "");
+        setEmail(dt?.email ? dt?.email: "");
+        setWalletAddress(dt?.walletAddress? dt?.walletAddress: "");
+        setBio(dt?.bio? dt?.bio: "");
+        setPdpLink(dt?.pdpLink? dt?.pdpLink: "");
+        setCover_link(dt?.cover_link? dt?.cover_link: "");
+        setFacebook(dt?.Facebook? dt?.Facebook: "");
+        setInstagram(dt?.Instagram? dt?.Instagram: "");
+        setTwitter(dt?.Twitter? dt?.Twitter: "");
+        setWebsite(dt?.website? dt?.website: "");
+        setProfileType(dt?.profileType? dt?.profileType: "");
+        setArtistType(dt?.artistType? dt?.artistType: "");
+        setSocialMediaVerified(dt?.socialMediaVerified? dt?.socialMediaVerified: false);
+        setArtRiseAdminVerified(dt?.artRiseAdminVerified? dt?.artRiseAdminVerified: false);
+        if (dt.profileType=== "artist") setAccountTypeChecked(true);
+        else setAccountTypeChecked(false);
     });
   }
     async function updateProfile() {
         const UserKey = address ? address : localStorage.getItem("UserKey");
-        const isArtist = accountType === 'artist';
-        const isVerified = verified === true;
+        const isArtist = profileType === 'artist';
 
-        if (isArtist && isVerified) {
+        if (isArtist && socialMediaVerified) {
             await update(ref(db, "users/" + UserKey), {
-                Discord: discordLink,
-                Facebook: facebookLink,
-                Instagram: instagram,
-                Tiktok: tiktok,
-                Twitter: twitterLink,
-                Youtube: youtube,
-                artistType: artistType,
-                bio: userBio,
-                cover_link: coverLink,
-                displayName: displayName,
-                email: userEmail,
-                emailNotifications: emailNotifications,
-                pdpLink: pdpLink,
-                verified: verified,
-                website: website,
                 name: name,
-                creator: creator,
-                accountType: accountType
+                email: email,
+                walletAddress: walletAddress,
+                bio: bio,
+                pdpLink: pdpLink,
+                cover_link: cover_link,
+                Facebook: Facebook,
+                Instagram: Instagram,
+                Twitter: Twitter,
+                website: website,
+                profileType: profileType,
+                artistType: artistType,
+                socialMediaVerified: socialMediaVerified,
+                artRiseAdminVerified: artRiseAdminVerified,
             });
             await Swal.fire({
                 icon: "success",
@@ -123,33 +109,31 @@ const EditProfile = () => {
                 text: "You are now part of the Artrise artists community. You can start creating your own collections and minting artworks.",
                 confirmButtonText: "Let's go!",
             });
-        } else if (isArtist && !isVerified) {
+        }
+        else if (isArtist && !socialMediaVerified) {
             await Swal.fire({
                 icon: "error",
                 title: "Failure!",
                 text: "To switch into an artist profile, you should verify your account with Twitter or Instagram.",
                 confirmButtonText: "Let's Verify!",
             });
-        } else if (!isArtist) {
+        }
+        else if (!isArtist) {
             await update(ref(db, "users/" + UserKey), {
-                Discord: discordLink,
-                Facebook: facebookLink,
-                Instagram: instagram,
-                Tiktok: tiktok,
-                Twitter: twitterLink,
-                Youtube: youtube,
-                artistType: '',
-                bio: userBio,
-                cover_link: coverLink,
-                displayName: displayName,
-                email: userEmail,
-                emailNotifications: emailNotifications,
-                pdpLink: pdpLink,
-                verified: verified,
-                website: website,
                 name: name,
-                creator: creator,
-                accountType: accountType
+                email: email,
+                walletAddress: walletAddress,
+                bio: bio,
+                pdpLink: pdpLink,
+                cover_link: cover_link,
+                Facebook: Facebook,
+                Instagram: Instagram,
+                Twitter: Twitter,
+                website: website,
+                profileType: profileType,
+                artistType: artistType,
+                socialMediaVerified: socialMediaVerified,
+                artRiseAdminVerified: artRiseAdminVerified,
             });
             await Swal.fire({
                 icon: "success",
@@ -158,21 +142,22 @@ const EditProfile = () => {
                 confirmButtonText: "Let's go!",
             });
         }
-        await localStorage.setItem("name", displayName);
+        await localStorage.setItem("name", name);
         await localStorage.setItem("pdpLink", pdpLink);
 
         setTimeout(function () {
             window.location.reload(true);
         }, 0);
-        if (localStorage.getItem("accountTypeChoice") === "artist") {
+        if (localStorage.getItem("profileType") === "artist") {
             await nav("/displayProfile?artist=" + UserKey);
-        } else if (localStorage.getItem("accountTypeChoice") === "user") {
+        }
+        else if (localStorage.getItem("profileType") === "member") {
             await nav("/displayProfile?member=" + UserKey);
-        } else {
+        }
+        else {
             await nav("/");
         }
     }
-
 
     useEffect(() => {
     if(address) getUserData(address);
@@ -244,9 +229,9 @@ const EditProfile = () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           document.getElementById("cover").src = downloadURL;
           if(address){
-              setCoverLink(downloadURL);
+              setCover_link(downloadURL);
           }else{
-              setCoverLink(downloadURL);
+              setCover_link(downloadURL);
           }
         });
         document.getElementById("submitBtn").disabled = false;
@@ -275,8 +260,8 @@ const EditProfile = () => {
                 const rawUserInfo = response?._tokenResponse?.screenName;
                 if(rawUserInfo) {
                     const profileLink = `https://twitter.com/${rawUserInfo}`;
-                    setVerified(true);
-                    setTwitterLink(profileLink);
+                    setSocialMediaVerified(true);
+                    setTwitter(profileLink);
                 }
             })
             .catch((error) => {
@@ -330,7 +315,7 @@ const EditProfile = () => {
                         >
                             <div className="sc-card-profile text-center">
                                 <div className="card-media">
-                                    <img src={coverLink} id="cover" alt=""/>
+                                    <img src={cover_link} id="cover" alt=""/>
                                 </div>
                                 <div id="upload-profile">
                                     <Link to="#" className="btn-upload">
@@ -381,12 +366,10 @@ const EditProfile = () => {
                                             onChange={(e) => {
                                                 if (e.target.checked) {
                                                     setAccountTypeChecked(e.target.checked);
-                                                    setAccountType("artist");
-                                                    setCreator("yes");
+                                                    setProfileType("artist");
                                                 } else {
                                                     setAccountTypeChecked(e.target.checked);
-                                                    setAccountType("user");
-                                                    setCreator("no");
+                                                    setProfileType("member");
                                                 }
                                             }}
                                         />
@@ -407,23 +390,13 @@ const EditProfile = () => {
                                                     defaultValue={name}
                                                 />
                                             </fieldset>
-
-                                            <fieldset>
-                                                <h4 className="title-infor-account">Username</h4>
-                                                <input
-                                                    type="text"
-                                                    placeholder={displayName}
-                                                    onChange={(e) => setDisplayName(e.target.value)}
-                                                    defaultValue={displayName}
-                                                />
-                                            </fieldset>
                                             <fieldset>
                                                 <h4 className="title-infor-account">Email</h4>
                                                 <input
                                                     type="email"
-                                                    placeholder={userEmail}
-                                                    onChange={(e) => setUserEmail(e.target.value)}
-                                                    defaultValue={userEmail}
+                                                    placeholder={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    defaultValue={email}
                                                 />
                                             </fieldset>
                                             <fieldset>
@@ -431,39 +404,40 @@ const EditProfile = () => {
                                                 <textarea
                                                     tabIndex="4"
                                                     rows="5"
-                                                    defaultValue={userBio}
-                                                    onChange={(e) => setUserBio(e.target.value)}
+                                                    defaultValue={bio}
+                                                    onChange={(e) => setBio(e.target.value)}
                                                 ></textarea>
                                             </fieldset>
-                                            <fieldset>
-                                                <h5 className="emailNotifTitle">Email notifications</h5>
-                                                <h5 className="emailNotifText">
-                                                    You can turn this service on to receive notifications
-                                                    by Email about your activities on ARTRISE, last
-                                                    upadtes, ressources & much more.
-                                                </h5>
-                                                <h5 className="emailNotifText">
-                                                    Make sure your email address is set. Also take not
-                                                    that, due to some Email service providers, our
-                                                    notifications emails may end up in your Spam/Hidden
-                                                    folder.
-                                                </h5>
-                                                <div className="emailNotifSwitchBox">
-                                                    <Toggle
-                                                        checked={emailNotifications}
-                                                        onChange={(e) => {
-                                                            setEmailNotifications(!emailNotifications);
-                                                        }}
-                                                        sliderHeight={30}
-                                                        sliderWidth={30}
-                                                        height={40}
-                                                        width={80}
-                                                    />
-                                                </div>
-                                            </fieldset>
+                                            {/*use the given bellow jsx code when enabling email notifiactions*/}
+                                            {/*<fieldset>*/}
+                                            {/*    <h5 className="emailNotifTitle">Email notifications</h5>*/}
+                                            {/*    <h5 className="emailNotifText">*/}
+                                            {/*        You can turn this service on to receive notifications*/}
+                                            {/*        by Email about your activities on ARTRISE, last*/}
+                                            {/*        upadtes, ressources & much more.*/}
+                                            {/*    </h5>*/}
+                                            {/*    <h5 className="emailNotifText">*/}
+                                            {/*        Make sure your email address is set. Also take not*/}
+                                            {/*        that, due to some Email service providers, our*/}
+                                            {/*        notifications emails may end up in your Spam/Hidden*/}
+                                            {/*        folder.*/}
+                                            {/*    </h5>*/}
+                                            {/*    <div className="emailNotifSwitchBox">*/}
+                                            {/*        <Toggle*/}
+                                            {/*            checked={emailNotifications}*/}
+                                            {/*            onChange={(e) => {*/}
+                                            {/*                setEmailNotifications(!emailNotifications);*/}
+                                            {/*            }}*/}
+                                            {/*            sliderHeight={30}*/}
+                                            {/*            sliderWidth={30}*/}
+                                            {/*            height={40}*/}
+                                            {/*            width={80}*/}
+                                            {/*        />*/}
+                                            {/*    </div>*/}
+                                            {/*</fieldset>*/}
                                         </div>
                                         <div className="info-social">
-                                            {accountType === "artist" &&
+                                            {profileType === "artist" &&
                                                 <>
                                                     <div style={{marginBottom: "10%"}}>
                                                         <h4 className="title-create-item">You are a</h4>
@@ -482,24 +456,24 @@ const EditProfile = () => {
                                                         </h4>
                                                         <div className='d-flex'>
                                                             <TwitterLoginButton
-                                                                text={twitterLink === "No account shared yet ..." || twitterLink === "" || twitterLink === " " ? "Verify with Twitter" : "Verified"}
+                                                                text={Twitter === "No Twitter added yet ..." || Twitter === "" || Twitter === " " ? "Verify with Twitter" : "Verified"}
                                                                 icon= {() =><img src={xTwitter} alt="X" />}
                                                                 activeStyle={{ background: "#2a2a2a"}}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    if(twitterLink === "No account shared yet ..." || twitterLink === "" || twitterLink === " "){signInWithTwitter()}
+                                                                    if(Twitter === "No Twitter added yet ..." || Twitter === "" || Twitter === " "){signInWithTwitter()}
                                                                 }}
-                                                                style={twitterLink !== "No account shared yet ..." ?
+                                                                style={Twitter === "No Twitter added yet ..." || Twitter === "" || Twitter === " " ?
                                                                     {cursor: "context-menu",fontSize: "16px",background: "black",
                                                                 } : {background:"black",fontSize: "16px"}}
                                                             />
                                                             <InstagramLoginButton
-                                                                text={instagram === "No account shared yet" ? "Verify with Instagram" : "Verified"}
+                                                                text={Instagram === "No Instagram added yet ..." || Instagram === "" || Instagram === " " ? "Verify with Instagram" : "Verified"}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    if(instagram === "No account shared yet" || ""){signInWithInstagram()}
+                                                                    if(Instagram === "No Instagram added yet ..." || Instagram === "" || Instagram === " "){signInWithInstagram()}
                                                                 }}
-                                                                style={instagram !== "No account shared yet" ?
+                                                                style={Instagram === "No Instagram added yet ..." || Instagram === "" || Instagram === " " ?
                                                                     { cursor: "context-menu",fontSize: "16px"} : {fontSize: "16px"}}
                                                             />
                                                         </div>
@@ -525,9 +499,9 @@ const EditProfile = () => {
                                                 </h4>
                                                 <input
                                                     type="text"
-                                                    placeholder={facebookLink}
-                                                    defaultValue={facebookLink}
-                                                    onChange={(e) => setFacebookLink(e.target.value)}
+                                                    placeholder={Facebook}
+                                                    defaultValue={Facebook}
+                                                    onChange={(e) => setFacebook(e.target.value)}
                                                 />
                                             </fieldset>
                                             <fieldset style={{marginTop: "5%"}}>
@@ -537,8 +511,8 @@ const EditProfile = () => {
                                                 </h4>
                                                 <input
                                                     type="text"
-                                                    placeholder={instagram}
-                                                    defaultValue={instagram}
+                                                    placeholder={Instagram}
+                                                    defaultValue={Instagram}
                                                     onChange={(e) => setInstagram(e.target.value)}
                                                 />
                                             </fieldset>
@@ -549,45 +523,9 @@ const EditProfile = () => {
                                                 </h4>
                                                 <input
                                                     type="text"
-                                                    placeholder={twitterLink}
-                                                    defaultValue={twitterLink}
-                                                    onChange={(e) => setTwitterLink(e.target.value)}
-                                                />
-                                            </fieldset>
-                                            <fieldset>
-                                                <h4 className="title-infor-account">
-                                                    <FaDiscord size={15}/>
-                                                    Discord
-                                                </h4>
-                                                <input
-                                                    type="text"
-                                                    placeholder={discordLink}
-                                                    defaultValue={discordLink}
-                                                    onChange={(e) => setDiscordLink(e.target.value)}
-                                                />
-                                            </fieldset>
-                                            <fieldset>
-                                                <h4 className="title-infor-account">
-                                                    <FaTiktok size={15}/>
-                                                    Tiktok
-                                                </h4>
-                                                <input
-                                                    type="text"
-                                                    placeholder={tiktok}
-                                                    defaultValue={tiktok}
-                                                    onChange={(e) => setTiktok(e.target.value)}
-                                                />
-                                            </fieldset>
-                                            <fieldset>
-                                                <h4 className="title-infor-account">
-                                                    <FaYoutube size={15}/>
-                                                    Youtube
-                                                </h4>
-                                                <input
-                                                    type="text"
-                                                    placeholder={youtube}
-                                                    defaultValue={youtube}
-                                                    onChange={(e) => setYoutube(e.target.value)}
+                                                    placeholder={Twitter}
+                                                    defaultValue={Twitter}
+                                                    onChange={(e) => setTwitter(e.target.value)}
                                                 />
                                             </fieldset>
                                         </div>

@@ -22,7 +22,7 @@ const Authors01 = () => {
             // console.log("redux dt:",dt)
             for (let UserKey in dt) {
                 let a = dt[UserKey];
-                if(a?.verified){
+                if(a?.socialMediaVerified){
                     let userItem = {
                         userId: UserKey,
                         name: a?.name,
@@ -43,7 +43,6 @@ const Authors01 = () => {
                         slug: a?.slug,
                         referralCode: a?.referralCode,
                         referralBy: a?.referralBy,
-                        verified: a?.verified,
                         socialMediaVerified: a?.socialMediaVerified,
                         artRiseAdminVerified: a?.artRiseAdminVerified,
                         artworks: a?.artworks
@@ -70,7 +69,6 @@ const Authors01 = () => {
                         slug: a?.slug,
                         referralCode: a?.referralCode,
                         referralBy: a?.referralBy,
-                        verified: a?.verified,
                         socialMediaVerified: a?.socialMediaVerified,
                         artRiseAdminVerified: a?.artRiseAdminVerified,
                         artworks: a?.artworks
@@ -88,7 +86,6 @@ const Authors01 = () => {
         fetchUsers();
     }, []);
 
-console.log("ggggg products state",artistsState)
 
     // const [data] = useState(popularCollectionData);
     // const { userArtist } = useArtworkContext();
