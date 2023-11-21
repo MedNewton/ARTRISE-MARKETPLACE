@@ -47,13 +47,12 @@ const SocialLoginModal = (props) => {
 
   async function passwordlessLoginTwitter(snapshot) {
     let key = snapshot.key;
-    localStorage.setItem("UserKey", snapshot.key);
+    localStorage.setItem("userId", snapshot.key);
     localStorage.setItem("name", snapshot.val().displayName);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
-    localStorage.setItem("followingYann", snapshot.val().followingYann);
     localStorage.setItem("slug", snapshot.val().slug);
     localStorage.setItem("twitter", true);
-    localStorage.setItem("accountTypeChoice", 'user');
+    localStorage.setItem("profileType", 'user');
 
     setPdp(snapshot.val().pdpLink);
     setAccountType(snapshot.val().accountType);
@@ -64,13 +63,13 @@ const SocialLoginModal = (props) => {
 
   async function passwordlessLoginFacebook(snapshot) {
     let key = snapshot.key;
-    localStorage.setItem("UserKey", snapshot.key);
+    localStorage.setItem("userId", snapshot.key);
     localStorage.setItem("name", snapshot.val().displayName);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
     localStorage.setItem("followingYann", snapshot.val().followingYann);
     localStorage.setItem("slug", snapshot.val().slug);
     localStorage.setItem("facebook", true);
-    localStorage.setItem("accountTypeChoice", 'user');
+    localStorage.setItem("profileType", 'user');
 
     setPdp(snapshot.val().pdpLink);
     setAccountType(snapshot.val().accountType);
@@ -81,15 +80,13 @@ const SocialLoginModal = (props) => {
 
   async function passwordlessLoginGoogle(snapshot) {
     let key = snapshot.key;
-    localStorage.setItem("UserKey", snapshot.key);
+    localStorage.setItem("userId", snapshot.key);
     localStorage.setItem("name", snapshot.val().displayName);
     localStorage.setItem("pdpLink", snapshot.val().pdpLink);
-    localStorage.setItem("followingYann", snapshot.val().followingYann);
     localStorage.setItem("slug", snapshot.val().slug);
     localStorage.setItem("google", true)
-    localStorage.setItem("verified", snapshot.val().verified);
     localStorage.setItem("walletAddress", snapshot.val().walletAddress);
-    localStorage.setItem("accountTypeChoice", 'user');
+    localStorage.setItem("profileType", 'user');
 
 
     setPdp(snapshot.val().pdpLink);
@@ -104,16 +101,16 @@ const SocialLoginModal = (props) => {
     const ThisUserRef = ref(db, "users/" + adr);
     await get(ThisUserRef).then(async (snapshot) => {
       let dt = snapshot.val();
-      if (dt == null) {
+      if (dt === null) {
         hide();
         hideParent();
-        Swal.fire({
+        await Swal.fire({
           icon: "warning",
           title: "Account doesn\'t exists !",
           text: "This Twitter account is not connected to any account on ARTRISE. Try signing up.",
         });
       } else {
-        passwordlessLoginTwitter(snapshot)
+        await passwordlessLoginTwitter(snapshot)
       }
     });
   }
@@ -122,16 +119,16 @@ const SocialLoginModal = (props) => {
     const ThisUserRef = ref(db, "users/" + adr);
     await get(ThisUserRef).then(async (snapshot) => {
       let dt = snapshot.val();
-      if (dt == null) {
+      if (dt === null) {
         hide();
         hideParent();
-        Swal.fire({
+        await Swal.fire({
           icon: "warning",
           title: "Account doesn\'t exists !",
           text: "This Google account is not connected to any account on ARTRISE. Try signing up.",
         });
       } else {
-        passwordlessLoginGoogle(snapshot)
+        await passwordlessLoginGoogle(snapshot)
       }
     });
   }
@@ -140,16 +137,16 @@ const SocialLoginModal = (props) => {
     const ThisUserRef = ref(db, "users/" + adr);
     await get(ThisUserRef).then(async (snapshot) => {
       let dt = snapshot.val();
-      if (dt == null) {
+      if (dt === null) {
         hide();
         hideParent();
-        Swal.fire({
+        await Swal.fire({
           icon: "warning",
           title: "Account doesn\'t exists !",
           text: "This Facebook account is not connected to any account on ARTRISE. Try signing up.",
         });
       } else {
-        passwordlessLoginFacebook(snapshot)
+        await passwordlessLoginFacebook(snapshot)
       }
     });
   }

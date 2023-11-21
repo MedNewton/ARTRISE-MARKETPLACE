@@ -51,7 +51,7 @@ const SocialJoinModal = (props) => {
   }, []);
 
   useEffect(() => {
-    window.ire("identify", { customerId: localStorage.getItem("UserKey") });
+    window.ire("identify", { customerId: localStorage.getItem("userId") });
   }, []);
 
   async function passwordlessLogin(snapshot) {
@@ -109,7 +109,8 @@ const SocialJoinModal = (props) => {
           referralBy: referee,
           socialMediaVerified: false,
           artRiseAdminVerified: false,
-          artworks: []
+          artworks: [],
+          artworkThumbNails: ["cardItem1","cardItem1","cardItem1","cardItem1"]
         });
         hide();
         hideParent();
@@ -159,7 +160,8 @@ const SocialJoinModal = (props) => {
           referralBy: referee,
           socialMediaVerified: false,
           artRiseAdminVerified: false,
-          artworks: []
+          artworks: [],
+          artworkThumbNails: ["cardItem1","cardItem1","cardItem1","cardItem1"]
         });
         window.ire(
           "trackConversion",
@@ -220,7 +222,8 @@ const SocialJoinModal = (props) => {
           referralBy: referee,
           socialMediaVerified: false,
           artRiseAdminVerified: false,
-          artworks: []
+          artworks: [],
+          artworkThumbNails: ["cardItem1","cardItem1","cardItem1","cardItem1"]
         });
         window.ire(
           "trackConversion",
@@ -279,8 +282,6 @@ const SocialJoinModal = (props) => {
         console.log(error);
       });
   };
-
-
 
   /*const signInWithFacebook = async () => {
     const provider = new FacebookAuthProvider();
@@ -346,7 +347,6 @@ const SocialJoinModal = (props) => {
 
   }
 
-
   //previous code
   // function signInWithFacebook(response){
   //   console.log(response)
@@ -354,7 +354,6 @@ const SocialJoinModal = (props) => {
   //   let facebookUserID = facebookUserData.id;
   //   checkUserExistsFacebook(facebookUserID, facebookUserData);
   // }
-
 
   const onLoginStart = useCallback(() => {
     //alert('login start')

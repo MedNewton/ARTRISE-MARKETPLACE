@@ -6,7 +6,7 @@ import {BiCoinStack} from "react-icons/bi";
 import { Logout } from "../../../services/AuthServices/Logout";
 
 
-const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
+const RenderProfileIcon = ({UserPdpLink, disconnect,dispatch }) =>{
 
     const nav = useNavigate();
 
@@ -17,16 +17,16 @@ const RenderProfileIcon = ({UserPdpLink, disconnect }) =>{
 
     const logoutHandler = async () => {
         try {
-            await Logout(disconnect, nav);
+            await Logout(disconnect, nav, dispatch);
         } catch (error) {
         }
     }
 
     const ArtistProfileHandler = () => {
-        nav("/displayProfile?artist=" + localStorage?.getItem("UserKey"));
+        nav("/displayProfile?artist=" + localStorage?.getItem("userId"));
     }
     const MemberProfileHandler = () => {
-        nav("/displayProfile?member=" + localStorage?.getItem("UserKey"));
+        nav("/displayProfile?member=" + localStorage?.getItem("userId"));
     }
 
     return(

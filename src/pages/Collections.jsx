@@ -23,7 +23,7 @@ const Collections = () => {
   };
 
   const currentUserSlug = localStorage.getItem("Slug");
-  const currentUserUserKey = localStorage.getItem("UserKey");
+  const currentUserUserKey = localStorage.getItem("userId");
 
   const selectedTags = [];
 

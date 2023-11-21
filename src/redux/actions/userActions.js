@@ -1,29 +1,52 @@
 import {usersActionTypes} from '../constants/users-actions-types'
 
-export const getUsers =(users) =>{
-    return {
-        type: usersActionTypes.GET_USERS,
-        payload: users
-    }
-}
 
-export const setUsers =(payload) =>{
+export const setCurrentUserId = (payload) => {
     return {
-        type: usersActionTypes.SET_USERS,
+        type: usersActionTypes.SET_CURRENT_USER_ID,
         payload: payload
     }
 }
 
-export const getSelectedUser = (user) =>{
+export const setArtists = (payload) => {
     return {
-        type: usersActionTypes.GET_SELECTED_USER,
-        payload:user
+        type: usersActionTypes.SET_ARTISTS,
+        payload: payload
     }
 }
 
-export const setSelectedUser = (user) => {
+export const setMembers = (payload) => {
     return {
-        type: usersActionTypes.SET_SELECTED_USER,
-        payload:user
+        type: usersActionTypes.SET_MEMBERS,
+        payload: payload
+    }
+}
+
+export const setAllUsers = (payload) => {
+    return {
+        type: usersActionTypes.SET_ALL_USERS,
+        payload: payload
+    }
+}
+
+export const setCurrentUser = (payload) => {
+    return {
+        type: usersActionTypes.SET_CURRENT_USER,
+        payload: payload
+    }
+
+}
+
+export const setLazyListed = (payload) => {
+    return {
+        type: usersActionTypes.SET_LAZY_LISTED,
+        payload: payload
+    }
+}
+
+export const setLazyOwned = (payload) => {
+    return {
+        type: usersActionTypes.SET_LAZY_OWNED,
+        payload: payload
     }
 }

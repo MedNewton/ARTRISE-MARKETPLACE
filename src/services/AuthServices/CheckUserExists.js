@@ -1,9 +1,11 @@
 import {get, ref, set} from "firebase/database";
 import db from "../../firebase";
 import Swal from "sweetalert2";
+import {setCurrentUserId} from "../../redux/actions/userActions";
 
-async function passwordlessLogin(snapshot) {
-    let key = snapshot.key;
+async function passwordlessLogin(snapshot, dispatch) {
+    let currentUserId = snapshot.key;
+    dispatch(setCurrentUserId({currentUserId}));
     localStorage.setItem("profileType", snapshot?.val()?.profileType)
     localStorage.setItem("userId", snapshot?.key);
     localStorage.setItem("name", snapshot?.val()?.name);
@@ -11,12 +13,13 @@ async function passwordlessLogin(snapshot) {
     localStorage.setItem("walletAddress", snapshot?.val()?.walletAddress);
 }
 
-const CheckUserExists = async (adr, referee) => {
+const CheckUserExists = async (adr, referee, disconnect, dispatch) => {
     const connectWithWalletOperation = localStorage.getItem("connectWithWalletOperation");
     const ThisUserRef = ref(db, "users/" + adr);
         const snapshot = await get(ThisUserRef);
         let dt = snapshot.val();
         if (dt === null &&  connectWithWalletOperation === "join") {
+            await disconnect();
             await set(ref(db, "users/" + adr), {
                 name: "UNNAMED",
                 email: "No Email added yet ...",
@@ -42,7 +45,8 @@ const CheckUserExists = async (adr, referee) => {
                 referralBy: referee,
                 socialMediaVerified: false,
                 artRiseAdminVerified: false,
-                artworks: []
+                artworks: [],
+                artworkThumbNails: ["cardItem1","cardItem1","cardItem1","cardItem1"]
             });
             let trackConversion = window.ire(
                 "trackConversion",
@@ -61,6 +65,7 @@ const CheckUserExists = async (adr, referee) => {
                 title: "Account created successfully !",
                 text: "Your account has been created successfully! Log in to access your profile.",
             });
+            await disconnect();
         }
         else if (dt === null &&  connectWithWalletOperation === "login") {
             await Swal.fire({
@@ -75,9 +80,10 @@ const CheckUserExists = async (adr, referee) => {
                 title: "Account already exists !",
                 text: "This wallet address is already connected to any account on ARTRISE. Try Login .",
             });
+            await disconnect();
         }
         else if (dt !== null &&  connectWithWalletOperation === "login") {
-            await passwordlessLogin(snapshot, adr);
+            await passwordlessLogin(snapshot, dispatch);
         }
 };
 

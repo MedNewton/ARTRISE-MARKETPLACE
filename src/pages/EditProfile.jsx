@@ -18,7 +18,11 @@ import auth from "../auth";
 import {signInWithPopup, TwitterAuthProvider} from "firebase/auth";
 import Select from 'react-select';
 import {useDispatch, useSelector} from "react-redux";
-import {setUsers} from "../redux/actions/userActions";
+import {
+    setMembers,
+    setAllUsers,
+    setArtists} from "../redux/actions/userActions";
+
 
 const EditProfile = () => {
   const nav = useNavigate();
@@ -87,8 +91,7 @@ const EditProfile = () => {
   }
 
     async function updateProfile() {
-      // debugger
-        const UserKey = address ? address : localStorage.getItem("UserKey");
+        const UserKey = address ? address : localStorage.getItem("userId");
         const isArtist = profileType === 'artist';
 
         if (isArtist && socialMediaVerified) {
@@ -169,6 +172,7 @@ const EditProfile = () => {
             let artists = [];
             let allUsers = [];
             const userRef = ref(db, 'users/');
+
             await get(userRef).then(async (snapshot) => {
                 let dt = snapshot.val();
                 for (let UserKey in dt) {
@@ -193,8 +197,9 @@ const EditProfile = () => {
                     allUsers.push(userItem)
                 }
             })
-            dispatch(setUsers({members, artists, allUsers}));
-
+            dispatch(setAllUsers({allUsers}));
+            dispatch(setMembers({members}));
+            dispatch(setArtists({artists}));
             if (profileType === "artist") {
                 await nav("/displayProfile?artist=" + UserKey);
             } else if (profileType === "member") {
@@ -220,7 +225,7 @@ const EditProfile = () => {
 
     useEffect(() => {
         if (address) getUserData(address);
-        else getUserData(localStorage.getItem("UserKey"));
+        else getUserData(localStorage.getItem("userId"));
     }, []);
 
     useEffect(() => {

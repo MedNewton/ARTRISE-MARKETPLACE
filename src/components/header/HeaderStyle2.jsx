@@ -16,107 +16,33 @@ import RenderJoinLoginButton from "./RenderJoinLoginButton/RenderJoinLoginButton
 import RenderBurgerMenuIcon from "./RenderBurgerMenu/RenderBurgerMenuIcon";
 import MobileVersionMenuModal from "./MenuModal/MobileVersionMenuModal";
 import {CheckUserExists} from "../../services/AuthServices/CheckUserExists";
-
 import {useMediaQuery} from 'react-responsive'
 import RenderSearchIconForMobileView from "./RenderSearchIconForMobileView/RenderSearchIconForMobileView";
 import HeaderSearchForMobileView from "./HeaderSearch/HeaderSearchForMobileView";
 import {useDispatch, useSelector} from "react-redux";
-import {get, ref} from "firebase/database";
-import db from "../../firebase";
-import {setUsers} from "../../redux/actions/userActions";
 
 const HeaderStyle2 = () => {
+    const dispatch = useDispatch();
+    const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
     const isDeviceMobile = useMediaQuery({query: '(max-width: 1224px)'})
     const [showMenuModal, setShowMenuModal] = useState(false);
     const [showSearchField, setShowSearchField] = useState(false);
-
     const [isWalletConnected, setIsWalletConnected] = useState(localStorage.getItem("walletAddress") !== null);
     const [isTwitterConnected, setIsTwitterConnected] = useState(localStorage.getItem("twitter") !== null)
     const [isGoogleConnected, setIsGoogleConnected] = useState(localStorage.getItem("google") !== null);
     const [isFacebookConnected, setIsFacebookConnected] = useState(localStorage.getItem("facebook") !== null);
 
-    const handleMenuModalClose = () => setShowMenuModal(false);
-    const handleShowMenuModal = () => setShowMenuModal(true);
-
     const {address, isConnected} = useAccount();
     const {disconnect} = useDisconnect();
-
-
-    let members = [];
-    let artists = [];
-    let allUsers = [];
-    const dispatch = useDispatch();
-    const  artistsState= useSelector((state) => state.usersReducer.artists);
-    const  userState= useSelector((state) => state.usersReducer.members);
-    async function fetchUsers() {
-        const userRef = ref(db, 'users/');
-        await get(userRef).then(async (snapshot) => {
-            let dt = snapshot.val();
-            for (let UserKey in dt) {
-                let a = dt[UserKey];
-                if(a?.socialMediaVerified && a?.profileType === "artist"){
-                    let artistItem = {
-                        userId: UserKey,
-                        ...a
-                    }
-                    artists.push(artistItem);
-                }else if (!a?.socialMediaVerified){
-                    let memberItem = {
-                        userId: UserKey,
-                        ...a
-                    }
-                    members.push(memberItem);
-                }
-                let userItem = {
-                    userId: UserKey,
-                    ...a
-                }
-                allUsers.push(userItem)
-            }
-        })
-        dispatch(setUsers({members, artists, allUsers}));
-    }
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
-    useEffect(() => {
-        window.ire("identify", {customerId: localStorage.getItem("UserKey")});
-    }, []);
-
-    useEffect(() => {
-        if (address) {
-             CheckUserExists(address, referee).then(() => {
-            let walletConnectedState = localStorage.getItem("walletAddress");
-            if (walletConnectedState) setIsWalletConnected(true);
-            else setIsWalletConnected(false);
-            let twitterState = localStorage.getItem("twitter");
-            if (twitterState) setIsTwitterConnected(true);
-            else setIsTwitterConnected(false);
-            let googleState = localStorage.getItem("google");
-            if (googleState) setIsGoogleConnected(true);
-            else setIsGoogleConnected(false);
-            let facebookState = localStorage.getItem("facebook");
-            if (facebookState) setIsFacebookConnected(true);
-            else setIsFacebookConnected(false);
-             });
-        }
-    }, [address]);
-
     const {isOpen, open, close, setDefaultChain} = useWeb3Modal();
     const [loginModalOpen, setLoginModalOpen] = useState();
     const [joinChoicesModalOpen, setJoinChoicesModalOpen] = useState();
     const [referee, setReferee] = useState("");
     const headerRef = useRef(null);
 
-    useEffect(() => {
-        document.title = "Artrise - Physical NFTs Marketplace";
-        window.addEventListener("scroll", isSticky);
-        return () => {
-            window.removeEventListener("scroll", isSticky);
-        };
-    });
+    const handleMenuModalClose = () => setShowMenuModal(false);
+    const handleShowMenuModal = () => setShowMenuModal(true);
+
     const isSticky = (e) => {
         const header = document.querySelector(".js-header");
         const scrollTop = window.scrollY;
@@ -138,11 +64,39 @@ const HeaderStyle2 = () => {
     }
 
     useEffect(() => {
+        window.ire("identify", {customerId: currentUserId});
+    }, [currentUserId]);
+
+    useEffect(() => {
+        if (address) {
+            CheckUserExists(address, referee, disconnect, dispatch).then(() => {
+                let walletConnectedState = localStorage.getItem("walletAddress");
+                if (walletConnectedState) setIsWalletConnected(true);
+                else setIsWalletConnected(false);
+                let twitterState = localStorage.getItem("twitter");
+                if (twitterState) setIsTwitterConnected(true);
+                else setIsTwitterConnected(false);
+                let googleState = localStorage.getItem("google");
+                if (googleState) setIsGoogleConnected(true);
+                else setIsGoogleConnected(false);
+                let facebookState = localStorage.getItem("facebook");
+                if (facebookState) setIsFacebookConnected(true);
+                else setIsFacebookConnected(false);
+            });
+        }
+    }, [address]);
+
+    useEffect(() => {
+        document.title = "Artrise - Physical NFTs Marketplace";
+        window.addEventListener("scroll", isSticky);
+        return () => {
+            window.removeEventListener("scroll", isSticky);
+        };
+    });
+
+    useEffect(() => {
         checkForReferralCode();
     }, []);
-
-    console.log("artistsStateartistsState",artistsState)
-    console.log("artistsStateuserState",userState)
 
     return (
         <>
@@ -189,6 +143,7 @@ const HeaderStyle2 = () => {
                                             <RenderHomeExploreDropButtons/>
                                             <HeaderSearch/>
                                             {
+                                                currentUserId &&
                                                 isWalletConnected &&
                                                 !isTwitterConnected &&
                                                 !isGoogleConnected &&
@@ -196,11 +151,12 @@ const HeaderStyle2 = () => {
                                                     ?
                                                     (
                                                         <>
-                                                           {/*{()=>{CheckUserExists(address, referee)}}*/}
+                                                            {/*{()=>{CheckUserExists(address, referee)}}*/}
                                                             <div className="flat-search-btn flex">
                                                                 {
                                                                     address ?
-                                                                        <RenderWalletAddress address={address} open={open}/>
+                                                                        <RenderWalletAddress address={address}
+                                                                                             open={open}/>
                                                                         :
                                                                         <RenderConnectWalletAddress open={open}/>
                                                                 }
@@ -208,12 +164,14 @@ const HeaderStyle2 = () => {
 
                                                                 <div className="admin_active" id="header_admin">
 
-                                                                    <div className="header_avatar flex-row-flex-start-gap1"
+                                                                    <div
+                                                                        className="header_avatar flex-row-flex-start-gap1"
                                                                     >
                                                                         <RenderNotifyIcon/>
                                                                         <RenderProfileIcon
                                                                             UserPdpLink={localStorage?.getItem("pdpLink")}
                                                                             disconnect={disconnect}
+                                                                            dispatch={dispatch}
                                                                         />
                                                                         <RenderCartIcon/>
                                                                         <DarkMode/>
@@ -223,7 +181,7 @@ const HeaderStyle2 = () => {
                                                         </>
                                                     )
                                                     :
-                                                    !isWalletConnected &&
+                                                    !isWalletConnected && !currentUserId &&
                                                     (isTwitterConnected ||
                                                         isGoogleConnected ||
                                                         isFacebookConnected)
@@ -233,7 +191,8 @@ const HeaderStyle2 = () => {
                                                                 <RenderConnectWalletAddress open={open}/>
                                                                 <div className="separator"></div>
                                                                 <div className="admin_active" id="header_admin">
-                                                                    <div className="header_avatar flex-row-flex-start-gap1">
+                                                                    <div
+                                                                        className="header_avatar flex-row-flex-start-gap1">
                                                                         <RenderNotifyIcon/>
                                                                         <RenderProfileIcon
                                                                             UserPdpLink={localStorage.getItem("pdpLink")}

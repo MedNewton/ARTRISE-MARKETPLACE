@@ -1,37 +1,22 @@
 import React from "react";
-import {Link} from "react-router-dom";
 import {useState, useEffect} from "react";
 import {Button} from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
-import Header from "../components/header/Header";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
-import Countdown from "react-countdown";
-import {Tab, Tabs, TabList, TabPanel} from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
-import avt from "../assets/images/avatar/avt-9.jpg";
-import Swal from "sweetalert2";
 import {
     useAddress,
     useContract,
     useMintNFT,
     useMetamask,
 } from "@thirdweb-dev/react";
-import {useAccount, useDisconnect, useSignMessage} from "wagmi";
-import {signMessage} from "@wagmi/core";
-import {useWeb3Modal} from "@web3modal/react";
+import {useAccount, useSignMessage} from "wagmi";
 import {ref, onValue, get, update, set, child} from "firebase/database";
-import {
-    ref as SRef,
-    getDownloadURL,
-    uploadBytesResumable,
-} from "firebase/storage";
 import db from "../firebase";
-import storage from "../storage";
 import Toggle from "react-styled-toggle";
 import {Navigation, Pagination, Scrollbar, A11y} from "swiper";
-
 import {Swiper, SwiperSlide} from "swiper/react";
 
 import {useSwiper} from "swiper/react";
@@ -45,7 +30,7 @@ import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
-
+import {useSelector} from "react-redux";
 
 const TraitForm = (tr, v) => {
     return {
@@ -66,60 +51,40 @@ const toastOptions = {
 }
 
 const CreateItem = () => {
+
+    const currentUserState = useSelector((state) => state.usersReducer.currentUser);
+
     const {contract} = useContract(
         "0x91FBfcDDa7FE1aD979C34dF707D2691FcD5663B0"
     );
     const {mutateAsync: mintNft, isLoading, error} = useMintNFT(contract);
 
-    const {address, isConnected} = useAccount();
-    const [isCreator, setIsCreator] = useState("");
-
-    const connect = useMetamask();
-
-    const adr = useAddress();
-    const {accountAddress, isAccountConnected} = useAccount();
-
-    const [sdk, setSdk] = useState();
-
+    const {address} = useAccount();
     const [mintButtonDisabled, setMintButtonDisabled] = useState(false);
-
     const [title, setTitle] = useState("Artwork title");
-
-    const [artistName, setArtistName] = useState("");
-    const [artistID, setArtistID] = useState("");
+    const [name, setName] = useState("");
     const [artistCollections, setArtistCollections] = useState([]);
     const [bio, setBio] = useState("");
     const [description, setDescription] = useState();
     const [collectionName, setCollectionName] = useState(
         "Choose your collection"
     );
+
     const [collectionID, setCollectionID] = useState("");
     const [externalLink, setExternalLink] = useState("");
     const [supply, setSupply] = useState(1);
     const [media, setMedia] = useState();
     const [mediaPreview, setMediaPreview] = useState(img1);
     const [physicalMedia, setPhysicalMedia] = useState([]);
-
     const [physicalMediaPreview, setPhysicalMediaPreview] = useState([]);
     const [traits, setTraits] = useState([
         TraitForm("Width", "Value"),
         TraitForm("Length", "Value"),
         TraitForm("Weight", "Value"),
     ]);
+    let existingArtworksIds;
+    let existingArtworksThumbnails;
 
-    const [mainMediaUrl, setMainMediaUrl] = useState("");
-    const [physicalMediaURLs, setPhysicalMediaURLs] = useState([]);
-
-    const swiper = useSwiper();
-
-    const [provider, setProvider] = useState();
-
-    const [accounts, setAccounts] = useState([]);
-
-    const [multipleFilesUrl, setMultipleFilesUrl] = useState("");
-    const {signatureData, signatureError, isSignatureLoading, signMessage, signatureVariables} = useSignMessage()
-
-    const [royaltiesPercentage, setRoyaltiesPercentage] = useState(10);
     const months = [
         "January",
         "February",
@@ -135,61 +100,44 @@ const CreateItem = () => {
         "December",
     ];
 
-
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
+    async function getArtistCollections() {
+        let userId = localStorage.getItem("userId");
+        let collectionsRef = ref(db, "collections/");
+        await get(collectionsRef).then((snapshot) => {
+            let dt = snapshot.val();
+            for (let i in dt) {
+                let collection = dt[i];
+                if (collection.owner === userId) {
+                    setArtistCollections((current) => [...current, collection]);
+                }
+            }
+        });
+
+    }
+
+    async function getArtistDescription() {
+        setBio(currentUserState?.bio);
+        setName(currentUserState.name);
+    }
+
     useEffect(() => {
-        async function getCreatorStatus() {
-            const ThisUserRef = ref(db, "users/" + address);
-            await get(ThisUserRef).then(async (snapshot) => {
-                let dt = snapshot.val();
-                setIsCreator(dt.creator);
-            });
-        }
-
-        async function getArtistCollections() {
-            let artistId = address;
-            let collectionsRef = ref(db, "collections/");
-            await get(collectionsRef).then((snapshot) => {
-                let dt = snapshot.val();
-                for (let i in dt) {
-                    let collection = dt[i];
-                    if (collection.owner === address) {
-                        setArtistCollections((current) => [...current, collection]);
-                    }
-                }
-            });
-        }
-
-        async function getArtistDescription() {
-            let artistId = localStorage.getItem("UserKey");
-            let artistRef = ref(db, "users/" + artistId);
-            await get(artistRef).then((snapshot) => {
-                let dt = snapshot.val();
-                let key = snapshot.key;
-                let bio = dt.bio;
-                let name = dt.displayName;
-                if (bio && bio != "" && bio != " ") {
-                    setBio(bio.toString());
-                    setArtistID(key.toString());
-                    setArtistName(name.toString());
-                }
-            });
-        }
-
-        getCreatorStatus();
         getArtistCollections();
         getArtistDescription();
+    }, [currentUserState]);
 
-        connect();
-    }, []);
+    //to prevent filling up the collections state when component rerenders
+    useEffect(() => {
+        return () => {
+            setArtistCollections([]);
+        };
+    }, [currentUserState]);
 
     useEffect(() => {
         setCollectionID(artistCollections[0]?.address)
         setCollectionName(artistCollections[0]?.name);
     }, [artistCollections]);
-
-    const fileReader = new FileReader();
 
     function addTrait() {
         setTraits([...traits, TraitForm("Property", "Value")]);
@@ -342,18 +290,19 @@ const CreateItem = () => {
                 const month = currentTime.getMonth() + 1;
                 const year = currentTime.getFullYear();
                 const createdAt = months[month] + " " + year.toString();
-                await set(ref(db, "collections/" + newCollectionID), {
-                    name: `${artistName}'s Collection`,
-                    description: `${artistName}'s Collection Description`,
-                    symbol: `${artistName[0].toUpperCase()}C`,
-                    owner: address,
-                    image: localStorage.getItem("mainMediaURL").toString(),
-                    cover: localStorage.getItem("mainMediaURL").toString(),
-                    artisticCollection: true,
-                    address: newCollectionID,
-                    createdAt: createdAt,
-                    artworks: [newID]
-                })
+                await set(ref(db, "collections/" + newCollectionID),
+                    {
+                        name: `${name}'s Collection`,
+                        description: `${name}'s Collection Description`,
+                        symbol: `${name[0].toUpperCase()}C`,
+                        owner: address,
+                        image: localStorage.getItem("mainMediaURL").toString(),
+                        cover: localStorage.getItem("mainMediaURL").toString(),
+                        artisticCollection: true,
+                        address: newCollectionID,
+                        createdAt: createdAt,
+                        artworks: [newID]
+                    })
                 toast.success("Collection Created!", toastOptions);
                 return newCollectionID;
             } catch (error) {
@@ -365,7 +314,7 @@ const CreateItem = () => {
             let existingArtworksInCollection = [];
             await get(collRef).then((snapshot) => {
                 let dt = snapshot.val();
-                existingArtworksInCollection = dt?.artworks;
+                existingArtworksInCollection = dt?.artworks ? dt?.artworks : [];
             })
             existingArtworksInCollection.push(newID);
             await update(collRef, {
@@ -376,6 +325,7 @@ const CreateItem = () => {
     }
 
     async function createLazyMintingNFT(uri) {
+
         try {
             // Generate a new ID for the NFT
             let newID = (Math.random() + 1).toString(36).substring(2);
@@ -395,11 +345,33 @@ const CreateItem = () => {
                 ipfsURI: localStorage.getItem("newURI"),
                 owner: address.toString(),
                 collection: collID,
-                listed: "no",
+                listed: false,
+            }).then(() => {
+                if (currentUserState?.artworks?.length > 0) {
+                    existingArtworksIds = [...currentUserState?.artworks];
+                    existingArtworksIds.push(newID);
+                } else {
+                    existingArtworksIds = [newID];
+                }
+                if (currentUserState?.artworkThumbNails?.length > 0) {
+                    existingArtworksThumbnails = [...currentUserState?.artworkThumbNails];
+                    const existingArtworksThumbnailsLength = existingArtworksThumbnails.unshift(uri);
+                    if (existingArtworksThumbnailsLength > 4) {
+                        existingArtworksIds.pop();
+                    }
+                } else {
+                    existingArtworksThumbnails = [uri];
+                }
+            })
+            await update(ref(db, "users/" + address), {
+                artworks: existingArtworksIds,
+                artworkThumbNails: existingArtworksThumbnails,
             });
+
             // Toast to inform the user
             toast.success("Minted! Redirecting you to the homepage...", toastOptions);
             // Delay before redirecting (consider whether 8 seconds is necessary)
+
             await delay(7000);
             // Redirect to the homepage
             window.location.href = '/';
@@ -415,7 +387,7 @@ const CreateItem = () => {
             toast.info("Uploading main NFT image to IPFS ...", toastOptions);
             await uploadToIPFS(media);
             await uploadMultipleToIPFS(physicalMedia);
-            let metadata = await createMetadata();
+            let metadata = createMetadata();
             let uri = await uploadMetadata(metadata);
             await createLazyMintingNFT(uri);
         } catch (error) {
@@ -541,7 +513,7 @@ const CreateItem = () => {
                                                 fontWeight: "400",
                                             }}
                                         >
-                                            {collectionName ? collectionName : `${artistName}'s Collection`}
+                                            {collectionName ? collectionName : `${name}'s Collection`}
                                         </h5>
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu style={{width: "100%"}}>

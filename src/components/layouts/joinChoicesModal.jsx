@@ -27,9 +27,7 @@ const JoinChoicesModal = ({show, onHide}) => {
         <div
           id="createCollection"
           onClick={() => {
-            localStorage.setItem("accountTypeChoice", "user")
-            localStorage.setItem("creator", "yes")
-            setShowJoinModal(true);
+              setShowJoinModal(true);
           }}
           className="btn btn-primary"
           data-toggle="modal"
@@ -55,7 +53,6 @@ const JoinChoicesModal = ({show, onHide}) => {
           data-dismiss="modal"
           aria-label="Close"
           onClick={() => {
-            localStorage.setItem("accountTypeChoice", "artist")
             setShowJoinModal(true);
           }}
           style={{cursor: "pointer", marginBottom: "8%"}}

@@ -118,7 +118,7 @@ allArtworksImages.forEach((element) => {
 const Authors02 = () => {
   const [openPanel, setOpenPanel] = useState(false);
   const { address, isConnected } = useAccount();
-  const currentUserKey = address ? address : localStorage.getItem("UserKey");
+  const currentUserKey = address ? address : localStorage.getItem("userId");
 
   const { contract } = useContract(
     "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",

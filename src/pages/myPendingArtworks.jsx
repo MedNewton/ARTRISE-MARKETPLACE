@@ -107,7 +107,7 @@ const MyPendingArtworks = () => {
         localStorage.getItem("google") ||
         localStorage.getItem("facebook")
       ) {
-        getUserData(localStorage.getItem("UserKey").toString());
+        getUserData(localStorage.getItem("userId").toString());
       }
     }
   }, []);
