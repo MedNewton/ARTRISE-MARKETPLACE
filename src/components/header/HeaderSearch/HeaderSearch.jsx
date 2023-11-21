@@ -30,7 +30,7 @@ const HeaderSearch = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("UserKey"));
+    const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("userId"));
     useLocalStorageUserKeyChange('UserKey', (newValue) => {
         if (newValue) {
             setCurrentUserUserKey(newValue);
@@ -160,7 +160,7 @@ const HeaderSearch = () => {
     useEffect(() => {
         if (address) {
             // localStorage.setItem("accountTypeChoice", "artist");
-            localStorage.setItem("UserKey", address);
+            // localStorage.setItem("UserKey", address);
             setCurrentUserUserKey(address);
         }
     }, [address]);

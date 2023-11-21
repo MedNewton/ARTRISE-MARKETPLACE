@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
 import {useProfileContext} from "../../../Store/ProfileContext";
+import {useSelector} from "react-redux";
 
 const filterOptions = {
     categories: [
@@ -21,8 +22,7 @@ const filterOptions = {
 
 const DisplayOwnedNfts = () => {
 
-    const {lazyOwned} = useProfileContext();
-    const data = lazyOwned;
+    const data = useSelector((state) => state.usersReducer.lazyOwned);
     const [visible, setVisible] = useState(6);
     const showMoreItems = () => {
         setVisible((prevValue) => prevValue + 4);
@@ -106,7 +106,7 @@ const DisplayOwnedNfts = () => {
                 )}
                 <div
                     className={showFilter ? 'd-flex flex-wrap flex-row artist-artworks-wrapper-collapsed' : 'd-flex flex-wrap flex-row artist-artworks-wrapper'}>
-                    {data.slice(0, visible).map((listing, index) => {
+                    {data?.slice(0, visible)?.map((listing, index) => {
                         if (listing?.listable) {
                             return (
                                 <div key={index} style={{maxWidth: "300px"}}>
@@ -199,7 +199,7 @@ const DisplayOwnedNfts = () => {
                     })}
                 </div>
             </div>
-            {visible < data.length && (
+            {visible < data?.length && (
                 <div
                     className="col-md-12 wrap-inner load-more text-center mb-20"
                 >

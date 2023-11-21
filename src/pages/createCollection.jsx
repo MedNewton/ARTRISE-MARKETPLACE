@@ -55,7 +55,7 @@ const CreateCollection = () => {
   const [royaltiesPercentage, setRoyaltiesPercentage] = useState(10);
 
   async function getArtistDescription(){
-    let artistId = localStorage.getItem("UserKey");
+    let artistId = localStorage.getItem("userId");
     let artistRef = ref(db, "users/" + artistId);
     await get(artistRef).then((snapshot)=>{
       let dt = snapshot.val();
@@ -177,49 +177,60 @@ const CreateCollection = () => {
   }
 
   async function deployNFTCollection() {
-    try{
-    await connect();
+    console.log("cc 1 dt:")
+    try {
+      await connect();
+      console.log("cc 2 dt:")
+      let metadataErrors = await checkDeployMetadataError();
+      console.log("cc 3 metadataErrors:",metadataErrors)
+      if (metadataErrors === false) {
+        await sdk.deployer.deployNFTCollection({
+          name: title,
+          description: description,
+          symbol: symbol,
+          image: URL.createObjectURL(media),
+          primary_sale_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
+          platform_fee_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
+          platform_fee_basis_points: 15,
+          fee_recipient: royaltiesRecipient,
+          seller_fee_basis_points: Number(royaltiesPercentage),
+        });
 
-    let metadataErrors = await checkDeployMetadataError();
-    if (metadataErrors === false) {
-      await sdk.deployer.deployNFTCollection({
-        name: title,
-        description: description,
-        symbol: symbol,
-        image: URL.createObjectURL(media),
-        primary_sale_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
-        platform_fee_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
-        platform_fee_basis_points: 15,
-        fee_recipient: royaltiesRecipient,
-        seller_fee_basis_points: Number(royaltiesPercentage),
-      });
+        await uploadMainMedia(media);
+        await uploadCover(cover);
 
-      await uploadMainMedia(media);
-      await uploadCover(cover);
-      const newCollectionID = (
-        Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
-      ).toString();
-      await set(ref(db, "collections/" + newCollectionID), {
-        "name": title,
-        "description": description,
-        "symbol": symbol,
-        "owner": address,
-        "image": mediaURL,
-        "cover": coverURL,
-        "artisticCollection": artisticCollection,
-        "address": newCollectionID
-      })
+        console.log("cc 4 media:",media)
+        console.log("cc 5 cover:",cover)
 
-      Swal.fire({
-        icon: "success",
-        title: "Collection created !",
-        text: "Your collection has been deployed succefully. Once approved, you will find your new collection in your profile.",
-      }).then(()=>{
-        window.location.href = "/"
-      })
-    }
-    }catch (error) {
-      console.error("error occurred while minting a collection:",error)
+        const newCollectionID = (
+            Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
+        ).toString();
+        await set(ref(db, "collections/" + newCollectionID), {
+          "name": title,
+          "description": description,
+          "symbol": symbol,
+          "owner": address,
+          "image": mediaURL,
+          "cover": coverURL,
+          "artisticCollection": artisticCollection,
+          "address": newCollectionID
+        })
+
+        console.log("cc 6")
+
+
+        Swal.fire({
+          icon: "success",
+          title: "Collection created !",
+          text: "Your collection has been deployed succefully. Once approved, you will find your new collection in your profile.",
+        }).then(() => {
+          console.log("cc 7")
+
+          window.location.href = "/"
+        })
+      }
+    } catch (error) {
+      console.error("error occurred while minting a collection:", error)
     }
 
     //await sdk.deployer.deployNFTCollection()

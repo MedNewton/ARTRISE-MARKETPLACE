@@ -3,12 +3,12 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import JoinModal from "./joinModal";
 
-const JoinChoicesModal = (props) => {
+const JoinChoicesModal = ({show, onHide}) => {
   const [showJoinModal, setShowJoinModal] = useState(false);
 
 
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton></Modal.Header>
 
       <div className="modal-body space-y-20 pd-40">
@@ -27,9 +27,7 @@ const JoinChoicesModal = (props) => {
         <div
           id="createCollection"
           onClick={() => {
-            localStorage.setItem("accountTypeChoice", "user")
-            localStorage.setItem("creator", "yes")
-            setShowJoinModal(true);
+              setShowJoinModal(true);
           }}
           className="btn btn-primary"
           data-toggle="modal"
@@ -55,7 +53,6 @@ const JoinChoicesModal = (props) => {
           data-dismiss="modal"
           aria-label="Close"
           onClick={() => {
-            localStorage.setItem("accountTypeChoice", "artist")
             setShowJoinModal(true);
           }}
           style={{cursor: "pointer", marginBottom: "8%"}}
@@ -67,9 +64,10 @@ const JoinChoicesModal = (props) => {
         show={showJoinModal}
         onHide={() => {
           setShowJoinModal(false);
+          onHide();
         }}
         hideParent={() => {
-          props.onHide();
+          onHide();
         }}
       />
     </Modal>

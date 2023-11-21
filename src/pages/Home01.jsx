@@ -33,7 +33,7 @@ import profile from '../assets/images/icon/profile.png';
 const Home01 = () => {
     const {lazyListed} = useArtworkContext();
     const {profileData, lazyOwned, dispatch} = useProfileContext();
-    let UserKey = localStorage.getItem("UserKey");
+    let UserKey = localStorage.getItem("userId");
     let accountTypeChoice = localStorage.getItem("accountTypeChoice")
 
 
@@ -81,7 +81,7 @@ const Home01 = () => {
         const data = await response.json();
         if (data.username) {
             const userProfileLink = `https://www.instagram.com/${data.username}`;
-            const UserKey = address ? address : localStorage.getItem("UserKey");
+            const UserKey = address ? address : localStorage.getItem("userId");
             await update(ref(db, "users/" + UserKey), {
                 Instagram: userProfileLink,
             });

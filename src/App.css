@@ -3362,7 +3362,12 @@ gap:20px;
   flex-direction: column;
   align-items: stretch;
 }
-
+.footer-copyrights {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10%;
+  padding-right: 10%;
+}
 
 
 

@@ -48,7 +48,7 @@ const memberViewMenuTabs = [
     },
 ];
 
-const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUserKey}) => {
+const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUserId}) => {
 
     const [userArtworks, setUserArtworks] = useState([]);
     const [userCollections, setUserCollections] = useState([]);
@@ -69,7 +69,7 @@ const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUs
         <>
             <Tabs>
                 <TabList>
-                    {artistData.verified
+                    {artistData?.socialMediaVerified
                         ? artistViewMenuTabs.map((item, index) => (
                             <Tab key={index}>
                                 {item.name}
@@ -91,14 +91,14 @@ const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUs
                                     ></i>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    {artistData.verified &&
+                                    {artistData?.socialMediaVerified &&
                                         <Dropdown.Item href="/">
                                             <p className="tagLinkDropdownItemText">
                                                 Owned
                                             </p>
                                         </Dropdown.Item>
                                     }
-                                    {artistData.verified &&
+                                    {artistData?.socialMediaVerified &&
                                         <Dropdown.Item href="/">
                                             <p className="tagLinkDropdownItemText">
                                                 Liked Items
@@ -120,10 +120,10 @@ const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUs
                         </div>
                     </Tab>
                 </TabList>
-                {artistData.verified ?
+                {artistData.socialMediaVerified ?
                     <>
                         <TabPanel key={0}>
-                            {artistData.userId === currentUserKey ?
+                            {artistData.userId === currentUserId ?
                                 <DisplayLazyOwnedNfts/> : <DisplayArtworks data={userArtworks}/>
                             }
                         </TabPanel>
@@ -140,7 +140,7 @@ const DisplayArtistTabSection = ({artistData, lazyListed, collections, currentUs
                     :
                     <>
                         <TabPanel key={0}>
-                            {artistData?.userId === currentUserKey ?
+                            {artistData?.userId === currentUserId ?
                                 <DisplayMyOwnedNfts address={address}/>
                                 :
                                 <DisplayMemberOwnedNfts address={artistData?.userId} artistData={artistData}/>

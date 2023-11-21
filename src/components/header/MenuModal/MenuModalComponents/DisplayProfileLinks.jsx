@@ -25,7 +25,7 @@ const DisplayProfileLinks = ({
             {localStorage.getItem("accountTypeChoice") === "artist" &&
                 <div className="accordion-border-color-transparent">
                     <div className="accordion-card-background-border-color">
-                        <Link to={"/displayProfile?artist=" + localStorage.getItem("UserKey")}>
+                        <Link to={"/displayProfile?artist=" + localStorage.getItem("userId")}>
                             <div className="accordion-card-display-flex-font-large"
                                  onClick={() => handleMenuModalClose()}><BsFillPersonFill/> My Profile
                             </div>
@@ -36,7 +36,7 @@ const DisplayProfileLinks = ({
             {localStorage.getItem("accountTypeChoice") === "user" &&
                 <div className="accordion-border-color-transparent">
                     <div className="accordion-card-background-border-color">
-                        <Link to={"/displayProfile?member=" + localStorage.getItem("UserKey")}>
+                        <Link to={"/displayProfile?member=" + localStorage.getItem("userId")}>
                             <div className="accordion-card-display-flex-font-large"
                                  onClick={() => handleMenuModalClose()}><BsFillPersonFill/> My Profile
                             </div>
