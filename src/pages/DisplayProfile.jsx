@@ -22,19 +22,17 @@ const DisplayProfile = () => {
     const  artistsState= useSelector((state) => state.usersReducer.artists);
     const  userState= useSelector((state) => state.usersReducer.members);
     const  allUsersState= useSelector((state) => state.usersReducer.allUsers);
+    const  lazyListed= useSelector((state) => state.usersReducer.lazyListed);
+    const  currentUser= useSelector((state) => state.usersReducer.currentUser);
+    const  currentUserId= useSelector((state) => state.usersReducer.currentUserId);
+    const  collections= useSelector((state) => state.usersReducer.collections);
 
-    const { lazyListed, userArtist } = useArtworkContext();
-    const { collections } = useCollectionsContext();
-    const { user, allMemberArtists } = useUserContext();
-    const { address, isConnected } = useAccount();
-    const currentUserKey = address ? address : localStorage.getItem("userId");
     const { contract } = useContract(
         "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
         "marketplace"
     );
 
     const [artistData, setArtistData] = useState({});
-    const [currentUserData, setCurrentUserData] = useState({});
     const [loading, setLoading] = useState(true); // Loading state
 
     async function getArtistData(id) {
@@ -55,22 +53,9 @@ const DisplayProfile = () => {
         }
     }
 
-    async function getCurrentUserData() {
-        if (currentUserKey) {
-            const usersRef = ref(db, "users/" + currentUserKey);
-            const snapshot = await get(usersRef);
-            const dt = snapshot.val();
-            setCurrentUserData(dt);
-            // setLoading(false); // Set loading to false when data is available
-        }
-    }
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (currentUserKey) {
-                    await getCurrentUserData();
-                }
                 const queryParams = new URLSearchParams(location.search);
                 if (queryParams.has("artist")) {
                     const userValue = queryParams.get("artist");
@@ -94,11 +79,12 @@ const DisplayProfile = () => {
             }
         };
         fetchData();
-    }, [location, currentUserKey, allUsersState]);
+    }, [location, currentUserId, allUsersState]);
     console.log("artistsState artistsState",artistsState)
     console.log("artistsState userState",userState)
     console.log("artistsState allUsers",allUsersState)
-    console.log("artistsState currentUserData",currentUserData)
+    console.log("artistsState currentUser",currentUser)
+    console.log("artistsState collections",collections)
     return (
         <div className="authors-2">
             <HeaderStyle2 />
@@ -119,33 +105,24 @@ const DisplayProfile = () => {
                     <div className="profileInfoSection">
                         {artistData && allUsersState && (
                             <DisplayProfileInfo
-                                currentUserKey={currentUserKey}
+                                currentUserId={currentUserId}
                                 artistData={artistData}
-                                currentUserData={currentUserData}
+                                currentUser={currentUser}
                                 allMemberArtists={allUsersState}
                             />
                         )}
-
-                        {/*{loading && <div className="overlay"></div>}*/}
-
-
 
                         {artistData && allUsersState && (
                             <DisplayArtistTabSection
                                 artistData={artistData}
                                 lazyListed={lazyListed}
                                 collections={collections}
-                                currentUserKey={currentUserKey}
+                                currentUserId={currentUserId}
                             />
                         )}
-
-
                     </div>
                 </>
                   </LoadingOverlay>
-
-            
-
 
             <ToastContainer />
             <Footer />

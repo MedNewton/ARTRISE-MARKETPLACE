@@ -6,12 +6,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {get, ref} from "firebase/database";
 import db from "./firebase";
 import {
-    setAllUsers,
-    setArtists,
+    setAllUsers, setLazyOwned,
+    setArtists, setCollections,
     setCurrentUser, setCurrentUserId,
-    setLazyListed,
-    setLazyOwned,
-    setMembers
+    setLazyListed, setMembers
 } from "./redux/actions/userActions";
 import axios from "axios";
 
@@ -154,6 +152,40 @@ function App() {
         }
     }
 
+    async function getCollections() {
+        let collections = [];
+        const collectionRef = ref(db, "collections/");
+        await get(collectionRef).then(async (snapshot) => {
+            let collectionsArray = snapshot.val();
+            for (let i in collectionsArray) {
+                let dt = collectionsArray[i];
+                let ownerID = dt.owner;
+                let ownerName = "";
+                let ownerImage = "";
+                const ownerRef = ref(db, "users/" + ownerID);
+                await get(ownerRef).then((snap) => {
+                    let ownerDt = snap.val();
+                    ownerName = ownerDt.displayName;
+                    ownerImage = ownerDt.pdpLink;
+                });
+                let collection = {
+                    image: dt.image,
+                    cover: dt.cover,
+                    name: dt.name,
+                    description: dt.description,
+                    owner: dt.owner,
+                    createdAt: dt.createdAt,
+                    owner_name: ownerName,
+                    owner_image: ownerImage,
+                    id: i,
+                    artworks: dt?.artworks
+                };
+                collections.push(collection);
+            }
+            dispatch(setCollections({collections}));
+        });
+    }
+
     useEffect(() => {
         let currentUserId = localStorage.getItem("userId")
         dispatch(setCurrentUserId({currentUserId}));
@@ -167,10 +199,10 @@ function App() {
         async function changeTitle() {
             document.title = "Artrise - Physical NFTs Marketplace";
         }
-
         changeTitle();
         fetchUsers();
         fetchLazyListed();
+        getCollections();
     }, [])
     return (
         <Routes>

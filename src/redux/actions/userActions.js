@@ -50,3 +50,10 @@ export const setLazyOwned = (payload) => {
         payload: payload
     }
 }
+
+export const setCollections = (payload) => {
+    return {
+        type: usersActionTypes.SET_COLLECTIONS,
+        payload: payload
+    }
+}

@@ -25,6 +25,9 @@ export const usersReducer = (state = initialState, {type, payload}) => {
         case usersActionTypes.SET_CURRENT_USER_ID:
             return {...state, currentUserId: payload.currentUserId}
 
+        case usersActionTypes.SET_COLLECTIONS:
+            return {...state, collections: payload.collections}
+
         case usersActionTypes.SET_SELECTED_USER:
             return state
 
