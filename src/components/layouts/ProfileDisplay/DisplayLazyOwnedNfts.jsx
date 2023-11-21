@@ -199,7 +199,7 @@ const DisplayOwnedNfts = () => {
                     })}
                 </div>
             </div>
-            {visible < data.length && (
+            {visible < data?.length && (
                 <div
                     className="col-md-12 wrap-inner load-more text-center mb-20"
                 >

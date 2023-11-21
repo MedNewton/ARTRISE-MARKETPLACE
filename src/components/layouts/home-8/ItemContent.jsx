@@ -38,11 +38,14 @@ import DropsRaw from '../dropsRaw';
 import ArtworksRaw from '../artworksRaw';
 import DisplayArtworks from "../ProfileDisplay/DisplayArtworks";
 import { useArtworkContext } from '../../../Store/ArtworkContext';
+import {useSelector} from "react-redux";
 
 
 
 const ItemContent = () => {
-    const {lazyListed} = useArtworkContext();
+    const collections = useSelector((state) => state.usersReducer.collections);
+    const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
+
 
     function weiToEther(wei){
         let ether = wei / 1000000000000000000;
@@ -51,7 +54,7 @@ const ItemContent = () => {
 
     const [openPanel, setOpenPanel] = useState(false);
 
-    const [collectionsData] = useState(popularCollectionData);
+    // const [collectionsData] = useState(popularCollectionData);
 
     const {contract} = useContract("0x3ad7E785612f7bcA47e0d974d08f394d78B4b955", "marketplace");
     const { data: listings, isLoading, error } = useListings(contract);
@@ -590,7 +593,7 @@ const ItemContent = () => {
                             </div>
                         </div>
                         {
-                            collectionsData.slice(0,visible).map((item,index) => (
+                            collections?.slice(0,visible).map((item,index) => (
                                 <div key={index} className="col-lg-4 col-md-6 col-12">
                                     <div className="sc-card-collection style-2">
                                         <div className="card-bottom">
@@ -629,7 +632,7 @@ const ItemContent = () => {
                             ))
                         }
                         {
-                        visible < collectionsData.length && 
+                        visible < collections?.length &&
                         <div className="col-md-12 wrap-inner load-more text-center"> 
                             <Link to="#" id="load-more" className="sc-button loadmore fl-button pri-3" onClick={showMoreItems}><span>Load More</span></Link>
                         </div>
@@ -661,7 +664,7 @@ const ItemContent = () => {
                         </div>
 
                         {
-                            collectionsData.slice(0,visible).map((item,index) => (
+                            collections?.slice(0,visible).map((item,index) => (
                                 <div key={index} className="col-lg-4 col-md-6 col-12">
                                     <div className="sc-card-collection style-2">
                                         <div className="card-bottom">
@@ -700,7 +703,7 @@ const ItemContent = () => {
                             ))
                         }
                         {
-                        visible < collectionsData.length && 
+                        visible < collections?.length &&
                         <div className="col-md-12 wrap-inner load-more text-center"> 
                             <Link to="#" id="load-more" className="sc-button loadmore fl-button pri-3" onClick={showMoreItems}><span>Load More</span></Link>
                         </div>
