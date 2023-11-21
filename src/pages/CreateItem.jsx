@@ -31,6 +31,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
 import {useSelector} from "react-redux";
+import {signMessage} from "@wagmi/core";
 
 const TraitForm = (tr, v) => {
     return {
