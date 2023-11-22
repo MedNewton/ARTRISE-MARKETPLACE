@@ -369,7 +369,7 @@ const CollectionItems = () => {
                   >
                     <div className={`sc-card-product`}>
                       <div className="card-media">
-                        <Link to={"/artwork-dettails?id="+artwork.id}>
+                        <Link to={"/artwork-details?id="+artwork.id}>
                           <img src={artwork.artworkData.image} alt="" />
                         </Link>
                         <Link
@@ -385,7 +385,7 @@ const CollectionItems = () => {
                       </div>
                       <div className="card-title">
                         <h5 className="style2">
-                          <Link to={"/artwork-dettails?id="+artwork.id}>
+                          <Link to={"/artwork-details?id="+artwork.id}>
                             {artwork.artworkData.name}
                           </Link>
                         </h5>
@@ -420,7 +420,7 @@ const CollectionItems = () => {
                       </div>
                       <div className="card-bottom">
                         <Link
-                          to={"/artwork-dettails?id="+artwork.id}
+                          to={"/artwork-details?id="+artwork.id}
                           className="buyNowBtn"
                         >
                           <button className="sc-button style bag fl-button pri-3 no-bg">

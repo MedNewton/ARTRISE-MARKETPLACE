@@ -167,7 +167,7 @@ const DisplayOwnedNfts = () => {
                                     <div className={`sc-card-product`}>
                                         <div className="card-media">
                                             <Link
-                                                to={"/artwork-dettails?id=" + listing.id}
+                                                to={"/artwork-details?id=" + listing.id}
                                             >
                                                 <img src={listing.data.image} alt=""/>
                                             </Link>
@@ -186,7 +186,7 @@ const DisplayOwnedNfts = () => {
                                         <div className="card-title">
                                             <h5 className="style2">
                                                 <Link
-                                                    to={"/artwork-dettails?id=" + listing.id}
+                                                    to={"/artwork-details?id=" + listing.id}
                                                 >
                                                     {listing.data.name}
                                                 </Link>
