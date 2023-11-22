@@ -196,7 +196,7 @@ const TodayPicks = (props) => {
                         <div className={`sc-card-product`}>
                           <div className="card-media">
                             <Link
-                                to={"/artwork-dettails?id=" + listing.artworkId}
+                                to={"/artwork-details?id=" + listing.artworkId}
                             >
                               <img src={listing.data.image} alt="" />
                             </Link>
@@ -214,7 +214,7 @@ const TodayPicks = (props) => {
                           <div className="card-title">
                             <h5 className="style2">
                               <Link
-                                  to={"/artwork-dettails?id=" + listing.artworkId}
+                                  to={"/artwork-details?id=" + listing.artworkId}
                               >
                                 {listing.data.name}
                               </Link>
@@ -258,7 +258,7 @@ const TodayPicks = (props) => {
                           </div>
                           <div className="card-bottom">
                             <Link
-                                to={"/artwork-dettails?id=" + listing.artworkId}
+                                to={"/artwork-details?id=" + listing.artworkId}
                                 className="buyNowBtn"
                             >
                               <button className="sc-button style bag fl-button pri-3 no-bg">

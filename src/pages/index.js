@@ -71,7 +71,7 @@ const routes = [
   { path: '/artist-info', component: <ArtistInfos />},
   { path: '/private-display', component: <LazyDisplay />},
   { path: '/collection-items', component: <CollectionItems />},
-  { path: '/artwork-dettails', component: <Artwork />},
+  { path: '/artwork-details', component: <Artwork />},
   { path: '/list-item', component: <ListItem />},
   { path: '/ressources', component: <Ressources />},
   { path: '/home-02', component: <Home02 />},
