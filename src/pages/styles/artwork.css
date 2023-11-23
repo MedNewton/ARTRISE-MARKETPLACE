@@ -1,0 +1,35 @@
+.offer-btn {
+    background-color : White !important;
+    color: black;
+    border: 2px solid black !important;
+}
+
+.offer-btn:hover {
+    background-color: black !important;
+    color: white;
+}
+
+.offer-modal{
+    color: black !important;
+    /* font-size: 18px; */
+    font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+}
+.offer-modal input[type=number] {
+    color: black !important;
+    height: 20px;
+    width: 50px;
+    /* margin-left: 20px; */
+}
+.offer-label {
+    margin: auto 0;
+    margin-right: 10px !important;
+    padding: 0 0;
+    font-size: 16px;
+}
+.offer-modal input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    /* margin: 0; */
+  }
