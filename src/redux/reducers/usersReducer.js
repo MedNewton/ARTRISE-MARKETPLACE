@@ -28,6 +28,13 @@ export const usersReducer = (state = initialState, {type, payload}) => {
         case usersActionTypes.SET_COLLECTIONS:
             return {...state, collections: payload.collections}
 
+        case usersActionTypes.SET_SEARCHING_ARRAY:
+            const incomingArray = payload.searchingArray;
+            const existingArray = state.searchingArray || [];
+            // Merge unique values from existingArray and incomingArray
+            const mergedArray = Array.from(new Set([...existingArray, ...incomingArray]));
+            return { ...state, searchingArray: mergedArray };
+
         case usersActionTypes.SET_SELECTED_USER:
             return state
 

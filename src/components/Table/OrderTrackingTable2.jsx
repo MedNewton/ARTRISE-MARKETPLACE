@@ -193,7 +193,7 @@ const OrderTrackingTable2 = () => {
 
           return (
             <div className={` ${index % 2 === 0 ? " ordertable_body_box" : "ordertable_body_box"}`}>
-              <p><a href={"/artwork-dettails?id="+item.artworkid} >{item.artworkid}</a></p>
+              <p><a href={"/artwork-details?id="+item.artworkid} >{item.artworkid}</a></p>
               <p>"N/A"</p>
               <p className='fixed-item'>{item.sellersid}</p>
               <p className='fixed-item'>{Date(item.purchasedate).replace( / GMT$/, "" )}</p>

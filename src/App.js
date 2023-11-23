@@ -9,7 +9,7 @@ import {
     setAllUsers, setLazyOwned,
     setArtists, setCollections,
     setCurrentUser, setCurrentUserId,
-    setLazyListed, setMembers
+    setLazyListed, setMembers, setSearchingArray
 } from "./redux/actions/userActions";
 import axios from "axios";
 
@@ -35,6 +35,7 @@ class LazyNFT {
 
 function App() {
     const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
+
     let members = [];
     let artists = [];
     let allUsers = [];
@@ -67,10 +68,15 @@ function App() {
                 }
                 allUsers.push(userItem)
             }
-
             dispatch(setAllUsers({allUsers}));
             dispatch(setMembers({members}));
             dispatch(setArtists({artists}));
+            if (allUsers) {
+                let searchingArray = allUsers.map((userItem) => {
+                    return {"name": userItem.name, "id": userItem.userId, "type": userItem?.profileType ? userItem?.profileType : "member"};
+                });
+                dispatch(setSearchingArray({searchingArray}));
+            }
         })
     }
 
@@ -109,12 +115,21 @@ function App() {
                             } else {
                             }
                         } catch (error) {
-                            console.log(error);
                         }
                     });
                 });
             }
             dispatch(setLazyListed({lazyListed}));
+            if (lazyListed) {
+                let searchingArray = lazyListed.map((artworkItem) => {
+                    return {
+                        "name": artworkItem?.data?.name,
+                        "id": artworkItem?.artworkId,
+                        "type": "artwork"
+                    };
+                });
+                dispatch(setSearchingArray({searchingArray}));
+            }
         });
     }
 
@@ -137,13 +152,11 @@ function App() {
                     let lazyArtwork = dt[i];
                     let listable = !lazyArtwork?.listed;
                     if (lazyArtwork.owner === currentUserId) {
-                        console.log(lazyArtwork.ipfsURI);
                         try {
                             let res = await axios.get(lazyArtwork.ipfsURI);
                             let lazyNFT = new LazyNFT(i, res.data, listable);
                             lazyOwned.push(lazyNFT);
                         } catch (error) {
-                            console.log(error);
                         }
                     }
                 }
@@ -183,8 +196,28 @@ function App() {
                 collections.push(collection);
             }
             dispatch(setCollections({collections}));
+
+            if (collections) {
+                let searchingArray = collections.map((collection) => {
+                    return {"name": collection.name, "id": collection.id, "type": "collection"};
+                });
+                dispatch(setSearchingArray({searchingArray}));
+
+            }
         });
     }
+
+
+    // function to get the listings and then artworks from useListings(contract) with help of contract
+    // const {data: listings, isLoading, error} = useListings(contract);
+    // const getArtworkForSearch = () => {
+    //     if (listings) {
+    //         let data = listings.map((artworkItem) => {
+    //             return {"name": artworkItem.asset.name, "id": artworkItem.id, "type": "artwork"};
+    //         });
+    //         setArtWorks(data);
+    //     }
+    // };
 
     useEffect(() => {
         let currentUserId = localStorage.getItem("userId")
@@ -203,7 +236,7 @@ function App() {
         fetchUsers();
         fetchLazyListed();
         getCollections();
-    }, [])
+    }, [currentUserId])
     return (
         <Routes>
             {
