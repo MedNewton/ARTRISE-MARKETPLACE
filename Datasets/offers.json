@@ -1,0 +1,11 @@
+{"offers" : {
+    "1": {
+        "artworkid": "",
+        "ListedPrice": "",
+        "OfferedPrice": 10.00,
+        "ArtistID": "",
+        "OwnerId": "",
+        "OfferDate" : "",
+        "OfferStatus" : "Sent" 
+    }
+}}

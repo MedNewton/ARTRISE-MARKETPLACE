@@ -4,10 +4,11 @@ import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
 import { Link } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
-
+import './styles/artwork.css'
 import { Accordion } from "react-bootstrap-accordion";
 import yann from "../assets/images/avatar/yann.jpg";
 import db from "../firebase";
+import { useLocation } from "react-router-dom";
 import {
   ref,
   onValue,
@@ -26,7 +27,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import Swal from "sweetalert2";
 
 import ShippingModal from "../components/layouts/ShippingModal";
-
+import { Modal , Button} from "react-bootstrap";
 import { ethers } from "ethers";
 import { icons } from "react-icons";
 
@@ -40,6 +41,11 @@ class LazyNFT {
 }
 
 const Artwork = () => {
+
+  const location = useLocation();
+  const initialData = location.state ? location.state.data : null;
+  const [Offerdata, setData] = useState(initialData);
+  // console.log(Offerdata);
   const [Listed, setListed] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -52,6 +58,7 @@ const Artwork = () => {
   const [price, setPrice] = useState(0);
   const [shippingPrice, setShippingPrice] = useState(0);
   const [listingID, setListingID] = useState("");
+  const [OfferModal, setOfferModal] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
@@ -112,7 +119,12 @@ const Artwork = () => {
         if (listing.artwork_id === nftID) {
           setListed(true);
           setListingID(i);
-          setPrice(listing.price);
+          if(Offerdata != null){
+            setPrice(Offerdata?.offeredprice);
+          }else{
+
+            setPrice(listing.price);
+          }
           setShippingPrice(parseFloat(listing.shipping));
         }
       }
@@ -128,10 +140,14 @@ const Artwork = () => {
     let nftID = window.location.href.toString().split("id=")[1];
     if(address != null){
     let userBalance = parseFloat(data.formatted);
-    // alert(userBalance);
+    // let userBalance = 1000;
+    alert(userBalance);
     // alert(usdPriceInEth);
-    let totalToPay = (price + shippingPrice.toFixed(2)) / 1806.96;
-    // alert(totalToPay.toFixed(6));
+    let totalToPay = price + (shippingPrice / 1806.96);
+    // alert('price: '+price)
+    // alert(shippingPrice)
+    // let totalToPay = price;
+    alert(totalToPay);
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
     // alert(totalToPayInWei);
     if (userBalance < totalToPay) {
@@ -797,6 +813,69 @@ const Artwork = () => {
       .send({ from: address });
   }};
 
+  const SendOffer = async () => {
+    if (address != null) {
+      
+      // console.log('offersent');
+      let nftID = window.location.href.toString().split("id=")[1];
+      let userBalance = parseFloat(data.formatted);
+      let OfferAmount = document.getElementById('OfferAmount').value
+      // console.log(OfferAmount)
+      
+      // User Balance
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const balance = await provider.getBalance(address);
+      const UserBalanceInEth = ethers.utils.formatEther(balance);
+      // console.log(balanceInEth);
+  
+      if(UserBalanceInEth >= OfferAmount){
+        let OfferId =(Math.random() + 1).toString(36).substring(2);
+        let OfferRef = ref(db,"offers/"+OfferId);
+        await set(OfferRef,
+          {
+            "artworkid" : nftID,
+            "listingid" : listingID,
+            "sellersid" : ownerAddress,
+            "buyersid" : address,
+            "image" : nft.data.image,
+            "price" : price,
+            "offeredprice" : OfferAmount,
+            "Collectionid" : CollectionID,
+            "buyersWallet" : address,
+            "status": "Pending",
+            "offerdate" : new Date().getTime()
+          }).then(
+            async ()=>{
+              Swal.fire({
+                icon: "success",
+                title : "Offer Sent",
+                text : "Offer Has Been Successfully sent to the Owner of this Artwork!"
+              });
+            }
+          );
+  
+      }
+      else{
+        Swal.fire({
+          icon: "error",
+          title : "Insufficient Balance",
+          text : "Please Add Balance to your Etherium Wallet!"
+        })
+      }
+    }
+    else {
+      Swal.fire({
+        icon: "warning",
+        title : "User Not Logged In!",
+        text : "Please Login to Send an Offer!"
+      })
+    }
+
+
+  }
+  const showOfferModal = () => setOfferModal(true);
+  const hideOfferModal = () => setOfferModal(false);
+  
   const [usdPriceInEth, setUsdPriceInEth] = useState();
 
   useEffect(() => {
@@ -821,7 +900,31 @@ const Artwork = () => {
   return (
     <div className="item-details">
       <HeaderStyle2 />
+      <Modal show={OfferModal} onHide={hideOfferModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Make an Offer</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <h4>Current Price: {price} ETH</h4>
+          <div className="offer-modal form-inline">
+            <span className="offer-label">Your Offer ETH:</span><input id="OfferAmount" className="form-control" type="number" />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={hideOfferModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={async (e) => {
+            e.preventDefault();
+            hideOfferModal();
+            SendOffer();
+          }
 
+            }>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
       {nft ? (
         <div className="tf-section tf-item-details">
           <div className="themesflat-container">
@@ -1029,6 +1132,18 @@ const Artwork = () => {
                     >
                       <span>{Listed? 'Buy Now' : 'Not Available'}</span>
                     </Link>
+                    <Link
+                      to="/"
+                      className="sc-button disabled offer-btn loadmore style fl-button pri-3"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        showOfferModal();
+                      }}
+
+                    >
+                      <span>Make an Offer!</span>
+                    </Link>
+                    
                     <div className="physicalImages">
                       <h5 className="physicalArtworksTitle">
                         Pictures of the physical artwork:
