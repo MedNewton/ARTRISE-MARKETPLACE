@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import Header from "../components/header/Header";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
-import TopSeller from "../components/layouts/authors/TopSeller";
-import topSellerData from "../assets/fake-data/data-top-seller";
-import popularCollectionData from "../assets/fake-data/data-popular-collection";
-import db from "../firebase";
-import { get, ref } from "firebase/database";
-import { useCollectionsContext } from "../Store/CollectionsContext";
 import {useSelector} from "react-redux";
-
-
 
 const Collections = () => {
   const collections = useSelector((state) => state.usersReducer.collections);
@@ -36,17 +27,7 @@ const Collections = () => {
       target.classList.remove("tag");
       target.classList.add("selectedTag");
     }
-
-    console.log(selectedTags);
   }
-
-  const handleUserNameClick = (id) => {
-        if(id === currentUserUserKey){
-          navigate(`/profile?id=${currentUserSlug}`);
-        }else{
-          navigate(`/displayProfile?artist=${id}`)
-        }
-  };
 
   return (
     <div className="authors">
@@ -135,7 +116,9 @@ const Collections = () => {
                           </h4>
                           <p>
                             By{" "}
-                              <span onClick={()=>handleUserNameClick(collection?.owner)} className="authorName">{collection.owner_name}</span>
+                            <Link to={`/displayProfile?${collection?.owner_profile_type}=${collection?.owner}`}>
+                              <span className="authorName">{collection?.owner_name}</span>
+                            </Link>
                           </p>
                         </div>
                       </div>
