@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ImageViewer from "react-simple-image-viewer";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
 import './styles/artwork.css'
 import { Accordion } from "react-bootstrap-accordion";
@@ -41,7 +41,6 @@ class LazyNFT {
 }
 
 const Artwork = () => {
-
   const location = useLocation();
   const initialData = location.state ? location.state.data : null;
   const [Offerdata, setData] = useState(initialData);
@@ -106,6 +105,7 @@ const Artwork = () => {
         setNFT(lazyNFT);
       });
     });
+    console.log(lazyNFT);
     return lazyNFT;
   }
 
@@ -126,6 +126,7 @@ const Artwork = () => {
             setPrice(listing.price);
           }
           setShippingPrice(parseFloat(listing.shipping));
+          console.log(listing.price);
         }
       }
     });
@@ -134,20 +135,26 @@ const Artwork = () => {
   useEffect(() => {
     getNFTData();
     getPrice();
+    console.log(shippingPrice);
   }, []);
 
   const payForNFT = async () => {
     let nftID = window.location.href.toString().split("id=")[1];
+    //console.log(ownerAddress)
+    // console.log(nft);
+    // console.log(address);
     if(address != null){
     let userBalance = parseFloat(data.formatted);
     // let userBalance = 1000;
     alert(userBalance);
     // alert(usdPriceInEth);
-    let totalToPay = price + (shippingPrice / 1806.96);
+    // let totalToPay = price + (shippingPrice / 1806.96);
     // alert('price: '+price)
     // alert(shippingPrice)
     // let totalToPay = price;
     alert(totalToPay);
+    let totalToPay = price + shippingPrice.toFixed(2) / 1806.96;
+    // alert(totalToPay.toFixed(6));
     let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
     // alert(totalToPayInWei);
     if (userBalance < totalToPay) {
@@ -165,6 +172,8 @@ const Artwork = () => {
           to: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
           value: totalToPayInWei,
         };
+        // alert(transaction);
+        console.log(transaction);
         const sendTransaction = await signer.sendTransaction(transaction);
         setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
         if (sendTransaction.hash) {
@@ -195,6 +204,7 @@ const Artwork = () => {
           });
         }
       } catch (error) {
+        console.error("Error transferring ETH:", error);
         setTransactionStatus("Error transferring ETH");
       }
     }
@@ -207,10 +217,34 @@ const Artwork = () => {
   }
   };
 
+
+  const DemoPurchase = async () => {
+    let orderID =(Math.random() + 1).toString(36).substring(2);
+    let orderRef = ref(db,"orders/"+orderID);
+    await set(orderRef,
+      {
+        "artworkid" : window.location.href.toString().split("id=")[1],
+        "listingid" : listingID,
+        "sellersid" : ownerAddress,
+        "buyersid" : address,
+        "price" : "100",
+        "Collectionid" : CollectionID,
+        "buyersWallet" : address,
+        "status": "Pending Shipping"
+      });
+      Swal.fire({
+        icon: "success",
+        title: "The Artwork is now yours ! !",
+        text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
+      });
+      redirect('/page/confirmation')
+  }
+
   const handleMint = async () => {
     setLoading(true);
     setStatus("");
 
+    console.log('Handling Mint')
     const web3 = new Web3(window.ethereum);
 
     const raribleProtocolAddress = "0x9201a886740D193E315F1F1B2B193321D6701D07";
@@ -815,19 +849,19 @@ const Artwork = () => {
 
   const SendOffer = async () => {
     if (address != null) {
-      
+
       // console.log('offersent');
       let nftID = window.location.href.toString().split("id=")[1];
       let userBalance = parseFloat(data.formatted);
       let OfferAmount = document.getElementById('OfferAmount').value
       // console.log(OfferAmount)
-      
+
       // User Balance
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const balance = await provider.getBalance(address);
       const UserBalanceInEth = ethers.utils.formatEther(balance);
       // console.log(balanceInEth);
-  
+
       if(UserBalanceInEth >= OfferAmount){
         let OfferId =(Math.random() + 1).toString(36).substring(2);
         let OfferRef = ref(db,"offers/"+OfferId);
@@ -853,7 +887,7 @@ const Artwork = () => {
               });
             }
           );
-  
+
       }
       else{
         Swal.fire({
@@ -875,7 +909,7 @@ const Artwork = () => {
   }
   const showOfferModal = () => setOfferModal(true);
   const hideOfferModal = () => setOfferModal(false);
-  
+
   const [usdPriceInEth, setUsdPriceInEth] = useState();
 
   useEffect(() => {
@@ -884,6 +918,7 @@ const Artwork = () => {
         "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
       );
       setUsdPriceInEth(parseFloat(response.data.USD));
+      setUsdPriceInEth(parseFloat(1806.96)); //response.data.USD
     }
     fetchPrice();
   }, [usdPriceInEth]);
@@ -894,6 +929,7 @@ const Artwork = () => {
         "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
       );
       setUsdPriceInEth(parseFloat(response.data.USD));
+      // setUsdPriceInEth(parseFloat(1806.96)); //response.data.USD
     }, 30000);
   });
 
@@ -1143,7 +1179,7 @@ const Artwork = () => {
                     >
                       <span>Make an Offer!</span>
                     </Link>
-                    
+
                     <div className="physicalImages">
                       <h5 className="physicalArtworksTitle">
                         Pictures of the physical artwork:

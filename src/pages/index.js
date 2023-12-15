@@ -67,6 +67,7 @@ import LearnResourceDetail from "./LearnResourceDetail";
 import OrderTracking from "./OrderTracking/OrderTracking";
 import OfferList from "./OfferSystem/OfferList";
 import OfferSent from "./OfferSystem/OfferSent";
+import ConfirmationPage from "./confirmationpage";
 
 const routes = [
   { path: '/', component: <Home01 />},
@@ -138,8 +139,10 @@ const routes = [
   { path: '/order/tracking', component: <OrderTracking/>},
   { path: '/page/offer/received', component: <OfferList/>},
   { path: '/page/offer/sent', component: <OfferSent/>},
-  
-  
+
+  { path: '/order/tracking', component: <OrderTracking/>},
+  { path: '/page/confirmation', component: <ConfirmationPage/>}
+
 
 ]
 
