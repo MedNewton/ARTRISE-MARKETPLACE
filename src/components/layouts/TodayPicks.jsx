@@ -8,6 +8,7 @@ import axios from "axios";
 import db from "../../firebase";
 import { ref, get } from "firebase/database";
 import { useArtworkContext } from '../../Store/ArtworkContext';
+import MediaViewer from "../mediaViewer/MediaViewer";
 
 const TodayPicks = (props) => {
   const {lazyListed} = useArtworkContext();
@@ -198,7 +199,7 @@ const TodayPicks = (props) => {
                             <Link
                                 to={"/artwork-details?id=" + listing.artworkId}
                             >
-                              <img src={listing.data.image} alt="" />
+                              <MediaViewer mediaUrl = {listing?.data?.image}/>
                             </Link>
                             <Link
                                 to="/login"

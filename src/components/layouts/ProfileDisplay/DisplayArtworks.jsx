@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
 import {useMediaQuery} from "react-responsive";
+import MediaViewer from "../../mediaViewer/MediaViewer";
 
 const filterOptions = {
     categories: [
@@ -119,7 +120,7 @@ const DisplayArtworks = (props) => {
                                         <Link
                                             to={"/artwork-details?id=" + listing.artworkId}
                                         >
-                                            <img src={listing.data.image} alt=""/>
+                                            <MediaViewer mediaUrl = {listing?.data?.image}/>
                                         </Link>
 
                                         <Link

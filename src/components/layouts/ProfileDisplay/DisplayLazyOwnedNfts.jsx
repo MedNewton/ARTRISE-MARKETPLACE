@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
 import {useProfileContext} from "../../../Store/ProfileContext";
 import {useSelector} from "react-redux";
+import MediaViewer from "../../mediaViewer/MediaViewer";
 
 const filterOptions = {
     categories: [
@@ -115,7 +116,7 @@ const DisplayOwnedNfts = () => {
                                             <Link
                                                 to={"/private-display?id=" + listing?.id}
                                             >
-                                                <img src={listing?.data?.image} alt=""/>
+                                                <MediaViewer mediaUrl = {listing?.data?.image}/>
                                             </Link>
 
                                             <Link
@@ -169,7 +170,7 @@ const DisplayOwnedNfts = () => {
                                             <Link
                                                 to={"/artwork-details?id=" + listing.id}
                                             >
-                                                <img src={listing.data.image} alt=""/>
+                                                <MediaViewer mediaUrl = {listing?.data?.image}/>
                                             </Link>
 
                                             <Link

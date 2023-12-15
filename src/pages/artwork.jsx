@@ -30,6 +30,7 @@ import ShippingModal from "../components/layouts/ShippingModal";
 import { Modal , Button} from "react-bootstrap";
 import { ethers } from "ethers";
 import { icons } from "react-icons";
+import MediaViewer from "../components/mediaViewer/MediaViewer";
 
 class LazyNFT {
   constructor(i, d, o, c) {
@@ -968,7 +969,7 @@ const Artwork = () => {
               <div className="col-xl-6 col-md-12">
                 <div className="content-left">
                   <div className="media">
-                    <img src={nft.data.image} alt="" />
+                    <MediaViewer mediaUrl = {nft?.data?.image}/>
                   </div>
                   <div className="metadataBox" style={{ marginTop: "2%" }}>
                     <div className="flat-accordion2">
