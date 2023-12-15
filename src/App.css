@@ -1438,6 +1438,15 @@ cursor: pointer;
   margin-right: auto;
 }
 
+.collectionCoverSection{
+  height: 40vh;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 80px auto auto auto;
+}
+
 .userNameBar{
   display: flex;
     flex-wrap: wrap;

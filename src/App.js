@@ -175,11 +175,13 @@ function App() {
                 let ownerID = dt.owner;
                 let ownerName = "";
                 let ownerImage = "";
+                let ownerProfileType = "";
                 const ownerRef = ref(db, "users/" + ownerID);
                 await get(ownerRef).then((snap) => {
                     let ownerDt = snap.val();
-                    ownerName = ownerDt.displayName;
+                    ownerName = ownerDt.name;
                     ownerImage = ownerDt.pdpLink;
+                    ownerProfileType = ownerDt.profileType;
                 });
                 let collection = {
                     image: dt.image,
@@ -190,6 +192,7 @@ function App() {
                     createdAt: dt.createdAt,
                     owner_name: ownerName,
                     owner_image: ownerImage,
+                    owner_profile_type: ownerProfileType,
                     id: i,
                     artworks: dt?.artworks
                 };
