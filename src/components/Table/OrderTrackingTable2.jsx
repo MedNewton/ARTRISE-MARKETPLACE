@@ -92,8 +92,6 @@ const OrderTrackingTable2 = () => {
 
   const FetchData = async () => {
 
-    // console.log('func');
-    // console.log(address, 'i am address');
     if (address) {
       let orderRef = ref(db, "orders/");
       // let PurchaseRefByUser = query(orderRef,equalTo(".buyerid",address))
@@ -115,7 +113,7 @@ const OrderTrackingTable2 = () => {
           setOrderData(dataUser);
           
         } else {
-          console.log("No data available");
+          console.error("No data available");
         }
       }).catch((error) => {
         console.error(error);
@@ -144,7 +142,6 @@ const OrderTrackingTable2 = () => {
   const endIndex = startIndex + itemsPerPage;
 
   // Get the orders for the current page
-  console.log(OrderData);
   const ordersForPage = OrderData?.slice(startIndex, endIndex);
 
   // Calculate the total page count
@@ -159,7 +156,6 @@ const OrderTrackingTable2 = () => {
   //   const endIndex = startIndex + itemsPerPage;
 
   //   // Get the orders for the current page
-  //   console.log(OrderData);
   //   const ordersForPage = OrderData?.slice(startIndex, endIndex);
 
   //   // Calculate the total page count

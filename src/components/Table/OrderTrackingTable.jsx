@@ -92,8 +92,6 @@ const OrderTrackingTable2 = () => {
 
   const FetchData = async () => {
 
-    console.log('func');
-    console.log(address, 'i am address');
     if (address) {
       let orderRef = ref(db, "orders/");
       // let PurchaseRefByUser = query(orderRef,equalTo(".buyerid",address))

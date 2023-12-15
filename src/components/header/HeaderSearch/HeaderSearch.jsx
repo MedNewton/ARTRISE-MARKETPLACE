@@ -58,8 +58,6 @@ const HeaderSearch = () => {
         setSearchResults([]); // Clear the search results after clicking on an item
     };
 
-    console.log("ss 5 searchingArray:",searchingArray)
-
     return (
         <>
             {isDeviceMobile &&

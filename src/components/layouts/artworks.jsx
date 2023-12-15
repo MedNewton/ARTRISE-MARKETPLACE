@@ -38,7 +38,6 @@ const Artworks = (props) => {
     fetchPrice();
 
     return () => {
-      console.log("This will be logged on unmount");
     };
   }, []);
 
@@ -50,7 +49,6 @@ const Artworks = (props) => {
       setUsdPriceInEth(parseFloat(response.data.USD));
     }, 30000);
     return () => {
-      console.log("This will be logged on unmount");
     };
   }, []);
 

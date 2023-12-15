@@ -60,7 +60,7 @@ const DisplayProfile = () => {
                     // setLoading(false); // Set loading to false when data is available
 
                 } else {
-                    console.log("URL doesn't contain artist or user query parameter.");
+                    console.error("URL doesn't contain artist or user query parameter.");
                     // setLoading(false); // Set loading to false when data is available
                 }
             } catch (error) {

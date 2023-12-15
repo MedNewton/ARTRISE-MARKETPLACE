@@ -33,9 +33,6 @@ const ArtistInfos = () => {
 
     
     const address = useAddress();
-
-    console.log(address);
-    
     async function getUserData(adr){
         const ThisUserRef = ref(db, 'users/'+adr); 
         await get(ThisUserRef).then(async (snapshot) => {
@@ -76,14 +73,12 @@ const ArtistInfos = () => {
 
     async function updateProfilePicture(f)
     {
-        console.log(f);
         const stroageRef = SRef(storage, `/users_pdp/${f.name}`);
         const uploadTask = uploadBytesResumable(stroageRef, f);
         document.getElementById('pdp').src = "https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif"
         document.getElementById('submitBtn').disabled = true;
         uploadTask.on("state_changed", (snapshot) => {
             const progress =Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-            console.log(progress);
         },(error) => {
             alert(error);
         }, () => {
@@ -103,14 +98,12 @@ const ArtistInfos = () => {
     }
     
     async function updateCoverPicture(f){
-        console.log(f);
         const stroageRef = SRef(storage, `/coverImages/${f.name}`);
         const uploadTask = uploadBytesResumable(stroageRef, f);
         document.getElementById('cover').src = "https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif"
         document.getElementById('submitBtn').disabled = true;
         uploadTask.on("state_changed", (snapshot) => {
             const progress =Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-            console.log(progress);
         },(error) => {
             alert(error);
         }, () => {
