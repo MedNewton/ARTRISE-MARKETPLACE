@@ -35,7 +35,6 @@ const CollectionItems = () => {
     fetchPrice();
 
     return () => {
-      console.log("This will be logged on unmount");
     };
   }, []);
 
@@ -115,8 +114,6 @@ const CollectionItems = () => {
   useEffect(() => {
     getCollectionData();
     getCollectionArtworks();
-    console.log(ownerImage);
-    console.log(ownerName)
   }, []);
 
   if (collection === null) {

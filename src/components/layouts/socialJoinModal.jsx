@@ -74,7 +74,6 @@ const SocialJoinModal = (props) => {
     await get(ThisUserRef).then(async (snapshot) => {
       let dt = snapshot.val();
       if (dt == null) {
-        console.log(window.ire);
         window.ire(
           "trackConversion",
           37268,
@@ -133,7 +132,6 @@ const SocialJoinModal = (props) => {
 
   async function checkUserExistsGoogle(adr, data) {
     const ThisUserRef = ref(db, "users/" + adr);
-    console.log(adr)
     await get(ThisUserRef).then(async (snapshot) => {
       let dt = snapshot.val();
       if (dt == null) {
@@ -260,12 +258,11 @@ const SocialJoinModal = (props) => {
     signInWithPopup(auth, provider)
       .then((response) => {
         let twitterUserData = response._tokenResponse;
-        console.log(twitterUserData);
         let twitterUserID = twitterUserData.localId;
         checkUserExistsTwitter(twitterUserID, twitterUserData);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -274,12 +271,11 @@ const SocialJoinModal = (props) => {
     signInWithPopup(auth, provider)
       .then((response) => {
         let googleUserData = response._tokenResponse;
-        console.log(googleUserData)
         let googleUserID = googleUserData.localId;
         checkUserExistsGoogle(googleUserID, googleUserData);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -288,12 +284,11 @@ const SocialJoinModal = (props) => {
     signInWithPopup(auth, provider)
       .then((response) => {
         let facebookUserData = response._tokenResponse;
-        console.log(facebookUserData);
         let facebookUserID = facebookUserData.localId;
         checkUserExistsFacebook(facebookUserID, facebookUserData);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };*/
 
@@ -306,7 +301,7 @@ const SocialJoinModal = (props) => {
           checkUserExistsFacebook(facebookUserID, facebookUserData);
         })
         .catch((error)=>{
-          console.log(error);
+          console.error(error);
         })
 
   //   <script>
@@ -349,7 +344,6 @@ const SocialJoinModal = (props) => {
 
   //previous code
   // function signInWithFacebook(response){
-  //   console.log(response)
   //   let facebookUserData = response;
   //   let facebookUserID = facebookUserData.id;
   //   checkUserExistsFacebook(facebookUserID, facebookUserData);
@@ -392,17 +386,15 @@ const SocialJoinModal = (props) => {
         <LoginSocialFacebook
           appId="775659780546554"
           onResolve={({provider, data}) => {
-            console.log("asdf 0 i am in onResolve of SignUpWithFacebook with data:",data);
             signInWithFacebook(data)
           }}
           onReject={(error) => {
-            console.log(error);
+            console.error(error);
           }}
         >
           <FacebookLoginButton
               onClick={(e) => {
                 e.preventDefault();
-                console.log("asdf 0 i am in onResolve of SignUpWithFacebook with data:");
                 signInWithFacebook();
               }}
             style={{

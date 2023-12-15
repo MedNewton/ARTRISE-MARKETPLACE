@@ -45,7 +45,6 @@ const Artwork = () => {
   const location = useLocation();
   const initialData = location.state ? location.state.data : null;
   const [Offerdata, setData] = useState(initialData);
-  // console.log(Offerdata);
   const [Listed, setListed] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -106,7 +105,6 @@ const Artwork = () => {
         setNFT(lazyNFT);
       });
     });
-    console.log(lazyNFT);
     return lazyNFT;
   }
 
@@ -127,7 +125,6 @@ const Artwork = () => {
             setPrice(listing.price);
           }
           setShippingPrice(parseFloat(listing.shipping));
-          console.log(listing.price);
         }
       }
     });
@@ -136,14 +133,10 @@ const Artwork = () => {
   useEffect(() => {
     getNFTData();
     getPrice();
-    console.log(shippingPrice);
   }, []);
 
   const payForNFT = async () => {
     let nftID = window.location.href.toString().split("id=")[1];
-    //console.log(ownerAddress)
-    // console.log(nft);
-    // console.log(address);
     if(address != null){
     let userBalance = parseFloat(data.formatted);
     // let userBalance = 1000;
@@ -174,7 +167,6 @@ const Artwork = () => {
           value: totalToPayInWei,
         };
         // alert(transaction);
-        console.log(transaction);
         const sendTransaction = await signer.sendTransaction(transaction);
         setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
         if (sendTransaction.hash) {
@@ -245,7 +237,6 @@ const Artwork = () => {
     setLoading(true);
     setStatus("");
 
-    console.log('Handling Mint')
     const web3 = new Web3(window.ethereum);
 
     const raribleProtocolAddress = "0x9201a886740D193E315F1F1B2B193321D6701D07";
@@ -851,18 +842,14 @@ const Artwork = () => {
   const SendOffer = async () => {
     if (address != null) {
 
-      // console.log('offersent');
       let nftID = window.location.href.toString().split("id=")[1];
       let userBalance = parseFloat(data.formatted);
       let OfferAmount = document.getElementById('OfferAmount').value
-      // console.log(OfferAmount)
 
       // User Balance
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const balance = await provider.getBalance(address);
       const UserBalanceInEth = ethers.utils.formatEther(balance);
-      // console.log(balanceInEth);
-
       if(UserBalanceInEth >= OfferAmount){
         let OfferId =(Math.random() + 1).toString(36).substring(2);
         let OfferRef = ref(db,"offers/"+OfferId);

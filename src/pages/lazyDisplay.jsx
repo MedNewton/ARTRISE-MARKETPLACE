@@ -62,7 +62,6 @@ const LazyDisplay = () => {
         setNFT(lazyNFT);
       });
     });
-    console.log(lazyNFT);
     return lazyNFT;
   }
 

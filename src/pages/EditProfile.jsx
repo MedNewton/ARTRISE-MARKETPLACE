@@ -226,7 +226,6 @@ const EditProfile = () => {
                 const progress = Math.round(
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
-                console.log(progress);
             },
             (error) => {
                 alert(error);
@@ -257,7 +256,6 @@ const EditProfile = () => {
                 const progress = Math.round(
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
-                console.log(progress);
             },
             (error) => {
                 alert(error);

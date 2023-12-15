@@ -211,7 +211,6 @@ const Authors02 = () => {
       const userValue = queryParams.get("user");
       getUserData(userValue);
     } else {
-      console.log("URL doesn't contain artist or user query parameter.");
     }
   }, []);
 

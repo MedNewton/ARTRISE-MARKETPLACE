@@ -25,9 +25,8 @@ const Blog = () => {
             if(snapshot.exists)
             {
                 dt = snapshot.val();
-                console.log(snapshot.val());
             }else{
-                console.log("No data available");
+                console.error("No data available");
             }
         }).then(function(){
             setData(dt);

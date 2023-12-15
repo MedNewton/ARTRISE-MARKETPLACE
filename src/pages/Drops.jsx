@@ -22,8 +22,6 @@ const Drops = () => {
             target.classList.remove('tag');
             target.classList.add('selectedTag');
         }
-    
-        console.log(selectedTags);
     }
 
     return (
