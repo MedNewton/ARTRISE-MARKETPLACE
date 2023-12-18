@@ -436,7 +436,7 @@ td {
 embed,
 object,
 video {
-    margin-bottom : 20px;
+    /*margin-bottom : 20px;*/
     max-width     : 100%;
     vertical-align: middle;
 }

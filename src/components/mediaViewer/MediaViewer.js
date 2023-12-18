@@ -20,27 +20,19 @@ const MediaViewer = ({mediaUrl}) => {
     }, [mediaUrl]);
 
     if (isVideo) {
-        return (
-            <div>
-                <video width="640" height="360" autoPlay={true} muted={true} loop={true}>
+        return (<video autoPlay={true} muted={true} loop={true}>
                     <source src={mediaUrl} type='video/mp4'/>
                     Your browser does not support the video tag.
                 </video>
-            </div>
         );
     }
 
     if (isImage) {
-        return (
-            <div>
-                <img src={mediaUrl} alt="Media" style={{maxWidth: '100%'}}/>
-            </div>
+        return (<img src={mediaUrl} alt="Media" style={{maxWidth: '100%'}}/>
         );
     }
 
-    return <div>
-        <img src={placeHolderMainImage} alt='Artwork Image'/>
-    </div>;
+    return <img src={placeHolderMainImage} alt='Artwork Image'/>;
 };
 
 export default MediaViewer;

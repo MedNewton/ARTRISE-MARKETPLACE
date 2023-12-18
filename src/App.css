@@ -3379,5 +3379,105 @@ gap:20px;
   padding-right: 10%;
 }
 
+.artist-page-images-wrapper{
+  display:flex;
+  flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0 0;
+  padding:0;
+}
+
+.left-media-box{
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  margin:0;
+  padding: 0 5px 0 0;
+}
+
+.left-media-box img{
+  height: 272px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
+.left-media-box video{
+  height: 272px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
+.right-media-box{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  margin:0;
+  padding: 0 0 0 5px;
+}
+
+.top-right-media-section{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  justify-content: space-between;
+  margin:0;
+  padding: 0 0 5px 0;
+}
+
+.top-right-media-section img{
+  height: 131px;
+  object-fit: cover;
+  width: calc(50% - 5px);
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin:0;
+}
+
+.top-right-media-section video{
+  height: 131px;
+  object-fit: cover;
+  width: calc(50% - 5px);
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin:0;
+}
+
+.bottom-right-media-section{
+  box-sizing: border-box;
+  margin:0;
+  padding: 5px 0 0 0;
+}
+
+.bottom-right-media-section img{
+  height: 131px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
+.bottom-right-media-section video{
+  height: 131px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
 
 
