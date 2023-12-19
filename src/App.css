@@ -2969,6 +2969,11 @@ Collections-filter-wrapper{
   width: 100%;
   padding: 1% 2% 0 2%;
 }
+
+.is_dark .collection-page-wrapper p{
+  color: #fff;
+}
+
 .flex-row-flex-start-gap1{
   display: flex;
   gap: 1vw;
