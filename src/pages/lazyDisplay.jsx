@@ -683,7 +683,7 @@ const LazyDisplay = () => {
             <div className="row">
               <div className="col-xl-6 col-md-12">
                 <div className="content-left">
-                  <div className="media">
+                  <div className="artwork-media-wrapper">
                     <MediaViewer mediaUrl = {nft?.data?.image}/>
                   </div>
                   <div className="metadataBox" style={{ marginTop: "2%" }}>
