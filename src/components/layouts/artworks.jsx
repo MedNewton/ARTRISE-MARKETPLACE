@@ -1,32 +1,19 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import CardModal from "./CardModal";
-import yann from "../../assets/images/avatar/yann.jpg";
-import { useAddress, useContract, useListings } from "@thirdweb-dev/react";
-import SideBar from "./home-8/SideBar";
-import SlidingPane from "react-sliding-pane";
+import {useContract, useListings } from "@thirdweb-dev/react";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 import axios from "axios";
-import { useArtworkContext } from '../../Store/ArtworkContext';
 import DisplayArtworks from "./ProfileDisplay/DisplayArtworks";
+import {useSelector} from "react-redux";
 
 const Artworks = (props) => {
-  const {lazyListed} = useArtworkContext();
-  const data = props.data;
-  const [openPanel, setOpenPanel] = useState(false);
-  const address = useAddress();
+  const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
   const { contract } = useContract(
     "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
     "marketplace"
   );
   const { data: listings, isLoading, error } = useListings(contract);
   const [usdPriceInEth, setUsdPriceInEth] = useState();
-  const [visible, setVisible] = useState(8);
-  const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 4);
-  };
-  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     async function fetchPrice() {

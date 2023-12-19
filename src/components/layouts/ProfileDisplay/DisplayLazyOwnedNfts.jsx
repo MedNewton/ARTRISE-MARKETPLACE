@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
-import {useProfileContext} from "../../../Store/ProfileContext";
 import {useSelector} from "react-redux";
 import MediaViewer from "../../mediaViewer/MediaViewer";
 

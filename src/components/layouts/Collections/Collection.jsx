@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react";
 import HeaderStyle2 from "../../header/HeaderStyle2";
 import Footer from "../../footer/Footer";
-import {useCollectionsContext} from "../../../Store/CollectionsContext";
-import {useArtworkContext} from "../../../Store/ArtworkContext";
-
+import {useSelector} from "react-redux";
 import DisplayArtworks from "../ProfileDisplay/DisplayArtworks";
+
 const Collection = () => {
 
-    const {collections} = useCollectionsContext();
-    const {lazyListed} = useArtworkContext();
+    const collections = useSelector((state) => state.usersReducer.collections);
+    const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
 
     const [cover, setCover] = useState("");
     const [name, setName] = useState("");

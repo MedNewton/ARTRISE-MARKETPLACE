@@ -3,22 +3,19 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import CardModal from "./CardModal";
 import yann from "../../assets/images/avatar/yann.jpg";
-import { useAddress, useContract, useListings } from "@thirdweb-dev/react";
+import {useContract, useListings } from "@thirdweb-dev/react";
 import axios from "axios";
-import db from "../../firebase";
-import { ref, get } from "firebase/database";
-import { useArtworkContext } from '../../Store/ArtworkContext';
 import MediaViewer from "../mediaViewer/MediaViewer";
+import {useSelector} from "react-redux";
 
 const TodayPicks = (props) => {
-  const {lazyListed} = useArtworkContext();
+  const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
   const data = props.data;
   const { contract } = useContract(
     "0x3ad7E785612f7bcA47e0d974d08f394d78B4b955",
     "marketplace"
   );
   const { data: listings, isLoading, error } = useListings(contract);
-
   const [usdPriceInEth, setUsdPriceInEth] = useState();
 
   useEffect(() => {
@@ -50,11 +47,6 @@ const TodayPicks = (props) => {
     setVisible((prevValue) => prevValue + 4);
   };
   const [modalShow, setModalShow] = useState(false);
-
-  function weiToEther(wei) {
-    let ether = wei / 1000000000000000000;
-    return ether;
-  }
 
   return (
     <Fragment>
