@@ -955,7 +955,7 @@ const Artwork = () => {
             <div className="row">
               <div className="col-xl-6 col-md-12">
                 <div className="content-left">
-                  <div className="media">
+                  <div className="artwork-media-wrapper">
                     <MediaViewer mediaUrl = {nft?.data?.image}/>
                   </div>
                   <div className="metadataBox" style={{ marginTop: "2%" }}>
@@ -1173,7 +1173,7 @@ const Artwork = () => {
                         Pictures of the physical artwork:
                       </h5>
                       <div className="row" style={{ marginBottom: "3%" }}>
-                        {nft.data.physical_images.map((image, index) => (
+                        {nft?.data?.physical_images?.map((image, index) => (
                           <>
                             <div className="col-3 physImgCol" key={index + 1}>
                               <img
