@@ -1,2 +1,5 @@
-# Auto detect text files and perform LF normalization
+# Set the default behavior for all files
 * text=auto
+
+# Explicitly declare files that should have CRLF line endings
+*.* text eol=crlf
