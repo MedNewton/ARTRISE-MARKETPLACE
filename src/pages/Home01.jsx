@@ -19,24 +19,18 @@ import PopularCollection from '../components/layouts/PopularCollection';
 import popularCollectionData from '../assets/fake-data/data-popular-collection';
 import Create from '../components/layouts/Create';
 import SeperatingHeader1 from '../components/layouts/SeperatingHeader1';
-import SeperatingHeader2 from '../components/layouts/SeperatingHeader2';
-
-import { useContract, useMarketplace, useListings } from "@thirdweb-dev/react";
 import {ref, update} from "firebase/database";
 import db from "../firebase";
 import {useAccount} from "wagmi";
 import DisplayArtworks from "../components/layouts/ProfileDisplay/DisplayArtworks";
-import {useArtworkContext} from "../Store/ArtworkContext";
-import {useProfileContext} from "../Store/ProfileContext";
 import profile from '../assets/images/icon/profile.png';
+import {useSelector} from "react-redux";
 
 const Home01 = () => {
-    const {lazyListed} = useArtworkContext();
-    const {profileData, lazyOwned, dispatch} = useProfileContext();
+    const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
+    const profileData = useSelector((state) => state.usersReducer.currentUser);
     let UserKey = localStorage.getItem("userId");
     let accountTypeChoice = localStorage.getItem("accountTypeChoice")
-
-
     const { address, isConnected } = useAccount();
 
     //function related to fetching user's instagram info 1

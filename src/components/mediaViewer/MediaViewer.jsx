@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import placeHolderMainImage from "../../assets/images/box-item/collection-item-bottom-4.jpg"
+import placeHolderMainImage from '../../assets/images/box-item/collection-item-bottom-4.jpg';
+import PropTypes from "prop-types";
 
-const MediaViewer = ({mediaUrl}) => {
+function MediaViewer({mediaUrl}) {
     const [isVideo, setIsVideo] = useState(false);
     const [isImage, setIsImage] = useState(false);
 
@@ -20,19 +21,24 @@ const MediaViewer = ({mediaUrl}) => {
     }, [mediaUrl]);
 
     if (isVideo) {
-        return (<video autoPlay={true} muted={true} loop={true}>
-                    <source src={mediaUrl} type='video/mp4'/>
-                    Your browser does not support the video tag.
-                </video>
+        return (
+            <video autoPlay muted loop>
+                <source src={mediaUrl} type="video/mp4"/>
+                Your browser does not support the video tag.
+            </video>
         );
     }
 
     if (isImage) {
-        return (<img src={mediaUrl} alt="Media" style={{maxWidth: '100%'}}/>
+        return (<img src={mediaUrl} alt="Artwork data not available" style={{maxWidth: '100%'}}/>
         );
     }
 
-    return <img src={placeHolderMainImage} alt='Artwork Image'/>;
+    return <img src={placeHolderMainImage} alt="Artwork data not available"/>;
+}
+
+MediaViewer.propTypes = {
+    mediaUrl: PropTypes.string,
 };
 
 export default MediaViewer;
