@@ -200,6 +200,8 @@ const CreatePublicCollection = () => {
       try{
         await uploadMainMedia(media);
         await uploadCover(cover);
+        console.log(coverURL);
+        console.log(mediaURL);
         const newCollectionID = (
             Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
         ).toString();

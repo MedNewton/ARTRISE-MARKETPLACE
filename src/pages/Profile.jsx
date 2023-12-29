@@ -334,12 +334,12 @@ const Profile = () => {
                             >
                               <div className={`sc-card-product`}>
                                 <div className="card-media">
-                                  <Link to={"/artwork-details?id=" + id}>
+                                  <Link to={"/artwork-dettails?id=" + id}>
                                     <img src={nft?.data?.image} alt="" />
                                   </Link>
                                 </div>
                                 <div className="card-title">
-                                  <Link to={"/artwork-details?id=" + id}>
+                                  <Link to={"/artwork-dettails?id=" + id}>
                                     <h5 className="style2">{nft?.data?.name}</h5>
                                   </Link>
                                 </div>

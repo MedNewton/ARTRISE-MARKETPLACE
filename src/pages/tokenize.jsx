@@ -232,7 +232,7 @@ const Tokenize = () => {
         );
       },
       (error) => {
-        console.error(error);
+        console.log(error);
       },
       async () => {
         await getDownloadURL(stroageRef).then((url) => {
@@ -243,9 +243,11 @@ const Tokenize = () => {
 
     Promise.all(pr)
       .then(() => {
+        console.log(mainMediaUrl);
+        console.log(physicalMediaURLs);
       })
       .catch((error) => {
-        console.error(error);
+        console.log("error : " + error);
       });
   }
 
@@ -267,11 +269,12 @@ const Tokenize = () => {
           );
         },
         (error) => {
-          console.error(error);
+          console.log(error);
         },
         async () => {
           await getDownloadURL(storageRef).then((url) => {
             urls.push(url);
+            console.log(url);
           });
         }
       );

@@ -11,7 +11,7 @@ const Learn = () => {
         fetch("/ResourcesData.json")
             .then((response) => response.json())
             .then((json) => setResources(json.resources))
-            .catch((error) => console.error("Error fetching data:", error));
+            .catch((error) => console.log("Error fetching data:", error));
     }, []);
 
 

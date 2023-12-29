@@ -2,6 +2,7 @@ import {toast, ToastContainer} from "react-toastify";
 import React from "react";
 
 export const handleTwitterIconClick = (Twitter) => {
+    console.log("new test Twitter",Twitter);
     if (Twitter && Twitter !== "No account shared yet ...") {
         window.open(Twitter, "_blank");
     } else {
@@ -15,6 +16,8 @@ export const handleTwitterIconClick = (Twitter) => {
 };
 
 export const handleInstagramIconClick = (Instagram) => {
+    console.log("new test Instagram",Instagram);
+
     if (Instagram && Instagram !== "No account shared yet") {
         window.open(Instagram, "_blank");
     } else {

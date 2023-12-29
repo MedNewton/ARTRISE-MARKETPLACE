@@ -67,14 +67,13 @@ import LearnResourceDetail from "./LearnResourceDetail";
 import OrderTracking from "./OrderTracking/OrderTracking";
 import OfferList from "./OfferSystem/OfferList";
 import OfferSent from "./OfferSystem/OfferSent";
-import ConfirmationPage from "./confirmationpage";
 
 const routes = [
   { path: '/', component: <Home01 />},
   { path: '/artist-info', component: <ArtistInfos />},
   { path: '/private-display', component: <LazyDisplay />},
   { path: '/collection-items', component: <CollectionItems />},
-  { path: '/artwork-details', component: <Artwork />},
+  { path: '/artwork-dettails', component: <Artwork />},
   { path: '/list-item', component: <ListItem />},
   { path: '/ressources', component: <Ressources />},
   { path: '/home-02', component: <Home02 />},
@@ -139,10 +138,8 @@ const routes = [
   { path: '/order/tracking', component: <OrderTracking/>},
   { path: '/page/offer/received', component: <OfferList/>},
   { path: '/page/offer/sent', component: <OfferSent/>},
-
-  { path: '/order/tracking', component: <OrderTracking/>},
-  { path: '/page/confirmation', component: <ConfirmationPage/>}
-
+  
+  
 
 ]
 

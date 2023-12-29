@@ -200,6 +200,7 @@ const ItemDetails02 = (props) => {
   async function buyNFT(listing) {
     let newPrice = (3500 / usdPriceInEth).toFixed(2);
     let newPriceInWei = Web3.utils.toWei(newPrice, "ether");
+    console.log(Web3.utils.toWei(newPrice, "ether"));
     let bignumberPrice = BigNumber.from(newPriceInWei);
 
     let bignumberDate1 = BigNumber.from(Date.now());
@@ -240,7 +241,7 @@ const ItemDetails02 = (props) => {
           text: "It seems that you don't have sufficient funds in your wallet to perform this action.\nPlease, change or top-up your wallet with Ether.",
         });
       }
-      console.error(error);
+      console.log(error);
     }
   }
 

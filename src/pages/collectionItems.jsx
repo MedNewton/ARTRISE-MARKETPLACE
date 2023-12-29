@@ -35,6 +35,7 @@ const CollectionItems = () => {
     fetchPrice();
 
     return () => {
+      console.log("This will be logged on unmount");
     };
   }, []);
 
@@ -114,6 +115,8 @@ const CollectionItems = () => {
   useEffect(() => {
     getCollectionData();
     getCollectionArtworks();
+    console.log(ownerImage);
+    console.log(ownerName)
   }, []);
 
   if (collection === null) {
@@ -366,7 +369,7 @@ const CollectionItems = () => {
                   >
                     <div className={`sc-card-product`}>
                       <div className="card-media">
-                        <Link to={"/artwork-details?id="+artwork.id}>
+                        <Link to={"/artwork-dettails?id="+artwork.id}>
                           <img src={artwork.artworkData.image} alt="" />
                         </Link>
                         <Link
@@ -382,7 +385,7 @@ const CollectionItems = () => {
                       </div>
                       <div className="card-title">
                         <h5 className="style2">
-                          <Link to={"/artwork-details?id="+artwork.id}>
+                          <Link to={"/artwork-dettails?id="+artwork.id}>
                             {artwork.artworkData.name}
                           </Link>
                         </h5>
@@ -417,7 +420,7 @@ const CollectionItems = () => {
                       </div>
                       <div className="card-bottom">
                         <Link
-                          to={"/artwork-details?id="+artwork.id}
+                          to={"/artwork-dettails?id="+artwork.id}
                           className="buyNowBtn"
                         >
                           <button className="sc-button style bag fl-button pri-3 no-bg">

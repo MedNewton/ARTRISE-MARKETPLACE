@@ -54,12 +54,13 @@ export const ProfileProvider = ({children}) => {
                 let listable = false;
                 if (lazyArtwork.listed === 'no') listable = true;
                 if (lazyArtwork.owner === adr && lazyArtwork.type === 'lazyMinted') {
+                    console.log(lazyArtwork.ipfsURI);
                     try {
                         let res = await axios.get(lazyArtwork.ipfsURI);
                         let lazyNFT = new LazyNFT(i, res.data, listable);
                         dispatch({ type: 'ADD_LAZY_OWNED', payload: lazyNFT });
                     } catch (error) {
-                        console.error('error');
+                        console.log('error');
                     }
                 }
             }

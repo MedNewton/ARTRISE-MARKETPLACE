@@ -134,16 +134,18 @@ const OrderTrackingTable2 = () => {
   }, []);
 
   const claimArtWorkFunction = async (OrderID) => {
-    // delete listing.id;
-    let orderRef = ref(db, "orders/" + OrderID);
-    const currentData = {};
-    currentData.AddedAddress = shippingAddress;
-    currentData.SelectedShipMethod = selectedShippingMethod;
-    currentData.status = "Claimed";
-    await update(orderRef, currentData).then(function () {
-      setShow(false);
-    });
-  };
+          // delete listing.id;
+          let orderRef = ref(db, "orders/" + OrderID);
+          const currentData = {};
+          currentData.addedAddress = shippingAddress;
+          currentData.selectedShipMethod = selectedShippingMethod;
+          currentData.status = "Claimed";
+          await update(orderRef, currentData).then(function () {
+            setShow(false);
+          });
+        }
+      ;
+
   const itemsPerPage = 10;
   // Calculate the start and end index for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -340,7 +342,7 @@ const OrderTrackingTable2 = () => {
                   <Modal.Footer>
                     <button
                       className="modal_btn"
-                      onClick={() => claimArtWorkFunction(item.id)}
+                      onClick={()=> claimArtWorkFunction(item.id)}
                     >
                       Update
                     </button>

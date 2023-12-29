@@ -8,7 +8,6 @@ import axios from "axios";
 import db from "../../firebase";
 import { ref, get } from "firebase/database";
 import { useArtworkContext } from '../../Store/ArtworkContext';
-import MediaViewer from "../mediaViewer/MediaViewer";
 
 const TodayPicks = (props) => {
   const {lazyListed} = useArtworkContext();
@@ -31,6 +30,7 @@ const TodayPicks = (props) => {
     fetchPrice();
 
     return () => {
+      console.log("This will be logged on unmount");
     };
   }, []);
 
@@ -42,6 +42,7 @@ const TodayPicks = (props) => {
       setUsdPriceInEth(parseFloat(response.data.USD));
     }, 30000);
     return () => {
+      console.log("This will be logged on unmount");
     };
   }, []);
 
@@ -195,9 +196,9 @@ const TodayPicks = (props) => {
                         <div className={`sc-card-product`}>
                           <div className="card-media">
                             <Link
-                                to={"/artwork-details?id=" + listing.artworkId}
+                                to={"/artwork-dettails?id=" + listing.artworkId}
                             >
-                              <MediaViewer mediaUrl = {listing?.data?.image}/>
+                              <img src={listing.data.image} alt="" />
                             </Link>
                             <Link
                                 to="/login"
@@ -213,7 +214,7 @@ const TodayPicks = (props) => {
                           <div className="card-title">
                             <h5 className="style2">
                               <Link
-                                  to={"/artwork-details?id=" + listing.artworkId}
+                                  to={"/artwork-dettails?id=" + listing.artworkId}
                               >
                                 {listing.data.name}
                               </Link>
@@ -257,7 +258,7 @@ const TodayPicks = (props) => {
                           </div>
                           <div className="card-bottom">
                             <Link
-                                to={"/artwork-details?id=" + listing.artworkId}
+                                to={"/artwork-dettails?id=" + listing.artworkId}
                                 className="buyNowBtn"
                             >
                               <button className="sc-button style bag fl-button pri-3 no-bg">

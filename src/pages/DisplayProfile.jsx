@@ -4,16 +4,24 @@ import "react-tabs/style/react-tabs.css";
 import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
 import { useContract } from "@thirdweb-dev/react";
+import db from "../firebase";
+import { ref, get } from "firebase/database";
 import { ToastContainer } from "react-toastify";
+import { useAccount } from "wagmi";
 import DisplayProfileInfo from "../components/layouts/ProfileDisplay/DisplayProfileInfo";
 import DisplayArtistTabSection from "../components/layouts/ProfileDisplay/DisplayArtistTabSection";
+import { useArtworkContext } from "../Store/ArtworkContext";
+import { useCollectionsContext } from "../Store/CollectionsContext";
+import { useUserContext } from "../Store/UserContext";
 import LoadingOverlay from "react-loading-overlay";
 import {useSelector} from "react-redux";
 
 const DisplayProfile = () => {
     const location = useLocation();
 
-    const  allUsers= useSelector((state) => state.usersReducer.allUsers);
+    const  artistsState= useSelector((state) => state.usersReducer.artists);
+    const  userState= useSelector((state) => state.usersReducer.members);
+    const  allUsersState= useSelector((state) => state.usersReducer.allUsers);
     const  lazyListed= useSelector((state) => state.usersReducer.lazyListed);
     const  currentUser= useSelector((state) => state.usersReducer.currentUser);
     const  currentUserId= useSelector((state) => state.usersReducer.currentUserId);
@@ -28,7 +36,7 @@ const DisplayProfile = () => {
     const [loading, setLoading] = useState(true); // Loading state
 
     async function getArtistData(id) {
-        for (const a of allUsers) {
+        for (const a of allUsersState) {
             if (a.userId === id) {
                 setArtistData(a);
                 setLoading(false); // Set loading to false when data is available
@@ -37,7 +45,7 @@ const DisplayProfile = () => {
     }
 
     async function getMemberData(id) {
-        for (const a of allUsers) {
+        for (const a of allUsersState) {
             if (a.userId === id) {
                 setArtistData(a);
                 setLoading(false); // Set loading to false when data is available
@@ -60,8 +68,9 @@ const DisplayProfile = () => {
                     // setLoading(false); // Set loading to false when data is available
 
                 } else {
-                    console.error("URL doesn't contain artist or user query parameter.");
+                    console.log("URL doesn't contain artist or user query parameter.");
                     // setLoading(false); // Set loading to false when data is available
+
                 }
             } catch (error) {
                 console.error("An error occurred:", error);
@@ -70,8 +79,12 @@ const DisplayProfile = () => {
             }
         };
         fetchData();
-    }, [location, currentUserId, allUsers]);
-
+    }, [location, currentUserId, allUsersState]);
+    console.log("artistsState artistsState",artistsState)
+    console.log("artistsState userState",userState)
+    console.log("artistsState allUsers",allUsersState)
+    console.log("artistsState currentUser",currentUser)
+    console.log("artistsState collections",collections)
     return (
         <div className="authors-2">
             <HeaderStyle2 />
@@ -90,16 +103,16 @@ const DisplayProfile = () => {
                 >
                 <>
                     <div className="profileInfoSection">
-                        {artistData && allUsers && (
+                        {artistData && allUsersState && (
                             <DisplayProfileInfo
                                 currentUserId={currentUserId}
                                 artistData={artistData}
                                 currentUser={currentUser}
-                                allUsers={allUsers}
+                                allMemberArtists={allUsersState}
                             />
                         )}
 
-                        {artistData && allUsers && (
+                        {artistData && allUsersState && (
                             <DisplayArtistTabSection
                                 artistData={artistData}
                                 lazyListed={lazyListed}
