@@ -38,15 +38,15 @@ class LazyNFT {
 }
 
 function App() {
-  const currentUserId = useSelector(
-    (state) => state.usersReducer.currentUserId
-  );
-  let members = [];
-  let artists = [];
-  let allUsers = [];
-  let lazyListed = [];
-  let lazyOwned = [];
-  const dispatch = useDispatch();
+
+    const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
+
+    let members = [];
+    let artists = [];
+    let allUsers = [];
+    let lazyListed = [];
+    let lazyOwned = [];
+    const dispatch = useDispatch();
 
   function fetchUsers() {
     const userRef = ref(db, "users/");
@@ -118,6 +118,68 @@ function App() {
               console.log(error);
             }
           });
+            dispatch(setAllUsers({allUsers}));
+            dispatch(setMembers({members}));
+            dispatch(setArtists({artists}));
+            if (allUsers) {
+                let searchingArray = allUsers.map((userItem) => {
+                    return {"name": userItem.name, "id": userItem.userId, "type": userItem?.profileType ? userItem?.profileType : "member"};
+                });
+                dispatch(setSearchingArray({searchingArray}));
+            }
+        })
+    }
+
+    function fetchLazyListed() {
+        const listingsRef = ref(db, "listings/");
+        get(listingsRef).then(async (snapshot) => {
+            let dt = snapshot?.val();
+            for (let i in dt) {
+                let listing = dt[i];
+                let listingArtworkId = listing?.artwork_id;
+                let price = listing?.price;
+                let artworkRef = ref(db, "artworks/" + listingArtworkId);
+                await get(artworkRef).then(async (snapshot) => {
+                    let artwork = snapshot?.val();
+                    let ipfsURI = artwork?.ipfsURI;
+                    let artworkOwner = artwork?.owner;
+                    let ownerRef = ref(db, "users/" + artworkOwner);
+                    await get(ownerRef).then(async (snapshot) => {
+                        let owner = snapshot?.val();
+                        let ownerName = owner?.name;
+                        let ownerImage = owner?.pdpLink;
+                        try {
+                            const response = await fetch(ipfsURI);
+                            if (response?.ok) {
+                                const data = await response?.json();
+                                const lazyNFT = new LazyNFTListing(
+                                    i,
+                                    data,
+                                    price,
+                                    ownerName,
+                                    ownerImage,
+                                    artworkOwner,
+                                    listingArtworkId
+                                );
+                                lazyListed.push(lazyNFT);
+                            } else {
+                            }
+                        } catch (error) {
+                        }
+                    });
+                });
+            }
+            dispatch(setLazyListed({lazyListed}));
+            if (lazyListed) {
+                let searchingArray = lazyListed.map((artworkItem) => {
+                    return {
+                        "name": artworkItem?.data?.name,
+                        "id": artworkItem?.artworkId,
+                        "type": "artwork"
+                    };
+                });
+                dispatch(setSearchingArray({searchingArray}));
+            }
         });
       }
       dispatch(setLazyListed({ lazyListed }));
@@ -133,7 +195,6 @@ function App() {
       });
     }
   }
-
   async function fetchLazyOwned() {
     if (currentUserId) {
       const artworksRef = ref(db, "artworks/");
@@ -173,7 +234,7 @@ function App() {
           let ownerDt = snap.val();
           ownerName = ownerDt.displayName;
           ownerImage = ownerDt.pdpLink;
-        });
+});
         let collection = {
           image: dt.image,
           cover: dt.cover,

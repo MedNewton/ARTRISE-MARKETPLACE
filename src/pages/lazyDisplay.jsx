@@ -12,6 +12,7 @@ import { ref, onValue, get, update, set, child } from "firebase/database";
 import { useAccount } from "wagmi";
 import axios from "axios";
 import Web3 from "web3";
+import MediaViewer from "../components/mediaViewer/MediaViewer";
 
 class LazyNFT {
   constructor(i, d, o) {
@@ -61,7 +62,6 @@ const LazyDisplay = () => {
         setNFT(lazyNFT);
       });
     });
-    console.log(lazyNFT);
     return lazyNFT;
   }
 
@@ -683,8 +683,8 @@ const LazyDisplay = () => {
             <div className="row">
               <div className="col-xl-6 col-md-12">
                 <div className="content-left">
-                  <div className="media">
-                    <img src={nft.data.image} alt="" />
+                  <div className="artwork-media-wrapper">
+                    <MediaViewer mediaUrl = {nft?.data?.image}/>
                   </div>
                   <div className="metadataBox" style={{ marginTop: "2%" }}>
                     <div className="flat-accordion2">

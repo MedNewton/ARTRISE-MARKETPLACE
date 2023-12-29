@@ -25,9 +25,6 @@ const MyArtworks = () => {
     const {contract} = useContract("0xa6F0F91BF6e9bEdF044C3e989C6cB2e0376b40fC", "nft-collection");
     const { data: ownedNFTs, isLoading, error } = useOwnedNFTs(contract, address);
 
-
-    console.log(ownedNFTs);
-
     return (
         <div>
             <HeaderStyle2 />

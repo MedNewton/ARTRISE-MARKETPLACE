@@ -57,3 +57,10 @@ export const setCollections = (payload) => {
         payload: payload
     }
 }
+
+export const setSearchingArray = (payload) => {
+    return {
+        type: usersActionTypes.SET_SEARCHING_ARRAY,
+        payload: payload
+    }
+}

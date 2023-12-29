@@ -82,7 +82,6 @@ const MyPendingArtworks = () => {
       for (let i in dt) {
         let artwork = dt[i];
         if ((artwork.ownerID == adr) && (artwork.status == "pending")) {
-          console.log(artwork)
           setMyPendingArtworks((prevState) => [...prevState, artwork]);
         }
       }
@@ -100,7 +99,6 @@ const MyPendingArtworks = () => {
     if (address) {
       getUserData(address);
       getMyPendingArtworks(address);
-      console.log(myPendingArtworks);
     } else {
       if (
         localStorage.getItem("twitter") ||

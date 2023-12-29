@@ -97,7 +97,6 @@ const MyCollections = () => {
     if (address) {
       getUserData(address);
       getMyCollections(address);
-      console.log(myCollections);
     } else {
       if (
         localStorage.getItem("twitter") ||

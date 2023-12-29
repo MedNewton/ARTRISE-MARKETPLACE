@@ -358,7 +358,7 @@ const CreateItem = () => {
                     existingArtworksThumbnails = [...currentUserState?.artworkThumbNails];
                     const existingArtworksThumbnailsLength = existingArtworksThumbnails.unshift(uri);
                     if (existingArtworksThumbnailsLength > 4) {
-                        existingArtworksIds.pop();
+                        existingArtworksThumbnails.pop();
                     }
                 } else {
                     existingArtworksThumbnails = [uri];

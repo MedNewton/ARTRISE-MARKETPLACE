@@ -6,18 +6,27 @@ import {
     handleFacebookIconClick
 } from '../../../services/DisplayProfileServices/SocialMediaIconsClickServices';
 import {
+    ArrayIdsProvider,
+    ArrayProvider,
     FollowButtonTextProvider,
-    FollowersArrayProvider
 } from '../../../services/DisplayProfileServices/FollowFollowersServices';
-import {ref, update} from "firebase/database";
+import {get, ref, update} from "firebase/database";
 import db from "../../../firebase";
 import Modal from "react-bootstrap/Modal";
+import {setAllUsers, setArtists, setCurrentUser, setMembers} from "../../../redux/actions/userActions";
+import {useDispatch} from "react-redux";
 
-const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, currentUserKey}) => {
+const DisplayProfileInfo = ({artistData, allUsers, currentUser, currentUserId}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [selectedUserfollowers, setSelectedUserFollowers] = useState([]);
+    const [selectedUserfollowing, setSelectedUserFollowing] = useState([]);
+
+    const [currentUserfollowingIds, setCurrentUserFollowingIds] = useState([]);
+    const [selectedUserfollowersIds, setSelectedUserFollowersIds] = useState([]);
+
     const [followButtonText, setFollowButtonText] = useState("");
-    const [followersArray, setFollowersArray] = useState([]);
-    const [followingArray, setFollowingArray] = useState([]);
 
     const [show, setShow] = useState(false);
     const [showFollowers, setShowFollowers] = useState(false);
@@ -25,48 +34,120 @@ const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, current
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        const updatedFollowersList = FollowersArrayProvider(artistData.followers, allUsersState);
-        setFollowersArray(updatedFollowersList);
-        const updatedFollowingList = FollowersArrayProvider(artistData.following, allUsersState);
-        setFollowingArray(updatedFollowingList);
-        const updatedFollowButtonText = FollowButtonTextProvider(artistData, currentUserData, currentUserKey);
-        setFollowButtonText(updatedFollowButtonText);
-    }, [artistData, allUsersState, currentUserData, currentUserKey]);
+        if (currentUser && allUsers) {
+
+            setCurrentUserFollowingIds(ArrayIdsProvider(currentUser?.following, allUsers));
+        }
+        if (artistData && allUsers) {
+            setSelectedUserFollowers(ArrayProvider(artistData?.followers, allUsers));
+            setSelectedUserFollowing(ArrayProvider(artistData?.following, allUsers));
+
+            setSelectedUserFollowersIds(ArrayIdsProvider(artistData?.followers, allUsers));
+        }
+        setFollowButtonText(FollowButtonTextProvider(artistData, currentUser, currentUserId));
+        //
+
+        return () => {
+            setSelectedUserFollowers([]);
+            setSelectedUserFollowing([]);
+            setCurrentUserFollowingIds([]);
+            setSelectedUserFollowersIds([]);
+            setFollowButtonText("");
+        }
+    }, [artistData, allUsers, currentUser, currentUserId]);
 
     async function followUnfollow() {
         if (followButtonText === "Follow") {
-            const tempFollowersArray = [...artistData.followers, currentUserKey]
-            await update(ref(db, "users/" + artistData.userId), {
-                followers: tempFollowersArray
+            const tempSelectedUserFollowersIds = [...selectedUserfollowersIds, currentUserId]
+            await update(ref(db, "users/" + artistData?.userId), {
+                followers: tempSelectedUserFollowersIds
             }).catch(error => {
-                console.error("error", error);
+                navigate(`/`);
             });
-            const tempFollowingArray = [...currentUserData.following, artistData.userId]
-            await update(ref(db, "users/" + currentUserKey), {
-                following: tempFollowingArray
-            }).catch(error => {
-                console.error("error", error);
+
+            const tempCurrentUserFollowingIds = [...currentUserfollowingIds, artistData?.userId]
+            await update(ref(db, "users/" + currentUserId), {
+                following: tempCurrentUserFollowingIds
+            }).catch(() => {
+                navigate(`/`);
             });
+
+            await fetchAllUsersForRedux();
+
             setFollowButtonText("Unfollow");
+
         } else if (followButtonText === "Unfollow") {
-            const tempFollowersArray = artistData.followers.filter(e => e !== currentUserKey)
-            await update(ref(db, "users/" + artistData.userId), {
-                followers: tempFollowersArray
+            const tempSelectedUserFollowersIds = selectedUserfollowersIds?.filter(e => e !== currentUserId)
+            await update(ref(db, "users/" + artistData?.userId), {
+                followers: tempSelectedUserFollowersIds
             }).catch(error => {
-                console.error("error", error);
+                navigate(`/`);
             });
-            const tempFollowingArray = currentUserData?.following.filter(e => e !== artistData.userId)
-            await update(ref(db, "users/" + currentUserKey), {
-                following: tempFollowingArray
-            }).catch(error => {
-                console.error("error", error);
+
+            const tempCurrentUserFollowingIds = currentUserfollowingIds?.filter(e => e !== artistData?.userId)
+            await update(ref(db, "users/" + currentUserId), {
+                following: tempCurrentUserFollowingIds
+            }).then(async () => {
+                const ThisUserRef = ref(db, 'users/' + currentUserId);
+                await get(ThisUserRef).then(async (snapshot) => {
+                    let currentUser = snapshot.val();
+                    dispatch(setCurrentUser({currentUser}));
+                });
+            }).catch(() => {
+                navigate(`/`);
             });
+
+            await fetchAllUsersForRedux();
+
             setFollowButtonText("Follow");
+
+
         } else if (followButtonText === "Login") {
             navigate(`/`);
         } else if (followButtonText === "Edit") {
             navigate(`/edit-profile`);
         }
+    }
+
+    async function fetchAllUsersForRedux() {
+        const ThisUserRef = ref(db, 'users/' + currentUserId);
+        await get(ThisUserRef).then((snapshot) => {
+            let currentUser = snapshot.val();
+            dispatch(setCurrentUser({currentUser}));
+        });
+
+        let members = [];
+        let artists = [];
+        let allUsers = [];
+
+        const userRef = ref(db, 'users/');
+        get(userRef).then(async (snapshot) => {
+            let dt = snapshot.val();
+            for (let userId in dt) {
+                let a = dt[userId];
+                if (a?.socialMediaVerified && a?.profileType === "artist") {
+                    let artistItem = {
+                        userId: userId,
+                        ...a
+                    }
+                    artists.push(artistItem);
+                } else if (!a?.socialMediaVerified) {
+                    let memberItem = {
+                        userId: userId,
+                        ...a
+                    }
+                    members.push(memberItem);
+                }
+                let userItem = {
+                    userId: userId,
+                    ...a
+                }
+                allUsers.push(userItem)
+            }
+            dispatch(setAllUsers({allUsers}));
+            dispatch(setMembers({members}));
+            dispatch(setArtists({artists}));
+        })
     }
 
     function handleFollowersClick() {
@@ -84,7 +165,9 @@ const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, current
                  style={{backgroundImage: `url(${artistData?.cover_link})`}}></div>
             <div>
                 <div className="pdpContainer">
-                    <div className={`pdpSpace ${artistData?.socialMediaVerified ? "artistpdpSpace" : "memberpdpSpace"} `} id="pdp">
+                    <div
+                        className={`pdpSpace ${artistData?.socialMediaVerified ? "artistpdpSpace" : "memberpdpSpace"} `}
+                        id="pdp">
                         <img src={artistData?.pdpLink} alt=""/>
                     </div>
                 </div>
@@ -112,13 +195,13 @@ const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, current
                     <div className="ContainerofFollowers" onClick={() => {
                         handleFollowersClick()
                     }}>
-                        <h5 className="dataOfFollowers">{followersArray.length}</h5>
+                        <h5 className="dataOfFollowers">{selectedUserfollowers?.length}</h5>
                         <h5 className="titleOfFollowers">followers</h5>
                     </div>
                     <div className="ContainerofFollowing" onClick={() => {
                         handleFollowingClick()
                     }}>
-                        <h5 className="dataOfFollowing">{followingArray.length}</h5>
+                        <h5 className="dataOfFollowing">{selectedUserfollowing?.length}</h5>
                         <h5 className="titleOfFollowing">following</h5>
                     </div>
                 </div>
@@ -145,7 +228,7 @@ const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, current
                     </Modal.Header>
                     <Modal.Body style={{paddingTop: '0px'}}>
                         {showFollowers ? (
-                            followersArray?.map((item, index) => (
+                            selectedUserfollowers?.map((item, index) => (
                                 <div className="search-item" key={index}
                                      onClick={() => {
                                          setShowFollowers(false);
@@ -154,12 +237,12 @@ const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, current
                                      }
                                      }
                                 >
-                                    <h5>{item.name}</h5>
+                                    <h5>{item?.name}</h5>
                                     <p className="search-item-detail">{item.socialMediaVerified ? "Artist" : "Member"}</p>
                                 </div>
                             ))
                         ) : (
-                            followingArray?.map((item, index) => (
+                            selectedUserfollowing?.map((item, index) => (
                                 <div className="search-item" key={index}
                                      onClick={() => {
                                          setShowFollowers(false);
@@ -168,7 +251,7 @@ const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, current
                                      }
                                      }
                                 >
-                                    <h5>{item.name}</h5>
+                                    <h5>{item?.name}</h5>
                                     <p className="search-item-detail">{item?.socialMediaVerified ? "Artist" : "Member"}</p>
                                 </div>
                             ))

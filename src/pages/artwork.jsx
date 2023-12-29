@@ -111,7 +111,9 @@ const Artwork = () => {
     const artworkRef = ref(db, "artworks/" + nftID);
     await get(artworkRef).then(async (snapshot) => {
       let collectionID = snapshot.val().collection;
+      let getOwner = snapshot.val().owner;
       setCollectionID(collectionID);
+      setOwner(getOwner);
       let key = snapshot.key;
       let IPFS_URL = snapshot.val().ipfsURI;
       setIpfsURL(IPFS_URL);
@@ -132,6 +134,7 @@ const Artwork = () => {
     });
     return lazyNFT;
   }
+  console.log(nft, "Nft");
 
   async function getPrice() {
     let nftID = window.location.href.toString().split("id=")[1];
@@ -164,17 +167,16 @@ const Artwork = () => {
     if (address != null) {
       let userBalance = parseFloat(data.formatted);
       // let userBalance = 1000;
-      // alert(userBalance);
+      alert(userBalance);
       // alert(usdPriceInEth);
-      // let totalToPay = price + shippingPrice / 1806.96;
-      let totalToPay = 0.0001;
+      let totalToPay = price + shippingPrice / 1806.96;
       // alert('price: '+price)
       // alert(shippingPrice)
       // let totalToPay = price;
       alert(totalToPay);
       let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
       // alert(totalToPayInWei);
-      if (userBalance > totalToPay) {
+      if (userBalance < totalToPay) {
         Swal.fire({
           icon: "error",
           title: "Insufficient funds !",
@@ -194,10 +196,15 @@ const Artwork = () => {
           if (sendTransaction.hash) {
             await handleMint().then(async () => {
               let listingsRef = ref(db, "listings/" + listingID);
-              await set(listingsRef, null).then(async () => {
-                let orderIDrandom = (Math.random() + 1).toString(36).substring(2);
-                let orderRef = ref(db, "orders/" + orderIDrandom);
-                await set(orderRef, {
+              await set(listingsRef, null).then(() => {
+                Swal.fire({
+                  icon: "success",
+                  title: "The Artwork is now yours ! !",
+                  text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
+                });
+                let orderID = (Math.random() + 1).toString(36).substring(2);
+                let orderRef = ref(db, "orders/" + orderID + "/artworkid");
+                set(orderRef, {
                   artworkid: nftID,
                   listingid: listingID,
                   sellersid: ownerAddress,
@@ -206,11 +213,7 @@ const Artwork = () => {
                   Collectionid: CollectionID,
                   buyersWallet: address,
                   status: "Pending Shipping",
-                });
-                Swal.fire({
-                  icon: "success",
-                  title: "The Artwork is now yours ! !",
-                  text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
+                  purchasedate: Date().getTime(),
                 });
               });
             });
@@ -899,14 +902,14 @@ const Artwork = () => {
     fetchPrice();
   }, [usdPriceInEth]);
 
-  // useEffect(() => {
-  //   setInterval(async () => {
-  //     const response = await axios.get(
-  //       "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
-  //     );
-  //     setUsdPriceInEth(parseFloat(response.data.USD));
-  //   }, 30000);
-  // });
+  useEffect(() => {
+    setInterval(async () => {
+      const response = await axios.get(
+        "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+      );
+      setUsdPriceInEth(parseFloat(response.data.USD));
+    }, 30000);
+  });
 
   // ---- claim modal
   const [show, setShow] = useState(false);
@@ -929,8 +932,8 @@ const Artwork = () => {
           // setListingID(i);
           let orderRef = ref(db, "orders/" + i);
           const currentData = { ...listing };
-          currentData.addedAddress = claimiArtWork;
-          currentData.selectedShipMethod = selectedShippingMethod;
+          currentData.AddedAddress = claimiArtWork;
+          currentData.SelectedShipMethod = selectedShippingMethod;
           currentData.status = "Claimed";
           await update(orderRef, currentData).then(function () {
             setShow(false);
@@ -941,10 +944,10 @@ const Artwork = () => {
       }
     });
   };
-
   return (
     <div className="item-details">
       <HeaderStyle2 />
+
       <Modal show={OfferModal} onHide={hideOfferModal}>
         <Modal.Header closeButton>
           <Modal.Title>Make an Offer</Modal.Title>
@@ -992,6 +995,11 @@ const Artwork = () => {
       {nft ? (
         <div className="tf-section tf-item-details">
           <div className="themesflat-container">
+            {address === owner ? (
+              <Button variant="link">Edit Artwork</Button>
+            ) : (
+              <p>...</p>
+            )}
             <div className="row">
               <div className="col-xl-6 col-md-12">
                 <div className="content-left">

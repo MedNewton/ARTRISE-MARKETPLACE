@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
 import {useMediaQuery} from "react-responsive";
+import MediaViewer from "../../mediaViewer/MediaViewer";
 
 const filterOptions = {
     categories: [
@@ -117,9 +118,9 @@ const DisplayArtworks = (props) => {
                                 <div className={`sc-card-product`}>
                                     <div className="card-media">
                                         <Link
-                                            to={"/artwork-dettails?id=" + listing.artworkId}
+                                            to={"/artwork-details?id=" + listing.artworkId}
                                         >
-                                            <img src={listing.data.image} alt=""/>
+                                            <MediaViewer mediaUrl = {listing?.data?.image}/>
                                         </Link>
 
                                         <Link
@@ -137,7 +138,7 @@ const DisplayArtworks = (props) => {
                                     <div className="card-title">
                                         <h5 className="style2">
                                             <Link
-                                                to={"/artwork-dettails?id=" + listing.artworkId}
+                                                to={"/artwork-details?id=" + listing.artworkId}
                                             >
                                                 {listing.data.name}
                                             </Link>
@@ -180,7 +181,7 @@ const DisplayArtworks = (props) => {
                                     </div>
                                     <div className="card-bottom">
                                         <Link
-                                            to={"/artwork-dettails?id=" + listing.artworkId}
+                                            to={"/artwork-details?id=" + listing.artworkId}
                                             className="buyNowBtn"
                                         >
                                             <button className="sc-button style bag fl-button pri-3 no-bg">
