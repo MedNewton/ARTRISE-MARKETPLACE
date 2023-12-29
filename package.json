@@ -61,8 +61,7 @@
     "url": "^0.11.1",
     "wagmi": "0.12.0",
     "web3": "^4.0.2",
-    "web3modal": "^1.9.12",
-    "zlib": "^1.0.5"
+    "web3modal": "^1.9.12"
   },
   "scripts": {
     "start": "react-app-rewired start",
