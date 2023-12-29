@@ -16,7 +16,7 @@ const RenderHomeExploreDropButtons = () => {
                     className={`menu-item menu-item-has-children active`}
                     onClick={toggleExploreDropdown}
                 >
-                    <Link to="#">Explore</Link>
+                    <Link to="/" onClick={(event)=>event.preventDefault()}>Explore</Link>
                     {isExploreOpen && (
                         <ul className="sub-menu">
                             <SubNavItem to="/authors-01" text="Artists" />

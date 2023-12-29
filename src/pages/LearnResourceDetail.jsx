@@ -80,7 +80,7 @@ function ArticleDetails() {
         fetch("/ResourcesData.json")
             .then((response) => response.json())
             .then((json) => setAllResources(json.resources))
-            .catch((error) => console.log("Error fetching data:", error));
+            .catch((error) => console.error("Error fetching data:", error));
 
     }, []);
 

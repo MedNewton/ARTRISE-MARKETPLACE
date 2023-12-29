@@ -11,7 +11,7 @@ import {getDownloadURL, ref as SRef, uploadBytesResumable,} from "firebase/stora
 import Toggle from "react-styled-toggle";
 import {InstagramLoginButton, TwitterLoginButton} from "react-social-login-buttons";
 
-import {FaDiscord, FaFacebook, FaGlobeAfrica, FaInstagram, FaTiktok, FaTwitter, FaYoutube,} from "react-icons/fa";
+import {FaFacebook, FaGlobeAfrica, FaInstagram, FaTwitter} from "react-icons/fa";
 import xTwitter from "../assets/images/svg/xTwitter.svg"
 
 import auth from "../auth";
@@ -21,14 +21,21 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     setMembers,
     setAllUsers,
-    setArtists} from "../redux/actions/userActions";
+    setArtists, setCurrentUser
+} from "../redux/actions/userActions";
 
 
 const EditProfile = () => {
-  const nav = useNavigate();
-  const consumerKey = "wle1Pu0uJSwJlGsK32U7Njdeh";
-  const consmerSecret = "L5uoxeBQDW65vPuN1hxdF4xSeao5GpIbTp9CO4fT8zGrkLtxVl";
+    const nav = useNavigate();
+    const consumerKey = "wle1Pu0uJSwJlGsK32U7Njdeh";
+    const consmerSecret = "L5uoxeBQDW65vPuN1hxdF4xSeao5GpIbTp9CO4fT8zGrkLtxVl";
+
+    const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
+    const currentUser = useSelector((state) => state.usersReducer.currentUser);
+
+
     const dispatch = useDispatch();
+
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -46,52 +53,38 @@ const EditProfile = () => {
     const [artRiseAdminVerified, setArtRiseAdminVerified] = useState(false);
     const [accountTypeChecked, setAccountTypeChecked] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const { address, isConnected } = useAccount();
+    const {address, isConnected} = useAccount();
 
-  const [provider, setProvider] = useState("");
-  const [profile, setProfile] = useState(null);
-  const artistTypeOptions = [
-      { value: 'Painter', label: 'Painter' },
-      { value: 'Sculptor', label: 'Sculptor' },
-      { value: 'Photographer', label: 'Photographer' },
-      { value: 'Draftsman', label: 'Draftsman' },
-  ];
+    const artistTypeOptions = [
+        {value: 'Painter', label: 'Painter'},
+        {value: 'Sculptor', label: 'Sculptor'},
+        {value: 'Photographer', label: 'Photographer'},
+        {value: 'Draftsman', label: 'Draftsman'},
+    ];
 
-  const onLoginStart = useCallback(() => {
-    alert("login start");
-  }, []);
-
-  const onLogoutSuccess = useCallback(() => {
-    setProfile(null);
-    setProvider("");
-    alert("logout success");
-  }, []);
-
-  async function getUserData(adr) {
-    const ThisUserRef = ref(db, "users/" + adr);
-    await get(ThisUserRef).then(async (snapshot) => {
-      let dt = snapshot.val();
-        setName(dt?.name? dt?.name: "");
-        setEmail(dt?.email ? dt?.email: "");
-        setWalletAddress(dt?.walletAddress? dt?.walletAddress: "");
-        setBio(dt?.bio? dt?.bio: "");
-        setPdpLink(dt?.pdpLink? dt?.pdpLink: "");
-        setCover_link(dt?.cover_link? dt?.cover_link: "");
-        setFacebook(dt?.Facebook? dt?.Facebook: "");
-        setInstagram(dt?.Instagram? dt?.Instagram: "");
-        setTwitter(dt?.Twitter? dt?.Twitter: "");
-        setWebsite(dt?.website? dt?.website: "");
-        setProfileType(dt?.profileType? dt?.profileType: "");
-        setArtistType(dt?.artistType? dt?.artistType: "");
-        setSocialMediaVerified(dt?.socialMediaVerified? dt?.socialMediaVerified: false);
-        setArtRiseAdminVerified(dt?.artRiseAdminVerified? dt?.artRiseAdminVerified: false);
-        if (dt.profileType=== "artist") setAccountTypeChecked(true);
-        else setAccountTypeChecked(false);
-    });
-  }
+    async function getUserData() {
+        if (currentUser) {
+            setName(currentUser?.name ? currentUser?.name : "");
+            setEmail(currentUser?.email ? currentUser?.email : "");
+            setWalletAddress(currentUser?.walletAddress ? currentUser?.walletAddress : "");
+            setBio(currentUser?.bio ? currentUser?.bio : "");
+            setPdpLink(currentUser?.pdpLink ? currentUser?.pdpLink : "");
+            setCover_link(currentUser?.cover_link ? currentUser?.cover_link : "");
+            setFacebook(currentUser?.Facebook ? currentUser?.Facebook : "");
+            setInstagram(currentUser?.Instagram ? currentUser?.Instagram : "");
+            setTwitter(currentUser?.Twitter ? currentUser?.Twitter : "");
+            setWebsite(currentUser?.website ? currentUser?.website : "");
+            setProfileType(currentUser?.profileType ? currentUser?.profileType : "");
+            setArtistType(currentUser?.artistType ? currentUser?.artistType : "");
+            setSocialMediaVerified(currentUser?.socialMediaVerified ? currentUser?.socialMediaVerified : false);
+            setArtRiseAdminVerified(currentUser?.artRiseAdminVerified ? currentUser?.artRiseAdminVerified : false);
+            if (currentUser.profileType === "artist") setAccountTypeChecked(true);
+            else setAccountTypeChecked(false);
+        }
+    }
 
     async function updateProfile() {
-        const UserKey = address ? address : localStorage.getItem("userId");
+        const UserKey = currentUserId ? currentUserId : localStorage.getItem("userId");
         const isArtist = profileType === 'artist';
 
         if (isArtist && socialMediaVerified) {
@@ -151,85 +144,65 @@ const EditProfile = () => {
         await localStorage.setItem("name", name);
         await localStorage.setItem("pdpLink", pdpLink);
 
+        await fetchAllUsersForRedux();
 
-        const ThisUserRef = ref(db, "users/" + UserKey);
-        await get(ThisUserRef).then(async (snapshot) => {
+        if (profileType === "artist") {
+            await nav("/displayProfile?artist=" + UserKey);
+        } else if (profileType === "member") {
+            await nav("/displayProfile?member=" + UserKey);
+        } else {
+            await nav("/");
+        }
+    }
+
+    async function fetchAllUsersForRedux() {
+        const ThisUserRef = ref(db, 'users/' + currentUserId);
+        await get(ThisUserRef).then((snapshot) => {
+            let currentUser = snapshot.val();
+            dispatch(setCurrentUser({currentUser}));
+        });
+
+        let members = [];
+        let artists = [];
+        let allUsers = [];
+
+        const userRef = ref(db, 'users/');
+        get(userRef).then(async (snapshot) => {
             let dt = snapshot.val();
-            setName(dt?.name ? dt?.name : "");
-            setWalletAddress(dt?.walletAddress ? dt?.walletAddress : "");
-            setPdpLink(dt?.pdpLink ? dt?.pdpLink : "");
-            setCover_link(dt?.cover_link ? dt?.cover_link : "");
-            setFacebook(dt?.Facebook ? dt?.Facebook : "");
-            setInstagram(dt?.Instagram ? dt?.Instagram : "");
-            setTwitter(dt?.Twitter ? dt?.Twitter : "");
-            setProfileType(dt?.profileType ? dt?.profileType : "");
-            setArtistType(dt?.artistType ? dt?.artistType : "");
-            setSocialMediaVerified(dt?.socialMediaVerified ? dt?.socialMediaVerified : false);
-            setArtRiseAdminVerified(dt?.artRiseAdminVerified ? dt?.artRiseAdminVerified : false);
-        }).then(async () => {
-
-            let members = [];
-            let artists = [];
-            let allUsers = [];
-            const userRef = ref(db, 'users/');
-
-            await get(userRef).then(async (snapshot) => {
-                let dt = snapshot.val();
-                for (let UserKey in dt) {
-                    let a = dt[UserKey];
-                    if (a?.socialMediaVerified && a?.profileType === "artist") {
-                        let artistItem = {
-                            userId: UserKey,
-                            ...a
-                        }
-                        artists.push(artistItem);
-                    } else if (!a?.socialMediaVerified) {
-                        let memberItem = {
-                            userId: UserKey,
-                            ...a
-                        }
-                        members.push(memberItem);
-                    }
-                    let userItem = {
-                        userId: UserKey,
+            for (let userId in dt) {
+                let a = dt[userId];
+                if (a?.socialMediaVerified && a?.profileType === "artist") {
+                    let artistItem = {
+                        userId: userId,
                         ...a
                     }
-                    allUsers.push(userItem)
+                    artists.push(artistItem);
+                } else if (!a?.socialMediaVerified) {
+                    let memberItem = {
+                        userId: userId,
+                        ...a
+                    }
+                    members.push(memberItem);
                 }
-            })
+                let userItem = {
+                    userId: userId,
+                    ...a
+                }
+                allUsers.push(userItem)
+            }
             dispatch(setAllUsers({allUsers}));
             dispatch(setMembers({members}));
             dispatch(setArtists({artists}));
-            if (profileType === "artist") {
-                await nav("/displayProfile?artist=" + UserKey);
-            } else if (profileType === "member") {
-                await nav("/displayProfile?member=" + UserKey);
-            } else {
-                await nav("/");
-            }
         })
-
-        // setTimeout(function () {
-        //     window.location.reload(true);
-        // }, 0);
-        // if (localStorage.getItem("profileType") === "artist") {
-        //     await nav("/displayProfile?artist=" + UserKey);
-        // }
-        // else if (localStorage.getItem("profileType") === "member") {
-        //     await nav("/displayProfile?member=" + UserKey);
-        // }
-        // else {
-        //     await nav("/");
-        // }
     }
 
     useEffect(() => {
-        if (address) getUserData(address);
-        else getUserData(localStorage.getItem("userId"));
-    }, []);
+        if (currentUser) getUserData();
+        else getUserData();
+    }, [currentUser]);
 
     useEffect(() => {
-        if(artistType) {
+        if (artistType) {
             const arrayOfTypes = artistType.split(/[,&]/).map(item => item.trim());
             const ArrayOfObjects = arrayOfTypes.map(item => ({
                 value: item,
@@ -239,97 +212,88 @@ const EditProfile = () => {
         }
     }, [artistType]);
 
-  const fileReader = new FileReader();
+    const fileReader = new FileReader();
 
-  async function updateProfilePicture(f) {
-    const stroageRef = SRef(storage, `/users_pdp/${f.name}`);
-    const uploadTask = uploadBytesResumable(stroageRef, f);
-    document.getElementById("pdp").src =
-      "https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif";
-    document.getElementById("submitBtn").disabled = true;
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    async function updateProfilePicture(f) {
+        const stroageRef = SRef(storage, `/users_pdp/${f.name}`);
+        const uploadTask = uploadBytesResumable(stroageRef, f);
+        document.getElementById("pdp").src =
+            "https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif";
+        document.getElementById("submitBtn").disabled = true;
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+            },
+            (error) => {
+                alert(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                    document.getElementById("pdp").src = downloadURL;
+                    if (address) {
+                        setPdpLink(downloadURL);
+                    } else {
+                        setPdpLink(downloadURL);
+                    }
+                });
+                document.getElementById("submitBtn").disabled = false;
+            }
         );
-        console.log(progress);
-      },
-      (error) => {
-        alert(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          document.getElementById("pdp").src = downloadURL;
-          if(address){
-              setPdpLink(downloadURL);
-          }else{
-              setPdpLink(downloadURL);
-          }
-        });
-        document.getElementById("submitBtn").disabled = false;
-      }
-    );
-  }
-
-  async function updateCoverPicture(f) {
-    const stroageRef = SRef(storage, `/coverImages/${f.name}`);
-    const uploadTask = uploadBytesResumable(stroageRef, f);
-    document.getElementById("cover").src =
-      "https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif";
-    document.getElementById("submitBtn").disabled = true;
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        console.log(progress);
-      },
-      (error) => {
-        alert(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          document.getElementById("cover").src = downloadURL;
-          if(address){
-              setCover_link(downloadURL);
-          }else{
-              setCover_link(downloadURL);
-          }
-        });
-        document.getElementById("submitBtn").disabled = false;
-      }
-    );
-  }
-
-
-  const authHandler = (err, data) => {};
-
-  const handleCheckChange = (nextChecked) => {
-    setAccountTypeChecked(nextChecked);
-  };
-
-    async function verifyAccount(adr,profileLink) {
-        await update(ref(db, "users/" + adr), {
-            verified: true,
-            Twitter:`${profileLink}`
-        });
     }
+
+    async function updateCoverPicture(f) {
+        const stroageRef = SRef(storage, `/coverImages/${f.name}`);
+        const uploadTask = uploadBytesResumable(stroageRef, f);
+        document.getElementById("cover").src =
+            "https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif";
+        document.getElementById("submitBtn").disabled = true;
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+            },
+            (error) => {
+                alert(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                    document.getElementById("cover").src = downloadURL;
+                    if (address) {
+                        setCover_link(downloadURL);
+                    } else {
+                        setCover_link(downloadURL);
+                    }
+                });
+                document.getElementById("submitBtn").disabled = false;
+            }
+        );
+    }
+
+    const authHandler = (err, data) => {
+    };
+
+    const handleCheckChange = (nextChecked) => {
+        setAccountTypeChecked(nextChecked);
+    };
 
     const signInWithTwitter = async () => {
         const provider = new TwitterAuthProvider();
         signInWithPopup(auth, provider)
             .then((response) => {
                 const rawUserInfo = response?._tokenResponse?.screenName;
-                if(rawUserInfo) {
+                if (rawUserInfo) {
                     const profileLink = `https://twitter.com/${rawUserInfo}`;
                     setSocialMediaVerified(true);
                     setTwitter(profileLink);
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(async (error) => {
+                await nav("/");
             });
     };
 
@@ -350,22 +314,22 @@ const EditProfile = () => {
     };
 
     const getSelectedString = (selectedOptionsInMultiSelectProps) => {
-            const numSelected = selectedOptionsInMultiSelectProps.length;
-            switch (numSelected) {
-                case 0:
-                    return 'Artist';
-                case 1:
-                    return selectedOptionsInMultiSelectProps[0].value;
-                case 2:
-                    return `${selectedOptionsInMultiSelectProps[0].value} & ${selectedOptionsInMultiSelectProps[1].value}`;
-                case 3:
-                    return `${selectedOptionsInMultiSelectProps[0].value}, ${selectedOptionsInMultiSelectProps[1].value} & ${selectedOptionsInMultiSelectProps[2].value}`;
-                case 4:
-                    return `${selectedOptionsInMultiSelectProps[0].value}, ${selectedOptionsInMultiSelectProps[1].value}, ${selectedOptionsInMultiSelectProps[2].value} & ${selectedOptionsInMultiSelectProps[3].value}`;
-                default:
-                    return '';
-            }
-        };
+        const numSelected = selectedOptionsInMultiSelectProps.length;
+        switch (numSelected) {
+            case 0:
+                return 'Artist';
+            case 1:
+                return selectedOptionsInMultiSelectProps[0].value;
+            case 2:
+                return `${selectedOptionsInMultiSelectProps[0].value} & ${selectedOptionsInMultiSelectProps[1].value}`;
+            case 3:
+                return `${selectedOptionsInMultiSelectProps[0].value}, ${selectedOptionsInMultiSelectProps[1].value} & ${selectedOptionsInMultiSelectProps[2].value}`;
+            case 4:
+                return `${selectedOptionsInMultiSelectProps[0].value}, ${selectedOptionsInMultiSelectProps[1].value}, ${selectedOptionsInMultiSelectProps[2].value} & ${selectedOptionsInMultiSelectProps[3].value}`;
+            default:
+                return '';
+        }
+    };
 
     return (
         <div>
@@ -521,24 +485,34 @@ const EditProfile = () => {
                                                         <div className='d-flex'>
                                                             <TwitterLoginButton
                                                                 text={Twitter === "No Twitter added yet ..." || Twitter === "" || Twitter === " " ? "Verify with Twitter" : "Verified"}
-                                                                icon= {() =><img src={xTwitter} alt="X" />}
-                                                                activeStyle={{ background: "#2a2a2a"}}
+                                                                icon={() => <img src={xTwitter} alt="X"/>}
+                                                                activeStyle={{background: "#2a2a2a"}}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    if(Twitter === "No Twitter added yet ..." || Twitter === "" || Twitter === " "){signInWithTwitter()}
+                                                                    if (Twitter === "No Twitter added yet ..." || Twitter === "" || Twitter === " ") {
+                                                                        signInWithTwitter()
+                                                                    }
                                                                 }}
                                                                 style={Twitter === "No Twitter added yet ..." || Twitter === "" || Twitter === " " ?
-                                                                    {cursor: "context-menu",fontSize: "16px",background: "black",
-                                                                } : {background:"black",fontSize: "16px"}}
+                                                                    {
+                                                                        cursor: "context-menu",
+                                                                        fontSize: "16px",
+                                                                        background: "black",
+                                                                    } : {background: "black", fontSize: "16px"}}
                                                             />
                                                             <InstagramLoginButton
                                                                 text={Instagram === "No Instagram added yet ..." || Instagram === "" || Instagram === " " ? "Verify with Instagram" : "Verified"}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    if(Instagram === "No Instagram added yet ..." || Instagram === "" || Instagram === " "){signInWithInstagram()}
+                                                                    if (Instagram === "No Instagram added yet ..." || Instagram === "" || Instagram === " ") {
+                                                                        signInWithInstagram()
+                                                                    }
                                                                 }}
                                                                 style={Instagram === "No Instagram added yet ..." || Instagram === "" || Instagram === " " ?
-                                                                    { cursor: "context-menu",fontSize: "16px"} : {fontSize: "16px"}}
+                                                                    {
+                                                                        cursor: "context-menu",
+                                                                        fontSize: "16px"
+                                                                    } : {fontSize: "16px"}}
                                                             />
                                                         </div>
                                                     </div>
@@ -609,10 +583,10 @@ const EditProfile = () => {
                 </div>
             </div>
             <>
-            <Footer/>
+                <Footer/>
             </>
         </div>
-        );
-    };
+    );
+};
 
 export default EditProfile;

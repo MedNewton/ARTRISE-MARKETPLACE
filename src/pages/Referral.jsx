@@ -92,7 +92,6 @@ const Referral = () => {
             setUserFollowing(following-2);
             
             document.getElementById('pdp').style.backgroundImage = dt.pdpLink;
-            console.log(dt.pdpLink);
         })
     }
 

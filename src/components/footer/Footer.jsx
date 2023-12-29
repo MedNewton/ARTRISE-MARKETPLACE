@@ -195,7 +195,7 @@ const Footer = () => {
             <div className='footer-copyrights'>
             
                 <div ><p className='rights'>All rights reserved ArtRise Labs LLC</p></div>
-                <div ><p className='rights'>Version: November 21, 2023</p></div>
+                <div ><p className='rights'>Version: December 19, 2023</p></div>
                 <div > <p className='rights privacy'><Link to={"/privacy-policy"}>Privacy policy</Link>&nbsp;|&nbsp; <Link to={"/terms-of-service"}>Terms of service</Link></p></div>
             </div>
             </footer>

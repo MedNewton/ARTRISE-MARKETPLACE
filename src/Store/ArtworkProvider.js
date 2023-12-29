@@ -84,10 +84,10 @@ export const ArtworkProvider = ({children}) => {
 
                                     setLazyListed((prevState) => [...prevState, lazyNFT]);
                                 } else {
-                                    console.log('Network response was not ok');
+                                    console.error('Network response was not ok');
                                 }
                             } catch (error) {
-                                console.log(error);
+                                console.error(error);
                             }
                         });
                     });

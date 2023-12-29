@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import Header from "../components/header/Header";
@@ -50,18 +50,19 @@ const TraitForm = (tr, v) => {
 };
 
 const Tokenize = () => {
+
   const adr = useAddress();
-const navigate = useNavigate();
+
   const [isActive, setIsActive] = useState(false);
   const [title, setTitle] = useState("Artwork title");
   const [artistID, setArtistID] = useState("");
   const [artistName, setArtistName] = useState("");
   const [description, setDescription] = useState("");
   const [collectionName, setCollectionName] = useState(
-    "ARTRISE SHARED COLLECTION"
+      "ARTRISE SHARED COLLECTION"
   );
-  const [collectionCheckButton, setCollectionCheckButton] = useState(false);
-  const [collectionDescription, setCollectionDescription] = useState("");
+  const [collectionCheckButton,setCollectionCheckButton] = useState(false);
+  const [collectionDescription,setCollectionDescription]= useState("")
   const [externalLink, setExternalLink] = useState("");
   const [supply, setSupply] = useState(1);
   const [media, setMedia] = useState();
@@ -85,6 +86,8 @@ const navigate = useNavigate();
   const [artistCollections, setArtistCollections] = useState([]);
   const [collectionID, setCollectionID] = useState("");
   const [mintButtonDisabled, setMintButtonDisabled] = useState(false);
+
+
 
   async function getCreatorStatus() {
     const ThisUserRef = ref(db, "users/" + address);
@@ -179,10 +182,10 @@ const navigate = useNavigate();
         }
       }
     } else if (
-      !isConnected ||
-      !address ||
-      isCreator == "no" ||
-      isCreator == "pending"
+        !isConnected ||
+        !address ||
+        isCreator == "no" ||
+        isCreator == "pending"
     ) {
       Swal.fire({
         icon: "error",
@@ -198,6 +201,7 @@ const navigate = useNavigate();
     TraitForm("Length", "Value"),
     TraitForm("Weight", "Value"),
   ];
+
 
   const fileReader = new FileReader();
 
@@ -228,7 +232,7 @@ const navigate = useNavigate();
         );
       },
       (error) => {
-        console.log(error);
+        console.error(error);
       },
       async () => {
         await getDownloadURL(stroageRef).then((url) => {
@@ -239,11 +243,9 @@ const navigate = useNavigate();
 
     Promise.all(pr)
       .then(() => {
-        console.log(mainMediaUrl);
-        console.log(physicalMediaURLs);
       })
       .catch((error) => {
-        console.log("error : " + error);
+        console.error(error);
       });
   }
 
@@ -265,12 +267,11 @@ const navigate = useNavigate();
           );
         },
         (error) => {
-          console.log(error);
+          console.error(error);
         },
         async () => {
           await getDownloadURL(storageRef).then((url) => {
             urls.push(url);
-            console.log(url);
           });
         }
       );
@@ -286,7 +287,6 @@ const navigate = useNavigate();
         ).toString();
         await uploadMainFile(media);
         await uploadPhysicalImages();
-        console.log(newArtworkId, "ID");
       } else {
         Swal.fire({
           icon: "error",
@@ -303,14 +303,7 @@ const navigate = useNavigate();
     }
   }
 
-  
   async function mintButtonClickHandler() {
-    navigate('/artwork-dettails?id=zzfvdtjfwu')
-    Swal.fire({
-      icon: "success",
-      title: "Artwork successflly created !",
-      text: "",
-    });
     // setMintButtonDisabled(true);
     // toast.info(
     //     "Uploading main NFT image to the IPFS ...",toastOptions
@@ -322,367 +315,366 @@ const navigate = useNavigate();
     // await createLazyMintingNFT(uri);
   }
 
+
   useEffect(() => {
-    setCollectionID(artistCollections[0]?.address);
+    setCollectionID(artistCollections[0]?.address)
     setCollectionName(artistCollections[0]?.name);
   }, [artistCollections]);
 
   return (
-    <div className="create-item">
-      <HeaderStyle2 />
+      <div className="create-item">
+        <HeaderStyle2/>
 
-      <div className="d-flex flex-row, justify-content-center">
-        <div className="d-flex flex-column" style={{ width: "60%" }}>
-          <div>
-            <h2 className="tf-title style4 mg-bt-20 ourArtists">Tokenize</h2>
-            <h5 className="subTitleCreate mb-5">
-              Integrate & turn your physical artwork into a hybrid NFT
-            </h5>
-          </div>
+        <div className="d-flex flex-row, justify-content-center">
+          <div className="d-flex flex-column" style={{width: "60%"}}>
+            <div>
+              <h2 className="tf-title style4 mg-bt-20 ourArtists">Tokenize</h2>
+              <h5 className="subTitleCreate mb-5">Integrate & turn your physical artwork into a hybrid
+                NFT</h5>
+            </div>
 
-          <div className="sc-card-product">
-            <div className="d-flex flex-column align-items-center">
-              <div className="card-media " style={{ maxWidth: "40%" }}>
-                <img src={mediaPreview} alt="" />
+            <div className="sc-card-product">
+              <div className="d-flex flex-column align-items-center">
+                <div className="card-media " style={{maxWidth: "40%"}}>
+                  <img src={mediaPreview} alt=""/>
+                </div>
+                <div>
+                  <h5>{title}</h5>
+                </div>
+              </div>
+            </div>
+
+            <form action="#" className="uploadFile-form mb-35">
+              <div>
+                <h4 className="mb-4">Upload NFT file</h4>
+                <span>
+                      (PNG, JPG, GIF, WEBP or MP4. Max 200mb.)
+                    </span>
               </div>
               <div>
-                <h5>{title}</h5>
-              </div>
-            </div>
-          </div>
-
-          <form action="#" className="uploadFile-form mb-35">
-            <div>
-              <h4 className="mb-4">Upload NFT file</h4>
-              <span>(PNG, JPG, GIF, WEBP or MP4. Max 200mb.)</span>
-            </div>
-            <div>
-              <label className="uploadFile-button" htmlFor="physicalImage">
-                Upload file
-              </label>
-              <input
-                type="file"
-                name="file"
-                style={{ display: "none" }}
-                id="physicalImage"
-                onChange={(e) => {
-                  setMedia(e.target.files[0]);
-                  setMediaPreview(URL.createObjectURL(e.target.files[0]));
-                }}
-              />
-            </div>
-          </form>
-
-          <div>
-            <div className="flat-tabs tab-create-item">
-              <form action="#">
-                <h4 className="title-create-item">Artwork Name</h4>
+                <label className="uploadFile-button" htmlFor="physicalImage">Upload file</label>
                 <input
-                  type="text"
-                  placeholder="Artwork Name"
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                  }}
-                />
-                <h4 className="title-create-item">Artist Name</h4>
-                <input
-                  type="text"
-                  placeholder="Artwork Name"
-                  value={artistName}
-                  onChange={(e) => {
-                    setArtistName(e.target.value);
-                  }}
-                />
-
-                <h4 className="title-create-item">Artwork Description</h4>
-                <textarea
-                  placeholder="e.g. “This is a single NFT ...”"
-                  onChange={(e) => {
-                    setDescription(e.target.value);
-                  }}
-                ></textarea>
-
-                <h4 className="title-create-item">
-                  External Link{" "}
-                  <small style={{ fontWeight: "500" }}>(if available)</small>
-                </h4>
-                <input
-                  type="url"
-                  placeholder="External Link"
-                  onChange={(e) => {
-                    setExternalLink(e.target.value);
-                  }}
-                />
-                <h4 className="title-create-item">
-                  The Artwork belongs to an Artist’s Collection?
-                </h4>
-                <div className="artisticBox">
-                  <Toggle
-                    onChange={() => {
-                      setCollectionCheckButton(!collectionCheckButton);
+                    type="file"
+                    name="file"
+                    style={{display: "none"}}
+                    id="physicalImage"
+                    onChange={(e) => {
+                      setMedia(e.target.files[0]);
+                      setMediaPreview(URL.createObjectURL(e.target.files[0]));
                     }}
-                  />
-                </div>
-                {collectionCheckButton && (
-                  <>
-                    <h4 className="title-create-item">
-                      Collection name{" "}
-                      <small style={{ fontWeight: "500" }}>
-                        {"This is the collection where your item will appear."}
-                      </small>
-                    </h4>
-                    <input
+                />
+              </div>
+            </form>
+
+
+            <div>
+              <div className="flat-tabs tab-create-item">
+
+                <form action="#">
+                  <h4 className="title-create-item">Artwork Name</h4>
+                  <input
                       type="text"
-                      placeholder="Collection Link"
-                      value={collectionName ? collectionName : ""}
+                      placeholder="Artwork Name"
                       onChange={(e) => {
-                        setCollectionName(e.target.value);
+                        setTitle(e.target.value);
                       }}
+                  />
+                  <h4 className="title-create-item">Artist Name</h4>
+                  <input
+                      type="text"
+                      placeholder="Artwork Name"
+                      value={artistName}
+                      onChange={(e) => {
+                        setArtistName(e.target.value);
+                      }}
+                  />
+
+                  <h4 className="title-create-item">Artwork Description</h4>
+                  <textarea
+                      placeholder="e.g. “This is a single NFT ...”"
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                      }}
+                  ></textarea>
+
+                  <h4 className="title-create-item">
+                    External Link{" "}
+                    <small style={{fontWeight: "500"}}>
+                      (if available)
+                    </small>
+                  </h4>
+                  <input
+                      type="url"
+                      placeholder="External Link"
+                      onChange={(e) => {
+                        setExternalLink(e.target.value);
+                      }}
+                  />
+                  <h4 className="title-create-item">
+                    The Artwork belongs to an Artist’s Collection?
+                  </h4>
+                  <div className="artisticBox">
+                    <Toggle onChange={()=>{
+                      setCollectionCheckButton(!collectionCheckButton);
+                    }}/>
+                  </div>
+                  {collectionCheckButton &&
+                      <>
+                  <h4 className="title-create-item">
+                    Collection name{" "}
+                    <small style={{fontWeight: "500"}}>
+                      {"This is the collection where your item will appear."}
+                    </small>
+                  </h4>
+                    <input
+                        type="text"
+                        placeholder="Collection Link"
+                        value={collectionName? collectionName : ""}
+                        onChange={(e) => {
+                          setCollectionName(e.target.value);
+                        }}
                     />
 
-                    <h4 className="title-create-item">
+                        <h4 className="title-create-item">
                       Collection Description
                     </h4>
                     <textarea
-                      placeholder="Collection Description"
-                      value={collectionDescription ? collectionDescription : ""}
-                      onChange={(e) => {
-                        setCollectionDescription(e.target.value);
-                      }}
+                        placeholder="Collection Description"
+                        value={collectionDescription? collectionDescription : ""}
+                        onChange={(e) => {
+                          setCollectionDescription(e.target.value);
+                        }}
                     />
 
-                    {/*<Dropdown>*/}
-                    {/*  <Dropdown.Toggle*/}
-                    {/*      id="collectionsList"*/}
-                    {/*      style={{*/}
-                    {/*        width: "100%",*/}
-                    {/*        height: "fit-content",*/}
-                    {/*        padding: "1.5% 1% 1.5% 2%",*/}
-                    {/*        background: "transparent",*/}
-                    {/*        border: "solid 1px rgba(138, 138, 160, 0.3)",*/}
-                    {/*        borderRadius: "10px",*/}
-                    {/*        marginBottom: "3%",*/}
-                    {/*      }}*/}
-                    {/*  >*/}
-                    {/*    <h5*/}
-                    {/*        style={{*/}
-                    {/*          color: "#020202",*/}
-                    {/*          textAlign: "left",*/}
-                    {/*          fontSize: "1.4em",*/}
-                    {/*          fontWeight: "400",*/}
-                    {/*        }}*/}
-                    {/*    >*/}
-                    {/*      {collectionName ? collectionName : artistName ? `${artistName}'s Collection` : "Please Login to get the collection names"  }*/}
-                    {/*    </h5>*/}
-                    {/*  </Dropdown.Toggle>*/}
-                    {/*  <Dropdown.Menu style={{width: "100%"}}>*/}
-                    {/*    {artistCollections.map((collection, index) => {*/}
-                    {/*      return (*/}
-                    {/*          <Dropdown.Item*/}
-                    {/*              key={index}*/}
-                    {/*              style={{*/}
-                    {/*                height: "fit-content",*/}
-                    {/*                padding: "1.5% 1%",*/}
-                    {/*                marginBottom: "0px",*/}
-                    {/*              }}*/}
-                    {/*              onClick={() => {*/}
-                    {/*                setCollectionID(collection.address)*/}
-                    {/*                setCollectionName(collection.name);*/}
-                    {/*              }}*/}
-                    {/*          >*/}
-                    {/*            {collection.name}*/}
-                    {/*          </Dropdown.Item>*/}
-                    {/*      );*/}
-                    {/*    })}*/}
-                    {/*  </Dropdown.Menu>*/}
-                    {/*</Dropdown>*/}
-                  </>
-                )}
+                  {/*<Dropdown>*/}
+                  {/*  <Dropdown.Toggle*/}
+                  {/*      id="collectionsList"*/}
+                  {/*      style={{*/}
+                  {/*        width: "100%",*/}
+                  {/*        height: "fit-content",*/}
+                  {/*        padding: "1.5% 1% 1.5% 2%",*/}
+                  {/*        background: "transparent",*/}
+                  {/*        border: "solid 1px rgba(138, 138, 160, 0.3)",*/}
+                  {/*        borderRadius: "10px",*/}
+                  {/*        marginBottom: "3%",*/}
+                  {/*      }}*/}
+                  {/*  >*/}
+                  {/*    <h5*/}
+                  {/*        style={{*/}
+                  {/*          color: "#020202",*/}
+                  {/*          textAlign: "left",*/}
+                  {/*          fontSize: "1.4em",*/}
+                  {/*          fontWeight: "400",*/}
+                  {/*        }}*/}
+                  {/*    >*/}
+                  {/*      {collectionName ? collectionName : artistName ? `${artistName}'s Collection` : "Please Login to get the collection names"  }*/}
+                  {/*    </h5>*/}
+                  {/*  </Dropdown.Toggle>*/}
+                  {/*  <Dropdown.Menu style={{width: "100%"}}>*/}
+                  {/*    {artistCollections.map((collection, index) => {*/}
+                  {/*      return (*/}
+                  {/*          <Dropdown.Item*/}
+                  {/*              key={index}*/}
+                  {/*              style={{*/}
+                  {/*                height: "fit-content",*/}
+                  {/*                padding: "1.5% 1%",*/}
+                  {/*                marginBottom: "0px",*/}
+                  {/*              }}*/}
+                  {/*              onClick={() => {*/}
+                  {/*                setCollectionID(collection.address)*/}
+                  {/*                setCollectionName(collection.name);*/}
+                  {/*              }}*/}
+                  {/*          >*/}
+                  {/*            {collection.name}*/}
+                  {/*          </Dropdown.Item>*/}
+                  {/*      );*/}
+                  {/*    })}*/}
+                  {/*  </Dropdown.Menu>*/}
+                  {/*</Dropdown>*/}
+                      </>
 
-                <h4 className="title-create-item">Artist Biography</h4>
-                <textarea
-                  placeholder={`Add Artist's Biography here...`}
-                  onChange={(e) => {
-                    setBio(e.target.value);
-                  }}
-                ></textarea>
+              }
 
-                <div className="row traitsWrapper">
-                  <div className="traitsHeader">
-                    <h5>properties</h5>
-                    <div
-                      className="addTraitBtn"
-                      onClick={() => {
-                        addTrait();
+                  <h4 className="title-create-item">Artist Biography</h4>
+                  <textarea
+                      placeholder={`Add Artist's Biography here...`}
+                      onChange={(e) => {
+                        setBio(e.target.value);
                       }}
-                    >
-                      +
+                  ></textarea>
+
+                  <div className="row traitsWrapper">
+                    <div className="traitsHeader">
+                      <h5>properties</h5>
+                      <div
+                          className="addTraitBtn"
+                          onClick={() => {
+                            addTrait();
+                          }}
+                      >
+                        +
+                      </div>
                     </div>
-                  </div>
-                  <div className="traitListWrapper">
-                    {traits.map((property, index) => {
-                      return (
-                        <div key={index} className="trait">
-                          <div className="traitForm row">
-                            <div className="col-5">
-                              <input
-                                type="text"
-                                placeholder={property.trait_type}
-                              />
-                            </div>
-                            <div className="col-5">
-                              <input
-                                type="text"
-                                placeholder={property.trait_value}
-                              />
-                            </div>
-                            <div className="col-2">
-                              <div
-                                className="removeTraitBtn"
-                                onClick={() => {
-                                  removeTrait(index);
-                                }}
-                              >
-                                x
+                    <div className="traitListWrapper">
+                      {traits.map((property, index) => {
+                        return (
+                            <div key={index} className="trait">
+                              <div className="traitForm row">
+                                <div className="col-5">
+                                  <input
+                                      type="text"
+                                      placeholder={property.trait_type}
+                                  />
+                                </div>
+                                <div className="col-5">
+                                  <input
+                                      type="text"
+                                      placeholder={property.trait_value}
+                                  />
+                                </div>
+                                <div className="col-2">
+                                  <div
+                                      className="removeTraitBtn"
+                                      onClick={() => {
+                                        removeTrait(index);
+                                      }}
+                                  >
+                                    x
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
 
-                <h4 className="title-create-item">Unlockable content</h4>
-                <div className="artisticBox">
-                  <Toggle checked={true} disabled />
-                </div>
+                  <h4 className="title-create-item">
+                    Unlockable content
+                  </h4>
+                  <div className="artisticBox">
+                    <Toggle checked={true} disabled/>
+                  </div>
 
-                <h4 className="title-create-item">Supply </h4>
-                <input
-                  type="number"
-                  placeholder="Supply"
-                  defaultValue={supply}
-                  onChange={(e) => {
-                    setSupply(e.target.value);
-                  }}
-                />
+                  <h4 className="title-create-item">Supply </h4>
+                  <input
+                      type="number"
+                      placeholder="Supply"
+                      defaultValue={supply}
+                      onChange={(e) => {
+                        setSupply(e.target.value);
+                      }}
+                  />
 
-                <div>
-                  <div className="sc-card-product">
-                    <div className="d-flex flex-column align-items-center">
-                      <div
-                        className="card-media"
-                        style={{ maxHeight: "fit-content" }}
-                      >
-                        <Swiper
-                          style={{ width: "20vw" }}
-                          modules={[Navigation, Pagination]}
-                          loop
-                          pagination={{ clickable: true }}
-                          slidesPerView={1}
-                        >
-                          {physicalMediaPreview.map((item, index) => {
-                            let image = item;
-                            return (
-                              <SwiperSlide key={index}>
-                                <div
-                                  className="physicalMediaPreview"
-                                  style={{
-                                    backgroundPosition: "center center",
-                                    backgroundRepeat: "no-repeat",
-                                    backgroundSize: "contain",
-                                    backgroundImage: `url(${image})`,
-                                  }}
-                                ></div>
-                              </SwiperSlide>
-                            );
-                          })}
-                        </Swiper>
+                  <div>
+                    <div className="sc-card-product">
+                      <div className="d-flex flex-column align-items-center">
+
+                        <div className="card-media" style={{maxHeight: "fit-content"}}>
+                          <Swiper style={{width: "20vw"}}
+                                  modules={[Navigation, Pagination]}
+                                  loop
+                                  pagination={{clickable: true}}
+                                  slidesPerView={1}
+                          >
+                            {physicalMediaPreview.map((item, index) => {
+                              let image = item;
+                              return (
+                                  <SwiperSlide key={index}>
+                                    <div
+                                        className="physicalMediaPreview"
+                                        style={{
+                                          backgroundPosition: "center center",
+                                          backgroundRepeat: "no-repeat",
+                                          backgroundSize: "contain",
+                                          backgroundImage: `url(${image})`
+                                        }}
+                                    ></div>
+                                  </SwiperSlide>
+                              );
+                            })}
+                          </Swiper>
+                        </div>
+                        <div>
+                          <h5>
+                            Artwork images
+                            <span><small> (Slide Right Or Left To See)</small></span>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+
+                    <form action="#" className="uploadFile-form mb-35">
+                      <div>
+                        <h4 className="mb-4">Upload physical images of the artwork</h4>
+                        <span>
+                      (PNG, JPG, GIF, WEBP or MP4. Max 200mb.)
+                    </span>
                       </div>
                       <div>
-                        <h5>
-                          Artwork images
-                          <span>
-                            <small> (Slide Right Or Left To See)</small>
-                          </span>
-                        </h5>
+                        <label className="uploadFile-button" htmlFor="file">Upload file</label>
+                        <input
+                            type="file"
+                            name="file"
+                            style={{display: "none"}}
+                            id="file"
+                            multiple
+                            onChange={(e) => {
+                              handleFileChange(e);
+                            }}
+                        />
                       </div>
-                    </div>
+                    </form>
                   </div>
 
-                  <form action="#" className="uploadFile-form mb-35">
-                    <div>
-                      <h4 className="mb-4">
-                        Upload physical images of the artwork
-                      </h4>
-                      <span>(PNG, JPG, GIF, WEBP or MP4. Max 200mb.)</span>
-                    </div>
-                    <div>
-                      <label className="uploadFile-button" htmlFor="file">
-                        Upload file
-                      </label>
-                      <input
-                        type="file"
-                        name="file"
-                        style={{ display: "none" }}
-                        id="file"
-                        multiple
-                        onChange={(e) => {
-                          handleFileChange(e);
-                        }}
-                      />
-                    </div>
-                  </form>
-                </div>
+                  <Button
+                      id="mintBtn"
+                      className="btn btn-primary mb-40"
+                      data-toggle="modal"
+                      data-target="#popup_bid_success"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                      disabled={mintButtonDisabled}
+                      onClick={() => {
+                        // mintButtonClickHandler()
+                        toast.warn(
+                            "The Ethereum mainnet is so congested at the moment, try later !",
+                            {
+                              position: "top-left",
 
-                <Button
-                  id="mintBtn"
-                  className="btn btn-primary mb-40"
-                  data-toggle="modal"
-                  data-target="#popup_bid_success"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  disabled={mintButtonDisabled}
-                  onClick={() => {
-                    mintButtonClickHandler();
-                    // toast.warn(
-                    //     "The Ethereum mainnet is so congested at the moment, try later !",
-                    //     {
-                    //       position: "top-left",
-
-                    //       autoClose: 5000,
-                    //       hideProgressBar: false,
-                    //       closeOnClick: true,
-                    //       pauseOnHover: true,
-                    //       draggable: true,
-                    //       progress: undefined,
-                    //       theme: "colored",
-                    //     }
-                    // );
-                  }}
-                >
-                  Mint to shared collection
-                </Button>
-              </form>
+                              autoClose: 5000,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              theme: "colored",
+                            }
+                        );
+                      }
+                      }
+                  >
+                    Mint to shared collection
+                  </Button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+        <ToastContainer
+            position="top-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+        />
+        <Footer/>
       </div>
-      <ToastContainer
-        position="top-left"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      <Footer />
-    </div>
   );
 };
 

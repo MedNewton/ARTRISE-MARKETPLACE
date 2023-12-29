@@ -156,12 +156,11 @@ const SocialLoginModal = (props) => {
     signInWithPopup(auth, provider)
       .then((response) => {
         let twitterUserData = response._tokenResponse;
-        console.log(twitterUserData);
         let twitterUserID = twitterUserData.localId;
         checkUserExistsTwitter(twitterUserID, twitterUserData);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -175,12 +174,11 @@ const SocialLoginModal = (props) => {
         checkUserExistsGoogle(googleUserID, googleUserData);
     })
     .catch((error)=> {
-      console.log(error)
+      console.error(error)
     })
   }
 
   function signInWithFacebook(response){
-    console.log(response)
     let facebookUserData = response.data;
     let facebookUserID = facebookUserData.id;
     checkUserExistsFacebook(facebookUserID, facebookUserData);
@@ -218,7 +216,7 @@ const SocialLoginModal = (props) => {
           signInWithFacebook(response)
         }}
         onReject={(error) => {
-          console.log(error);
+          console.error(error);
         }}
         >
           <FacebookLoginButton style={{marginTop: "2vh", marginBottom: "2vh", borderRadius: "20px"}}/>

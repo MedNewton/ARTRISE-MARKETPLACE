@@ -11,9 +11,6 @@ import bcrypt from 'bcryptjs'
 
 
 const Login = () => {
-
-    console.log(localStorage);
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const nav = useNavigate();
@@ -46,7 +43,7 @@ const Login = () => {
 
         if(errors.length > 0)
         {
-            console.log("errors: \n");
+            console.error("errors: \n");
             
             errors.forEach(e => {
                 document.getElementById("errors").innerText += e.toString();
@@ -102,7 +99,7 @@ const Login = () => {
         })).catch((err) => {
             const errorCode = err.code;
             const errorMessage = err.message;
-            console.log(err.message)
+            console.error(err.message)
         })
     }
 
