@@ -1,21 +1,20 @@
-
 :root {
-    --pending-color: red;
-    --reject-color: red;
-    --other-color: darkgreen;
-  }
-  .fixed-item {
-    width: 180px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    text-wrap: nowrap;
-  }
+  --pending-color: red;
+  --reject-color: red;
+  --other-color: darkgreen;
+}
+.fixed-item {
+  width: 180px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-wrap: nowrap;
+}
 .OrderTable {
-  width: 80vw;
+  width: 100%;
   /* width: 100%; */
   padding: 10px;
   border: 2px solid black;
-  margin-top:-4.5px ;
+  margin-top: -4.5px;
   border-radius: 2px 7px 7px 7px;
   text-align: left !important;
 }
@@ -23,7 +22,7 @@
 .ordertable_head {
   display: grid;
   grid-template-columns: 1fr 1fr 1.5fr 1fr 1fr 1fr 1fr;
-  padding: 6px 12px;
+  padding: 15px 12px;
   background-color: black;
   color: white;
   font-weight: bold;
@@ -31,11 +30,13 @@
   gap: 10px;
   border-radius: 10px;
 }
+.ordertable_head h3 {
+  font-size: 18px !important;
+}
 
 /* ---- ordertable_body */
 .ordertable_body {
   margin: 20px 0px;
-  
 }
 .ordertable_body_box {
   display: grid;
@@ -50,9 +51,9 @@
   margin: 17px 0px;
   box-shadow: 5px 6px 20px 1px #8d8d8d;
 }
-.ordertable_body_box:hover{
-    width: 101%;
-    box-shadow: 5px 6px 20px 1px #616060;
+.ordertable_body_box:hover {
+  width: 101%;
+  box-shadow: 5px 6px 20px 1px #616060;
 }
 /* ---- order_status */
 .order_status {
@@ -70,87 +71,173 @@
   position: relative;
 }
 .span {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 10px;
-    height: 10px;
-    background-color: var(--other-color);
-    border-radius: 50%;
-  }
-  
-  .pending {
-    background-color: red !important;
-    border-color: red !important;
-  }
-  
-  .reject {
-    background-color: red !important;
-    border-color: red !important;
-  }
-  
-  .other  {
-    background-color: darkgreen !important;
-    border-color: darkgreen !important;
-  }
-  .mainpending  {
-    border:2px solid red !important;
-  }
-  
-  .mainreject {
-    border:2px solid red !important;
-  }
-  
-  .mainother  {
-    border:2px solid darkgreen !important;
-  }
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: var(--other-color);
+  border-radius: 50%;
+}
+
+.pending {
+  background-color: red !important;
+  border-color: red !important;
+}
+
+.reject {
+  background-color: red !important;
+  border-color: red !important;
+}
+
+.other {
+  background-color: darkgreen !important;
+  border-color: darkgreen !important;
+}
+.mainpending {
+  border: 2px solid red !important;
+}
+
+.mainreject {
+  border: 2px solid red !important;
+}
+
+.mainother {
+  border: 2px solid darkgreen !important;
+}
 
 /* ---- order_action */
-.order_action{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-
+.order_action {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
 }
-.order_action svg{
-    font-size: 23px;
-    cursor: pointer;
+.order_action svg {
+  font-size: 23px;
+  cursor: pointer;
 }
 /* =========== blue_order */
-.blue_order{
-    background-color: black !important;
-    color: white !important;
-    border-radius: 10px;
-    border: 2px solid black;
+.blue_order {
+  background-color: black !important;
+  color: white !important;
+  border-radius: 10px;
+  border: 2px solid black;
 }
 
 /* ------ pagination */
-.pagination{
-    width: 100%;
-    margin: 12px 0px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 20px;
-    padding: 10px;
+.pagination {
+  width: 100%;
+  margin: 12px 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
 }
-.pagination button{
-    padding: 7px 12px;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
+.pagination button {
+  padding: 7px 12px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
 }
-.pagination button:disabled{
-    background-color: rgb(116, 114, 114);
-    border-color: rgb(116, 114, 114);
+.pagination button:disabled {
+  background-color: rgb(116, 114, 114);
+  border-color: rgb(116, 114, 114);
 }
 
-@media(max-width :600px){
-    .OrderTable{
-        margin-top: -1px;
-    }
+/* -------- accordian */
+.accordian {
+  width: 100% !important;
+  height: 0px;
+  transition: all 0.2s linear;
+  border-radius: 4px;
+}
+.autoheight {
+  height: 150px;
+  transition: all 0.2s linear;
+  border: 1px solid #8d8d8d;
+  background-color: #dbdbdb;
+  padding: 5px 10px;
+}
+
+/* --- dropdownOptionparent */
+.dropdownOptionparent {
+  position: relative;
+}
+.dropdownOption {
+  position: absolute;
+  bottom: 0px;
+  width: 150px;
+  left: -50px;
+  height: 0px;
+  bottom: -10px;
+  transition: all 0.1s linear;
+  background-color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 3px;
+  flex-direction: column;
+}
+.dropdownOption p {
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+.dropdownOptionshow {
+  height: 40px;
+  transition: all 0.1s linear;
+  z-index: 2;
+  bottom: -50px;
+  border: 1px solid rgb(184, 184, 184);
+  padding: 2px 5px;
+  box-shadow: 1px 1px 5px 0px rgb(0, 0, 0, 0.3);
+}
+
+/* ---- modaltitle */
+.modaltitle {
+  font-size: 20px;
+  font-weight: 500;
+}
+.modal_body {
+}
+.modal_body .lable {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.modal_body input,
+.modal_body select {
+  outline: none;
+  width: 100% !important;
+  color: black;
+  font-size: 17px;
+  height: 40px;
+  padding: 10px;
+}
+.modal_btn {
+  width: 100% !important;
+  border-radius: 8px;
+  padding: 11px 5px !important;
+  color: black;
+  border: 2px solid black;
+  background-color: white;
+  outline: none;
+}
+.modal_btn:hover {
+  border: 2px solid black;
+  background-color: black;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .OrderTable {
+    margin-top: -1px;
+  }
 }

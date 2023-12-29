@@ -4,7 +4,7 @@ import HeaderStyle2 from "../components/header/HeaderStyle2";
 import Footer from "../components/footer/Footer";
 import { Link } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
-import './styles/artwork.css'
+import "./styles/artwork.css";
 import { Accordion } from "react-bootstrap-accordion";
 import yann from "../assets/images/avatar/yann.jpg";
 import db from "../firebase";
@@ -27,7 +27,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import Swal from "sweetalert2";
 
 import ShippingModal from "../components/layouts/ShippingModal";
-import { Modal , Button} from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import { ethers } from "ethers";
 import { icons } from "react-icons";
 
@@ -41,7 +41,6 @@ class LazyNFT {
 }
 
 const Artwork = () => {
-
   const location = useLocation();
   const initialData = location.state ? location.state.data : null;
   const [Offerdata, setData] = useState(initialData);
@@ -65,6 +64,14 @@ const Artwork = () => {
 
   const [shippingModalShow, setShippingModalShow] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState("");
+  const [confOrderId, setconfOrderId] = useState("");
+  const [claimBtn, setclaimBtn] = useState(false);
+
+  const [selectedShippingMethod, setSelectedShippingMethod] = useState("");
+  const handleShippingMethodChange = (event) => {
+    setSelectedShippingMethod(event.target.value);
+  };
+  // console.log(selectedShippingMethod, "Check");
 
   const openImageViewer = useCallback((index) => {
     setCurrentImage(index);
@@ -81,13 +88,30 @@ const Artwork = () => {
     address: address,
   });
 
+  const getOrderID = async () => {
+    let nftID = window.location.href.toString().split("id=")[1];
+    let listingsRef = ref(db, "orders/");
+    await get(listingsRef).then(async (snapshot) => {
+      let listings = snapshot.val();
+      for (let i in listings) {
+        let listing = listings[i];
+        if (listing.artworkid === nftID && listing.buyersid === address) {
+          setclaimBtn(true);
+          setconfOrderId(i);
+          console.log(i, "abc");
+          break;
+        }
+      }
+    });
+  };
+
   async function getNFTData() {
     let lazyNFT;
     let nftID = window.location.href.toString().split("id=")[1];
     const artworkRef = ref(db, "artworks/" + nftID);
     await get(artworkRef).then(async (snapshot) => {
       let collectionID = snapshot.val().collection;
-      setCollectionID(collectionID)
+      setCollectionID(collectionID);
       let key = snapshot.key;
       let IPFS_URL = snapshot.val().ipfsURI;
       setIpfsURL(IPFS_URL);
@@ -96,7 +120,7 @@ const Artwork = () => {
       let collectionRef = ref(db, "collections/" + collectionID);
       await get(collectionRef).then(async (snapshot) => {
         collection = snapshot.val();
-      })
+      });
       let ownerID = snapshot.val().owner;
       setOwnerAddress(ownerID);
       const userRef = ref(db, "users/" + ownerID);
@@ -119,10 +143,9 @@ const Artwork = () => {
         if (listing.artwork_id === nftID) {
           setListed(true);
           setListingID(i);
-          if(Offerdata != null){
+          if (Offerdata != null) {
             setPrice(Offerdata?.offeredprice);
-          }else{
-
+          } else {
             setPrice(listing.price);
           }
           setShippingPrice(parseFloat(listing.shipping));
@@ -130,81 +153,79 @@ const Artwork = () => {
       }
     });
   }
-
   useEffect(() => {
     getNFTData();
     getPrice();
+    getOrderID();
   }, []);
 
   const payForNFT = async () => {
     let nftID = window.location.href.toString().split("id=")[1];
-    if(address != null){
-    let userBalance = parseFloat(data.formatted);
-    // let userBalance = 1000;
-    alert(userBalance);
-    // alert(usdPriceInEth);
-    let totalToPay = price + (shippingPrice / 1806.96);
-    // alert('price: '+price)
-    // alert(shippingPrice)
-    // let totalToPay = price;
-    alert(totalToPay);
-    let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
-    // alert(totalToPayInWei);
-    if (userBalance < totalToPay) {
+    if (address != null) {
+      let userBalance = parseFloat(data.formatted);
+      // let userBalance = 1000;
+      // alert(userBalance);
+      // alert(usdPriceInEth);
+      // let totalToPay = price + shippingPrice / 1806.96;
+      let totalToPay = 0.0001;
+      // alert('price: '+price)
+      // alert(shippingPrice)
+      // let totalToPay = price;
+      alert(totalToPay);
+      let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
+      // alert(totalToPayInWei);
+      if (userBalance > totalToPay) {
+        Swal.fire({
+          icon: "error",
+          title: "Insufficient funds !",
+          text: "The funds in your wallet are insufficient to pay for this artwork.",
+        });
+      } else {
+        try {
+          await window.ethereum.enable();
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+          const transaction = {
+            to: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
+            value: totalToPayInWei,
+          };
+          const sendTransaction = await signer.sendTransaction(transaction);
+          setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
+          if (sendTransaction.hash) {
+            await handleMint().then(async () => {
+              let listingsRef = ref(db, "listings/" + listingID);
+              await set(listingsRef, null).then(async () => {
+                let orderIDrandom = (Math.random() + 1).toString(36).substring(2);
+                let orderRef = ref(db, "orders/" + orderIDrandom);
+                await set(orderRef, {
+                  artworkid: nftID,
+                  listingid: listingID,
+                  sellersid: ownerAddress,
+                  buyersid: address,
+                  price: totalToPay,
+                  Collectionid: CollectionID,
+                  buyersWallet: address,
+                  status: "Pending Shipping",
+                });
+                Swal.fire({
+                  icon: "success",
+                  title: "The Artwork is now yours ! !",
+                  text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
+                });
+              });
+            });
+          }
+        } catch (error) {
+          setTransactionStatus("Error transferring ETH");
+        }
+      }
+    } else {
       Swal.fire({
         icon: "error",
-        title: "Insufficient funds !",
-        text: "The funds in your wallet are insufficient to pay for this artwork.",
+        title: "Wallet Not Connected !",
+        text: "Please Connect Your Wallet in Order to Complete the Purchase",
       });
-    } else {
-      try {
-        await window.ethereum.enable();
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const transaction = {
-          to: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
-          value: totalToPayInWei,
-        };
-        const sendTransaction = await signer.sendTransaction(transaction);
-        setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
-        if (sendTransaction.hash) {
-          await handleMint().then(async () => {
-            let listingsRef = ref(db, "listings/" + listingID);
-            await set(listingsRef, null).then(() => {
-              Swal.fire({
-                icon: "success",
-                title: "The Artwork is now yours ! !",
-                text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
-              });
-              let orderID =(Math.random() + 1).toString(36).substring(2);
-              let orderRef = ref(db,"orders/"+orderID);
-              set(orderRef,
-                {
-                  "artworkid" : nftID,
-                  "listingid" : listingID,
-                  "sellersid" : ownerAddress,
-                  "buyersid" : address,
-                  "price" : totalToPay,
-                  "Collectionid" : CollectionID,
-                  "buyersWallet" : address,
-                  "status": "Pending Shipping",
-                  "purchasedate" : Date().getTime()
-                });
-
-            });
-          });
-        }
-      } catch (error) {
-        setTransactionStatus("Error transferring ETH");
-      }
     }
-  }else{
-    Swal.fire({
-      icon: "error",
-      title: "Wallet Not Connected !",
-      text: "Please Connect Your Wallet in Order to Complete the Purchase",
-    });
-  }
   };
 
   const handleMint = async () => {
@@ -806,76 +827,66 @@ const Artwork = () => {
 
     const metadataURI = ipfsURL;
     if (address != null) {
-      
-    
-    await raribleContract.methods
-      .mintWithURI(address, metadataURI)
-      .send({ from: address });
-  }};
+      await raribleContract.methods
+        .mintWithURI(address, metadataURI)
+        .send({ from: address });
+    }
+  };
 
   const SendOffer = async () => {
     if (address != null) {
-      
       // console.log('offersent');
       let nftID = window.location.href.toString().split("id=")[1];
       let userBalance = parseFloat(data.formatted);
-      let OfferAmount = document.getElementById('OfferAmount').value
+      let OfferAmount = document.getElementById("OfferAmount").value;
       // console.log(OfferAmount)
-      
+
       // User Balance
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const balance = await provider.getBalance(address);
       const UserBalanceInEth = ethers.utils.formatEther(balance);
       // console.log(balanceInEth);
-  
-      if(UserBalanceInEth >= OfferAmount){
-        let OfferId =(Math.random() + 1).toString(36).substring(2);
-        let OfferRef = ref(db,"offers/"+OfferId);
-        await set(OfferRef,
-          {
-            "artworkid" : nftID,
-            "listingid" : listingID,
-            "sellersid" : ownerAddress,
-            "buyersid" : address,
-            "image" : nft.data.image,
-            "price" : price,
-            "offeredprice" : OfferAmount,
-            "Collectionid" : CollectionID,
-            "buyersWallet" : address,
-            "status": "Pending",
-            "offerdate" : new Date().getTime()
-          }).then(
-            async ()=>{
-              Swal.fire({
-                icon: "success",
-                title : "Offer Sent",
-                text : "Offer Has Been Successfully sent to the Owner of this Artwork!"
-              });
-            }
-          );
-  
-      }
-      else{
+
+      if (UserBalanceInEth >= OfferAmount) {
+        let OfferId = (Math.random() + 1).toString(36).substring(2);
+        let OfferRef = ref(db, "offers/" + OfferId);
+        await set(OfferRef, {
+          artworkid: nftID,
+          listingid: listingID,
+          sellersid: ownerAddress,
+          buyersid: address,
+          image: nft.data.image,
+          price: price,
+          offeredprice: OfferAmount,
+          Collectionid: CollectionID,
+          buyersWallet: address,
+          status: "Pending",
+          offerdate: new Date().getTime(),
+        }).then(async () => {
+          Swal.fire({
+            icon: "success",
+            title: "Offer Sent",
+            text: "Offer Has Been Successfully sent to the Owner of this Artwork!",
+          });
+        });
+      } else {
         Swal.fire({
           icon: "error",
-          title : "Insufficient Balance",
-          text : "Please Add Balance to your Etherium Wallet!"
-        })
+          title: "Insufficient Balance",
+          text: "Please Add Balance to your Etherium Wallet!",
+        });
       }
-    }
-    else {
+    } else {
       Swal.fire({
         icon: "warning",
-        title : "User Not Logged In!",
-        text : "Please Login to Send an Offer!"
-      })
+        title: "User Not Logged In!",
+        text: "Please Login to Send an Offer!",
+      });
     }
-
-
-  }
+  };
   const showOfferModal = () => setOfferModal(true);
   const hideOfferModal = () => setOfferModal(false);
-  
+
   const [usdPriceInEth, setUsdPriceInEth] = useState();
 
   useEffect(() => {
@@ -888,14 +899,48 @@ const Artwork = () => {
     fetchPrice();
   }, [usdPriceInEth]);
 
-  useEffect(() => {
-    setInterval(async () => {
-      const response = await axios.get(
-        "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
-      );
-      setUsdPriceInEth(parseFloat(response.data.USD));
-    }, 30000);
-  });
+  // useEffect(() => {
+  //   setInterval(async () => {
+  //     const response = await axios.get(
+  //       "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+  //     );
+  //     setUsdPriceInEth(parseFloat(response.data.USD));
+  //   }, 30000);
+  // });
+
+  // ---- claim modal
+  const [show, setShow] = useState(false);
+  const [claimiArtWork, setclaimiArtWork] = useState("");
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  // ---claimArtWorkFunction
+
+  const claimArtWorkFunction = async () => {
+    let nftID = window.location.href.toString().split("id=")[1];
+    let listingsRef = ref(db, "orders/");
+    await get(listingsRef).then(async (snapshot) => {
+      let listings = snapshot.val();
+      for (let i in listings) {
+        let listing = listings[i];
+        // alert(listing.artworkid);
+        if (listing.artworkid === nftID && listing.buyersid === address) {
+          // setListed(true);
+          // setListingID(i);
+          let orderRef = ref(db, "orders/" + i);
+          const currentData = { ...listing };
+          currentData.addedAddress = claimiArtWork;
+          currentData.selectedShipMethod = selectedShippingMethod;
+          currentData.status = "Claimed";
+          await update(orderRef, currentData).then(function () {
+            setShow(false);
+          });
+
+          break;
+        }
+      }
+    });
+  };
 
   return (
     <div className="item-details">
@@ -905,22 +950,41 @@ const Artwork = () => {
           <Modal.Title>Make an Offer</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <h4>Current Price: {price} ETH</h4>
-          <div className="offer-modal form-inline">
-            <span className="offer-label">Your Offer ETH:</span><input id="OfferAmount" className="form-control" type="number" />
-          </div>
+          <h4>Current Price: {price} ETH</h4>
+          {/* <div className="offer-modal form-inline">
+            <span className="offer-label">Your Offer ETH:</span>
+            <input id="OfferAmount" className="form-control" type="number" />
+          </div> */}
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label className="customlabelsets">
+                Your Offer ETH:
+              </Form.Label>
+              <Form.Control
+                style={{ padding: "5px" }}
+                type="number"
+                id="OfferAmount"
+              />
+            </Form.Group>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={hideOfferModal}>
+          <Button
+            className="style-btn"
+            variant="secondary"
+            onClick={hideOfferModal}
+          >
             Close
           </Button>
-          <Button variant="primary" onClick={async (e) => {
-            e.preventDefault();
-            hideOfferModal();
-            SendOffer();
-          }
-
-            }>
+          <Button
+            className="style-btn"
+            variant="primary"
+            onClick={async (e) => {
+              e.preventDefault();
+              hideOfferModal();
+              SendOffer();
+            }}
+          >
             Save Changes
           </Button>
         </Modal.Footer>
@@ -938,13 +1002,17 @@ const Artwork = () => {
                     <div className="flat-accordion2">
                       <Accordion key="0" title="Properties">
                         <div className="row propertiesBox">
-                          {nft?.data?.attributes?.map((attribute)=>{
-                            return(
-                                <div className="col-3 attr">
-                                  <p className="attributeTitle">{attribute?.trait_type}</p>
-                                  <p className="attributeValue">{attribute?.trait_value}</p>
-                                </div>
-                            )
+                          {nft?.data?.attributes?.map((attribute) => {
+                            return (
+                              <div className="col-3 attr">
+                                <p className="attributeTitle">
+                                  {attribute?.trait_type}
+                                </p>
+                                <p className="attributeValue">
+                                  {attribute?.trait_value}
+                                </p>
+                              </div>
+                            );
                           })}
                         </div>
                       </Accordion>
@@ -1010,7 +1078,9 @@ const Artwork = () => {
                       {nft.data.name}
                     </h2>
                     <h5 className="style2 collectionName">
-                      {nft?.collection?.name ? nft?.collection?.name : "ARTRISE Shared Collection"}
+                      {nft?.collection?.name
+                        ? nft?.collection?.name
+                        : "ARTRISE Shared Collection"}
                     </h5>
                     <div className="meta-item">
                       <div className="left">
@@ -1073,17 +1143,21 @@ const Artwork = () => {
                     </div>
                     <div className="meta-item-details style2">
                       <div className="item meta-price">
-                        <span className="heading">Price <small className="shippingDetails">(late minting gas not included)</small></span>
+                        <span className="heading">
+                          Price{" "}
+                          <small className="shippingDetails">
+                            (late minting gas not included)
+                          </small>
+                        </span>
                         <div className="price">
                           <div className="price-box">
-                          <h6>
+                            <h6>
                               ${(usdPriceInEth * price).toFixed(2).toString()}
                               &nbsp;
                               {" ≈ "}
                               &nbsp;
-                              {price.toString()} ETH
-                            &nbsp;
-                            <BsFillQuestionCircleFill
+                              {price.toString()} ETH &nbsp;
+                              <BsFillQuestionCircleFill
                                 color="#000"
                                 size={12}
                                 className="smallpriceQuestion"
@@ -1094,8 +1168,8 @@ const Artwork = () => {
                                     text: "In order to protect users from unexpected market swings,\nARTRISE implemented the notion of flexible price NFTs\nto keep all the artworks aligned with the actual cryptocurrencies market prices.",
                                   });
                                 }}
-                            />
-                          </h6>
+                              />
+                            </h6>
                           </div>
                         </div>
                       </div>
@@ -1128,10 +1202,66 @@ const Artwork = () => {
                         e.preventDefault();
                         await payForNFT();
                       }}
-
                     >
-                      <span>{Listed? 'Buy Now' : 'Not Available'}</span>
+                      <span>{Listed ? "Buy Now" : "Not Available"}</span>
                     </Link>
+                    {/* --- clone button  */}
+                    {claimBtn ? (
+                      <Link
+                        to="/"
+                        className="sc-button disabled offer-btn loadmore style fl-button pri-3"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          handleShow();
+                        }}
+                      >
+                        <span>Claim</span>
+                      </Link>
+                    ) : null}
+                    {/* ---- modal for claim  */}
+                    <Modal
+                      show={show}
+                      onHide={handleClose}
+                      backdrop="static"
+                      keyboard={false}
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title className="modaltitle">
+                          Claim Your ArtWork
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body className="modal_body">
+                        <label className="lable" htmlFor="">
+                          Shipping Address
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Enter Shipping Address"
+                          value={claimiArtWork}
+                          onChange={(e) => setclaimiArtWork(e.target.value)}
+                        />
+                        <label className="lable pt-3" htmlFor="">
+                          Select Shipping Method
+                        </label>
+                        <Form.Select
+                          value={selectedShippingMethod}
+                          onChange={handleShippingMethodChange}
+                        >
+                          <option>Open this select menu</option>
+                          <option value="Fedex">Fedex</option>
+                          <option value="DHL">DHL</option>
+                          <option value="M&P">M&P</option>
+                        </Form.Select>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <button
+                          className="modal_btn"
+                          onClick={claimArtWorkFunction}
+                        >
+                          Claim
+                        </button>
+                      </Modal.Footer>
+                    </Modal>
                     <Link
                       to="/"
                       className="sc-button disabled offer-btn loadmore style fl-button pri-3"
@@ -1139,11 +1269,10 @@ const Artwork = () => {
                         e.preventDefault();
                         showOfferModal();
                       }}
-
                     >
                       <span>Make an Offer!</span>
                     </Link>
-                    
+
                     <div className="physicalImages">
                       <h5 className="physicalArtworksTitle">
                         Pictures of the physical artwork:
