@@ -192,12 +192,11 @@ const Footer = () => {
                     </div>
                 </div>
                 <hr className='indentedHR'></hr>
-            <div className='row copyrights'>
+            <div className='footer-copyrights'>
             
-                <div className='col-lg-3 col-md-12 col-sm-12'><p className='rights'> All rights reserved ArtRise Labs LLC</p></div>
-                <div className='col-lg-3 col-md-12 col-sm-12'></div>
-                <div className='col-lg-3 col-md-12 col-sm-12'></div>
-                <div className='col-lg-3 col-md-12 col-sm-12 privacy'> <p className='rights privacy'><Link to={"/privacy-policy"}>Privacy policy</Link>&nbsp;|&nbsp; <Link to={"/terms-of-service"}>Terms of service</Link></p></div>
+                <div ><p className='rights'>All rights reserved ArtRise Labs LLC</p></div>
+                <div ><p className='rights'>Version: November 21, 2023</p></div>
+                <div > <p className='rights privacy'><Link to={"/privacy-policy"}>Privacy policy</Link>&nbsp;|&nbsp; <Link to={"/terms-of-service"}>Terms of service</Link></p></div>
             </div>
             </footer>
 

@@ -1723,12 +1723,12 @@ a{
   padding: 2% 0px !important;
 }
 
-.modal-body input{
+/* .modal-body input{
   width: 70% !important;
   margin-left: auto !important;
   margin-right: auto !important;
   font-size: 1.2em;
-}
+} */
 
 .createChoiceTextBox{
   padding-right: 5% !important;
@@ -3362,7 +3362,12 @@ gap:20px;
   flex-direction: column;
   align-items: stretch;
 }
-
+.footer-copyrights {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10%;
+  padding-right: 10%;
+}
 
 
 

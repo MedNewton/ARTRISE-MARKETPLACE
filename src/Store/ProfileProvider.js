@@ -34,7 +34,7 @@ function profileReducer(state, action) {
 
 export const ProfileProvider = ({children}) => {
     const [state, dispatch] = useReducer(profileReducer, initialState);
-    const { address, isConnected } = useAccount();
+    // const { address, isConnected } = useAccount();
 
 
     async function getUserData(adr) {
@@ -77,6 +77,7 @@ export const ProfileProvider = ({children}) => {
 
 
     useEffect(() => {
+        let address = localStorage.getItem("walletAddress");
         if (address) {
             getUserData(address);
             getLazyOwned(address);
@@ -86,10 +87,10 @@ export const ProfileProvider = ({children}) => {
                 localStorage.getItem("google") ||
                 localStorage.getItem("facebook")
             ) {
-                getUserData(localStorage.getItem("UserKey").toString());
+                getUserData(localStorage.getItem("userId").toString());
             }
         }
-    }, [address]);
+    }, []);
 
     return (
         <ProfileContext.Provider value={state}>

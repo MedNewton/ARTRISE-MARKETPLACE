@@ -13,7 +13,7 @@ import {ref, update} from "firebase/database";
 import db from "../../../firebase";
 import Modal from "react-bootstrap/Modal";
 
-const DisplayProfileInfo = ({artistData, allMemberArtists, currentUserData, currentUserKey}) => {
+const DisplayProfileInfo = ({artistData, allUsersState, currentUserData, currentUserKey}) => {
     const navigate = useNavigate();
     const [followButtonText, setFollowButtonText] = useState("");
     const [followersArray, setFollowersArray] = useState([]);
@@ -25,13 +25,13 @@ const DisplayProfileInfo = ({artistData, allMemberArtists, currentUserData, curr
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        const updatedFollowersList = FollowersArrayProvider(artistData.followers, allMemberArtists);
+        const updatedFollowersList = FollowersArrayProvider(artistData.followers, allUsersState);
         setFollowersArray(updatedFollowersList);
-        const updatedFollowingList = FollowersArrayProvider(artistData.following, allMemberArtists);
+        const updatedFollowingList = FollowersArrayProvider(artistData.following, allUsersState);
         setFollowingArray(updatedFollowingList);
         const updatedFollowButtonText = FollowButtonTextProvider(artistData, currentUserData, currentUserKey);
         setFollowButtonText(updatedFollowButtonText);
-    }, [artistData, allMemberArtists, currentUserData, currentUserKey]);
+    }, [artistData, allUsersState, currentUserData, currentUserKey]);
 
     async function followUnfollow() {
         if (followButtonText === "Follow") {
@@ -81,29 +81,29 @@ const DisplayProfileInfo = ({artistData, allMemberArtists, currentUserData, curr
     return (
         <>
             <div className="userCoverSection" id="userCover"
-                 style={{backgroundImage: `url(${artistData.cover_link})`}}></div>
+                 style={{backgroundImage: `url(${artistData?.cover_link})`}}></div>
             <div>
                 <div className="pdpContainer">
-                    <div className={`pdpSpace ${artistData.verified ? "artistpdpSpace" : "memberpdpSpace"} `} id="pdp">
-                        <img src={artistData.pdpLink} alt=""/>
+                    <div className={`pdpSpace ${artistData?.socialMediaVerified ? "artistpdpSpace" : "memberpdpSpace"} `} id="pdp">
+                        <img src={artistData?.pdpLink} alt=""/>
                     </div>
                 </div>
             </div>
             <div className="userDataContainer" style={{marginBottom: "2%"}}>
-                <h5 className="userName">{artistData.name}</h5>
+                <h5 className="userName">{artistData?.name}</h5>
                 <p className="userAttribution">
-                    {(artistData.verified === "yes" || artistData.verified === true) ? (artistData.artistType ? artistData.artistType : "Artist") : "Member"}
+                    {(artistData?.socialMediaVerified === true) ? (artistData?.artistType ? artistData?.artistType : "Artist") : "Member"}
                 </p>
                 <div className="userSocialsContainer">
-                    <i onClick={() => handleFacebookIconClick(artistData.Facebook)}
+                    <i onClick={() => handleFacebookIconClick(artistData?.Facebook)}
                        style={{fontSize: "1.8em"}}
                        className="fab fa-facebook"
                     ></i>
-                    <i onClick={() => handleTwitterIconClick(artistData.Twitter)}
+                    <i onClick={() => handleTwitterIconClick(artistData?.Twitter)}
                        style={{fontSize: "1.8em"}}
                        className="fab fa-twitter"
                     ></i>
-                    <i onClick={() => handleInstagramIconClick(artistData.Instagram)}
+                    <i onClick={() => handleInstagramIconClick(artistData?.Instagram)}
                        style={{fontSize: "1.8em"}}
                        className="fab fa-instagram"
                     ></i>
@@ -150,12 +150,12 @@ const DisplayProfileInfo = ({artistData, allMemberArtists, currentUserData, curr
                                      onClick={() => {
                                          setShowFollowers(false);
                                          handleClose()
-                                         navigate(`/displayProfile?${item?.verified ? 'artist' : 'member'}=${item?.userId}`)
+                                         navigate(`/displayProfile?${item?.socialMediaVerified ? 'artist' : 'member'}=${item?.userId}`)
                                      }
                                      }
                                 >
                                     <h5>{item.name}</h5>
-                                    <p className="search-item-detail">{item.verified ? "Artist" : "Member"}</p>
+                                    <p className="search-item-detail">{item.socialMediaVerified ? "Artist" : "Member"}</p>
                                 </div>
                             ))
                         ) : (
@@ -164,12 +164,12 @@ const DisplayProfileInfo = ({artistData, allMemberArtists, currentUserData, curr
                                      onClick={() => {
                                          setShowFollowers(false);
                                          handleClose()
-                                         navigate(`/displayProfile?${item?.verified ? 'artist' : 'member'}=${item?.userId}`)
+                                         navigate(`/displayProfile?${item?.socialMediaVerified ? 'artist' : 'member'}=${item?.userId}`)
                                      }
                                      }
                                 >
                                     <h5>{item.name}</h5>
-                                    <p className="search-item-detail">{item.verified ? "Artist" : "Member"}</p>
+                                    <p className="search-item-detail">{item?.socialMediaVerified ? "Artist" : "Member"}</p>
                                 </div>
                             ))
                         )}

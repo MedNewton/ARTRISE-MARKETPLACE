@@ -9,21 +9,20 @@ import popularCollectionData from "../assets/fake-data/data-popular-collection";
 import db from "../firebase";
 import { get, ref } from "firebase/database";
 import { useCollectionsContext } from "../Store/CollectionsContext";
+import {useSelector} from "react-redux";
+
 
 
 const Collections = () => {
-
+  const collections = useSelector((state) => state.usersReducer.collections);
   const navigate = useNavigate();
-
-  const {collections} = useCollectionsContext();
-  const [data] = useState(popularCollectionData);
   const [visible, setVisible] = useState(6);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 3);
   };
 
   const currentUserSlug = localStorage.getItem("Slug");
-  const currentUserUserKey = localStorage.getItem("UserKey");
+  const currentUserUserKey = localStorage.getItem("userId");
 
   const selectedTags = [];
 
@@ -111,67 +110,7 @@ const Collections = () => {
                 </div>
               </div>
             </div>
-            {data.slice(0, visible).map((item, index) => (
-              <div key={index} className="col-lg-4 col-md-6 col-12">
-                <div className="sc-card-collection style-2">
-                  <div className="card-bottom">
-                    <div className="author">
-                      <div className="sc-author-box style-2">
-                        <div className="author-avatar">
-                          <img
-                            src="http://marketplace.artrise.io/static/media/carre2.22139fe1474fade1785f.jpg"
-                            alt=""
-                            className="avatar"
-                          />
-                          <div className="badge"></div>
-                        </div>
-                      </div>
-                      <div className="content">
-                        <h4>
-                          <Link to="/pixelizd-mosaic-collection">
-                            {"Pixelized Mosaic"}
-                          </Link>
-                        </h4>
-                        <p>
-                          By{" "}
-                          <Link to="/Artists/Yann_Faisant">
-                            <span className="authorName">Yann Faisant</span>
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <Link to="/author-02">
-                    <div className="media-images-collection">
-                      <div className="box-left">
-                        <img
-                          src="http://marketplace.artrise.io/static/media/carre4.ab991fdacaae0540bf90.jpg"
-                          alt=""
-                        />
-                      </div>
-                      <div className="box-right">
-                        <div className="top-img">
-                          <img
-                            src="http://marketplace.artrise.io/static/media/carre3.6147bdea570afcdc03a4.jpg"
-                            alt=""
-                          />
-                          <img
-                            src="http://marketplace.artrise.io/static/media/carre1.d7ad1702258665b20fd6.jpg"
-                            alt=""
-                          />
-                        </div>
-                        <div className="bottom-img">
-                          <img
-                            src="http://marketplace.artrise.io/static/media/Portret%20van%20Joan%20Jacob%20Mauricius.53f33d98075c90aec764.jpg"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            ))}
+
             {collections?.map((collection, index) => {
               return (
                 <div key={index} className="col-lg-4 col-md-6 col-12">
@@ -234,7 +173,7 @@ const Collections = () => {
                 </div>
               );
             })}
-            {visible < data.length && (
+            {visible < collections?.length && (
               <div className="col-md-12 wrap-inner load-more text-center">
                 <Link
                   to="#"

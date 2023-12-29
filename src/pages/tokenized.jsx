@@ -89,7 +89,7 @@ const Tokenized = () => {
     else{
       
       if(localStorage.getItem("twitter") || localStorage.getItem("google") || localStorage.getItem("facebook")){
-        getUserData(localStorage.getItem("UserKey").toString())
+        getUserData(localStorage.getItem("userId").toString())
       }
       
     }

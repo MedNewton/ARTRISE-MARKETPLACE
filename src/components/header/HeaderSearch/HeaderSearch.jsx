@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom";
 import {ConnectWallet, useAddress, useContract, useListings} from "@thirdweb-dev/react";
 import {useAccount, useDisconnect} from "wagmi";
 import {useArtworkContext} from '../../../Store/ArtworkContext';
-import {useArtistContext} from '../../../Store/ArtistContext';
 import {useCollectionsContext} from "../../../Store/CollectionsContext";
 import {useUserContext} from "../../../Store/UserContext";
 import useLocalStorageUserKeyChange from "../../../hooks/useLocalStorageUserKeyChange";
@@ -12,7 +11,6 @@ import {useMediaQuery} from "react-responsive";
 const HeaderSearch = () => {
     const isDeviceMobile = useMediaQuery({query: '(max-width: 1224px)'})
     const {lazyListed, userArtist} = useArtworkContext();
-    const {artists} = useArtistContext();
     const {collections} = useCollectionsContext();
     const {user} = useUserContext();
     const navigate = useNavigate();
@@ -22,7 +20,6 @@ const HeaderSearch = () => {
         "marketplace"
     );
     const {address, isConnected} = useAccount();
-    const [artistSearchList, setArtistSearchList] = useState([]);
     const [userSearchList, setUserSearchList] = useState([]);
     const [searchingArray, setSearchingArray] = useState([]);
     const [artWorks, setArtWorks] = useState([]);
@@ -33,7 +30,7 @@ const HeaderSearch = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("UserKey"));
+    const [currentUserUserKey, setCurrentUserUserKey] = useState(localStorage.getItem("userId"));
     useLocalStorageUserKeyChange('UserKey', (newValue) => {
         if (newValue) {
             setCurrentUserUserKey(newValue);
@@ -60,15 +57,6 @@ const HeaderSearch = () => {
                 };
             });
             setProcessedLazyListed(data);
-        }
-    };
-
-    const getArtistsForSearch = () => {
-        if (artists) {
-            let data = artists.map((artist) => {
-                return {"name": artist.name, "id": artist.slug, "type": "Artist", "isDynamic": false};
-            });
-            setArtistSearchList(data);
         }
     };
 
@@ -100,24 +88,23 @@ const HeaderSearch = () => {
     };
 
     const getSearchElements = () => {
-        const newArray = [...artWorks, ...artistSearchList, ...processedUserArtist, ...processedLazyListed, ...collectionList, ...userSearchList];
+        const newArray = [...artWorks, ...processedUserArtist, ...processedLazyListed, ...collectionList, ...userSearchList];
         const uniqueArray = Array.from(new Set(newArray));
         setSearchingArray(uniqueArray);
     };
 
     useEffect(() => {
         getArtworkForSearch();
-        getArtistsForSearch();
         getUserForSearch();
         getLazyListedForSearch();
         getUserArtistForSearch();
         getCollectionsForSearch();
 
-    }, [listings, artists, lazyListed, userArtist, collections, user]);
+    }, [listings, lazyListed, userArtist, collections, user]);
 
     useEffect(() => {
         getSearchElements();
-    }, [artWorks, artistSearchList, processedUserArtist, processedLazyListed, collectionList, userSearchList]);
+    }, [artWorks, processedUserArtist, processedLazyListed, collectionList, userSearchList]);
 
     const handleSearch = (event) => {
         const searchValue = event?.target?.value?.toLowerCase();
@@ -173,7 +160,7 @@ const HeaderSearch = () => {
     useEffect(() => {
         if (address) {
             // localStorage.setItem("accountTypeChoice", "artist");
-            localStorage.setItem("UserKey", address);
+            // localStorage.setItem("UserKey", address);
             setCurrentUserUserKey(address);
         }
     }, [address]);

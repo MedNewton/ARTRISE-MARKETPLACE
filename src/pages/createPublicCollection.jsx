@@ -57,7 +57,7 @@ const CreatePublicCollection = () => {
   const [bio, setBio] = useState("");
 
   async function getArtistDescription() {
-    let artistId = localStorage.getItem("UserKey");
+    let artistId = localStorage.getItem("userId");
     let artistRef = ref(db, "users/" + artistId);
     await get(artistRef).then((snapshot) => {
       let dt = snapshot.val();

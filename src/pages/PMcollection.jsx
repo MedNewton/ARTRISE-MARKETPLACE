@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Header from '../components/header/Header';
 import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import TodayPicks from '../components/layouts/TodayPicks';

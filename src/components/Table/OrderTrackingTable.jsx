@@ -106,11 +106,6 @@ const OrderTrackingTable2 = () => {
 
               dataUser.push(data[i])
             }
-            if (dataUser.length>0) {
-              setNoData(false);
-            }else{
-              setNoData(true);
-            }
           }
           setOrderData(dataUser);
 

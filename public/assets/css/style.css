@@ -395,7 +395,10 @@ del,
 
 /* Table */
 
-table,
+.customtable tr{
+    background-color: lightgray;
+}
+/* table,
 th,
 td {
     border: 1px solid #343444;
@@ -429,7 +432,7 @@ td {
 th,
 td {
     padding: 8px 12px;
-}
+} */
 
 /* Media */
 

@@ -34,13 +34,28 @@ const CreateCollection = () => {
   
 
   const sdk = useSDK();
-
   const [bio, setBio] = useState("")
-
   const connect = useMetamask();
+  const { address, isConnected } = useAccount();
+  const adr = useAddress();
+
+  const [title, setTitle] = useState("Collection name");
+  const [symbol, setSymbol] = useState("");
+  const [description, setDescription] = useState("");
+  const [externalLink, setExternalLink] = useState("");
+  const [artisticCollection, setArtisticCollection] = useState(false);
+  const [media, setMedia] = useState("");
+  const [mediaURL, setMediaURL] = useState("")
+  const [mediaPreview, setMediaPreview] = useState(img1);
+  const [cover, setCover] = useState()
+  const [coverURL, setCoverURL] = useState("")
+  const [coverPreview, setCoverPreview] = useState(img1)
+  const [primarySalesRecipient, setPrimarySalesRecipient] = useState("");
+  const [royaltiesRecipient, setRoyaltiesRecipient] = useState("");
+  const [royaltiesPercentage, setRoyaltiesPercentage] = useState(10);
 
   async function getArtistDescription(){
-    let artistId = localStorage.getItem("UserKey");
+    let artistId = localStorage.getItem("userId");
     let artistRef = ref(db, "users/" + artistId);
     await get(artistRef).then((snapshot)=>{
       let dt = snapshot.val();
@@ -50,27 +65,30 @@ const CreateCollection = () => {
       }
     })
   }
+  async function getWalletAddress(){
+    setRoyaltiesRecipient(await address);
+  }
 
-  useEffect(() => {
-    getArtistDescription();
-    connect();
+
+  useEffect(async () => {
+    await getArtistDescription();
+    await connect();
+    await getWalletAddress()
   }, []);
 
-  const adr = useAddress();
-
-  const { address, isConnected } = useAccount();
 
   function checkDeployMetadataError() {
-    connect();
     let errorsExist;
-    if (!title || title == "" || title == " " || title.length < 2) {
+    if (!title || title === "" || title === " " || title.length < 2) {
+
       Swal.fire({
         icon: "error",
         title: "Collection name error !",
         text: "The collection name cna't be empty.",
       });
       errorsExist = true;
-    } else if (!symbol || symbol == "" || symbol == " ") {
+    } else if (!symbol || symbol === "" || symbol === " ") {
+
       Swal.fire({
         icon: "error",
         title: "Collection symbol error !",
@@ -79,9 +97,10 @@ const CreateCollection = () => {
       errorsExist = true;
     } else if (
       !royaltiesRecipient ||
-      royaltiesRecipient == "" ||
-      royaltiesRecipient == " "
+      royaltiesRecipient === "" ||
+      royaltiesRecipient === " "
     ) {
+
       Swal.fire({
         icon: "error",
         title: "Royalties recipient error !",
@@ -90,8 +109,8 @@ const CreateCollection = () => {
       errorsExist = true;
     } else if (
       !royaltiesPercentage ||
-      royaltiesPercentage == "" ||
-      royaltiesPercentage == " "
+      royaltiesPercentage === "" ||
+      royaltiesPercentage === " "
     ) {
       Swal.fire({
         icon: "error",
@@ -158,45 +177,60 @@ const CreateCollection = () => {
   }
 
   async function deployNFTCollection() {
-    connect();
-    let metadataErrors = checkDeployMetadataError();
+    console.log("cc 1 dt:")
+    try {
+      await connect();
+      console.log("cc 2 dt:")
+      let metadataErrors = await checkDeployMetadataError();
+      console.log("cc 3 metadataErrors:",metadataErrors)
+      if (metadataErrors === false) {
+        await sdk.deployer.deployNFTCollection({
+          name: title,
+          description: description,
+          symbol: symbol,
+          image: URL.createObjectURL(media),
+          primary_sale_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
+          platform_fee_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
+          platform_fee_basis_points: 15,
+          fee_recipient: royaltiesRecipient,
+          seller_fee_basis_points: Number(royaltiesPercentage),
+        });
 
-    if (metadataErrors == false) {
-      await sdk.deployer.deployNFTCollection({
-        name: title,
-        description: description,
-        symbol: symbol,
-        image: URL.createObjectURL(media),
-        primary_sale_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
-        platform_fee_recipient: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
-        platform_fee_basis_points: 15,
-        fee_recipient: royaltiesRecipient,
-        seller_fee_basis_points: Number(royaltiesPercentage),
-      });
+        await uploadMainMedia(media);
+        await uploadCover(cover);
 
-      await uploadMainMedia(media);
-      await uploadCover(cover);
-      const newCollectionID = (
-        Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
-      ).toString();
-      await set(ref(db, "collections/" + newCollectionID), {
-        "name": title,
-        "description": description,
-        "symbol": symbol,
-        "owner": address,
-        "image": mediaURL,
-        "cover": coverURL,
-        "artisticCollection": artisticCollection,
-        "address": newCollectionID
-      })
+        console.log("cc 4 media:",media)
+        console.log("cc 5 cover:",cover)
 
-      Swal.fire({
-        icon: "success",
-        title: "Collection created !",
-        text: "Your collection has been deployed succefully. Once approved, you will find your new collection in your profile.",
-      }).then(()=>{
-        window.location.href = "/"
-      })
+        const newCollectionID = (
+            Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
+        ).toString();
+        await set(ref(db, "collections/" + newCollectionID), {
+          "name": title,
+          "description": description,
+          "symbol": symbol,
+          "owner": address,
+          "image": mediaURL,
+          "cover": coverURL,
+          "artisticCollection": artisticCollection,
+          "address": newCollectionID
+        })
+
+        console.log("cc 6")
+
+
+        Swal.fire({
+          icon: "success",
+          title: "Collection created !",
+          text: "Your collection has been deployed succefully. Once approved, you will find your new collection in your profile.",
+        }).then(() => {
+          console.log("cc 7")
+
+          window.location.href = "/"
+        })
+      }
+    } catch (error) {
+      console.error("error occurred while minting a collection:", error)
     }
 
     //await sdk.deployer.deployNFTCollection()
@@ -225,20 +259,7 @@ const CreateCollection = () => {
     });
   }
 
-  const [title, setTitle] = useState("Collection name");
-  const [symbol, setSymbol] = useState("");
-  const [description, setDescription] = useState("");
-  const [externalLink, setExternalLink] = useState("");
-  const [artisticCollection, setArtisticCollection] = useState(false);
-  const [media, setMedia] = useState();
-  const [mediaURL, setMediaURL] = useState()
-  const [mediaPreview, setMediaPreview] = useState(img1);
-  const [cover, setCover] = useState()
-  const [coverURL, setCoverURL] = useState()
-  const [coverPreview, setCoverPreview] = useState(img1)
-  const [primarySalesRecipient, setPrimarySalesRecipient] = useState();
-  const [royaltiesRecipient, setRoyaltiesRecipient] = useState();
-  const [royaltiesPercentage, setRoyaltiesPercentage] = useState();
+
   
 
 
@@ -411,7 +432,7 @@ const CreateCollection = () => {
                         onChange={(e) => {
                           setRoyaltiesRecipient(e.target.value);
                         }}
-                        defaultValue={address}
+                        defaultValue={royaltiesRecipient}
                     />
                   </div>
                   <div className="col-4">
@@ -422,7 +443,7 @@ const CreateCollection = () => {
                         type="number"
                         placeholder="Percentage of royalties on every secondary sale"
                         className="percentageInput"
-                        defaultValue={10}
+                        defaultValue={royaltiesPercentage}
                         disabled
                     />
                   </div>
