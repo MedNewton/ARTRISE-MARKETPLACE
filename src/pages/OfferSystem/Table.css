@@ -1,7 +1,7 @@
 /* Table.css */
 
 .table {
-    padding: 20px 0px;
+   
     max-width: 1500px;
     margin: 0 0;
 
@@ -137,7 +137,7 @@
 
   @media(max-width : 991px){
     .table {
-        padding: 10px 10px;
+      
     
       }
   }
@@ -148,3 +148,14 @@
         overflow-x: auto;
     }
 }
+
+
+
+.tablecustom th{
+  padding: 20px;
+}
+
+ .rounded-row {
+    border-radius: 10px; /* Adjust the value as needed */
+    overflow: hidden;    /* Ensure that the border-radius is applied */
+  }

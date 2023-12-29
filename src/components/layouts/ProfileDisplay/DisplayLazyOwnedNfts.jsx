@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 import CardModal from "../CardModal";
 import {useProfileContext} from "../../../Store/ProfileContext";
 import {useSelector} from "react-redux";
-import MediaViewer from "../../mediaViewer/MediaViewer";
 
 const filterOptions = {
     categories: [
@@ -116,7 +115,7 @@ const DisplayOwnedNfts = () => {
                                             <Link
                                                 to={"/private-display?id=" + listing?.id}
                                             >
-                                                <MediaViewer mediaUrl = {listing?.data?.image}/>
+                                                <img src={listing?.data?.image} alt=""/>
                                             </Link>
 
                                             <Link
@@ -168,9 +167,9 @@ const DisplayOwnedNfts = () => {
                                     <div className={`sc-card-product`}>
                                         <div className="card-media">
                                             <Link
-                                                to={"/artwork-details?id=" + listing.id}
+                                                to={"/artwork-dettails?id=" + listing.id}
                                             >
-                                                <MediaViewer mediaUrl = {listing?.data?.image}/>
+                                                <img src={listing.data.image} alt=""/>
                                             </Link>
 
                                             <Link
@@ -187,7 +186,7 @@ const DisplayOwnedNfts = () => {
                                         <div className="card-title">
                                             <h5 className="style2">
                                                 <Link
-                                                    to={"/artwork-details?id=" + listing.id}
+                                                    to={"/artwork-dettails?id=" + listing.id}
                                                 >
                                                     {listing.data.name}
                                                 </Link>

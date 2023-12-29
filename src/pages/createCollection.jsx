@@ -141,6 +141,7 @@ const CreateCollection = () => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
+        console.log(progress);
       },
       (error) => {
         alert(error);
@@ -162,6 +163,7 @@ const CreateCollection = () => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
+        console.log(progress);
       },
       (error) => {
         alert(error);
@@ -175,9 +177,12 @@ const CreateCollection = () => {
   }
 
   async function deployNFTCollection() {
+    console.log("cc 1 dt:")
     try {
       await connect();
+      console.log("cc 2 dt:")
       let metadataErrors = await checkDeployMetadataError();
+      console.log("cc 3 metadataErrors:",metadataErrors)
       if (metadataErrors === false) {
         await sdk.deployer.deployNFTCollection({
           name: title,
@@ -193,6 +198,10 @@ const CreateCollection = () => {
 
         await uploadMainMedia(media);
         await uploadCover(cover);
+
+        console.log("cc 4 media:",media)
+        console.log("cc 5 cover:",cover)
+
         const newCollectionID = (
             Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000
         ).toString();
@@ -206,11 +215,17 @@ const CreateCollection = () => {
           "artisticCollection": artisticCollection,
           "address": newCollectionID
         })
+
+        console.log("cc 6")
+
+
         Swal.fire({
           icon: "success",
           title: "Collection created !",
           text: "Your collection has been deployed succefully. Once approved, you will find your new collection in your profile.",
         }).then(() => {
+          console.log("cc 7")
+
           window.location.href = "/"
         })
       }
@@ -230,6 +245,8 @@ const CreateCollection = () => {
             Image: media
         }
 
+        console.log(metadata)
+        console.log(address)
         if(address){
             const tx = await contract.erc721.mintTo(address,metadata);
             const rec = tx.receipt;

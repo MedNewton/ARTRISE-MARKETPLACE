@@ -59,6 +59,7 @@ const CheckUserExists = async (adr, referee, disconnect, dispatch) => {
                     verifySiteDefinitionMatch: true,
                 }
             );
+            console.log(trackConversion)
             await Swal.fire({
                 icon: "success",
                 title: "Account created successfully !",

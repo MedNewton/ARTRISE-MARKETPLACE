@@ -57,7 +57,7 @@ const Collection = () => {
             const collectionId = queryParams.get("id");
             getCollectionData(collectionId);
         } else {
-            console.error("URL doesn't contain the collection id query parameter.");
+            console.log("URL doesn't contain the collection id query parameter.");
         }
     }, []);
 
@@ -69,7 +69,7 @@ const Collection = () => {
         <div>
             <HeaderStyle2/>
             <div
-                className="collectionCoverSection"
+                className="row collectionHeader"
                 style={{backgroundImage: `url(${cover})`}}
             >
             </div>

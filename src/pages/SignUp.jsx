@@ -52,7 +52,7 @@ const SignUp = () => {
 
         
         if(errors.length > 0) {
-            console.error("errors: \n");
+            console.log("errors: \n");
             
             errors.forEach(e => {
                 document.getElementById("errors").innerText += e.toString();
@@ -106,7 +106,8 @@ const SignUp = () => {
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             const user = result.user;
-            const ThisUserRef = ref(db, 'users/'+user.uid);
+            console.log(user.email);
+            const ThisUserRef = ref(db, 'users/'+user.uid); 
             var dt;
             await get(ThisUserRef).then( async (snapshot)=>{
                 if(snapshot.exists && (snapshot.val() !== null))
@@ -152,7 +153,7 @@ const SignUp = () => {
         }).catch((err) => {
             const errorCode = err.code;
             const errorMessage = err.message;
-            console.error(err)
+            console.log(err.message)
         })
     }
 
@@ -175,12 +176,13 @@ const SignUp = () => {
                     nav('/');
                 }else{
                     // A new User :
+                    console.log(user.providerData)
                 }
             })
         }).catch((err) => {
             const errorCode = err.code;
             const errorMessage = err.message;
-            console.error(err)
+            console.log(err.message)
         })
     }
 

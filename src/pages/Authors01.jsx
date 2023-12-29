@@ -4,7 +4,6 @@ import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import {useSelector} from "react-redux";
 import cardItem1 from "../assets/images/box-item/card-item-1.jpg";
-import ArtistPageMediaViewer from "../components/artistPageMediaViewer/ArtistPageMediaViewer";
 
 const artistsDefaultImagesMappings = {
     cardItem1: cardItem1,
@@ -103,7 +102,59 @@ const Authors01 = () => {
                                                 </div>
                                                 <div className="sc-button fl-button pri-3"><span>Follow</span></div>
                                             </div>
-                                            <ArtistPageMediaViewer artworksArray={item?.artworkThumbNails}/>
+
+                                            <div className="media-images-collection">
+
+                                                <div className="box-left">
+                                                    <img src={cardItem1} alt="Artwork Image"/>
+                                                </div>
+                                                <div className="box-right">
+                                                    <div className="top-img">
+                                                        <img src={cardItem1} alt="Artwork Image"/>
+                                                        <img src={cardItem1} alt="Artwork Image"/>
+                                                    </div>
+                                                    <div className="bottom-img">
+                                                        <img src={cardItem1} alt="Artwork Image"/>
+                                                    </div>
+                                                </div>
+
+                                                {/*<div className="box-left">*/}
+                                                {/*    {item?.artworkThumbNails[0]?.startsWith('http') ? (*/}
+                                                {/*        <img src={item?.artworkThumbNails[0]} alt="Artwork Image"/>*/}
+                                                {/*    ) : (*/}
+                                                {/*        <img*/}
+                                                {/*            src={artistsDefaultImagesMappings[item?.artworkThumbNails[0]] || ""}*/}
+                                                {/*            alt="Artwork Image"/>*/}
+                                                {/*    )}*/}
+                                                {/*</div>*/}
+                                                {/*<div className="box-right">*/}
+                                                {/*    <div className="top-img">*/}
+                                                {/*        {item?.artworkThumbNails[1]?.startsWith('http') ? (*/}
+                                                {/*            <img src={getImageFromThumbnailIpfsHash(item.artworkThumbNails[1])} alt="Artwork Image"/>*/}
+                                                {/*        ) : (*/}
+                                                {/*            <img*/}
+                                                {/*                src={artistsDefaultImagesMappings[item?.artworkThumbNails[1]] || ""}*/}
+                                                {/*                alt="Artwork Image"/>*/}
+                                                {/*        )}*/}
+                                                {/*        {item?.artworkThumbNails[2]?.startsWith('http') ? (*/}
+                                                {/*            <img src={item?.artworkThumbNails[2]} alt="Artwork Image"/>*/}
+                                                {/*        ) : (*/}
+                                                {/*            <img*/}
+                                                {/*                src={artistsDefaultImagesMappings[item?.artworkThumbNails[2]] || ""}*/}
+                                                {/*                alt="Artwork Image"/>*/}
+                                                {/*        )}*/}
+                                                {/*    </div>*/}
+                                                {/*    <div className="bottom-img">*/}
+                                                {/*        {item?.artworkThumbNails[3]?.startsWith('http') ? (*/}
+                                                {/*            <img src={item?.artworkThumbNails[3]} alt="Artwork Image"/>*/}
+                                                {/*        ) : (*/}
+                                                {/*            <img*/}
+                                                {/*                src={artistsDefaultImagesMappings[item?.artworkThumbNails[3]] || ""}*/}
+                                                {/*                alt="Artwork Image"/>*/}
+                                                {/*        )}*/}
+                                                {/*    </div>*/}
+                                                {/*</div>*/}
+                                            </div>
                                         </div>
                                     </Link>
                                 </div>

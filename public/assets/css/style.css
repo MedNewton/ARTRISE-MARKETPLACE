@@ -395,7 +395,10 @@ del,
 
 /* Table */
 
-table,
+.customtable tr{
+    background-color: lightgray;
+}
+/* table,
 th,
 td {
     border: 1px solid #343444;
@@ -429,14 +432,14 @@ td {
 th,
 td {
     padding: 8px 12px;
-}
+} */
 
 /* Media */
 
 embed,
 object,
 video {
-    /*margin-bottom : 20px;*/
+    margin-bottom : 20px;
     max-width     : 100%;
     vertical-align: middle;
 }
@@ -1401,7 +1404,6 @@ header{
 
 .header_1 {
     position: absolute;
-    top:0;
     z-index: 100;
     height: 80px;
     width: 100%;
@@ -1481,7 +1483,6 @@ height: 100%;
 }
 .header_1 .header_avatar .avatar_popup {
     position: absolute;
-    top:0;
     right: 0;
     padding: 35px 20px 26px 20px;
     top: 53px;

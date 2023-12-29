@@ -92,6 +92,8 @@ const OrderTrackingTable2 = () => {
 
   const FetchData = async () => {
 
+    console.log('func');
+    console.log(address, 'i am address');
     if (address) {
       let orderRef = ref(db, "orders/");
       // let PurchaseRefByUser = query(orderRef,equalTo(".buyerid",address))
@@ -103,11 +105,6 @@ const OrderTrackingTable2 = () => {
             if (data[i].sellersid == address) {
 
               dataUser.push(data[i])
-            }
-            if (dataUser.length>0) {
-              setNoData(false);
-            }else{
-              setNoData(true);
             }
           }
           setOrderData(dataUser);
@@ -188,7 +185,7 @@ const OrderTrackingTable2 = () => {
 
           return (
             <div className={` ${index % 2 === 0 ? " ordertable_body_box" : "ordertable_body_box"}`}>
-              <p><a href={"/artwork-details?id="+item.artworkid} >{item.artworkid}</a></p>
+              <p><a href={"/artwork-dettails?id="+item.artworkid} >{item.artworkid}</a></p>
               <p>"N/A"</p>
               <p className='fixed-item'>{item.sellersid}</p>
               <p className='fixed-item'>{Date(item.purchasedate).replace( / GMT$/, "" )}</p>

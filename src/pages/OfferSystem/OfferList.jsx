@@ -86,7 +86,92 @@ const OfferList = () => {
           {" "}
           Pending Offers
         </h1>
-        <div className="table">
+        <Table responsive style={{ fontSize:"20px"}}>
+          <thead style={{color:"white", background:"black"}}>
+            <tr className="tablecustom">
+              <th>Artwork ID</th>
+              <th>Icon</th>
+              <th>Offered Price</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Accept</th>
+              <th>Reject</th>
+              <th>Counter</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody className="customtable">
+            {/* {PastOffer} */}
+            {slicedata?.map((item, index) => {
+              return (
+                <tr>
+                 <td> <a href={"/artwork-dettails?id=" + item.artworkid}>
+                        {item.artworkid}
+                      </a></td>
+                  <td>  <img
+                      src={item.image}
+                      alt=""
+                      style={{
+                        marginLeft: "20px",
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "20%",
+                      }}
+                    /></td>
+                  <td>{item.offeredprice} Eth</td>
+                  <td>{item.price} Eth</td>
+                  <td>{item.status}</td>
+                  <td> <button
+                    className="accept_button-ofr"
+                    onClick={async () => {
+                      AcceptOffer(item.offerid);
+                      setReload(true);
+                    }}
+                  >
+                    Accept
+                  </button></td>
+                  <td> <button
+                    className="reject_button-ofr"
+                    onClick={() => {
+                      RejectOffer(item.offerid);
+                      setReload(true);
+                    }}
+                  >
+                    Reject
+                  </button></td>
+                  <td><button className="counter_button-ofr" disabled>
+                    Counter
+                  </button></td>
+                  <td> <FaArrowRightLong /></td>
+                </tr>
+              );
+            })}
+            
+          </tbody>
+          
+        </Table>
+        <div className="pagination_buttons">
+              <button
+                className="pagination_button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                Previous
+              </button>
+
+              <p>
+                Page {currentPage} of {totalPageCount}
+              </p>
+
+              <button
+                className="pagination_button"
+                disabled={endIndex >= data?.length}
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+        {/* <div className="table">
           <div className="table_head">
             <p>Artwork ID</p>
             <p style={{ marginLeft: "20px" }}>Icon</p>
@@ -130,7 +215,7 @@ const OfferList = () => {
                       }}
                     />
                   </p>
-                  {/* <p className='row_title'>{item.title}</p> */}
+                
                   <p>{item.offeredprice} Eth</p>
                   <p>{item.price} Eth</p>
                   <p>{item.status}</p>
@@ -183,7 +268,7 @@ const OfferList = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
         <h1>Past Offers</h1>
         {/* <table className="table-striped past-table">
           <thead>
@@ -209,9 +294,9 @@ const OfferList = () => {
             })}
           </tbody>
         </table> */}
-        <Table responsive style={{padding:"5px 1px", fontSize:"14px"}}>
+        <Table responsive style={{ fontSize:"20px"}}>
           <thead style={{color:"white", background:"black"}}>
-            <tr>
+            <tr className="tablecustom">
               <th>Offer Date</th>
               <th>Artwork ID</th>
               <th>Price</th>
@@ -219,12 +304,12 @@ const OfferList = () => {
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="customtable">
             {/* {PastOffer} */}
             {PastOffer.map((item, index) => {
               return (
                 <tr>
-                  <td>{Date(item.offerdate)}</td>
+                 <td>{new Date(item.offerdate).toLocaleDateString()}</td>
                   <td>{item.artworkid}</td>
                   <td>{item.price}</td>
                   <td>{item.offeredprice}</td>
@@ -232,8 +317,31 @@ const OfferList = () => {
                 </tr>
               );
             })}
+            
           </tbody>
+          
         </Table>
+        <div className="pagination_buttons">
+              <button
+                className="pagination_button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                Previous
+              </button>
+
+              <p>
+                Page {currentPage} of {totalPageCount}
+              </p>
+
+              <button
+                className="pagination_button"
+                disabled={endIndex >= data?.length}
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
       </div>
       <Footer />
     </div>

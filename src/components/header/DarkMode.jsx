@@ -29,8 +29,10 @@ const DarkMode = () => {
 
     const switchTheme = e => {
         e.preventDefault();
+        console.log(theme)
         if (theme === darkTheme) {
             document.getElementById('themeIcon').src = imgsun;
+            console.log(document.getElementById('themeIcon').src)
             //themeBtnIcon.src = imgsun
             body.classList.replace(darkTheme, lightTheme)
             e.target.classList.remove(clickedClass)
@@ -39,6 +41,8 @@ const DarkMode = () => {
             
         } else {
             document.getElementById('themeIcon').src = imgmoon;
+            console.log(document.getElementById('themeIcon').src)
+            
             //themeBtnIcon.src = imgmoon
             body.classList.replace(lightTheme, darkTheme)
             e.target.classList.add(clickedClass)

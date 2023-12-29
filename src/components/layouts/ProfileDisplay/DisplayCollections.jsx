@@ -7,6 +7,7 @@ import {useNavigate } from "react-router-dom";
 
 const DisplayCollections = (props) => {
     const data = props?.data;
+
     const navigate = useNavigate();
 
     const handleOnClick = (index, collection) =>{
@@ -48,14 +49,14 @@ const DisplayCollections = (props) => {
             <div className='d-flex flex-wrap flex-row' style={{gap: '20px'}}>
                 {data?.map((collection, index) => {
                     return (
-                        <div key={index} style={{maxWidth: "400px"}}>
+                        <div key={index} style={{maxWidth: "400px"}} onClick={()=>{handleOnClick(index, collection)}} >
                             <div className="sc-card-collection style-2">
                                 <div className="card-bottom">
                                     <div className="author">
                                         <div className="sc-author-box style-2">
                                             <div className="author-avatar">
                                                 <img
-                                                    src={collection?.owner_image}
+                                                    src={collection.image}
                                                     alt=""
                                                     className="avatar"
                                                 />
@@ -64,14 +65,14 @@ const DisplayCollections = (props) => {
                                         </div>
                                         <div className="content">
                                             <h4>
-                                                <Link to={`/collection?id=${collection?.id}`}>
-                                                    {collection?.name}
+                                                <Link to="">
+                                                    {collection.name}
                                                 </Link>
                                             </h4>
                                             <p>
                                                 By{" "}
-                                                <Link to={`/displayProfile?${collection?.owner_profile_type}=${collection?.owner}`}>
-                                                    <span className="authorName">{collection?.owner_name}</span>
+                                                <Link to="">
+                                                    <span className="authorName">{collection.owner_name}</span>
                                                 </Link>
                                             </p>
                                         </div>
