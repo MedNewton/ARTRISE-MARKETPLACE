@@ -13,7 +13,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'SalvadorDali',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage2,
@@ -21,7 +22,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Tyler Covington',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage3,
@@ -29,7 +31,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Freddie Carpenter',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage4,
@@ -37,7 +40,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'SalvadorDali',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage5,
@@ -45,7 +49,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Tyler Covington',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage6,
@@ -53,7 +58,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Freddie Carpenter',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat l'
+      + 'abore ad laborum consectetur consequat...',
   },
   {
     img: blogImage1,
@@ -61,7 +67,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'SalvadorDali',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage2,
@@ -69,7 +76,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Tyler Covington',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat'
+      + ' labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage3,
@@ -77,7 +85,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Freddie Carpenter',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage4,
@@ -85,7 +94,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'SalvadorDali',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage5,
@@ -93,7 +103,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Tyler Covington',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
   {
     img: blogImage6,
@@ -101,7 +112,8 @@ const blogData = [
     image1uthor: image1,
     nameAuthor: 'Freddie Carpenter',
     time: 'Feb 19, 2021',
-    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat labore ad laborum consectetur consequat...',
+    content: 'Dolore officia sint incididunt non excepteur ea mollit commodo ut enim reprehenderit cupidatat '
+      + 'labore ad laborum consectetur consequat...',
   },
 ];
 

@@ -1,4 +1,4 @@
-import yann from '../images/avatar/yann.jpg';
+import yann from '../images/avatar/yann.png';
 
 const topSellerData = [
   {

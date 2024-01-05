@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const RenderConnectWalletAddress = ({ open }) => {
-
-    return (
-        <div className="sc-btn-top mg-r-12" id="site-header">
+function RenderConnectWalletAddress(props) {
+  const { open } = props;
+  return (
+    <div className="sc-btn-top mg-r-12" id="site-header">
       <Link
         to="/"
         onClick={(e) => {
@@ -16,7 +17,15 @@ const RenderConnectWalletAddress = ({ open }) => {
         <span>Connect Wallet</span>
       </Link>
     </div>
-    );
+  );
+}
+
+RenderConnectWalletAddress.propTypes = {
+  open: PropTypes.func,
+};
+
+RenderConnectWalletAddress.defaultProps = {
+  open: () => {},
 };
 
 export default RenderConnectWalletAddress;

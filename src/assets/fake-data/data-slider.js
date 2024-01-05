@@ -3,6 +3,7 @@ import imgbg from '../images/slider/bg_slide_1.png';
 
 const heroSliderData = [
   {
+    id: '1',
     title_1: '',
     title_2: 'The new evolution',
     title_3: 'Of Art & NFTs',
@@ -12,6 +13,7 @@ const heroSliderData = [
     class: 'left',
   },
   {
+    id: '2',
     title_1: '',
     title_2: 'The new evolution',
     title_3: 'Of Art & NFTs',

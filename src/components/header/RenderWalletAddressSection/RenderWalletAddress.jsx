@@ -1,36 +1,48 @@
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
-import { useAccount } from "wagmi";
+import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const RenderWalletAddress = ({ address, open }) => {
-    const menuLeft = useRef(null);
-    const btnToggle = useRef(null);
+function RenderWalletAddress(props) {
+  const { address, open } = props;
+  const menuLeft = useRef(null);
+  const btnToggle = useRef(null);
 
-    const menuToggle = () => {
-        if (menuLeft.current && btnToggle.current) {
-            menuLeft.current.classList.toggle("active");
-            btnToggle.current.classList.toggle("active");
-        }
-    };
+  const menuToggle = () => {
+    if (menuLeft.current && btnToggle.current) {
+      menuLeft.current.classList.toggle('active');
+      btnToggle.current.classList.toggle('active');
+    }
+  };
 
-    return (
-        <div className="sc-btn-top mg-r-12" id="site-header">
-            <Link
-                to="/"
-                onClick={(e) => {
-                    e.preventDefault();
-                    menuToggle();
-                    open();
-                }}
-                className="sc-button header-slider style style-1 wallet fl-button pri-1"
-            >
+  return (
+    <div className="sc-btn-top mg-r-12" id="site-header">
+      <Link
+        to="/"
+        onClick={(e) => {
+          e.preventDefault();
+          menuToggle();
+          open();
+        }}
+        className="sc-button header-slider style style-1 wallet fl-button pri-1"
+      >
         <span>
-          {address?.toString()?.slice(0, 6)}...
-            {address?.toString()?.substring(address?.toString()?.length - 3)}
+          {address?.toString()?.slice(0, 6)}
+          ...
+          {address?.toString()?.slice(-3)}
         </span>
-            </Link>
-        </div>
-    );
+      </Link>
+    </div>
+  );
+}
+
+RenderWalletAddress.propTypes = {
+  address: PropTypes.func,
+  open: PropTypes.func,
+};
+
+RenderWalletAddress.defaultProps = {
+  address: () => {},
+  open: () => {},
 };
 
 export default RenderWalletAddress;

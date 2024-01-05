@@ -1,8 +1,8 @@
 import './App.css';
-import {Route, Routes} from 'react-router-dom';
-import React, {useEffect, useMemo} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {get, ref} from 'firebase/database';
+import { Route, Routes } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { get, ref } from 'firebase/database';
 import axios from 'axios';
 import db from './firebase';
 import {
@@ -17,99 +17,98 @@ import {
   setSearchingArray,
 } from './redux/actions/userActions';
 import routes from './pages';
-import {LazyNFTListing} from './components/constants/LazyNFTListingClass';
-import {LazyNFT} from './components/constants/LazyNFTClass';
+import { LazyNFTListing } from './components/constants/LazyNFTListingClass';
+import { LazyNFT } from './components/constants/LazyNFTClass';
 
 function App() {
   const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
 
-  const members = [];
-  const artists = [];
-  const allUsers = [];
+  // const members = [];
+  // const artists = [];
+  // const allUsers = [];
   const dispatch = useDispatch();
 
-  function fetchUsers() {
+  const fetchUsers = useCallback(async () => {
     const userRef = ref(db, 'users/');
-    get(userRef).then(async (snapshot) => {
+    try {
+      const snapshot = await get(userRef);
       const dt = snapshot.val();
-      Object.keys(dt).forEach((userId) => {
-        const a = dt[userId];
-        if (a?.socialMediaVerified && a?.profileType === 'artist') {
-          const artistItem = {
-            userId,
-            ...a,
-          };
-          artists.push(artistItem);
-        } else if (!a?.socialMediaVerified) {
-          const memberItem = {
-            userId,
-            ...a,
-          };
-          members.push(memberItem);
-        }
-        const userItem = {
-          userId,
-          ...a,
-        };
-        allUsers.push(userItem);
-      });
+
+      const artists = Object.keys(dt)
+        .filter((userId) => dt[userId]?.socialMediaVerified && dt[userId]?.profileType === 'artist')
+        .map((userId) => ({ userId, ...dt[userId] }));
+
+      const members = Object.keys(dt)
+        .filter((userId) => !dt[userId]?.socialMediaVerified)
+        .map((userId) => ({ userId, ...dt[userId] }));
+
+      const allUsers = Object.keys(dt)
+        .map((userId) => ({ userId, ...dt[userId] }));
 
       dispatch(setAllUsers({ allUsers }));
       dispatch(setMembers({ members }));
       dispatch(setArtists({ artists }));
-      if (allUsers) {
-        const searchingArray = allUsers.map((userItem) => ({ name: userItem.name, id: userItem.userId, type: userItem?.profileType ? userItem?.profileType : 'member' }));
+
+      if (allUsers && allUsers.length > 0) {
+        const searchingArray = allUsers.map((userItem) => ({
+          name: userItem.name,
+          id: userItem.userId,
+          type: userItem.profileType || 'member',
+        }));
         dispatch(setSearchingArray({ searchingArray }));
       }
-    });
-  }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  }, [dispatch]);
 
-  async function fetchLazyListed() {
+  const fetchLazyListed = useCallback(async () => {
     const listingsRef = ref(db, 'listings/');
     try {
       const snapshot = await get(listingsRef);
       const dt = snapshot?.val();
 
-      const promises = Object.keys(dt).map(async (i) => {
-        const listing = dt[i];
-        const listingArtworkId = listing?.artwork_id;
-        const price = listing?.price;
+      const promises = Object.keys(dt)
+        .map(async (i) => {
+          const listing = dt[i];
+          const listingArtworkId = listing?.artwork_id;
+          const price = listing?.price;
 
-        const artworkRef = ref(db, `artworks/${listingArtworkId}`);
-        const artworkSnapshot = await get(artworkRef);
-        const artwork = artworkSnapshot?.val();
+          const artworkRef = ref(db, `artworks/${listingArtworkId}`);
+          const artworkSnapshot = await get(artworkRef);
+          const artwork = artworkSnapshot?.val();
 
-        const ipfsURI = artwork?.ipfsURI;
-        const artworkOwner = artwork?.owner;
+          const ipfsURI = artwork?.ipfsURI;
+          const artworkOwner = artwork?.owner;
 
-        const ownerRef = ref(db, `users/${artworkOwner}`);
-        const ownerSnapshot = await get(ownerRef);
-        const owner = ownerSnapshot?.val();
+          const ownerRef = ref(db, `users/${artworkOwner}`);
+          const ownerSnapshot = await get(ownerRef);
+          const owner = ownerSnapshot?.val();
 
-        const ownerName = owner?.name;
-        const ownerImage = owner?.pdpLink;
+          const ownerName = owner?.name;
+          const ownerImage = owner?.pdpLink;
 
-        try {
-          const response = await fetch(ipfsURI);
-          if (response?.ok) {
-            const data = await response?.json();
-            return new LazyNFTListing(
-              i,
-              data,
-              price,
-              ownerName,
-              ownerImage,
-              artworkOwner,
-              listingArtworkId,
-            );
+          try {
+            const response = await fetch(ipfsURI);
+            if (response?.ok) {
+              const data = await response?.json();
+              return new LazyNFTListing(
+                i,
+                data,
+                price,
+                ownerName,
+                ownerImage,
+                artworkOwner,
+                listingArtworkId,
+              );
+            }
+            console.error(response);
+            return null;
+          } catch (error) {
+            console.error(error);
+            return null;
           }
-          console.error(response);
-          return null;
-        } catch (error) {
-          console.error(error);
-          return null;
-        }
-      });
+        });
 
       const lazyListed = await Promise.all(promises.filter(Boolean));
       dispatch(setLazyListed({ lazyListed }));
@@ -125,53 +124,54 @@ function App() {
     } catch (error) {
       console.error(error);
     }
-  }
+  }, [dispatch]);
 
-  async function fetchCurrentUser() {
+  const fetchCurrentUser = useCallback(async () => {
     if (currentUserId) {
       const ThisUserRef = ref(db, `users/${currentUserId}`);
-      await get(ThisUserRef).then(async (snapshot) => {
-        const currentUser = snapshot.val();
-        dispatch(setCurrentUser({ currentUser }));
-      });
+      await get(ThisUserRef)
+        .then(async (snapshot) => {
+          const currentUser = snapshot.val();
+          dispatch(setCurrentUser({ currentUser }));
+        });
     }
-  }
+  }, [currentUserId, dispatch]);
 
-  async function fetchLazyOwned() {
+  const fetchLazyOwned = useCallback(async () => {
     if (!currentUserId) {
       return;
     }
-
     const artworksRef = ref(db, 'artworks/');
     try {
       const snapshot = await get(artworksRef);
       const dt = snapshot.val();
 
-      const promises = Object.keys(dt).map(async (i) => {
-        const lazyArtwork = dt[i];
-        const listable = !lazyArtwork?.listed;
+      const promises = Object.keys(dt)
+        .map(async (i) => {
+          const lazyArtwork = dt[i];
+          const listable = !lazyArtwork?.listed;
 
-        if (lazyArtwork.owner === currentUserId) {
-          try {
-            const res = await axios.get(lazyArtwork.ipfsURI);
-            return new LazyNFT(i, res.data, listable);
-          } catch (error) {
-            console.error(error);
-            return null;
+          if (lazyArtwork.owner === currentUserId) {
+            try {
+              const res = await axios.get(lazyArtwork.ipfsURI);
+              return new LazyNFT(i, res.data, listable);
+            } catch (error) {
+              console.error(error);
+              return null;
+            }
           }
-        }
 
-        return null;
-      });
+          return null;
+        });
 
       const lazyOwned = (await Promise.all(promises)).filter(Boolean);
       dispatch(setLazyOwned({ lazyOwned }));
     } catch (error) {
       console.error(error);
     }
-  }
+  }, [currentUserId, dispatch]);
 
-  async function getCollections() {
+  const getCollections = useCallback(async () => {
     const collections = [];
     const collectionRef = ref(db, 'collections/');
 
@@ -179,28 +179,29 @@ function App() {
       const snapshot = await get(collectionRef);
       const collectionsArray = snapshot.val();
 
-      const collectionPromises = Object.keys(collectionsArray).map(async (i) => {
-        const dt = collectionsArray[i];
-        const ownerID = dt.owner;
+      const collectionPromises = Object.keys(collectionsArray)
+        .map(async (i) => {
+          const dt = collectionsArray[i];
+          const ownerID = dt.owner;
 
-        const ownerRef = ref(db, `users/${ownerID}`);
-        const ownerSnap = await get(ownerRef);
-        const ownerDt = ownerSnap.val();
+          const ownerRef = ref(db, `users/${ownerID}`);
+          const ownerSnap = await get(ownerRef);
+          const ownerDt = ownerSnap.val();
 
-        return {
-          image: dt.image,
-          cover: dt.cover,
-          name: dt.name,
-          description: dt.description,
-          owner: dt.owner,
-          createdAt: dt.createdAt,
-          owner_name: ownerDt?.name || '',
-          owner_image: ownerDt?.pdpLink || '',
-          owner_profile_type: ownerDt?.profileType || '',
-          id: i,
-          artworks: dt?.artworks || [],
-        };
-      });
+          return {
+            image: dt.image,
+            cover: dt.cover,
+            name: dt.name,
+            description: dt.description,
+            owner: dt.owner,
+            createdAt: dt.createdAt,
+            owner_name: ownerDt?.name || '',
+            owner_image: ownerDt?.pdpLink || '',
+            owner_profile_type: ownerDt?.profileType || '',
+            id: i,
+            artworks: dt?.artworks || [],
+          };
+        });
 
       collections.push(...await Promise.all(collectionPromises));
 
@@ -217,8 +218,7 @@ function App() {
     } catch (error) {
       console.error(error);
     }
-  }
-
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setCurrentUserId({ currentUserId }));
@@ -226,30 +226,30 @@ function App() {
       fetchCurrentUser();
       fetchLazyOwned();
     }
-  }, [currentUserId]);
+  }, [currentUserId, dispatch, fetchCurrentUser, fetchLazyOwned]);
 
   useEffect(() => {
     async function changeTitle() {
       document.title = 'Artrise - Physical NFTs Marketplace';
     }
+
     changeTitle();
     fetchUsers();
     fetchLazyListed();
     getCollections();
-  }, [currentUserId]);
+  }, [fetchLazyListed, fetchUsers, getCollections]);
 
   const memoizedRoutes = useMemo(() => (
-      routes.map((data) => (
-          <Route
-              onUpdate={() => window.scrollTo(0, 0)}
-              exact
-              path={data.path}
-              element={data.component}
-              key={data.id}
-          />
-      ))
+    routes.map((data) => (
+      <Route
+        onUpdate={() => window.scrollTo(0, 0)}
+        exact
+        path={data.path}
+        element={data.component}
+        key={data.id}
+      />
+    ))
   ), []); // Empty dependency array ensures that useMemo runs only once
-
 
   return (
     <Routes>

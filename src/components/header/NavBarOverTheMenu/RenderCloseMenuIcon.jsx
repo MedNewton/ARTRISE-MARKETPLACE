@@ -1,16 +1,33 @@
 import React from 'react';
-import {AiOutlineClose} from "react-icons/ai";
+import { AiOutlineClose } from 'react-icons/ai';
+import PropTypes from 'prop-types';
 
-const RenderCloseMenuIcon = ({handleMenuModalClose}) => {
-    return (
-        <div className="d-flex justify-content-center align-items-center"
-             onClick={
+function RenderCloseMenuIcon(props) {
+  const { handleMenuModalClose } = props;
+
+  return (
+    <>
+      <AiOutlineClose id="close-menu-icon" style={{ width: '30px', height: '30px' }} />
+      <button
+        type="button"
+        className="d-flex justify-content-center align-items-center"
+        onClick={
                  () => {
-                     handleMenuModalClose()
+                   handleMenuModalClose();
                  }
-             }>
-            <AiOutlineClose style={{width: "30px", height: "30px"}}/>
-        </div>
-    )
+             }
+        aria-labelledby="close-menu-icon"
+      />
+    </>
+  );
 }
+
+RenderCloseMenuIcon.propTypes = {
+  handleMenuModalClose: PropTypes.func,
+};
+
+RenderCloseMenuIcon.defaultProps = {
+  handleMenuModalClose: () => {},
+};
+
 export default RenderCloseMenuIcon;

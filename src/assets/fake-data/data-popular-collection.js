@@ -5,7 +5,7 @@ import popularCollectionImage4 from '../images/popularCollectionsImages/popularC
 import popularCollectionImage5 from '../images/popularCollectionsImages/popularCollectionImage5.jpg';
 import popularCollectionImage6 from '../images/popularCollectionsImages/popularCollectionImage6.jpg';
 
-import yann from '../images/avatar/yann.jpg';
+import yann from '../images/avatar/yann.png';
 
 const popularCollectionData = [
   {

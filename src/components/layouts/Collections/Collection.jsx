@@ -1,115 +1,106 @@
-import React, {useEffect, useState} from "react";
-import HeaderStyle2 from "../../header/HeaderStyle2";
-import Footer from "../../footer/Footer";
-import {useSelector} from "react-redux";
-import DisplayArtworks from "../ProfileDisplay/DisplayArtworks";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import HeaderStyle2 from '../../header/HeaderStyle2';
+import Footer from '../../footer/Footer';
+import DisplayArtworks from '../ProfileDisplay/DisplayArtworks';
 
-const Collection = () => {
+function Collection() {
+  const collections = useSelector((state) => state.usersReducer.collections);
+  const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
 
-    const collections = useSelector((state) => state.usersReducer.collections);
-    const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
+  const [cover, setCover] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
+  const [createdAt, setCreatedAt] = useState('');
+  const [collectionArtworksIds, setCollectionArtworksIds] = useState([]);
+  const [displayArtworks, setDisplayArtworks] = useState([]);
 
-    const [cover, setCover] = useState("");
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [image, setImage] = useState("");
-    const [ownerId, setOwnerId] = useState("");
-    const [createdAt, setCreatedAt] = useState("");
-    const [ownerName, setOwnerName] = useState("");
-    const [ownerImage, setOwnerImage] = useState("");
-    const [collectionId, setCollectionId] = useState("");
-    const [collectionArtworksIds, setCollectionArtworksIds] = useState([]);
-    const [displayArtworks, setDisplayArtworks] = useState([]);
+  const getCollectionData = useCallback(async (id) => {
+    const selectedCollection = collections.find((collection) => collection.id === id);
 
-    async function getCollectionData(id) {
-
-        for (let collection of collections) {
-            if (collection.id === id) {
-                setCover(collection.cover);
-                setName(collection.name);
-                setDescription(collection.description);
-                setImage(collection.image);
-                setOwnerId(collection.owner);
-                setCreatedAt(collection.createdAt);
-                setOwnerName(collection.owner_name);
-                setOwnerImage(collection.owner_image);
-                setCollectionId(collection.id);
-                setCollectionArtworksIds(collection.artworks);
-            }
-        }
+    if (selectedCollection) {
+      setCover(selectedCollection.cover);
+      setName(selectedCollection.name);
+      setDescription(selectedCollection.description);
+      setImage(selectedCollection.image);
+      setCreatedAt(selectedCollection.createdAt);
+      setCollectionArtworksIds(selectedCollection.artworks);
     }
+  }, [collections]);
 
-    async function getArtworks() {
-        for (let artworkId of collectionArtworksIds) {
-            for (let artwork of lazyListed) {
-                if (artwork.artworkId === artworkId) {
-                    setDisplayArtworks((prevState) => [...prevState, artwork]);
-                }
-            }
-        }
+  const getArtworks = useCallback(() => {
+    const selectedArtworks = lazyListed.filter((artwork) => collectionArtworksIds.includes(artwork.artworkId));
+
+    setDisplayArtworks((prevState) => [...prevState, ...selectedArtworks]);
+  }, [collectionArtworksIds, lazyListed]);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const queryParams = new URLSearchParams(url.search);
+    if (queryParams.has('id')) {
+      const collectionId = queryParams.get('id');
+      getCollectionData(collectionId);
+    } else {
+      console.error("URL doesn't contain the collection id query parameter.");
     }
+  }, [getCollectionData]);
 
-    useEffect(() => {
-        const url = new URL(window.location.href);
-        const queryParams = new URLSearchParams(url.search);
-        if (queryParams.has("id")) {
-            const collectionId = queryParams.get("id");
-            getCollectionData(collectionId);
-        } else {
-            console.error("URL doesn't contain the collection id query parameter.");
-        }
-    }, []);
+  useEffect(() => {
+    getArtworks();
+  }, [getArtworks, collectionArtworksIds, lazyListed]);
 
-    useEffect(() => {
-        getArtworks();
-    }, [collectionArtworksIds, lazyListed])
-
-    return (
+  return (
+    <div>
+      <HeaderStyle2 />
+      <div
+        className="collectionCoverSection"
+        style={{ backgroundImage: `url(${cover})` }}
+      />
+      <div
+        className="collection-page-Image"
+        style={{ backgroundImage: `url(${image})` }}
+      >
+        <img src="" className="collectionImg" alt="" />
+      </div>
+      <div className="collection-page-wrapper">
         <div>
-            <HeaderStyle2/>
-            <div
-                className="collectionCoverSection"
-                style={{backgroundImage: `url(${cover})`}}
-            >
-            </div>
-            <div
-                className="collection-page-Image"
-                style={{backgroundImage: `url(${image})`}}
-            >
-                <img src="" className="collectionImg" alt=""/>
-            </div>
-                <div className='collection-page-wrapper'>
-                    <div>
-                        <h3>{name ? name : ""}</h3>
-                    </div>
-                    <div className='flex-row-align-center'>
-                        <div className='flex-row-align-center'>
-                            <p className='mg-r-12'>Artworks</p>
-                            <h5>{collectionArtworksIds ? collectionArtworksIds.length.toString() : "0"}</h5>
-                        </div>
-                        <h4 style={{paddingLeft: '10px', paddingRight: '10px'}}>-</h4>
-                        <div className='flex-row-align-center'>
-                            <p className='mg-r-12'>Created at</p> <h5>{createdAt ? createdAt : ""}</h5>
-                        </div>
-                        <h4 style={{paddingLeft: '10px', paddingRight: '10px'}}>-</h4>
-                        <div className='flex-row-align-center'>
-                            <p  className='mg-r-12'>Creator fees</p> <h5>10%</h5>
-                        </div>
-                    </div>
-                    <div className='flex-row-align-center'>
-                        <p>{description? description: ""} </p>
-                    </div>
-                    <div>
-                        <h3>Artworks</h3>
-                    </div>
-                </div>
-            <div style={{marginTop: '20px'}}>
-                {lazyListed && <DisplayArtworks data={displayArtworks}/>}
-            </div>
-            <Footer/>
+          <h3>{name || ''}</h3>
         </div>
-    );
-
-};
+        <div className="flex-row-align-center">
+          <div className="flex-row-align-center">
+            <p className="mg-r-12">Artworks</p>
+            <h5>{collectionArtworksIds ? collectionArtworksIds.length.toString() : '0'}</h5>
+          </div>
+          <h4 style={{ paddingLeft: '10px', paddingRight: '10px' }}>-</h4>
+          <div className="flex-row-align-center">
+            <p className="mg-r-12">Created at</p>
+            {' '}
+            <h5>{createdAt || ''}</h5>
+          </div>
+          <h4 style={{ paddingLeft: '10px', paddingRight: '10px' }}>-</h4>
+          <div className="flex-row-align-center">
+            <p className="mg-r-12">Creator fees</p>
+            {' '}
+            <h5>10%</h5>
+          </div>
+        </div>
+        <div className="flex-row-align-center">
+          <p>
+            {description || ''}
+            {' '}
+          </p>
+        </div>
+        <div>
+          <h3>Artworks</h3>
+        </div>
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        {lazyListed && <DisplayArtworks data={displayArtworks} />}
+      </div>
+      <Footer />
+    </div>
+  );
+}
 
 export default Collection;

@@ -1,36 +1,25 @@
-import React, { useState, useEffect, useCallback } from "react";
-import ImageViewer from "react-simple-image-viewer";
-import HeaderStyle2 from "../components/header/HeaderStyle2";
-import Footer from "../components/footer/Footer";
-import { Link, redirect } from "react-router-dom";
-import "react-tabs/style/react-tabs.css";
-import './styles/artwork.css'
-import { Accordion } from "react-bootstrap-accordion";
-import yann from "../assets/images/avatar/yann.jpg";
-import db from "../firebase";
-import { useLocation } from "react-router-dom";
-import {
-  ref,
-  onValue,
-  get,
-  update,
-  set,
-  child,
-  remove,
-  query,
-  equalTo,
-} from "firebase/database";
-import { useAccount, useBalance } from "wagmi";
-import axios from "axios";
-import Web3 from "web3";
-import { BsFillQuestionCircleFill } from "react-icons/bs";
-import Swal from "sweetalert2";
+/*eslint-disable*/
+import React, { useCallback, useEffect, useState } from 'react';
+import ImageViewer from 'react-simple-image-viewer';
+import { Link, useLocation } from 'react-router-dom';
+import 'react-tabs/style/react-tabs.css';
+import './styles/artwork.css';
+import { Accordion } from 'react-bootstrap-accordion';
 
-import ShippingModal from "../components/layouts/ShippingModal";
-import { Modal , Button} from "react-bootstrap";
-import { ethers } from "ethers";
-import { icons } from "react-icons";
-import MediaViewer from "../components/mediaViewer/MediaViewer";
+import { get, ref, set } from 'firebase/database';
+import { useAccount, useBalance } from 'wagmi';
+import axios from 'axios';
+import Web3 from 'web3';
+import { BsFillQuestionCircleFill } from 'react-icons/bs';
+import Swal from 'sweetalert2';
+
+import { Button, Modal } from 'react-bootstrap';
+import { ethers } from 'ethers';
+import db from '../firebase';
+import ShippingModal from '../components/layouts/ShippingModal';
+import HeaderStyle2 from '../components/header/HeaderStyle2';
+import Footer from '../components/footer/Footer';
+import MediaViewer from '../components/layouts/mediaViewer/MediaViewer';
 
 class LazyNFT {
   constructor(i, d, o, c) {
@@ -41,7 +30,7 @@ class LazyNFT {
   }
 }
 
-const Artwork = () => {
+function Artwork() {
   const location = useLocation();
   const initialData = location.state ? location.state.data : null;
   const [Offerdata, setData] = useState(initialData);
@@ -49,21 +38,20 @@ const Artwork = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [nft, setNFT] = useState();
-  const [owner, setOwner] = useState();
-  const [ownerAddress, setOwnerAddress] = useState("");
-  const [CollectionID, setCollectionID] = useState("");
+  const [ownerAddress, setOwnerAddress] = useState('');
+  const [CollectionID, setCollectionID] = useState('');
   const [physicalImages, setPhysicalImages] = useState([]);
-  const [ipfsURL, setIpfsURL] = useState("");
+  const [ipfsURL, setIpfsURL] = useState('');
   const [price, setPrice] = useState(0);
   const [shippingPrice, setShippingPrice] = useState(0);
-  const [listingID, setListingID] = useState("");
+  const [listingID, setListingID] = useState('');
   const [OfferModal, setOfferModal] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState("");
+  // const [loading, setLoading] = useState(false);
+  // const [status, setStatus] = useState('');
 
   const [shippingModalShow, setShippingModalShow] = useState(false);
-  const [transactionStatus, setTransactionStatus] = useState("");
+  // const [transactionStatus, setTransactionStatus] = useState('');
 
   const openImageViewer = useCallback((index) => {
     setCurrentImage(index);
@@ -75,32 +63,32 @@ const Artwork = () => {
     setIsViewerOpen(false);
   };
 
-  const { address, isConnected } = useAccount();
-  const { data, isError, isLoading } = useBalance({
-    address: address,
+  const { address} = useAccount();
+  const { data } = useBalance({
+    address,
   });
 
   async function getNFTData() {
     let lazyNFT;
-    let nftID = window.location.href.toString().split("id=")[1];
-    const artworkRef = ref(db, "artworks/" + nftID);
+    const nftID = window.location.href.toString().split('id=')[1];
+    const artworkRef = ref(db, `artworks/${nftID}`);
     await get(artworkRef).then(async (snapshot) => {
-      let collectionID = snapshot.val().collection;
-      setCollectionID(collectionID)
-      let key = snapshot.key;
-      let IPFS_URL = snapshot.val().ipfsURI;
+      const collectionID = snapshot.val().collection;
+      setCollectionID(collectionID);
+      const { key } = snapshot;
+      const IPFS_URL = snapshot.val().ipfsURI;
       setIpfsURL(IPFS_URL);
-      let data = await axios.get(IPFS_URL);
+      const data = await axios.get(IPFS_URL);
       let collection;
-      let collectionRef = ref(db, "collections/" + collectionID);
+      const collectionRef = ref(db, `collections/${collectionID}`);
       await get(collectionRef).then(async (snapshot) => {
         collection = snapshot.val();
-      })
-      let ownerID = snapshot.val().owner;
+      });
+      const ownerID = snapshot.val().owner;
       setOwnerAddress(ownerID);
-      const userRef = ref(db, "users/" + ownerID);
+      const userRef = ref(db, `users/${ownerID}`);
       await get(userRef).then(async (snapshot) => {
-        let owner = snapshot.val();
+        const owner = snapshot.val();
         lazyNFT = new LazyNFT(key, data.data, owner);
         setNFT(lazyNFT);
       });
@@ -109,19 +97,18 @@ const Artwork = () => {
   }
 
   async function getPrice() {
-    let nftID = window.location.href.toString().split("id=")[1];
-    let listingsRef = ref(db, "listings/");
+    const nftID = window.location.href.toString().split('id=')[1];
+    const listingsRef = ref(db, 'listings/');
     await get(listingsRef).then(async (snapshot) => {
-      let listings = snapshot.val();
-      for (let i in listings) {
-        let listing = listings[i];
+      const listings = snapshot.val();
+      for (const i in listings) {
+        const listing = listings[i];
         if (listing.artwork_id === nftID) {
           setListed(true);
           setListingID(i);
-          if(Offerdata != null){
+          if (Offerdata != null) {
             setPrice(Offerdata?.offeredprice);
-          }else{
-
+          } else {
             setPrice(listing.price);
           }
           setShippingPrice(parseFloat(listing.shipping));
@@ -136,765 +123,761 @@ const Artwork = () => {
   }, []);
 
   const payForNFT = async () => {
-    let nftID = window.location.href.toString().split("id=")[1];
-    if(address != null){
-    let userBalance = parseFloat(data.formatted);
-    // let userBalance = 1000;
-    alert(userBalance);
-    // alert(usdPriceInEth);
-    // let totalToPay = price + (shippingPrice / 1806.96);
-    // alert('price: '+price)
-    // alert(shippingPrice)
-    // let totalToPay = price;
-    alert(totalToPay);
-    let totalToPay = price + shippingPrice.toFixed(2) / 1806.96;
-    // alert(totalToPay.toFixed(6));
-    let totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
-    // alert(totalToPayInWei);
-    if (userBalance < totalToPay) {
-      Swal.fire({
-        icon: "error",
-        title: "Insufficient funds !",
-        text: "The funds in your wallet are insufficient to pay for this artwork.",
-      });
-    } else {
-      try {
-        await window.ethereum.enable();
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const transaction = {
-          to: "0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44",
-          value: totalToPayInWei,
-        };
-        // alert(transaction);
-        const sendTransaction = await signer.sendTransaction(transaction);
-        setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
-        if (sendTransaction.hash) {
-          await handleMint().then(async () => {
-            let listingsRef = ref(db, "listings/" + listingID);
-            await set(listingsRef, null).then(() => {
-              Swal.fire({
-                icon: "success",
-                title: "The Artwork is now yours ! !",
-                text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
-              });
-              let orderID =(Math.random() + 1).toString(36).substring(2);
-              let orderRef = ref(db,"orders/"+orderID);
-              set(orderRef,
-                {
-                  "artworkid" : nftID,
-                  "listingid" : listingID,
-                  "sellersid" : ownerAddress,
-                  "buyersid" : address,
-                  "price" : totalToPay,
-                  "Collectionid" : CollectionID,
-                  "buyersWallet" : address,
-                  "status": "Pending Shipping",
-                  "purchasedate" : Date().getTime()
+    const nftID = window.location.href.toString().split('id=')[1];
+    if (address != null) {
+      const userBalance = parseFloat(data.formatted);
+      // let userBalance = 1000;
+      alert(userBalance);
+      // alert(usdPriceInEth);
+      // let totalToPay = price + (shippingPrice / 1806.96);
+      // alert('price: '+price)
+      // alert(shippingPrice)
+      // let totalToPay = price;
+      // alert(totalToPay);
+      const totalToPay = price + shippingPrice.toFixed(2) / 1806.96;
+      // alert(totalToPay.toFixed(6));
+      const totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
+      // alert(totalToPayInWei);
+      if (userBalance < totalToPay) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Insufficient funds !',
+          text: 'The funds in your wallet are insufficient to pay for this artwork.',
+        });
+      } else {
+        try {
+          await window.ethereum.enable();
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+          const transaction = {
+            to: '0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44',
+            value: totalToPayInWei,
+          };
+          // alert(transaction);
+          const sendTransaction = await signer.sendTransaction(transaction);
+          // setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
+          if (sendTransaction.hash) {
+            await handleMint().then(async () => {
+              const listingsRef = ref(db, `listings/${listingID}`);
+              await set(listingsRef, null).then(() => {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'The Artwork is now yours ! !',
+                  text: 'You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.',
                 });
-
+                const orderID = (Math.random() + 1).toString(36).substring(2);
+                const orderRef = ref(db, `orders/${orderID}`);
+                set(
+                  orderRef,
+                  {
+                    artworkid: nftID,
+                    listingid: listingID,
+                    sellersid: ownerAddress,
+                    buyersid: address,
+                    price: totalToPay,
+                    Collectionid: CollectionID,
+                    buyersWallet: address,
+                    status: 'Pending Shipping',
+                    purchasedate: Date().getTime(),
+                  },
+                );
+              });
             });
-          });
+          }
+        } catch (error) {
+          console.error('Error transferring ETH:', error);
+          // setTransactionStatus('Error transferring ETH');
         }
-      } catch (error) {
-        console.error("Error transferring ETH:", error);
-        setTransactionStatus("Error transferring ETH");
       }
+    } else {
+      await Swal.fire({
+        icon: 'error',
+        title: 'Wallet Not Connected !',
+        text: 'Please Connect Your Wallet in Order to Complete the Purchase',
+      });
     }
-  }else{
-    Swal.fire({
-      icon: "error",
-      title: "Wallet Not Connected !",
-      text: "Please Connect Your Wallet in Order to Complete the Purchase",
-    });
-  }
   };
 
-
-  const DemoPurchase = async () => {
-    let orderID =(Math.random() + 1).toString(36).substring(2);
-    let orderRef = ref(db,"orders/"+orderID);
-    await set(orderRef,
-      {
-        "artworkid" : window.location.href.toString().split("id=")[1],
-        "listingid" : listingID,
-        "sellersid" : ownerAddress,
-        "buyersid" : address,
-        "price" : "100",
-        "Collectionid" : CollectionID,
-        "buyersWallet" : address,
-        "status": "Pending Shipping"
-      });
-      Swal.fire({
-        icon: "success",
-        title: "The Artwork is now yours ! !",
-        text: "You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.",
-      });
-      redirect('/page/confirmation')
-  }
+  // const DemoPurchase = async () => {
+  //   const orderID = (Math.random() + 1).toString(36).substring(2);
+  //   const orderRef = ref(db, `orders/${orderID}`);
+  //   await set(
+  //     orderRef,
+  //     {
+  //       artworkid: window.location.href.toString().split('id=')[1],
+  //       listingid: listingID,
+  //       sellersid: ownerAddress,
+  //       buyersid: address,
+  //       price: '100',
+  //       Collectionid: CollectionID,
+  //       buyersWallet: address,
+  //       status: 'Pending Shipping',
+  //     },
+  //   );
+  //   Swal.fire({
+  //     icon: 'success',
+  //     title: 'The Artwork is now yours ! !',
+  //     text: 'You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.',
+  //   });
+  //   redirect('/page/confirmation');
+  // };
 
   const handleMint = async () => {
-    setLoading(true);
-    setStatus("");
+    // setLoading(true);
+    // setStatus('');
 
     const web3 = new Web3(window.ethereum);
 
-    const raribleProtocolAddress = "0x9201a886740D193E315F1F1B2B193321D6701D07";
+    const raribleProtocolAddress = '0x9201a886740D193E315F1F1B2B193321D6701D07';
     const raribleProtocolABI = [
       {
         inputs: [
-          { internalType: "string", name: "name", type: "string" },
-          { internalType: "string", name: "symbol", type: "string" },
-          { internalType: "string", name: "baseURI", type: "string" },
-          { internalType: "uint256", name: "batch_amount", type: "uint256" },
-          { internalType: "uint256", name: "royalty_amount", type: "uint256" },
-          { internalType: "address", name: "creator", type: "address" },
+          { internalType: 'string', name: 'name', type: 'string' },
+          { internalType: 'string', name: 'symbol', type: 'string' },
+          { internalType: 'string', name: 'baseURI', type: 'string' },
+          { internalType: 'uint256', name: 'batch_amount', type: 'uint256' },
+          { internalType: 'uint256', name: 'royalty_amount', type: 'uint256' },
+          { internalType: 'address', name: 'creator', type: 'address' },
         ],
-        stateMutability: "nonpayable",
-        type: "constructor",
+        stateMutability: 'nonpayable',
+        type: 'constructor',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "owner",
-            type: "address",
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "address",
-            name: "approved",
-            type: "address",
+            internalType: 'address',
+            name: 'approved',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'tokenId',
+            type: 'uint256',
           },
         ],
-        name: "Approval",
-        type: "event",
+        name: 'Approval',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "owner",
-            type: "address",
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "address",
-            name: "operator",
-            type: "address",
+            internalType: 'address',
+            name: 'operator',
+            type: 'address',
           },
           {
             indexed: false,
-            internalType: "bool",
-            name: "approved",
-            type: "bool",
+            internalType: 'bool',
+            name: 'approved',
+            type: 'bool',
           },
         ],
-        name: "ApprovalForAll",
-        type: "event",
+        name: 'ApprovalForAll',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "previousOwner",
-            type: "address",
+            internalType: 'address',
+            name: 'previousOwner',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "address",
-            name: "newOwner",
-            type: "address",
+            internalType: 'address',
+            name: 'newOwner',
+            type: 'address',
           },
         ],
-        name: "OwnershipTransferred",
-        type: "event",
+        name: 'OwnershipTransferred',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "creator",
-            type: "address",
+            internalType: 'address',
+            name: 'creator',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "address",
-            name: "buyer",
-            type: "address",
+            internalType: 'address',
+            name: 'buyer',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
           },
         ],
-        name: "RecievedRoyalties",
-        type: "event",
+        name: 'RecievedRoyalties',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "creator",
-            type: "address",
+            internalType: 'address',
+            name: 'creator',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "price",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "amount_made",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'amount_made',
+            type: 'uint256',
           },
         ],
-        name: "SeriesMade",
-        type: "event",
+        name: 'SeriesMade',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "buyer",
-            type: "address",
+            internalType: 'address',
+            name: 'buyer',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "token_id",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'token_id',
+            type: 'uint256',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "price",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
           },
         ],
-        name: "SeriesPurchased",
-        type: "event",
+        name: 'SeriesPurchased',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "from",
-            type: "address",
+            internalType: 'address',
+            name: 'from',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "address",
-            name: "to",
-            type: "address",
+            internalType: 'address',
+            name: 'to',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'tokenId',
+            type: 'uint256',
           },
         ],
-        name: "Transfer",
-        type: "event",
+        name: 'Transfer',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "to",
-            type: "address",
+            internalType: 'address',
+            name: 'to',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "fee",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'fee',
+            type: 'uint256',
           },
         ],
-        name: "TransferFee",
-        type: "event",
+        name: 'TransferFee',
+        type: 'event',
       },
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "address",
-            name: "to",
-            type: "address",
+            internalType: 'address',
+            name: 'to',
+            type: 'address',
           },
           {
             indexed: true,
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
           },
         ],
-        name: "TransferPayment",
-        type: "event",
+        name: 'TransferPayment',
+        type: 'event',
       },
       {
-        inputs: [{ internalType: "address", name: "", type: "address" }],
-        name: "BalancesMap",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [{ internalType: 'address', name: '', type: 'address' }],
+        name: 'BalancesMap',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "MAX_MINT",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'MAX_MINT',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "MintableAddress",
+        name: 'MintableAddress',
         outputs: [
-          { internalType: "address payable", name: "", type: "address" },
+          { internalType: 'address payable', name: '', type: 'address' },
         ],
-        stateMutability: "view",
-        type: "function",
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        name: "PreMintData",
+        inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        name: 'PreMintData',
         outputs: [
           {
-            internalType: "uint256",
-            name: "amount_of_tokens_left",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'amount_of_tokens_left',
+            type: 'uint256',
           },
-          { internalType: "uint256", name: "price", type: "uint256" },
-          { internalType: "address payable", name: "creator", type: "address" },
-          { internalType: "string", name: "url", type: "string" },
+          { internalType: 'uint256', name: 'price', type: 'uint256' },
+          { internalType: 'address payable', name: 'creator', type: 'address' },
+          { internalType: 'string', name: 'url', type: 'string' },
         ],
-        stateMutability: "view",
-        type: "function",
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        name: "PrintSeries",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        name: 'PrintSeries',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        name: "_batchMintOwnersMap",
+        inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        name: '_batchMintOwnersMap',
         outputs: [
-          { internalType: "uint256", name: "start", type: "uint256" },
-          { internalType: "uint256", name: "end", type: "uint256" },
-          { internalType: "address", name: "owner", type: "address" },
+          { internalType: 'uint256', name: 'start', type: 'uint256' },
+          { internalType: 'uint256', name: 'end', type: 'uint256' },
+          { internalType: 'address', name: 'owner', type: 'address' },
         ],
-        stateMutability: "view",
-        type: "function",
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-        name: "_exists",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "_totalBatches",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
+        name: '_exists',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "_totalSupply",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        name: '_totalBatches',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [],
+        name: '_totalSupply',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "to", type: "address" },
-          { internalType: "uint256", name: "tokenId", type: "uint256" },
+          { internalType: 'address', name: 'to', type: 'address' },
+          { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
         ],
-        name: "approve",
+        name: 'approve',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "address", name: "owner", type: "address" }],
-        name: "balanceOf",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+        name: 'balanceOf',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "baseURI",
-        outputs: [{ internalType: "string", name: "", type: "string" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'baseURI',
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "to", type: "address" },
-          { internalType: "uint256", name: "count", type: "uint256" },
+          { internalType: 'address', name: 'to', type: 'address' },
+          { internalType: 'uint256', name: 'count', type: 'uint256' },
         ],
-        name: "batchMint",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "nonpayable",
-        type: "function",
+        name: 'batchMint',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "uint256", name: "_amount", type: "uint256" },
-          { internalType: "uint256", name: "_price", type: "uint256" },
-          { internalType: "string", name: "_url", type: "string" },
+          { internalType: 'uint256', name: '_amount', type: 'uint256' },
+          { internalType: 'uint256', name: '_price', type: 'uint256' },
+          { internalType: 'string', name: '_url', type: 'string' },
         ],
-        name: "createPrintSeries",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "nonpayable",
-        type: "function",
+        name: 'createPrintSeries',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "exchange",
-        outputs: [{ internalType: "address", name: "", type: "address" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'exchange',
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-        name: "getApproved",
-        outputs: [{ internalType: "address", name: "", type: "address" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
+        name: 'getApproved',
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "hasRoyalties",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "pure",
-        type: "function",
+        name: 'hasRoyalties',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'pure',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "owner", type: "address" },
-          { internalType: "address", name: "operator", type: "address" },
+          { internalType: 'address', name: 'owner', type: 'address' },
+          { internalType: 'address', name: 'operator', type: 'address' },
         ],
-        name: "isApprovedForAll",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'isApprovedForAll',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "address", name: "to", type: "address" }],
-        name: "mint",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "nonpayable",
-        type: "function",
+        inputs: [{ internalType: 'address', name: 'to', type: 'address' }],
+        name: 'mint',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "uint256", name: "_seriesID", type: "uint256" },
-          { internalType: "address", name: "_to", type: "address" },
+          { internalType: 'uint256', name: '_seriesID', type: 'uint256' },
+          { internalType: 'address', name: '_to', type: 'address' },
         ],
-        name: "mintSeries",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "payable",
-        type: "function",
+        name: 'mintSeries',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'payable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "to", type: "address" },
-          { internalType: "string", name: "url", type: "string" },
+          { internalType: 'address', name: 'to', type: 'address' },
+          { internalType: 'string', name: 'url', type: 'string' },
         ],
-        name: "mintWithURI",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "nonpayable",
-        type: "function",
+        name: 'mintWithURI',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "name",
-        outputs: [{ internalType: "string", name: "", type: "string" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'name',
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "owner",
-        outputs: [{ internalType: "address", name: "", type: "address" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'owner',
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-        name: "ownerOf",
-        outputs: [{ internalType: "address", name: "", type: "address" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
+        name: 'ownerOf',
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "renounceOwnership",
+        name: 'renounceOwnership',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "_creator", type: "address" },
-          { internalType: "address", name: "_buyer", type: "address" },
-          { internalType: "uint256", name: "_amount", type: "uint256" },
+          { internalType: 'address', name: '_creator', type: 'address' },
+          { internalType: 'address', name: '_buyer', type: 'address' },
+          { internalType: 'uint256', name: '_amount', type: 'uint256' },
         ],
-        name: "royaltiesRecieved",
+        name: 'royaltiesRecieved',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "royaltyAmount",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'royaltyAmount',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "royaltyInfo",
+        name: 'royaltyInfo',
         outputs: [
-          { internalType: "uint256", name: "", type: "uint256" },
-          { internalType: "address", name: "", type: "address" },
+          { internalType: 'uint256', name: '', type: 'uint256' },
+          { internalType: 'address', name: '', type: 'address' },
         ],
-        stateMutability: "view",
-        type: "function",
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "from", type: "address" },
-          { internalType: "address", name: "to", type: "address" },
-          { internalType: "uint256", name: "tokenId", type: "uint256" },
+          { internalType: 'address', name: 'from', type: 'address' },
+          { internalType: 'address', name: 'to', type: 'address' },
+          { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
         ],
-        name: "safeTransferFrom",
+        name: 'safeTransferFrom',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "from", type: "address" },
-          { internalType: "address", name: "to", type: "address" },
-          { internalType: "uint256", name: "tokenId", type: "uint256" },
-          { internalType: "bytes", name: "_data", type: "bytes" },
+          { internalType: 'address', name: 'from', type: 'address' },
+          { internalType: 'address', name: 'to', type: 'address' },
+          { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+          { internalType: 'bytes', name: '_data', type: 'bytes' },
         ],
-        name: "safeTransferFrom",
+        name: 'safeTransferFrom',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "operator", type: "address" },
-          { internalType: "bool", name: "approved", type: "bool" },
+          { internalType: 'address', name: 'operator', type: 'address' },
+          { internalType: 'bool', name: 'approved', type: 'bool' },
         ],
-        name: "setApprovalForAll",
+        name: 'setApprovalForAll',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "_exchange", type: "address" },
+          { internalType: 'address', name: '_exchange', type: 'address' },
         ],
-        name: "setExchangeContract",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "nonpayable",
-        type: "function",
+        name: 'setExchangeContract',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "bytes4", name: "interfaceId", type: "bytes4" },
+          { internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' },
         ],
-        name: "supportsInterface",
-        outputs: [{ internalType: "bool", name: "", type: "bool" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'supportsInterface',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "symbol",
-        outputs: [{ internalType: "string", name: "", type: "string" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'symbol',
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "index", type: "uint256" }],
-        name: "tokenByIndex",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [
-          { internalType: "address", name: "owner", type: "address" },
-          { internalType: "uint256", name: "index", type: "uint256" },
-        ],
-        name: "tokenOfOwnerByIndex",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [{ internalType: 'uint256', name: 'index', type: 'uint256' }],
+        name: 'tokenByIndex',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "owner", type: "address" },
-          { internalType: "uint256", name: "index", type: "uint256" },
+          { internalType: 'address', name: 'owner', type: 'address' },
+          { internalType: 'uint256', name: 'index', type: 'uint256' },
         ],
-        name: "tokenOwners",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'tokenOfOwnerByIndex',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
-        inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-        name: "tokenURI",
-        outputs: [{ internalType: "string", name: "", type: "string" }],
-        stateMutability: "view",
-        type: "function",
+        inputs: [
+          { internalType: 'address', name: 'owner', type: 'address' },
+          { internalType: 'uint256', name: 'index', type: 'uint256' },
+        ],
+        name: 'tokenOwners',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
+        name: 'tokenURI',
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "totalSeries",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'totalSeries',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [],
-        name: "totalSupply",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
+        name: 'totalSupply',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "from", type: "address" },
-          { internalType: "address", name: "to", type: "address" },
-          { internalType: "uint256", name: "tokenId", type: "uint256" },
+          { internalType: 'address', name: 'from', type: 'address' },
+          { internalType: 'address', name: 'to', type: 'address' },
+          { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
         ],
-        name: "transferFrom",
+        name: 'transferFrom',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
-          { internalType: "address", name: "newOwner", type: "address" },
+          { internalType: 'address', name: 'newOwner', type: 'address' },
         ],
-        name: "transferOwnership",
+        name: 'transferOwnership',
         outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
     ];
 
     const raribleContract = new web3.eth.Contract(
       raribleProtocolABI,
-      raribleProtocolAddress
+      raribleProtocolAddress,
     );
 
-    const metadataURI = ipfsURL;
     if (address != null) {
-      
-    
-    await raribleContract.methods
-      .mintWithURI(address, metadataURI)
-      .send({ from: address });
-  }};
+      await raribleContract.methods
+        .mintWithURI(address, ipfsURL)
+        .send({ from: address });
+    }
+  };
 
   const SendOffer = async () => {
     if (address != null) {
-
-      let nftID = window.location.href.toString().split("id=")[1];
-      let userBalance = parseFloat(data.formatted);
-      let OfferAmount = document.getElementById('OfferAmount').value
+      const nftID = window.location.href.toString().split('id=')[1];
+      const userBalance = parseFloat(data.formatted);
+      const OfferAmount = document.getElementById('OfferAmount').value;
 
       // User Balance
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const balance = await provider.getBalance(address);
       const UserBalanceInEth = ethers.utils.formatEther(balance);
-      if(UserBalanceInEth >= OfferAmount){
-        let OfferId =(Math.random() + 1).toString(36).substring(2);
-        let OfferRef = ref(db,"offers/"+OfferId);
-        await set(OfferRef,
+      if (UserBalanceInEth >= OfferAmount) {
+        const OfferId = (Math.random() + 1).toString(36).substring(2);
+        const OfferRef = ref(db, `offers/${OfferId}`);
+        await set(
+          OfferRef,
           {
-            "artworkid" : nftID,
-            "listingid" : listingID,
-            "sellersid" : ownerAddress,
-            "buyersid" : address,
-            "image" : nft.data.image,
-            "price" : price,
-            "offeredprice" : OfferAmount,
-            "Collectionid" : CollectionID,
-            "buyersWallet" : address,
-            "status": "Pending",
-            "offerdate" : new Date().getTime()
-          }).then(
-            async ()=>{
-              Swal.fire({
-                icon: "success",
-                title : "Offer Sent",
-                text : "Offer Has Been Successfully sent to the Owner of this Artwork!"
-              });
-            }
-          );
-
+            artworkid: nftID,
+            listingid: listingID,
+            sellersid: ownerAddress,
+            buyersid: address,
+            image: nft.data.image,
+            price,
+            offeredprice: OfferAmount,
+            Collectionid: CollectionID,
+            buyersWallet: address,
+            status: 'Pending',
+            offerdate: new Date().getTime(),
+          },
+        ).then(
+          async () => {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Offer Sent',
+              text: 'Offer Has Been Successfully sent to the Owner of this Artwork!',
+            });
+          },
+        );
+      } else {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Insufficient Balance',
+          text: 'Please Add Balance to your Etherium Wallet!',
+        });
       }
-      else{
-        Swal.fire({
-          icon: "error",
-          title : "Insufficient Balance",
-          text : "Please Add Balance to your Etherium Wallet!"
-        })
-      }
+    } else {
+      await Swal.fire({
+        icon: 'warning',
+        title: 'User Not Logged In!',
+        text: 'Please Login to Send an Offer!',
+      });
     }
-    else {
-      Swal.fire({
-        icon: "warning",
-        title : "User Not Logged In!",
-        text : "Please Login to Send an Offer!"
-      })
-    }
-
-
-  }
+  };
   const showOfferModal = () => setOfferModal(true);
   const hideOfferModal = () => setOfferModal(false);
 
@@ -903,10 +886,10 @@ const Artwork = () => {
   useEffect(() => {
     async function fetchPrice() {
       const response = await axios.get(
-        "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+        'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
       );
-      setUsdPriceInEth(parseFloat(response.data.USD));
-      setUsdPriceInEth(parseFloat(1806.96)); //response.data.USD
+      setUsdPriceInEth(parseFloat(response?.data?.USD));
+      setUsdPriceInEth(parseFloat(1806.96)); // response.data.USD
     }
     fetchPrice();
   }, [usdPriceInEth]);
@@ -914,7 +897,7 @@ const Artwork = () => {
   useEffect(() => {
     setInterval(async () => {
       const response = await axios.get(
-        "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+        'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
       );
       setUsdPriceInEth(parseFloat(response.data.USD));
       // setUsdPriceInEth(parseFloat(1806.96)); //response.data.USD
@@ -929,22 +912,29 @@ const Artwork = () => {
           <Modal.Title>Make an Offer</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <h4>Current Price: {price} ETH</h4>
+          <h4>
+            Current Price:
+            {price}
+            {' '}
+            ETH
+          </h4>
           <div className="offer-modal form-inline">
-            <span className="offer-label">Your Offer ETH:</span><input id="OfferAmount" className="form-control" type="number" />
+            <span className="offer-label">Your Offer ETH:</span>
+            <input id="OfferAmount" className="form-control" type="number" />
           </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={hideOfferModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={async (e) => {
-            e.preventDefault();
-            hideOfferModal();
-            SendOffer();
-          }
-
-            }>
+          <Button
+            variant="primary"
+            onClick={async (e) => {
+              e.preventDefault();
+              hideOfferModal();
+              SendOffer();
+            }}
+          >
             Save Changes
           </Button>
         </Modal.Footer>
@@ -956,20 +946,18 @@ const Artwork = () => {
               <div className="col-xl-6 col-md-12">
                 <div className="content-left">
                   <div className="artwork-media-wrapper">
-                    <MediaViewer mediaUrl = {nft?.data?.image}/>
+                    <MediaViewer mediaUrl={nft?.data?.image} />
                   </div>
-                  <div className="metadataBox" style={{ marginTop: "2%" }}>
+                  <div className="metadataBox" style={{ marginTop: '2%' }}>
                     <div className="flat-accordion2">
                       <Accordion key="0" title="Properties">
                         <div className="row propertiesBox">
-                          {nft?.data?.attributes?.map((attribute)=>{
-                            return(
-                                <div className="col-3 attr">
-                                  <p className="attributeTitle">{attribute?.trait_type}</p>
-                                  <p className="attributeValue">{attribute?.trait_value}</p>
-                                </div>
-                            )
-                          })}
+                          {nft?.data?.attributes?.map((attribute) => (
+                            <div className="col-3 attr">
+                              <p className="attributeTitle">{attribute?.trait_type}</p>
+                              <p className="attributeValue">{attribute?.trait_value}</p>
+                            </div>
+                          ))}
                         </div>
                       </Accordion>
                       <Accordion key="1" title="About the artist">
@@ -983,11 +971,9 @@ const Artwork = () => {
                           <div className="col-6">
                             <p className="detailRight">
                               <Link
-                                rel={"external"}
+                                rel="external"
                                 target="_blank"
-                                to={
-                                  "http://etherscan.io/address/0x6E42262978de5233C8d5B05B128C121fBa110DA4"
-                                }
+                                to="http://etherscan.io/address/0x6E42262978de5233C8d5B05B128C121fBa110DA4"
                               >
                                 0xa6F...0fC
                               </Link>
@@ -1029,12 +1015,12 @@ const Artwork = () => {
                   <div className="sc-item-details">
                     <h2
                       className="style2"
-                      style={{ textTransform: "capitalize" }}
+                      style={{ textTransform: 'capitalize' }}
                     >
                       {nft.data.name}
                     </h2>
                     <h5 className="style2 collectionName">
-                      {nft?.collection?.name ? nft?.collection?.name : "ARTRISE Shared Collection"}
+                      {nft?.collection?.name ? nft?.collection?.name : 'ARTRISE Shared Collection'}
                     </h5>
                     <div className="meta-item">
                       <div className="left">
@@ -1058,15 +1044,15 @@ const Artwork = () => {
                           onClick={(e) => {}}
                           id="shareBtn"
                           className="share"
-                        ></Link>
-                        <Link to="/" className="option" hidden></Link>
+                        />
+                        <Link to="/" className="option" hidden />
                       </div>
                     </div>
                     <p
                       style={{
-                        fontSize: "1.6em",
-                        lineHeight: "1.4em",
-                        marginBottom: "5%",
+                        fontSize: '1.6em',
+                        lineHeight: '1.4em',
+                        marginBottom: '5%',
                       }}
                     >
                       {nft.data.description}
@@ -1097,29 +1083,35 @@ const Artwork = () => {
                     </div>
                     <div className="meta-item-details style2">
                       <div className="item meta-price">
-                        <span className="heading">Price <small className="shippingDetails">(late minting gas not included)</small></span>
+                        <span className="heading">
+                          Price
+                          <small className="shippingDetails">(late minting gas not included)</small>
+                        </span>
                         <div className="price">
                           <div className="price-box">
-                          <h6>
-                              ${(usdPriceInEth * price).toFixed(2).toString()}
+                            <h6>
+                              $
+                              {(usdPriceInEth * price).toFixed(2).toString()}
                               &nbsp;
-                              {" ≈ "}
+                              {' ≈ '}
                               &nbsp;
-                              {price.toString()} ETH
-                            &nbsp;
-                            <BsFillQuestionCircleFill
+                              {price.toString()}
+                              {' '}
+                              ETH
+                              &nbsp;
+                              <BsFillQuestionCircleFill
                                 color="#000"
                                 size={12}
                                 className="smallpriceQuestion"
                                 onClick={() => {
                                   Swal.fire({
-                                    icon: "question",
-                                    title: "Flexible price NFTs",
-                                    text: "In order to protect users from unexpected market swings,\nARTRISE implemented the notion of flexible price NFTs\nto keep all the artworks aligned with the actual cryptocurrencies market prices.",
+                                    icon: 'question',
+                                    title: 'Flexible price NFTs',
+                                    text: 'In order to protect users from unexpected market swings,\nARTRISE implemented the notion of flexible price NFTs\nto keep all the artworks aligned with the actual cryptocurrencies market prices.',
                                   });
                                 }}
-                            />
-                          </h6>
+                              />
+                            </h6>
                           </div>
                         </div>
                       </div>
@@ -1127,19 +1119,23 @@ const Artwork = () => {
                     <div className="meta-item-details style2" id="shipping">
                       <div className="item meta-price">
                         <span className="heading">
-                          Estimated shipping cost{" "}
+                          Estimated shipping cost
+                          {' '}
                           <span
                             className="shippingDetails"
                             onClick={() => {
                               setShippingModalShow(true);
                             }}
                           >
-                            {"(View Shipping Info)"}
+                            (View Shipping Info)
                           </span>
                         </span>
                         <div className="price">
                           <div className="price-box">
-                            <h5>${shippingPrice}</h5>
+                            <h5>
+                              $
+                              {shippingPrice}
+                            </h5>
                           </div>
                         </div>
                       </div>
@@ -1154,7 +1150,7 @@ const Artwork = () => {
                       }}
 
                     >
-                      <span>{Listed? 'Buy Now' : 'Not Available'}</span>
+                      <span>{Listed ? 'Buy Now' : 'Not Available'}</span>
                     </Link>
                     <Link
                       to="/"
@@ -1172,28 +1168,26 @@ const Artwork = () => {
                       <h5 className="physicalArtworksTitle">
                         Pictures of the physical artwork:
                       </h5>
-                      <div className="row" style={{ marginBottom: "3%" }}>
+                      <div className="row" style={{ marginBottom: '3%' }}>
                         {nft?.data?.physical_images?.map((image, index) => (
-                          <>
-                            <div className="col-3 physImgCol" key={index + 1}>
-                              <img
-                                src={image.image_url}
-                                onClick={() => openImageViewer(index)}
-                                className={"physImg"}
-                                key={index + 1}
-                                style={{ margin: "2px" }}
-                                alt=""
-                              />
-                            </div>
-                          </>
+                          <div className="col-3 physImgCol" key={index + 1}>
+                            <img
+                              src={image.image_url}
+                              onClick={() => openImageViewer(index)}
+                              className="physImg"
+                              key={index + 1}
+                              style={{ margin: '2px' }}
+                              alt=""
+                            />
+                          </div>
                         ))}
 
                         {isViewerOpen && (
                           <ImageViewer
                             src={physicalImages}
                             currentIndex={currentImage}
-                            disableScroll={true}
-                            closeOnClickOutside={true}
+                            disableScroll
+                            closeOnClickOutside
                             onClose={closeImageViewer}
                           />
                         )}
@@ -1202,8 +1196,8 @@ const Artwork = () => {
 
                     <div
                       className="flat-tabs themesflat-tabs"
-                      style={{ marginBottom: "5%" }}
-                    ></div>
+                      style={{ marginBottom: '5%' }}
+                    />
                   </div>
                 </div>
               </div>
@@ -1211,7 +1205,7 @@ const Artwork = () => {
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
       <Footer />
       <ShippingModal
@@ -1220,6 +1214,6 @@ const Artwork = () => {
       />
     </div>
   );
-};
+}
 
 export default Artwork;
