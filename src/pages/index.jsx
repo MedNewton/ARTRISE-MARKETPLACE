@@ -5,7 +5,7 @@ import LiveAuctions from './LiveAuctions';
 import Blog from './Blog';
 import BlogDetails from './BlogDetails';
 import HelpCenter from './HelpCenter';
-import Authors01 from './Authors01';
+import Craftsmen from './Craftsmen';
 import CreateItem from './CreateItem';
 import EditProfile from './EditProfile';
 import Ranking from './Ranking';
@@ -38,9 +38,11 @@ import OfferList from './OfferSystem/OfferList';
 import OfferSent from './OfferSystem/OfferSent';
 import ConfirmationPage from './confirmationpage';
 import ReferralProgram from './referralProgram';
+import Masterpieces from './Masterpieces';
 
 const routes = [
   { id: '1', path: '/', component: <HomePage /> },
+  { id: '1', path: '/masterpieces', component: <Masterpieces /> },
   { id: '3', path: '/private-display', component: <LazyDisplay /> },
   { id: '5', path: '/artwork-details', component: <Artwork /> },
   { id: '6', path: '/list-item', component: <ListItem /> },
@@ -57,7 +59,7 @@ const routes = [
   { id: '37', path: '/blog-details', component: <BlogDetails /> },
   { id: '38', path: '/help-center', component: <HelpCenter /> },
   { id: '39', path: '/collections', component: <Collections /> },
-  { id: '40', path: '/authors-01', component: <Authors01 /> },
+  { id: '40', path: '/craftsmen', component: <Craftsmen /> },
   { id: '44', path: '/create-item', component: <CreateItem /> },
   { id: '45', path: '/create-collection', component: <CreateCollection /> },
   { id: '46', path: '/create-public-collection', component: <CreatePublicCollection /> },

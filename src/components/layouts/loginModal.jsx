@@ -1,12 +1,11 @@
-/*eslint-disable */
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
+// eslint-disable-next-line import/no-unresolved
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import PropTypes from 'prop-types';
 import SocialLoginModal from './socialLoginModal';
 
 function LoginModal(props) {
-  // { show, onHide }
   const { onHide: propsOnHide, show: propsShow } = props;
   const { open } = useWeb3Modal();
   const [showSocialLoginModal, setShowSocialLoginModal] = useState(false);
@@ -17,7 +16,6 @@ function LoginModal(props) {
       onHide={propsOnHide}
     >
       <Modal.Header closeButton />
-
       <div className="modal-body space-y-20 pd-40">
         <h3>Login</h3>
         <p className="text-center">
@@ -46,7 +44,6 @@ function LoginModal(props) {
         >
           Connect wallet
         </button>
-
         <p className="text-center" style={{ marginTop: '10%', marginBottom: '0px !important' }}>
           <span className="price color-popup" style={{ fontWeight: '500', fontSize: '1.1em' }}>
             Login using your social networks:
@@ -64,7 +61,6 @@ function LoginModal(props) {
         >
           Social login
         </button>
-
       </div>
       <SocialLoginModal
         show={showSocialLoginModal}
@@ -72,7 +68,6 @@ function LoginModal(props) {
         hideParent={() => { propsOnHide(); }}
       />
     </Modal>
-
   );
 }
 

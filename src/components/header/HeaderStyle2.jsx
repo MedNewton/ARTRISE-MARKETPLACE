@@ -3,6 +3,7 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
+// eslint-disable-next-line import/no-unresolved
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useMediaQuery } from 'react-responsive';
 import { useDispatch, useSelector } from 'react-redux';
@@ -49,13 +50,28 @@ function HeaderStyle2() {
   const isSticky = () => {
     const header = document.querySelector('.js-header');
     const scrollTop = window.scrollY;
-    scrollTop >= 300
-      ? header.classList.add('is-fixed')
-      : header.classList.remove('is-fixed');
-    scrollTop >= 400
-      ? header.classList.add('is-small')
-      : header.classList.remove('is-small');
+    if (scrollTop >= 300) {
+      header.classList.add('is-fixed');
+    } else {
+      header.classList.remove('is-fixed');
+    }
+    if (scrollTop >= 400) {
+      header.classList.add('is-small');
+    } else {
+      header.classList.remove('is-small');
+    }
   };
+
+  useEffect(() => {
+    document.title = 'Artrise - Physical NFTs Marketplace';
+    const handleScroll = () => {
+      isSticky();
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     window.ire('identify', { customerId: currentUserId });
@@ -91,15 +107,7 @@ function HeaderStyle2() {
           }
         });
     }
-  }, [address]);
-
-  useEffect(() => {
-    document.title = 'Artrise - Physical NFTs Marketplace';
-    window.addEventListener('scroll', isSticky);
-    return () => {
-      window.removeEventListener('scroll', isSticky);
-    };
-  });
+  }, [address, referee, dispatch, disconnect]);
 
   const checkForReferralCode = useCallback(() => {
     const url = window.location.href;
@@ -163,6 +171,7 @@ function HeaderStyle2() {
                         <RenderLogo />
                         <RenderHomeExploreDropButtons />
                         <HeaderSearch />
+
                         {
                           currentUserId
                           && isWalletConnected

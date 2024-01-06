@@ -1,13 +1,13 @@
-/*eslint-disable */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
+// eslint-disable-next-line import/no-unresolved
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { WagmiConfig } from 'wagmi';
 import { arbitrum, mainnet } from 'viem/chains';
 import { Provider } from 'react-redux';
+import App from './App';
 import store from './redux/store';
 
 // 1. Get projectId at https://cloud.walletconnect.com
@@ -19,30 +19,32 @@ const metadata = {
   name: 'ArtRise',
   description: 'ArtRise Marketplace',
   url: 'https://marketplace.artrise.io/',
-  icons: ['https://avatars.githubusercontent.com/u/37784886']
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
 const chains = [mainnet, arbitrum];
 const wagmiConfig = defaultWagmiConfig({
   chains,
   projectId,
-  metadata
+  metadata,
 });
 
 createWeb3Modal({
   wagmiConfig,
   projectId,
-  chains
+  chains,
 });
 
 const root = createRoot(document.getElementById('root'));
 
-root.render(<WagmiConfig config={wagmiConfig}>
-  <ThirdwebProvider activeChain="ethereum" clientId={clientId}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App/>
-      </BrowserRouter>
-    </Provider>
-  </ThirdwebProvider>
-</WagmiConfig>);
+root.render(
+  <WagmiConfig config={wagmiConfig}>
+    <ThirdwebProvider activeChain="ethereum" clientId={clientId}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </ThirdwebProvider>
+  </WagmiConfig>,
+);

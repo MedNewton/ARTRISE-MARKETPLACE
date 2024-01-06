@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import ArtistPageMediaViewer from '../components/layouts/artistPageMediaViewer/ArtistPageMediaViewer';
 
-function Authors01() {
+function Craftsmen() {
   const artistsState = useSelector((state) => state.usersReducer.artists);
   const selectedTags = [];
 
@@ -23,7 +22,6 @@ function Authors01() {
 
   return (
     <div className="authors">
-      <HeaderStyle2 />
       <section className="tf-section our-creater dark-style2">
         <div
           className="themesflat-container"
@@ -166,4 +164,4 @@ function Authors01() {
   );
 }
 
-export default Authors01;
+export default Craftsmen;

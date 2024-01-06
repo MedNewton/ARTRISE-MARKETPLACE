@@ -19,6 +19,7 @@ import {
 import routes from './pages';
 import { LazyNFTListing } from './components/constants/LazyNFTListingClass';
 import { LazyNFT } from './components/constants/LazyNFTClass';
+import HeaderStyle2 from './components/header/HeaderStyle2';
 
 function App() {
   const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
@@ -252,9 +253,12 @@ function App() {
   ), []); // Empty dependency array ensures that useMemo runs only once
 
   return (
-    <Routes>
-      {memoizedRoutes}
-    </Routes>
+    <>
+      <HeaderStyle2 />
+      <Routes>
+        {memoizedRoutes}
+      </Routes>
+    </>
   );
 }
 

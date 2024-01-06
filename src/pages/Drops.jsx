@@ -1,5 +1,4 @@
 import React from 'react';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import liveAuctionData from '../assets/fake-data/data-live-auction';
 import liveAuctionData2 from '../assets/fake-data/data-live-auction-2';
@@ -25,7 +24,6 @@ function Drops() {
 
   return (
     <div>
-      <HeaderStyle2 />
       <div className="drop-page-header-wrapper">
         <div>
           <h2>Drops</h2>

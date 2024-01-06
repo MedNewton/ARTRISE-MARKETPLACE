@@ -1,7 +1,7 @@
-/*eslint-disable */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 function RenderHomeExploreDropButtons() {
   const [isExploreOpen, setIsExploreOpen] = useState(false);
@@ -10,25 +10,28 @@ function RenderHomeExploreDropButtons() {
     setIsExploreOpen(!isExploreOpen);
   };
 
+  const StyledListItem = styled.li`
+  
+  `;
+
   return (
     <nav id="main-nav" className="main-nav">
       <ul id="menu-primary-menu" className="menu">
         <NavItem to="/" text="Home" />
-
-        <li
+        <StyledListItem
           className="menu-item menu-item-has-children active"
           onClick={toggleExploreDropdown}
         >
           <Link to="/" onClick={(event) => event.preventDefault()}>Explore</Link>
           {isExploreOpen && (
             <ul className="sub-menu">
-              <SubNavItem to="/authors-01" text="Artists" />
+              <SubNavItem to="/craftsmen" text="Artists" />
               <SubNavItem to="/collections" text="Collections" />
-              <SubNavItem to="/explore-01" text="Artworks" />
+              <SubNavItem to="/masterpieces" text="Artworks" />
               <SubNavItem to="/explore" text="Browse" />
             </ul>
           )}
-        </li>
+        </StyledListItem>
         <NavItem to="/drops" text="Drops" />
         {/* Add more menu items here */}
         {/* <NavItem to="/profile" text="Profile" mobileOnly={true} /> */}

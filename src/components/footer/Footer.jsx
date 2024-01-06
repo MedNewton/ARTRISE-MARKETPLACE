@@ -22,7 +22,7 @@ function Footer() {
     {
       id: 'account3',
       title: 'Artists',
-      link: '/authors-01',
+      link: '/craftsmen',
     },
     {
       id: 'account4',
@@ -32,7 +32,7 @@ function Footer() {
     {
       id: 'account5',
       title: 'Artworks',
-      link: '/explore-01',
+      link: '/masterpieces',
     },
 
   ];

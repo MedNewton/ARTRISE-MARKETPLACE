@@ -33,7 +33,7 @@ function DisplayExploreLinks(props) {
 
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
-          <Link to="/authors-01">
+          <Link to="/craftsmen">
             <button
               type="button"
               className="accordion-card-display-flex-font-large"
@@ -65,7 +65,7 @@ function DisplayExploreLinks(props) {
 
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
-          <Link to="/explore-01">
+          <Link to="/masterpieces">
             <button
               type="button"
               className="accordion-card-display-flex-font-large"

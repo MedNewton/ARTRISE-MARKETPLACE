@@ -5,7 +5,6 @@ import {
   Navigation, Pagination, Scrollbar, A11y,
 } from 'swiper';
 import Countdown from 'react-countdown';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import liveAuctionData from '../assets/fake-data/data-live-auction';
 import CardModal from '../components/layouts/CardModal';
@@ -15,7 +14,6 @@ function NoResult() {
   const [modalShow, setModalShow] = useState(false);
   return (
     <div>
-      <HeaderStyle2 />
       <section className="flat-title-page inner">
         <div className="overlay" />
         <div className="themesflat-container">

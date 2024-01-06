@@ -35,7 +35,7 @@ function SliderStyle4() {
                 Marketplace for monster character cllections non fungible token NFTs
               </p>
               <div className="flat-bt-slider flex style2">
-                <Link to="/explore-01" className="sc-button header-slider style style-1 rocket fl-button pri-1">
+                <Link to="/masterpieces" className="sc-button header-slider style style-1 rocket fl-button pri-1">
                   <span>
                     Explore
                   </span>

@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ref, set, update } from 'firebase/database';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import Select from 'react-select';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import 'react-tabs/style/react-tabs.css';
 import db from '../firebase';
@@ -20,19 +18,52 @@ function ListItem() {
   const [customEndDate, setCustomEndDate] = useState(null);
 
   const shippingOptions = [
-    { value: 'free', label: 'Free Shipping' },
-    { value: 'fees', label: 'Add Shipping Fees' },
+    {
+      value: 'free',
+      label: 'Free Shipping',
+    },
+    {
+      value: 'fees',
+      label: 'Add Shipping Fees',
+    },
   ];
   const durationOptions = [
-    { value: 'custom', label: 'Custom' },
-    { value: '1_hour', label: '1 Hour' },
-    { value: '6_hours', label: '6 Hours' },
-    { value: '1_day', label: '1 Day' },
-    { value: '3_days', label: '3 Days' },
-    { value: '7_days', label: '7 Days' },
-    { value: '1_Month', label: '1 Month' },
-    { value: '3_Months', label: '3 Months' },
-    { value: '7_Months', label: '7 Months' },
+    {
+      value: 'custom',
+      label: 'Custom',
+    },
+    {
+      value: '1_hour',
+      label: '1 Hour',
+    },
+    {
+      value: '6_hours',
+      label: '6 Hours',
+    },
+    {
+      value: '1_day',
+      label: '1 Day',
+    },
+    {
+      value: '3_days',
+      label: '3 Days',
+    },
+    {
+      value: '7_days',
+      label: '7 Days',
+    },
+    {
+      value: '1_Month',
+      label: '1 Month',
+    },
+    {
+      value: '3_Months',
+      label: '3 Months',
+    },
+    {
+      value: '7_Months',
+      label: '7 Months',
+    },
   ];
 
   const handleDurationChange = (selectedOption) => {
@@ -77,12 +108,13 @@ function ListItem() {
   function navigateToHomepage() {
     window.location.href = '/';
   }
+
   const delay = (ms) => setTimeout(navigateToHomepage, ms);
 
   async function listForFixedPrice() {
     if (price <= 0) {
       toast.error(
-        "NFT listing price can't be zero or less !",
+        'NFT listing price can\'t be zero or less !',
         {
           position: 'top-left',
 
@@ -97,7 +129,8 @@ function ListItem() {
       );
     } else {
       const newListingId = getRandomInteger(30, 1000000);
-      const artworkId = window.location.href.toString().split('id=')[1].toString();
+      const artworkId = window.location.href.toString()
+        .split('id=')[1].toString();
       const artworkRef = ref(db, `artworks/${artworkId}`);
       await update(artworkRef, {
         listed: 'yes',
@@ -108,40 +141,46 @@ function ListItem() {
         likes: 0,
         price: parseFloat(price),
         shipping: parseFloat(shippingPrice),
-      }).then(() => {
-        toast.success(
-          'NFT listed succesfully !',
-          {
-            position: 'top-left',
+      })
+        .then(() => {
+          toast.success(
+            'NFT listed succesfully !',
+            {
+              position: 'top-left',
 
-            autoClose: 7000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-          },
-        );
+              autoClose: 7000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+            },
+          );
 
-        delay(7000);
-      });
+          delay(7000);
+        });
     }
   }
 
   return (
-    <div className="create-item">
-      <HeaderStyle2 />
-
+    <div>
       <div className="tf-create-item tf-section">
         <div
           className="themesflat-container"
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
         >
           <div className="row" style={{ maxWidth: '60%' }}>
             <div
               className="col-md-12"
-              style={{ marginBottom: '5%', marginTop: '2%' }}
+              style={{
+                marginBottom: '5%',
+                marginTop: '2%',
+              }}
             >
               <h2 className=" style4 mg-bt-38 ourArtists">
                 List your NFT
@@ -158,12 +197,18 @@ function ListItem() {
                     <h4 className="title-create-item">Select method</h4>
                     <div className="radio-container">
                       <div className="radio-button">
-                        <label style={{ display: 'flex', gap: '10px' }} id="fixedPrice">
+                        <label
+                          style={{
+                            display: 'flex',
+                            gap: '10px',
+                          }}
+                          htmlFor="fixedPrice"
+                        >
                           <span className="icon-fl-tag" />
                           <span>Fixed Price</span>
                         </label>
                         <input
-                          aria-labelledby="fixedPrice"
+                          id="fixedPrice"
                           type="radio"
                           name="pricing"
                           value="fixed"
@@ -174,14 +219,17 @@ function ListItem() {
                       </div>
                       <div className="radio-button">
                         <label
-                          style={{ display: 'flex', gap: '10px' }}
-                          id="timedAuction"
+                          style={{
+                            display: 'flex',
+                            gap: '10px',
+                          }}
+                          htmlFor="timedAuction"
                         >
                           <span className="icon-fl-icon-22" />
                           <span>Timed Auction</span>
                         </label>
                         <input
-                          aria-labelledby="timedAuction"
+                          id="timedAuction"
                           type="radio"
                           name="pricing"
                           value="bids"
@@ -201,15 +249,17 @@ function ListItem() {
                           aria-labelledby="priceLabel"
                           type="number"
                           placeholder="Enter price for one item (ETH)"
-                          onChange={(e) => { setPrice(parseInt(e.target.value, 10)); }}
+                          onChange={(e) => {
+                            setPrice(parseInt(e.target.value, 10));
+                          }}
                         />
                       </div>
                       <div>
-                        <label id="shippingPrice1" className="title-create-item">
+                        <label htmlFor="shippingPrice1" className="title-create-item">
                           Shipping Price:
                         </label>
                         <Select
-                          aria-labelledby="shippingPrice1"
+                          id="shippingPrice1"
                           className="multi-select"
                           options={shippingOptions}
                           value={shippingOptions.find((option) => option.value === shippingOption)}
@@ -218,14 +268,14 @@ function ListItem() {
                           }}
                         />
                         {shippingOption === 'fees' && (
-                        <input
-                          id="shippingPrice"
-                          className="mt-4"
-                          type="number"
-                          placeholder="Enter price for shipping cost"
-                          value={shippingPrice}
-                          onChange={(e) => setShippingPrice(e.target.value)}
-                        />
+                          <input
+                            id="shippingPrice"
+                            className="mt-4"
+                            type="number"
+                            placeholder="Enter price for shipping cost"
+                            value={shippingPrice}
+                            onChange={(e) => setShippingPrice(e.target.value)}
+                          />
                         )}
                       </div>
                       <div className="summary-main">
@@ -244,10 +294,10 @@ function ListItem() {
                           <h5 className="subTitleCreate">Total</h5>
                           <h5 className="subTitleCreate">
                             {
-                            shippingOption === 'free'
-                              ? price
-                              : (price + shippingPrice)
-                          }
+                              shippingOption === 'free'
+                                ? price
+                                : (price + shippingPrice)
+                            }
                           </h5>
                         </div>
                         <div className="summary-details">
@@ -277,26 +327,26 @@ function ListItem() {
                         />
 
                         {selectedDuration === 'custom' && (
-                        <div className="selected-Duration">
+                          <div className="selected-Duration">
 
-                          <input
-                            id="duration"
-                            type="datetime-local"
-                            style={{ marginBottom: '0px' }}
-                            onChange={handleCustomStartDateChange}
-                          />
-                          <p> - </p>
-                          <input
-                            type="datetime-local"
-                            style={{ marginBottom: '0px' }}
-                            onChange={handleCustomEndDateChange}
-                          />
-                        </div>
+                            <input
+                              id="duration"
+                              type="datetime-local"
+                              style={{ marginBottom: '0px' }}
+                              onChange={handleCustomStartDateChange}
+                            />
+                            <p> - </p>
+                            <input
+                              type="datetime-local"
+                              style={{ marginBottom: '0px' }}
+                              onChange={handleCustomEndDateChange}
+                            />
+                          </div>
                         )}
                         {selectedDuration === 'custom' && customStartDate && customEndDate && (
-                        <div style={{ padding: '20px 0px' }}>
-                          <p>{calculateDuration()}</p>
-                        </div>
+                          <div style={{ padding: '20px 0px' }}>
+                            <p>{calculateDuration()}</p>
+                          </div>
                         )}
                       </div>
 
@@ -310,7 +360,9 @@ function ListItem() {
                           className="mb-0"
                           type="number"
                           placeholder="Enter price for one item (ETH)"
-                          onChange={(e) => { setAuctionprice(e.target.value); }}
+                          onChange={(e) => {
+                            setAuctionprice(e.target.value);
+                          }}
                         />
                       </div>
 
@@ -320,9 +372,9 @@ function ListItem() {
                           <h5 className="subTitleCreate">Duration</h5>
                           <h5 className="subTitleCreate">
                             {
-                            selectedDuration === 'custom'
-                              ? calculateDuration() : selectedDuration
-}
+                              selectedDuration === 'custom'
+                                ? calculateDuration() : selectedDuration
+                            }
                           </h5>
                         </div>
                         <div className="summary-details">

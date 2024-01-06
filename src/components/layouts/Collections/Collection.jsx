@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import HeaderStyle2 from '../../header/HeaderStyle2';
 import Footer from '../../footer/Footer';
 import DisplayArtworks from '../ProfileDisplay/DisplayArtworks';
 
@@ -52,7 +51,6 @@ function Collection() {
 
   return (
     <div>
-      <HeaderStyle2 />
       <div
         className="collectionCoverSection"
         style={{ backgroundImage: `url(${cover})` }}

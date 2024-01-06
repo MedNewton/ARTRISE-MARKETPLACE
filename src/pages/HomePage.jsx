@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ref, update } from 'firebase/database';
 import { useAccount } from 'wagmi';
 import { useSelector } from 'react-redux';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import heroSliderData from '../assets/fake-data/data-slider';
 import Slider from '../components/slider/Slider';
@@ -89,7 +88,6 @@ function HomePage() {
 
   return (
     <div className="home-1">
-      <HeaderStyle2 />
       <Slider data={heroSliderData} />
       <div>
         <div>

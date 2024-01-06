@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { get, ref, update } from 'firebase/database';
@@ -18,7 +19,6 @@ import auth from '../auth';
 import storage from '../storage';
 import db from '../firebase';
 import Footer from '../components/footer/Footer';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import {
   setMembers,
   setAllUsers,
@@ -275,7 +275,6 @@ function EditProfile() {
     signInWithPopup(auth, provider)
       .then((response) => {
         const { _tokenResponse: tokenResponse } = response;
-        /* eslint-disable no-underscore-dangle */
         const rawUserInfo = tokenResponse?.screenName;
         if (rawUserInfo) {
           const profileLink = `https://twitter.com/${rawUserInfo}`;
@@ -335,7 +334,6 @@ function EditProfile() {
 
   return (
     <div>
-      <HeaderStyle2 />
       <div className="tf-create-item tf-section">
         <div className="themesflat-container">
           <div className="row profilePadding">

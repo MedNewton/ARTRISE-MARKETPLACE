@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 
 function Collections() {
@@ -27,7 +26,6 @@ function Collections() {
 
   return (
     <div className="authors">
-      <HeaderStyle2 />
       <section className="tf-section our-creater dark-style2">
         <div
           className="themesflat-container"

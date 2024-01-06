@@ -19,9 +19,6 @@
   },
   "plugins": ["react", "react-hooks"],
   "rules": {
-    "click-events-have-key-events": "off",
-    "no-static-element-interactions": "off",
-    "react/react-in-jsx-scope": "off",
     "import/prefer-default-export": "off",
     "linebreak-style": ["error", "windows"],
     "semi": ["error", "always"],
@@ -35,7 +32,8 @@
         "ignoreTrailingComments": false,
         "ignoreUrls": true
       }
-    ]
+    ],
+    "import/no-unresolved": ["error", { "ignore": ["@web3modal/wagmi/react"] }]
     // Add your custom rules here as per your project's needs
   }
 }

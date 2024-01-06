@@ -4,7 +4,6 @@ import 'react-tabs/style/react-tabs.css';
 import { ToastContainer } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
 import { useSelector } from 'react-redux';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import DisplayProfileInfo from '../components/layouts/ProfileDisplay/DisplayProfileInfo';
 import DisplayArtistTabSection from '../components/layouts/ProfileDisplay/DisplayArtistTabSection';
@@ -71,8 +70,6 @@ function DisplayProfile() {
 
   return (
     <div className="authors-2">
-      <HeaderStyle2 />
-
       <LoadingOverlay
         active={loading}
         spinner
