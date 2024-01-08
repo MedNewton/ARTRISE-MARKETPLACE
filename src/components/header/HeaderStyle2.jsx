@@ -126,7 +126,7 @@ function HeaderStyle2() {
 
   return (
     <>
-      <header
+      <div
         id="header_main"
         className="header_1 header_2 style2 js-header"
         ref={headerRef}
@@ -262,7 +262,7 @@ function HeaderStyle2() {
           show={loginModalOpen}
           onHide={() => setLoginModalOpen(false)}
         />
-      </header>
+      </div>
       <MobileVersionMenuModal
         showMenuModal={showMenuModal}
         joinChoicesModalOpen={joinChoicesModalOpen}
