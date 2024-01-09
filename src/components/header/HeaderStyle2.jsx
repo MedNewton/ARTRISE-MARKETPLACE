@@ -45,7 +45,9 @@ function HeaderStyle2() {
   const headerRef = useRef(null);
 
   const handleMenuModalClose = () => setShowMenuModal(false);
-  const handleShowMenuModal = () => setShowMenuModal(true);
+  const handleShowMenuModal = () => {
+    setShowMenuModal(true);
+  }
 
   const isSticky = () => {
     const header = document.querySelector('.js-header');

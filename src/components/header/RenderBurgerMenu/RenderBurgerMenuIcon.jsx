@@ -1,12 +1,23 @@
 import React from 'react';
 import { FaBars } from 'react-icons/fa';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 function RenderBurgerMenuIcon(props) {
   const { handleShowMenuModal } = props;
 
+  const ButtonWrapper = styled.div`
+    cursor: pointer
+  `;
+
   return (
-    <>
+    <ButtonWrapper
+      onClick={
+          () => {
+            handleShowMenuModal();
+          }
+        }
+    >
       <FaBars
         id="burger-menu-icon"
         style={{
@@ -14,19 +25,7 @@ function RenderBurgerMenuIcon(props) {
           height: '30px',
         }}
       />
-      <button
-        type="button"
-        className="d-flex justify-content-center align-items-center"
-        onClick={
-          () => {
-            handleShowMenuModal();
-          }
-        }
-        aria-labelledby="burger-menu-icon"
-
-      />
-    </>
-
+    </ButtonWrapper>
   );
 }
 

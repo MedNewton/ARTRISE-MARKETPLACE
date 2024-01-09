@@ -1,15 +1,15 @@
 /*eslint-disable*/
-import React, { useMemo, useState } from 'react';
+import React, {  useMemo, useState } from 'react';
 import Select from 'react-select';
 import { toast, ToastContainer } from 'react-toastify';
 import { ref, set, update } from 'firebase/database';
 import db from '../../../firebase';
-
+import { FixedMethodWrapper, Label, SectionHeading } from './FixedMethod.styles';
 
 function FixedMethod() {
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState (0) ;
   const [shippingOption, setShippingOption] = useState('free');
-  const [shippingPrice, setShippingPrice] = useState(0);
+  const [shippingPrice, setShippingPrice] = useState();
 
   function getRandomInteger(min, max) {
     const minimum = Math.ceil(min);
@@ -22,6 +22,16 @@ function FixedMethod() {
   }
 
   const delay = (ms) => setTimeout(navigateToHomepage, ms);
+
+  const priceChangeHandler =(event) => {
+    const enteredValue = event.target.value;
+    console.log("enteredValue::",enteredValue)
+    console.log("price::",price)
+
+    // Check if the entered value is a number
+      setPrice(parseFloat(enteredValue));
+  };
+
 
   async function listForFixedPrice() {
 
@@ -59,7 +69,6 @@ function FixedMethod() {
             'NFT listed successfully !',
             {
               position: 'top-left',
-
               autoClose: 7000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -84,25 +93,26 @@ function FixedMethod() {
       value: 'fees',
       label: 'Add Shipping Fees',
     },
-  ], [])
+  ], []);
 
   return (
     <>
-      <form onSubmit={listForFixedPrice}>
-        <div className="mt-4 ">
-          <label htmlFor="priceLabel" className="title-create-item">
-            Price
-            <input
-              id="priceLabel"
-              type="number"
-              placeholder="Enter price for one item (ETH)"
-              onChange={(e) => {
-                setPrice(parseInt(e.target.value, 10));
-              }}
-            />
-          </label>
-        </div>
+
+      <FixedMethodWrapper > {/* onSubmit={listForFixedPrice} */}
+        <Label htmlFor="priceLabel">
+          <SectionHeading>Price</SectionHeading>
+          <input
+            id="priceLabel"
+            name="priceLabel"
+            placeholder="Enter price for one item (ETH)"
+            value={price}
+            onChange={(e)=>setPrice(e.target.value)}
+          />
+        </Label>
         <div>
+
+
+
           <label htmlFor="shippingPriceSelect" className="title-create-item">
             <Select
               id="shippingPriceSelect"
@@ -124,7 +134,7 @@ function FixedMethod() {
                   type="number"
                   placeholder="Enter price for shipping cost"
                   value={shippingPrice}
-                  onChange={(e) => setShippingPrice( parseInt(e.target.value, 10) )}
+                  onChange={(e) => setShippingPrice(parseInt(e.target.value, 10))}
                 />
                 Enter price for shipping cost:
               </label>
@@ -159,8 +169,8 @@ function FixedMethod() {
           </div>
 
         </div>
-        <button type="submit" className="listButton">List this item</button>
-      </form>
+        <button disabled={true} type="submit" className="listButton">List this item</button>
+      </FixedMethodWrapper>
       <ToastContainer
         position="top-left"
         autoClose={5000}
@@ -172,17 +182,9 @@ function FixedMethod() {
         draggable
         pauseOnHover
         theme="colored"
-      />
+      />RenderHomeExploreDropButtons
     </>
-  )
+  );
 }
-
-// FixedMethod.propTypes = {
-//   mediaUrl: PropTypes.string,
-// };
-//
-// FixedMethod.defaultProps = {
-//   mediaUrl: '', // Provide a default value (e.g., an empty string) or null based on your use case.
-// };
 
 export default FixedMethod;

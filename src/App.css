@@ -50,7 +50,7 @@
 
 .css-0 li{
   font-size: 14px;
-  
+
 }
 
 .css-1bnwz7w{
@@ -314,7 +314,7 @@
 .physicalImages{
   height: fit-content;
   width: 100%;
-  
+
 }
 
 
@@ -378,7 +378,7 @@
   margin-right: 10px;
   margin-left: 10px;
   text-align: center;
-  
+
 }
 
 .socialShareBtn{
@@ -761,7 +761,7 @@
 }
 .slide-pane{
   width: 20vw !important;
-  
+
   z-index: 999 !important;
 
 }
@@ -1282,7 +1282,7 @@ border-top-right-radius: 10px !important;
 .tagLink{
   text-align: left;
   margin-right: 5px;
-  
+
   color: #3b3b3b;
   width: fit-content;
   height: fit-content;
@@ -1296,7 +1296,7 @@ border-top-right-radius: 10px !important;
   display: inline;
   text-align: center;
   margin-right: 5px;
-  
+
   color: #ffffff;
   width: fit-content;
   height: fit-content;
@@ -1569,7 +1569,7 @@ cursor: pointer;
 
 .widget-social.style-3:hover ul li a:hover{
   background-color: rgb(16,16,16);
-} 
+}
 
 
 .sc-button.style-1.follow:hover{
@@ -1745,13 +1745,13 @@ a{
   padding-left: 3% !important;
   max-width: none !important;
   width: fit-content !important;
-  
+
 }
 
 .referralBoxText{
   padding-right: 5% !important;
   padding-left: 3% !important;
-  
+
 }
 
 .createChoiceBox:hover .createChoiceTitle{
@@ -1831,7 +1831,7 @@ a{
 }
 
 .modal-body p{
-  
+
   font-size: 1.5em !important;
   line-height: normal !important;
 }
@@ -2057,7 +2057,7 @@ a{
   .profilePadding{
     padding-top: 10% !important;
   }
-  
+
   .referralBoxText{
     display: flex;
     flex-direction: column;
@@ -2128,7 +2128,7 @@ a{
   .mobile-button{
     display: block;
     z-index: 999;
-    
+
     background-color: transparent;
   }
 
@@ -2160,7 +2160,7 @@ a{
     background-color: #FFF;
   }
   .mobileWalletConnect{
-    
+
 
     height: fit-content;
     padding: 5px 0% 5px 3vw;
@@ -2243,7 +2243,7 @@ a{
   .heading{
     margin-right: 15%;
   }
-  
+
   .sub-heading{
     text-align: center;
     width: 90%;
@@ -2277,7 +2277,7 @@ a{
     margin-right: 0px;
     width: 96%;
   }
-  
+
 
   .tagsBar{
     display: none;
@@ -2295,7 +2295,7 @@ a{
     padding-bottom: 5%;
     white-space: nowrap;
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  
+    scrollbar-width: none;
     overflow-x: scroll;
     margin-bottom: 5%;
   }
@@ -2319,7 +2319,7 @@ a{
     font-size: 1.5em;
   }
 
-  
+
 
   .display-text-group{
     margin-bottom: 5%;
@@ -2342,7 +2342,7 @@ a{
     padding-right: 0px !important;
   }
 
-  
+
 
   #TDP{
     width: 100vw !important;
@@ -2374,7 +2374,7 @@ a{
   .authors{
     padding-top: 0px !important;
   }
-  
+
   .heading {
     margin-right: auto !important;
     margin-left: auto !important;
@@ -2445,7 +2445,7 @@ a{
     justify-content: center;
     align-content: flex-start;
   }
-  
+
   .createChoiceBoxesWrapper{
     display: flex;
     flex-direction: column;
@@ -2555,7 +2555,7 @@ a{
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  
+
 }
 
 .traitsHeader{
@@ -3355,7 +3355,7 @@ gap:20px;
 }
 
 .full-screen-modal {
-  width: 100vw;
+  width: 100vw !important;
   height: 100vh !important;
   margin: 0;
   position: fixed;
@@ -3507,6 +3507,10 @@ gap:20px;
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.icon-fl-tag {
+  font-family: 'Flaticon';
 }
 
 

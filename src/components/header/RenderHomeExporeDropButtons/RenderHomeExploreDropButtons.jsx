@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { StyledListItem } from './RenderHomeExploreDropButtons.styles';
 
 function RenderHomeExploreDropButtons() {
   const [isExploreOpen, setIsExploreOpen] = useState(false);
@@ -9,10 +9,6 @@ function RenderHomeExploreDropButtons() {
   const toggleExploreDropdown = () => {
     setIsExploreOpen(!isExploreOpen);
   };
-
-  const StyledListItem = styled.li`
-  
-  `;
 
   return (
     <nav id="main-nav" className="main-nav">
