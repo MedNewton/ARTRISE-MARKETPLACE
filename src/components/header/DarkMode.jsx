@@ -1,44 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useMediaQuery } from 'react-responsive';
+import { useDispatch } from 'react-redux';
 import imgsun from '../../assets/images/icon/sun.png';
 import imgmoon from '../../assets/images/icon/moon.png';
+import { setAppTheme } from '../../redux/actions/themeActions';
 
 function DarkMode() {
+  const dispatch = useDispatch();
   const isDeviceMobile = useMediaQuery({ query: '(max-width: 1224px)' });
-
-  const clickedClass = 'clicked';
   const { body } = document;
   const lightTheme = 'light';
   const darkTheme = 'is_dark';
-  let theme = lightTheme;
 
-  if (localStorage) {
-    theme = localStorage.getItem('theme');
-  }
-  if (theme === lightTheme || theme === darkTheme) {
-    body.classList.add(theme);
-  } else {
-    body.classList.add(darkTheme);
-  }
+  // Use state to manage the themeState
+  const [themeState, setThemeState] = useState(lightTheme);
+
+  // Use effect to apply the initial themeState class on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || lightTheme;
+    setThemeState(savedTheme);
+    body.classList.add(savedTheme);
+  }, [body]);
 
   const switchTheme = (e) => {
     e.preventDefault();
-    if (theme === darkTheme) {
-      document.getElementById('themeIcon').src = imgsun;
-      // themeBtnIcon.src = imgsun
-      body.classList.replace(darkTheme, lightTheme);
-      e.target.classList.remove(clickedClass);
-      localStorage.setItem('theme', 'light');
-      theme = lightTheme;
-    } else {
+    const newTheme = themeState === darkTheme ? lightTheme : darkTheme;
+    setThemeState(newTheme);
+
+    if (newTheme === darkTheme) {
       document.getElementById('themeIcon').src = imgmoon;
-      // themeBtnIcon.src = imgmoon
       body.classList.replace(lightTheme, darkTheme);
-      e.target.classList.add(clickedClass);
-      localStorage.setItem('theme', 'is_dark');
-      theme = darkTheme;
+      localStorage.setItem('theme', darkTheme);
+      const theme = darkTheme;
+      dispatch(setAppTheme({ theme }));
+    } else {
+      document.getElementById('themeIcon').src = imgsun;
+      body.classList.replace(darkTheme, lightTheme);
+      localStorage.setItem('theme', lightTheme);
+      const theme = lightTheme;
+      dispatch(setAppTheme({ theme }));
     }
   };
 
@@ -56,11 +58,8 @@ function DarkMode() {
           </h6>
         )}
 
-        <Link
-          to={doNotNavigateHandlerFunction}
-          onClick={(e) => switchTheme(e)}
-        >
-          <img id="themeIcon" src={imgsun} alt="" />
+        <Link to={doNotNavigateHandlerFunction} onClick={(e) => switchTheme(e)}>
+          <img id="themeIcon" src={themeState === darkTheme ? imgmoon : imgsun} alt="" />
         </Link>
       </div>
     </Dropdown>
