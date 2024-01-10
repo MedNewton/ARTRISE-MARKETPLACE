@@ -1,7 +1,16 @@
 import styled from 'styled-components';
+import { COLORS } from '../../shared/styles-constants';
 
 export const PageTitle = styled.h2`
+  padding: 20px 0 10px 0;
+  color:  ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};
 `;
+
+export const DetailTitle = styled.h5`
+  padding: 20px 0 10px 0;
+  color:  ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};
+`;
+
 export const ListNftParentDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,7 +65,5 @@ export const Label = styled.label`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  html: ${(props) => {
-    props?.htmlFor;
-  }}
+  html: ${(props) => props?.htmlFor}
 `;

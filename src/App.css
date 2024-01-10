@@ -2793,6 +2793,7 @@ a{
 
 
 .multi-select {
+  width: 100%;
   font-size: 14px;
   line-height: 22px;
   color: var(--primary-color2);
@@ -3264,7 +3265,7 @@ Collections-filter-wrapper{
   background-color: white;
 }
 .is_dark .white-black-color-switch {
-  background-color: black;
+  background-color: #202020;
 }
 
 /**/

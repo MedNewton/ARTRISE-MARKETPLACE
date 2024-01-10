@@ -10,4 +10,3 @@ export const VisuallyHiddenSpan = styled.span`
   clip: rect(0, 0, 0, 0);
   border: 0;
 `;
-

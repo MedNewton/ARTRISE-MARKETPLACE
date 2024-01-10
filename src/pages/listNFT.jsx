@@ -1,40 +1,42 @@
-/*eslint-disable*/
 import React, { useState } from 'react';
-import Footer from '../components/footer/Footer';
 import 'react-tabs/style/react-tabs.css';
 import 'react-toastify/dist/ReactToastify.css';
-import FixedMethod from '../components/layouts/ListNft/FixedMethod';
-import BidsMethod from '../components/layouts/ListNft/BidsMethod';
 import { SlTag } from 'react-icons/sl';
+import { useSelector } from 'react-redux';
 import {
   ListNftParentDiv,
   ListNftWrapper,
   PageTitle, RadioButton, RadioButtonLabelWrapper,
-  RadioButtonsContainer, Label
+  RadioButtonsContainer, Label, DetailTitle,
 } from '../components/layouts/ListNft/listNFT.styles';
+import FixedMethod from '../components/layouts/ListNft/FixedMethod';
+import BidsMethod from '../components/layouts/ListNft/BidsMethod';
+import Footer from '../components/footer/Footer';
+
+import { SectionHeading } from '../components/layouts/ListNft/FixedMethod.styles';
 
 function ListItem() {
-
   const [selectedMethod, setSelectedMethod] = useState('');
+  const theme = useSelector((state) => state.themeReducer.theme);
 
   return (
     <>
       <ListNftParentDiv>
         <ListNftWrapper>
           <div>
-            <PageTitle>
+            <PageTitle theme={theme}>
               List your NFT
             </PageTitle>
-            <h5 className="subTitleCreate">
+            <DetailTitle theme={theme}>
               Show your NFT to all the users on ARTRISE and list it for sale
-            </h5>
+            </DetailTitle>
           </div>
-          <h4 className="title-create-item">Select method</h4>
+          <SectionHeading>Select method</SectionHeading>
           <RadioButtonsContainer>
             <RadioButton>
               <Label htmlFor="fixedPrice">
                 <RadioButtonLabelWrapper>
-                  <SlTag/>
+                  <SlTag />
                   <span>Fixed Price</span>
                 </RadioButtonLabelWrapper>
                 <input
@@ -50,7 +52,7 @@ function ListItem() {
             <RadioButton>
               <Label htmlFor="timedAuction">
                 <RadioButtonLabelWrapper>
-                  <SlTag/>
+                  <SlTag />
                   <span>Timed Auction</span>
                 </RadioButtonLabelWrapper>
                 <input
@@ -65,14 +67,14 @@ function ListItem() {
             </RadioButton>
           </RadioButtonsContainer>
           {selectedMethod === 'fixed' && (
-            <FixedMethod/>
+            <FixedMethod />
           )}
           {selectedMethod === 'bids' && (
-            <BidsMethod/>
+            <BidsMethod />
           )}
         </ListNftWrapper>
       </ListNftParentDiv>
-      <Footer/>
+      <Footer />
     </>
   );
 }
