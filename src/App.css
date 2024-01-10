@@ -841,7 +841,7 @@ border-top-right-radius: 10px !important;
 
 
 .profileInfoSection{
-  margin-top:80px;
+  /*margin-top:80px;*/
   width: 100%;
   height: fit-content;
   /*padding: 0% 0 2% 0;*/
@@ -896,6 +896,8 @@ border-top-right-radius: 10px !important;
   width: fit-content;
   height: fit-content;
   margin-top: 1%;
+  display: flex;
+  gap: 1rem;
 }
 
 .is_dark .userSocialsContainer i{

@@ -6,6 +6,10 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  FaFacebook, FaInstagram, FaShareAlt, FaTwitter, FaUserPlus,
+} from 'react-icons/fa';
+import { SlOptionsVertical } from 'react-icons/sl';
+import {
   handleTwitterIconClick,
   handleInstagramIconClick,
   handleFacebookIconClick,
@@ -20,6 +24,7 @@ import {
   setAllUsers, setArtists, setCurrentUser, setMembers, setSearchingArray,
 } from '../../../redux/actions/userActions';
 import { userDataStoreShape } from '../../types/user-type';
+import { Button } from './ProfileDisplayStyles/DisplayProfileInfo.styles';
 
 function DisplayProfileInfo(props) {
   const {
@@ -203,42 +208,29 @@ function DisplayProfileInfo(props) {
             : 'Member'}
         </p>
         <div className="userSocialsContainer">
-          <i
-            id="button-label-facebook"
-            style={{ fontSize: '1.8em' }}
-            className="fab fa-facebook"
-          />
-          <button
-            type="button"
+          <Button
             onClick={() => handleFacebookIconClick(artistData?.Facebook)}
             aria-labelledby="button-label-facebook"
-          />
+          >
+            <FaFacebook id="button-label-facebook" style={{ fontSize: '1.8em' }} />
+          </Button>
 
-          <i
-            id="button-label-twitter"
-            style={{ fontSize: '1.8em' }}
-            className="fab fa-twitter"
-          />
-          <button
-            type="button"
+          <Button
             onClick={() => handleTwitterIconClick(artistData?.Twitter)}
             aria-labelledby="button-label-twitter"
-          />
-
-          <i
-            id="button-label-instagram"
-            style={{ fontSize: '1.8em' }}
-            className="fab fa-instagram"
-          />
-          <button
-            type="button"
+          >
+            <FaTwitter id="button-label-twitter" style={{ fontSize: '1.8em' }} />
+          </Button>
+          <Button
             onClick={() => handleInstagramIconClick(artistData?.Instagram)}
             aria-labelledby="button-label-instagram"
-          />
+          >
+            <FaInstagram id="button-label-instagram" style={{ fontSize: '1.8em' }} />
+          </Button>
+
         </div>
         <div className="folContainer">
-          <button
-            type="button"
+          <Button
             className="ContainerofFollowers"
             onClick={() => {
               handleFollowersClick();
@@ -246,8 +238,8 @@ function DisplayProfileInfo(props) {
           >
             <h5 className="dataOfFollowers">{selectedUserfollowers?.length}</h5>
             <h5 className="titleOfFollowers">followers</h5>
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             className="ContainerofFollowing"
             onClick={() => {
@@ -256,22 +248,24 @@ function DisplayProfileInfo(props) {
           >
             <h5 className="dataOfFollowing">{selectedUserfollowing?.length}</h5>
             <h5 className="titleOfFollowing">following</h5>
-          </button>
+          </Button>
         </div>
         <div className="userButtonsContainer">
-          <button
+          <Button
             type="button"
             className="followUserBtn"
-            onClick={followUnfollow}
+            onClick={() => {
+              followUnfollow();
+            }}
           >
-            <i className="fa fa-user-plus" />
+            <FaUserPlus id="button-label-userPlus" style={{ fontSize: '1.8em' }} />
             <h5>{followButtonText}</h5>
-          </button>
+          </Button>
           <div className="shareUserBtn">
-            <i className="fa fa-share-alt" />
+            <FaShareAlt id="button-label-userPlus" style={{ fontSize: '1.8em' }} />
           </div>
           <div className="shareUserBtn">
-            <i className="fa fa-ellipsis-v" aria-hidden="true" />
+            <SlOptionsVertical id="button-label-share" style={{ fontSize: '1.8em' }} />
           </div>
         </div>
       </div>

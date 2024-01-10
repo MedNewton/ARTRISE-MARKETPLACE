@@ -666,8 +666,8 @@ input[type="color"]::placeholder {
 }
 
 /* Button */
-button,
-input[type="button"],
+/*button,*/
+/*input[type="button"],*/
 input[type="reset"],
 input[type="submit"] {
     font-weight       : 700;
@@ -686,11 +686,11 @@ input[type="submit"] {
 }
 
 /* Button hover + focus */
-button:hover,
+/*button:hover,*/
 input[type="button"]:hover,
 input[type="reset"]:hover,
 input[type="submit"]:hover,
-button:focus,
+/*button:focus,*/
 input[type="button"]:focus,
 input[type="reset"]:focus,
 input[type="submit"]:focus {
