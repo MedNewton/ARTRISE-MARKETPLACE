@@ -14,17 +14,12 @@ export const Label = styled.label`
   width: 100%;
   align-items: flex-start;
   html: ${(props) => props?.htmlFor}
-  color: #727272;
-`;
-
-export const SectionHeading = styled.h4`
-  padding: 20px 0 10px 0;
   color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};
 `;
 
-export const Form = styled.form`
-  width: 100%;
-  color: #2aabd2;
+export const SectionHeading = styled.h4`
+  padding: 10px 0 10px 0;
+  color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};
 `;
 
 export const SummarySection = styled.div`

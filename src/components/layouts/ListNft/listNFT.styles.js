@@ -31,6 +31,7 @@ export const RadioButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin: 10px 0;
   width: 100%;
   gap: 7rem;
 `;

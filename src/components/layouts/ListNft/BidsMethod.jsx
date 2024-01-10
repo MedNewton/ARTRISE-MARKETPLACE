@@ -1,15 +1,25 @@
-/*eslint-disable*/
 import React, { useMemo, useState } from 'react';
 import Select from 'react-select';
 import { ToastContainer } from 'react-toastify';
-
+import { useSelector } from 'react-redux';
+import {
+  DetailTitle,
+  FixedMethodWrapper,
+  Label,
+  ListButton,
+  SectionHeading,
+  SummaryDetailsWrapper,
+  SummarySection,
+} from './FixedMethod.styles';
+import { RadioButtonsContainer } from './listNFT.styles';
 
 function BidsMethod() {
   const [auctionPrice, setAuctionPrice] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(null);
   const [customStartDate, setCustomStartDate] = useState(null);
   const [customEndDate, setCustomEndDate] = useState(null);
-
+  const [loading] = useState(false);
+  const theme = useSelector((state) => state.themeReducer.theme);
 
   const durationOptions = useMemo(() => [
     {
@@ -48,7 +58,7 @@ function BidsMethod() {
       value: '7_Months',
       label: '7 Months',
     },
-  ],[]);
+  ], []);
 
   const handleDurationChange = (selectedOption) => {
     setSelectedDuration(selectedOption.value);
@@ -85,82 +95,84 @@ function BidsMethod() {
 
   return (
     <>
-      <form>
-        <div className="mt-4">
-          <label htmlFor="duration" className="mb-4">
-            <Select
-              id="duration"
-              className="multi-select"
-              options={durationOptions}
-              value={durationOptions.find((option) => option.value === selectedDuration)}
-              onChange={handleDurationChange}
-            />
-            Duration:
-          </label>
-          {selectedDuration === 'custom' && (
-            <div className="selected-Duration">
-              <label htmlFor="customDurationStartDate" className="mb-4">
-                <input
-                  id="customDurationStartDate"
-                  type="datetime-local"
-                  style={{ marginBottom: '0px' }}
-                  onChange={handleCustomStartDateChange}
-                />
-              </label>
-              <p> - </p>
-              <label htmlFor="customDurationEndDate" className="mb-4">
-                <input
-                  type="datetime-local"
-                  style={{ marginBottom: '0px' }}
-                  onChange={handleCustomEndDateChange}
-                />
-              </label>
-            </div>
-          )}
-          {selectedDuration === 'custom' && customStartDate && customEndDate && (
-            <div style={{ padding: '20px 0px' }}>
-              <p>{calculateDuration()}</p>
-            </div>
-          )}
-        </div>
-        <div className="mt-4 ">
-          <label htmlFor="startingPrice" className="mb-4">
-            <input
-              id="startingPrice"
-              className="mb-0"
-              type="number"
-              placeholder="Enter price for one item (ETH)"
-              onChange={(e) => {
-                setAuctionPrice(e.target.value);
-              }}
-            />
-            Starting Price
-          </label>
-        </div>
+      <FixedMethodWrapper>
+        <Label htmlFor="duration">
+          <SectionHeading theme={theme}>Duration</SectionHeading>
+          <Select
+            id="duration"
+            className="multi-select"
+            options={durationOptions}
+            value={durationOptions.find((option) => option.value === selectedDuration)}
+            onChange={handleDurationChange}
+          />
+        </Label>
+        {selectedDuration === 'custom' && (
+          <RadioButtonsContainer>
+            <Label theme={theme} htmlFor="customDurationStartDate">
+              {/* <SectionHeading theme={theme}>Starting Date</SectionHeading> */}
+              <input
+                id="customDurationStartDate"
+                type="datetime-local"
+                name="customDurationStartDate"
+                onChange={handleCustomStartDateChange}
+              />
+            </Label>
 
-        <div className="summary-main">
-          <h4 className="mb-4">Summary</h4>
-          <div className="summary-details">
-            <h5 className="subTitleCreate">Duration</h5>
-            <h5 className="subTitleCreate">
+            <p> - </p>
+            <Label theme={theme} htmlFor="customDurationEndDate">
+              {/* <SectionHeading theme={theme}>Ending Date</SectionHeading> */}
+              <input
+                id="customDurationEndDate"
+                type="datetime-local"
+                name="customDurationEndDate"
+                onChange={handleCustomEndDateChange}
+              />
+            </Label>
+          </RadioButtonsContainer>
+        )}
+        {selectedDuration === 'custom' && customStartDate && customEndDate && (
+          <p>{calculateDuration()}</p>
+        )}
+        <Label htmlFor="startingPrice">
+          <SectionHeading theme={theme}>Starting Price</SectionHeading>
+          <input
+            id="startingPrice"
+            name="startingPrice"
+            placeholder="Enter auction Price for one item (ETH)"
+            onChange={(e) => setAuctionPrice(parseFloat(e.target.value))}
+          />
+        </Label>
+        <SummarySection>
+          <SectionHeading theme={theme}>Summary</SectionHeading>
+          <SummaryDetailsWrapper>
+            <DetailTitle theme={theme}>Duration</DetailTitle>
+            <DetailTitle theme={theme}>
+              {' '}
               {
                 selectedDuration === 'custom'
                   ? calculateDuration() : selectedDuration
               }
-            </h5>
-          </div>
-          <div className="summary-details">
-            <h5 className="subTitleCreate">Starting Price</h5>
-            <h5 className="subTitleCreate">{auctionPrice}</h5>
-          </div>
-          <div className="summary-details">
-            <h5 className="subTitleCreate">ArtRise fees after sale</h5>
-            <h5 className="subTitleCreate">15%</h5>
-          </div>
-        </div>
+            </DetailTitle>
+          </SummaryDetailsWrapper>
 
-        <div className="listButton">List this item</div>
-      </form>
+          <SummaryDetailsWrapper>
+            <DetailTitle theme={theme}>Starting Price</DetailTitle>
+            <DetailTitle theme={theme}>{auctionPrice}</DetailTitle>
+          </SummaryDetailsWrapper>
+
+          <SummaryDetailsWrapper>
+            <DetailTitle theme={theme}>ArtRise fees after sale</DetailTitle>
+            <DetailTitle theme={theme}>15%</DetailTitle>
+          </SummaryDetailsWrapper>
+        </SummarySection>
+        <ListButton
+          theme={theme}
+          loading={loading}
+        >
+          List this item
+        </ListButton>
+
+      </FixedMethodWrapper>
       <ToastContainer
         position="top-left"
         autoClose={5000}
@@ -174,15 +186,7 @@ function BidsMethod() {
         theme="colored"
       />
     </>
-  )
+  );
 }
-
-// FixedMethod.propTypes = {
-//   mediaUrl: PropTypes.string,
-// };
-//
-// FixedMethod.defaultProps = {
-//   mediaUrl: '', // Provide a default value (e.g., an empty string) or null based on your use case.
-// };
 
 export default BidsMethod;

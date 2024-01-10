@@ -92,17 +92,13 @@ function FixedMethod() {
 
   return (
     <>
-
       <FixedMethodWrapper>
-        {' '}
-        {/* onSubmit={listForFixedPrice} */}
         <Label htmlFor="priceLabel">
           <SectionHeading theme={theme}>Price</SectionHeading>
           <input
             id="priceLabel"
             name="priceLabel"
             placeholder="Enter price for one item (ETH)"
-            value={price}
             onChange={(e) => setPrice(parseFloat(e.target.value))}
           />
         </Label>
@@ -126,7 +122,6 @@ function FixedMethod() {
             <input
               id="shippingPriceInput"
               placeholder="Enter price for shipping cost"
-              value={shippingPrice && shippingPrice}
               onChange={(e) => setShippingPrice(parseFloat(e.target.value))}
             />
           </Label>
