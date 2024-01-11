@@ -6,6 +6,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { useAccount } from 'wagmi';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import { SlOptions } from 'react-icons/sl';
 import DisplayArtworks from './DisplayArtworks';
 import DisplayCollections from './DisplayCollections';
 import { GetArtWorks, GetCollections }
@@ -92,10 +93,7 @@ function DisplayArtistTabSection(props) {
           <div className="tagLink">
             <Dropdown>
               <Dropdown.Toggle id="profileTabDropdown">
-                <i
-                  className="fa fa-ellipsis-h"
-                  aria-hidden="true"
-                />
+                <SlOptions />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {artistData?.socialMediaVerified

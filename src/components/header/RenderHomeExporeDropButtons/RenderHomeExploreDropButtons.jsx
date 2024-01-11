@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 import { StyledListItem } from './RenderHomeExploreDropButtons.styles';
 
 function RenderHomeExploreDropButtons() {
@@ -18,7 +19,14 @@ function RenderHomeExploreDropButtons() {
           className="menu-item menu-item-has-children active"
           onClick={toggleExploreDropdown}
         >
-          <Link to="/" onClick={(event) => event.preventDefault()}>Explore</Link>
+          <Link
+            to="/"
+            onClick={(event) => event.preventDefault()}
+            className="explore-button-wrapper"
+          >
+            <span>Explore</span>
+            <RiArrowDropDownLine className="dropdown-icon-wrapper" />
+          </Link>
           {isExploreOpen && (
             <ul className="sub-menu">
               <SubNavItem to="/craftsmen" text="Artists" />

@@ -194,7 +194,7 @@
 }
 
 .tf-section{
-  padding-top: 00px !important;
+  padding-top: 50px !important;
 }
 
 .tf-box-icon.create{
@@ -2891,7 +2891,6 @@ padding: 1% 2% 1% 2%;
   flex-wrap: wrap;
   width:100%;
   max-width:100%;
-  gap:2vw;
 }
 
 .artist-artworks-wrapper-collapsed {
@@ -3520,6 +3519,37 @@ gap:20px;
 
 .icon-fl-tag {
   font-family: 'Flaticon';
+}
+
+.header-main-div{
+  position: relative;
+  display: flex;
+  flex-flow: wrap;
+  z-index: 2;
+  justify-content: space-between;
+  align-items: center;
+}
+.explore-button-wrapper{
+  display: flex;
+  align-items: center
+}
+
+.dropdown-icon-wrapper{
+  font-weight: unset;
+  font-size: 30px;
+  margin: auto -4px;
+}
+
+.wallet-icon-navbar{
+  color: black;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.is_dark .wallet-icon-navbar{
+  color: white;
+  font-size: 20px;
+  margin-right: 10px;
 }
 
 

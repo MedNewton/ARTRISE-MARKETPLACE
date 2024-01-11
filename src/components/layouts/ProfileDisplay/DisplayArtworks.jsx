@@ -1,12 +1,10 @@
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import axios from 'axios';
 import CardModal from '../CardModal';
-import MediaViewer from '../mediaViewer/MediaViewer';
+import ArtworkCard from './ArtworkCard';
 
 function DisplayArtworks(props) {
   const { data } = props;
@@ -15,7 +13,6 @@ function DisplayArtworks(props) {
     setVisible((prevValue) => prevValue + 4);
   };
   const [modalShow, setModalShow] = useState(false);
-  const [usdPriceInEth, setUsdPriceInEth] = useState();
   const isDeviceMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
   // handling filter states
@@ -56,17 +53,6 @@ function DisplayArtworks(props) {
   const toggleFilter = () => {
     setShowFilter(!showFilter);
   };
-
-  const fetchPrice = useCallback(async () => {
-    const response = await axios.get(
-      'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
-    );
-    setUsdPriceInEth(parseFloat(response.data.USD));
-  }, []);
-
-  useEffect(() => {
-    fetchPrice();
-  }, [fetchPrice]);
 
   return (
     <div className="artist-profile-wrapper">
@@ -137,99 +123,8 @@ function DisplayArtworks(props) {
           className={showFilter ? 'artist-artworks-wrapper-collapsed' : 'artist-artworks-wrapper'}
         >
 
-          {data.slice(0, visible).map((listing) => (
-            <div key={listing.artworkId} style={isDeviceMobile ? { maxWidth: '45vw' } : { maxWidth: '22vw' }}>
-              <div className="sc-card-product">
-                <div className="card-media">
-                  <Link
-                    to={`/artwork-details?id=${listing.artworkId}`}
-                  >
-                    <MediaViewer mediaUrl={listing?.data?.image} />
-                  </Link>
-
-                  <Link
-                    to="/"
-                    className="wishlist-button heart"
-                    hidden
-                  >
-                    <span className="number-like">10</span>
-                  </Link>
-                  <div className="coming-soon" hidden>
-                    10
-                  </div>
-                </div>
-
-                <div className="card-title">
-                  <h5 className="style2">
-                    <Link
-                      to={`/artwork-details?id=${listing.artworkId}`}
-                    >
-                      {listing.data.name}
-                    </Link>
-                  </h5>
-                </div>
-                <div className="meta-info">
-                  <div className="author">
-                    <div className="avatar">
-                      <img src={listing.ownerImage} alt="" />
-                    </div>
-                    <div className="info">
-                      <span>Owned By</span>
-                      <h6>
-                        {' '}
-                        <Link to="/">
-                          {listing.ownerName}
-                        </Link>
-                        {' '}
-                      </h6>
-                    </div>
-                  </div>
-                  <div className="price">
-                    <span>Price</span>
-                    <h6>
-                      <small
-                        style={{
-                          fontWeight: '600',
-                          color: 'black',
-                          fontSize: '0.8em',
-                          fontStyle: 'italic',
-                        }}
-                      >
-                        $
-                        {(listing.price * usdPriceInEth).toFixed(2)}
-                                                    &nbsp;
-                        {' ≈ '}
-                                                    &nbsp;
-                        {listing.price}
-                        {' '}
-                        ETH
-                      </small>
-                    </h6>
-                  </div>
-                </div>
-                <div className="card-bottom">
-                  <Link
-                    to={`/artwork-details?id=${listing.artworkId}`}
-                    className="buyNowBtn"
-                  >
-                    <button
-                      type="button"
-                      className="sc-button style bag fl-button pri-3 no-bg"
-                    >
-                      <span>Buy now</span>
-                    </button>
-                  </Link>
-
-                  <Link
-                    to="/activity-01"
-                    className="view-history reload"
-                    hidden
-                  >
-                    View History
-                  </Link>
-                </div>
-              </div>
-            </div>
+          {data.slice(0, visible).map((artwork) => (
+            <ArtworkCard artwork={artwork} />
           ))}
 
         </div>

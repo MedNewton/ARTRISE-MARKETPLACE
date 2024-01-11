@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { IoWalletSharp } from 'react-icons/io5';
 
 function RenderWalletAddress(props) {
   const { address, open } = props;
@@ -23,8 +24,13 @@ function RenderWalletAddress(props) {
           menuToggle();
           open();
         }}
-        className="sc-button header-slider style style-1 wallet fl-button pri-1"
+        className="sc-button style-1 fl-button pri-1"
       >
+        <div className="wallet-icon-navbar">
+          {' '}
+          <IoWalletSharp />
+          {' '}
+        </div>
         <span>
           {address?.toString()?.slice(0, 6)}
           ...

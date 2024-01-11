@@ -31,11 +31,20 @@ function MediaViewer(props) {
   }
 
   if (isImage) {
-    return (<img src={mediaUrl} alt="Artwork data not available" style={{ maxWidth: '100%' }} />
+    return (
+      <img
+        src={mediaUrl}
+        alt="Artwork data not available"
+      />
     );
   }
 
-  return <img src={placeHolderMainImage} alt="Artwork data not available" />;
+  return (
+    <img
+      src={placeHolderMainImage}
+      alt="Artwork data not available"
+    />
+  );
 }
 
 MediaViewer.propTypes = {

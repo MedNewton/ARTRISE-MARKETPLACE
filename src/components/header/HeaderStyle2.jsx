@@ -141,7 +141,7 @@ function HeaderStyle2() {
                 : 'col-md-12 white-black-color-switch'}
             >
               <div id="site-header-inner">
-                <div className="wrap-box flex flex-row justify-content-between align-items-center">
+                <div className='header-main-div' >
                   {isDeviceMobile && !showSearchField
                     && (
                       <div className="navbar-mobile-version-wrapper">
