@@ -8,9 +8,9 @@ import ArtworkCard from './ArtworkCard';
 
 function DisplayArtworks(props) {
   const { data } = props;
-  const [visible, setVisible] = useState(6);
+  const [visible, setVisible] = useState(5);
   const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 4);
+    setVisible((prevValue) => prevValue + 5);
   };
   const [modalShow, setModalShow] = useState(false);
   const isDeviceMobile = useMediaQuery({ query: '(max-width: 1224px)' });

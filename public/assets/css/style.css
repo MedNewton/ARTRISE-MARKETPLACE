@@ -251,6 +251,7 @@ img {
 }
 
 p {
+    text-align: left;
     font-weight: 400;
     font-size  : 18px;
     line-height: 28px;
@@ -1348,11 +1349,11 @@ a:focus {
     --primary-color: #343444;
     --primary-color2 : #fff;
     --primary-color4: rgba(255,255,255,0.9);
-    --primary-color5: #030303;
+    --primary-color5: #141414;
     --primary-color6: #ffffff;
     --primary-color7: #343444;
     --bg-section: #141414;
-    --bg-section2 : #030303;
+    --bg-section2 : #141414;
     --primary-color8: #fff;
     --primary-color9: #8A8AA0;
 }

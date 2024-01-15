@@ -2887,7 +2887,7 @@ padding: 1% 2% 1% 2%;
 .artist-artworks-wrapper {
   display:flex;
   flex-direction: row;
-  /*justify-content: space-between;*/
+  justify-content: flex-start;
   flex-wrap: wrap;
   width:100%;
   max-width:100%;
@@ -2896,11 +2896,10 @@ padding: 1% 2% 1% 2%;
 .artist-artworks-wrapper-collapsed {
   display:flex;
   flex-direction: row;
-  /*justify-content: space-between;*/
+  justify-content: flex-start;
   flex-wrap: wrap;
   width:100%;
   max-width:100%;
-  gap:2vw;
   margin-left: 2vw;
 }
 

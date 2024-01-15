@@ -4,7 +4,7 @@ import { COLORS } from '../../../shared/styles-constants';
 export const Card = styled.div`
   width: 235px;
   height: 330px;
-  margin: 10px;
+  margin: 10px auto 10px 10px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   overflow: hidden;
@@ -80,7 +80,8 @@ export const CreatorInfo = styled.div`
   }
 
   span {
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 600;
   }
 `;
 
@@ -92,6 +93,7 @@ export const PriceTag = styled.div`
 
 export const PriceHeading = styled.div`
   margin-top: 15px;
-  font-size: 12px;
-  font-weight: normal;
+  font-size: 13px;
+  font-weight: 600;
+  color: #81754e;
 `;
