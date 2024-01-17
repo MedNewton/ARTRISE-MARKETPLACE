@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 import CardModal from '../CardModal';
 import UnlistedArtworkCard from './UnlistedArtworkCard';
 
@@ -33,10 +32,6 @@ function DisplayOwnedNfts() {
   const toggleFilter = () => {
     setShowFilter(!showFilter);
   };
-
-  function generateUniqueId() {
-    return uuidv4();
-  }
 
   const filterOptions = useMemo(() => ({
     categories: [
@@ -142,7 +137,7 @@ function DisplayOwnedNfts() {
           </div>
         )}
 
-         <div
+        <div
           className={showFilter ? 'artist-artworks-wrapper-collapsed' : 'artist-artworks-wrapper'}
         >
 

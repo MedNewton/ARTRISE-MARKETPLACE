@@ -1,9 +1,23 @@
 import styled from 'styled-components';
 import { COLORS } from '../../../shared/styles-constants';
 
+const calculateWidth = (props) => {
+  if (props.showFilter && !props.isDeviceMobile && !props.isDeviceTablet) {
+    return '23%';
+  } if (!props.showFilter && !props.isDeviceMobile && !props.isDeviceTablet) {
+    return '18%';
+  } if (!props.showFilter && !props.isDeviceMobile && props.isDeviceTablet) {
+    return '48%';
+  } if (!props.showFilter && props.isDeviceMobile && !props.isDeviceTablet) {
+    return '80%';
+  }
+  // default width if none of the conditions match
+  return '80%';
+};
+
 export const Card = styled.div`
-  width: ${(props) => (props.showFilter === false ? '18%' : '23%')};
-  height: ${(props) => (props.unlistedCard ? '300px' : '330px')}; 
+width: ${calculateWidth};
+  height: ${(props) => (props.unlistedCard ? '300px' : '330px')};
   margin: 10px 2% 10px 0px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
@@ -94,7 +108,7 @@ padding: 10px;
 margin: 10px auto;
 `;
 
-export const DescriptionTag= styled.p`
+export const DescriptionTag = styled.p`
   font-size: 14px;
   font-weight: 400;
   overflow: hidden;

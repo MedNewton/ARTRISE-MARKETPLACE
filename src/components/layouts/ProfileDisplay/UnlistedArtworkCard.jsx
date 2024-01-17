@@ -17,9 +17,16 @@ function UnlistedArtworkCard(props) {
   const navigate = useNavigate();
 
   const cardOnClickHandler = () => {
-    if (listing?.listable === "yes" || listing?.listable === true) {
+    if (
+      listing?.listable === 'yes'
+      || listing?.listable === true
+    ) {
       navigate(`/private-display?id=${listing?.id}`);
-    } else if (listing?.listable === "false" || listing?.listable === false || listing?.listable === '') {
+    } else if (
+      listing?.listable === 'false'
+      || listing?.listable === false
+       || listing?.listable === ''
+    ) {
       navigate(`/artwork-details?id=${listing?.id}`);
     }
   };
@@ -57,7 +64,7 @@ UnlistedArtworkCard.propTypes = {
 };
 
 UnlistedArtworkCard.defaultProps = {
-  artwork: PropTypes.shape({
+  listing: PropTypes.shape({
     listable: '',
     id: '',
     data: PropTypes.shape({

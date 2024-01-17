@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useMediaQuery } from 'react-responsive';
 import MediaViewer from '../mediaViewer/MediaViewer';
 import {
   ArtworkName,
@@ -19,6 +20,8 @@ function ArtworkCard(props) {
   const [usdPriceInEth, setUsdPriceInEth] = useState();
   const theme = useSelector((state) => state.themeReducer.theme);
   const navigate = useNavigate();
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   const fetchPrice = useCallback(async () => {
     const response = await axios.get(
@@ -32,15 +35,22 @@ function ArtworkCard(props) {
   }, [fetchPrice]);
 
   const cardOnClickHandler = () => {
-    if(artwork?.listed === "yes" ||artwork?.listed === true){
+    if (artwork?.listed === 'yes' || artwork?.listed === true) {
       navigate(`/artwork-details?id=${artwork.artworkId}`);
-    }else if(artwork?.listed === "false" || artwork?.listed === false || artwork?.listed === ''){
+    } else if (artwork?.listed === 'false' || artwork?.listed === false || artwork?.listed === '') {
       navigate(`/artwork-details?id=${artwork.artworkId}`);
     }
   };
 
   return (
-    <Card theme={theme} showFilter={showFilter} key={artwork.artworkId} onClick={cardOnClickHandler}>
+    <Card
+      isDeviceMobile={isDeviceMobile}
+      isDeviceTablet={isDeviceTablet}
+      theme={theme}
+      showFilter={showFilter}
+      key={artwork.artworkId}
+      onClick={cardOnClickHandler}
+    >
       <CardMedia>
         <ArtworkName>{artwork.data.name}</ArtworkName>
         <MediaViewer mediaUrl={artwork?.data?.image} />
@@ -69,6 +79,7 @@ function ArtworkCard(props) {
 
 ArtworkCard.propTypes = {
   artwork: PropTypes.shape({
+    listed: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     ownerName: PropTypes.string,
     ownerImage: PropTypes.string,
@@ -84,6 +95,7 @@ ArtworkCard.propTypes = {
 
 ArtworkCard.defaultProps = {
   artwork: PropTypes.shape({
+    listed: '',
     price: '',
     ownerName: '',
     ownerImage: '',

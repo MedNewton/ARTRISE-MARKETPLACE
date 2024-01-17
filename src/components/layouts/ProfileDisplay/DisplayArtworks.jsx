@@ -5,15 +5,21 @@ import PropTypes from 'prop-types';
 import { useMediaQuery } from 'react-responsive';
 import CardModal from '../CardModal';
 import ArtworkCard from './ArtworkCard';
+import {
+  ArtistArtworksWrapper,
+  FilterArtworksWrapper,
+  FilterContent,
+} from './DisplayArtworksStyles/DisplayArtworks.styles';
 
 function DisplayArtworks(props) {
   const { data } = props;
-    const [visible, setVisible] = useState(5);
+  const [visible, setVisible] = useState(5);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 5);
   };
   const [modalShow, setModalShow] = useState(false);
-  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   // handling filter states
   const [showFilter, setShowFilter] = useState(false);
@@ -90,45 +96,41 @@ function DisplayArtworks(props) {
           />
         </svg>
       </button>
-      <div className={isDeviceMobile ? 'd-flex flex-column' : 'd-flex flex-row'}>
+      <FilterArtworksWrapper isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
         {showFilter && (
-        <div className="filter-content">
-          {Object.keys(filterOptions).map((section) => (
-            <div className="filter-section" key={section}>
-              <h3>{section.charAt(0).toUpperCase() + section.slice(1)}</h3>
-              <div className="divider" />
-              {filterOptions[section].map((option) => (
-                <label
-                  className="filter-option"
-                  key={option.id}
-                  htmlFor={`filter-${section}-${option.id}`}
-                >
-                  <input
-                    id={`filter-${section}-${option.id}`}
-                    className="filter-checkbox-input"
-                    type="checkbox"
-                    style={{ color: 'black' }}
-                    checked={filterState[section][option.id] || false}
-                    onChange={() => handleOptionChange(section, option.id)}
-                  />
-                  {option.label}
-                </label>
-              ))}
-            </div>
-          ))}
-        </div>
+          <FilterContent isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
+            {Object.keys(filterOptions).map((section) => (
+              <div className="filter-section" key={section}>
+                <h3>{section.charAt(0).toUpperCase() + section.slice(1)}</h3>
+                <div className="divider" />
+                {filterOptions[section].map((option) => (
+                  <label
+                    className="filter-option"
+                    key={option.id}
+                    htmlFor={`filter-${section}-${option.id}`}
+                  >
+                    <input
+                      id={`filter-${section}-${option.id}`}
+                      className="filter-checkbox-input"
+                      type="checkbox"
+                      style={{ color: 'black' }}
+                      checked={filterState[section][option.id] || false}
+                      onChange={() => handleOptionChange(section, option.id)}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+            ))}
+          </FilterContent>
         )}
 
-        <div
-          className={showFilter ? 'artist-artworks-wrapper-collapsed' : 'artist-artworks-wrapper'}
-        >
-
+        <ArtistArtworksWrapper showFilter={showFilter} isDeviceMobile={isDeviceMobile}>
           {data.slice(0, visible).map((artwork) => (
             <ArtworkCard showFilter={showFilter} artwork={artwork} />
           ))}
-
-        </div>
-      </div>
+        </ArtistArtworksWrapper>
+      </FilterArtworksWrapper>
       {visible < data.length && (
         <div
           className="col-md-12 wrap-inner load-more text-center mb-20"

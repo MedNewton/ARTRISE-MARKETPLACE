@@ -4,7 +4,9 @@ import { useMediaQuery } from 'react-responsive';
 import cart from '../../../assets/images/icon/cart.png';
 
 function RenderCartIcon() {
-  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+
+  // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   return (
     <Dropdown>
