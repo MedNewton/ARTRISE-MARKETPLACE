@@ -81,6 +81,7 @@ function App() {
 
           const ipfsURI = artwork?.ipfsURI;
           const artworkOwner = artwork?.owner;
+          const listed = artwork?.listed;
 
           const ownerRef = ref(db, `users/${artworkOwner}`);
           const ownerSnapshot = await get(ownerRef);
@@ -101,6 +102,7 @@ function App() {
                 ownerImage,
                 artworkOwner,
                 listingArtworkId,
+                listed,
               );
             }
             console.error(response);

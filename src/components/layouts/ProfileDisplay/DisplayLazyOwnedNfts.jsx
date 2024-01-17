@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import CardModal from '../CardModal';
-import MediaViewer from '../mediaViewer/MediaViewer';
+import UnlistedArtworkCard from './UnlistedArtworkCard';
 
 function DisplayOwnedNfts() {
   const data = useSelector((state) => state.usersReducer.lazyOwned);
@@ -83,34 +82,35 @@ function DisplayOwnedNfts() {
         className="filtersBtn"
         onClick={toggleFilter}
         aria-labelledby="toggle-filter-icon"
-      />
-      <svg
-        id="toggle-filter-icon"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
       >
-        <path
-          d="M3 7H21"
-          stroke="black"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M6 12H18"
-          stroke="black"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M10 17H14"
-          stroke="black"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
+        <svg
+          id="toggle-filter-icon"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3 7H21"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M6 12H18"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M10 17H14"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
       <div className="d-flex flex-row">
         {showFilter && (
           <div className="filter-content">
@@ -142,101 +142,14 @@ function DisplayOwnedNfts() {
           </div>
         )}
 
-        <div
-          className={showFilter
-            ? 'd-flex flex-wrap flex-row artist-artworks-wrapper-collapsed'
-            : 'd-flex flex-wrap flex-row artist-artworks-wrapper'}
+         <div
+          className={showFilter ? 'artist-artworks-wrapper-collapsed' : 'artist-artworks-wrapper'}
         >
-          {data?.slice(0, visible)
-            ?.map((listing) => {
-              if (listing?.listable) {
-                return (
-                  <div key={generateUniqueId()} style={{ maxWidth: '300px' }}>
-                    <div className="sc-card-product">
-                      <div className="card-media">
-                        <Link
-                          to={`/private-display?id=${listing?.id}`}
-                        >
-                          <MediaViewer mediaUrl={listing?.data?.image} />
-                        </Link>
 
-                        <Link
-                          to="/"
-                          className="wishlist-button heart"
-                          hidden
-                        >
-                          <span className="number-like">10</span>
-                        </Link>
-                        <div className="coming-soon" hidden>
-                          10
-                        </div>
-                      </div>
+          {data.slice(0, visible).map((listing) => (
+            <UnlistedArtworkCard showFilter={showFilter} listing={listing} />
+          ))}
 
-                      <div className="card-title">
-                        <h5 className="style2">
-                          <Link
-                            to={`/private-display?id=${listing?.id}`}
-                          >
-                            {listing?.data?.name}
-                          </Link>
-                        </h5>
-                      </div>
-                      <div className="card-bottom">
-                        <Link
-                          to={`/private-display?id=${listing?.id}`}
-                          className="buyNowBtn"
-                        >
-                          <button type="button" className="sc-button style bag fl-button pri-3 no-bg">
-                            <span>List this NFT</span>
-                          </button>
-                        </Link>
-
-                        <Link
-                          to="/activity-01"
-                          className="view-history reload"
-                          hidden
-                        >
-                          View History
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-              return (
-                <div key={generateUniqueId()} style={{ maxWidth: '300px' }}>
-                  <div className="sc-card-product">
-                    <div className="card-media">
-                      <Link
-                        to={`/artwork-details?id=${listing.id}`}
-                      >
-                        <MediaViewer mediaUrl={listing?.data?.image} />
-                      </Link>
-
-                      <Link
-                        to="/"
-                        className="wishlist-button heart"
-                        hidden
-                      >
-                        <span className="number-like">10</span>
-                      </Link>
-                      <div className="coming-soon" hidden>
-                        10
-                      </div>
-                    </div>
-                    <div className="card-title">
-                      <h5 className="style2">
-                        <Link
-                          to={`/artwork-details?id=${listing.id}`}
-                        >
-                          {listing.data.name}
-                        </Link>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
         </div>
       </div>
       {visible < data?.length && (

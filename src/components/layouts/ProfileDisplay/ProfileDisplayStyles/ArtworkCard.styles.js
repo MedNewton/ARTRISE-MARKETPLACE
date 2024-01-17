@@ -2,15 +2,14 @@ import styled from 'styled-components';
 import { COLORS } from '../../../shared/styles-constants';
 
 export const Card = styled.div`
-  width: 235px;
-  height: 330px;
-  margin: 10px auto 10px 10px;
+  width: ${(props) => (props.showFilter === false ? '18%' : '23%')};
+  height: ${(props) => (props.unlistedCard ? '300px' : '330px')}; 
+  margin: 10px 2% 10px 0px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   background-color: ${(props) => (props.theme === 'light' ? COLORS.WhiteFont : COLORS.BlackBG2)};
-
   &:hover {
     transform: translateY(-2px);
   }
@@ -89,6 +88,18 @@ export const PriceTag = styled.div`
   margin-top: 10px;
   font-size: 14px;
   font-weight: bold;
+`;
+export const DescriptionWrapper = styled.div`
+padding: 10px;
+margin: 10px auto;
+`;
+
+export const DescriptionTag= styled.p`
+  font-size: 14px;
+  font-weight: 400;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const PriceHeading = styled.div`

@@ -8,7 +8,7 @@ import ArtworkCard from './ArtworkCard';
 
 function DisplayArtworks(props) {
   const { data } = props;
-  const [visible, setVisible] = useState(5);
+    const [visible, setVisible] = useState(5);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 5);
   };
@@ -124,7 +124,7 @@ function DisplayArtworks(props) {
         >
 
           {data.slice(0, visible).map((artwork) => (
-            <ArtworkCard artwork={artwork} />
+            <ArtworkCard showFilter={showFilter} artwork={artwork} />
           ))}
 
         </div>
