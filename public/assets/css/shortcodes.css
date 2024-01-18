@@ -5210,16 +5210,16 @@ button.accordion-button {
 /* profile */
 .sc-card-profile {
   padding: 20px;
-  background: var(--primary-color);
-  box-shadow: 0px 3px 16px rgb(47 83 109 / 12%);
+  /* background: var(--primary-color); */
+  /* box-shadow: 0px 3px 16px rgb(47 83 109 / 12%); */
   border-radius: 20px;
   overflow: hidden;
   position: relative;
 }
 
 .is_dark .sc-card-profile{
-  background-color: #030303;
-  box-shadow: 0px 3px 16px rgba(220, 231, 239, 0.12);
+  background-color: #202020;
+  /* box-shadow: 0px 3px 16px rgba(220, 231, 239, 0.12); */
 }
 
 .sc-card-profile .card-media {
@@ -5395,6 +5395,7 @@ button.accordion-button {
   color: var(--primary-color2);
   padding: 12px 15px 10px 20px;
   border-radius: 8px;
+  border-color: #666666;
 }
 
 .form-infor-profile textarea {

@@ -13,7 +13,7 @@ function CreateChoices() {
       <HeaderStyle2 />
       <div className="tf-create-item tf-section">
         <div className="themesflat-container">
-          <div className="row profilePadding " style={{ paddingLeft: '0.5%' }}>
+          <div className="row top-bottom-padding " style={{ paddingLeft: '0.5%' }}>
             <div className="col-md-12" style={{ marginBottom: '5%' }}>
               <h2
                 className="tf-title style4 mg-bt-38 ourArtists"

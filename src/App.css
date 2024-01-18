@@ -463,8 +463,9 @@
   margin-top: 5%;
 }
 
-.profilePadding{
-  padding-top: 82px !important;
+.top-bottom-padding{
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .side{
@@ -1165,7 +1166,8 @@ border-top-right-radius: 10px !important;
 }
 
 .is_dark .accountTypeBox{
-  border: solid 1px #fff;
+  background-color: #202020;
+  /* border: solid 1px #fff; */
 }
 
 
@@ -1916,11 +1918,13 @@ a{
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{
   color: #666666 !important;
   background-color: transparent !important;
+  border-color: #666666;
 }
 
 .is_dark textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{
   color: #fff;
   background-color: transparent !important;
+  border-color: #fff;
 }
 
 .question-form form button svg{
@@ -2061,10 +2065,6 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     width: 90%;
   }
 
-
-  .profilePadding{
-    padding-top: 10% !important;
-  }
 
   .referralBoxText{
     display: flex;

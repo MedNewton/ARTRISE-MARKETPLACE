@@ -226,10 +226,11 @@ function App() {
   useEffect(() => {
     dispatch(setCurrentUserId({ currentUserId }));
     if (currentUserId) {
+      fetchUsers();
       fetchCurrentUser();
       fetchLazyOwned();
     }
-  }, [currentUserId, dispatch, fetchCurrentUser, fetchLazyOwned]);
+  }, [currentUserId, dispatch, fetchUsers, fetchCurrentUser, fetchLazyOwned]);
 
   useEffect(() => {
     async function changeTitle() {

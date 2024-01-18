@@ -1,6 +1,7 @@
-/*eslint-disable*/
-import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { get, ref, update } from 'firebase/database';
 import { useAccount } from 'wagmi';
 import Swal from 'sweetalert2';
@@ -24,7 +25,13 @@ import {
   setAllUsers,
   setArtists, setCurrentUser,
 } from '../redux/actions/userActions';
+import CoverImageSection from '../components/layouts/editProfile/CoverImageSection';
 import CustomTwitterLoginButton from '../components/layouts/editProfile/CustomTwitterLoginButton';
+import {
+  UploadSection,
+  FileInput,
+  UploadButton,
+} from '../components/layouts/editProfile/EditProfileStyles/CoverImageSection.styles';
 
 function EditProfile() {
   const nav = useNavigate();
@@ -50,12 +57,12 @@ function EditProfile() {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const { address } = useAccount();
 
-  const artistTypeOptions = [
+  const artistTypeOptions = useMemo(() => [
     { value: 'Painter', label: 'Painter' },
     { value: 'Sculptor', label: 'Sculptor' },
     { value: 'Photographer', label: 'Photographer' },
     { value: 'Draftsman', label: 'Draftsman' },
-  ];
+  ], []);
 
   const getUserData = useCallback(() => {
     if (currentUserState) {
@@ -78,7 +85,7 @@ function EditProfile() {
     }
   }, [currentUserState]);
 
-  async function fetchAllUsersForRedux() {
+  const fetchAllUsersForRedux = async () => {
     try {
       const ThisUserRef = ref(db, `users/${currentUserId}`);
       const thisUserSnapshot = await get(ThisUserRef);
@@ -125,9 +132,9 @@ function EditProfile() {
       // Handle the error or throw it further
       throw error;
     }
-  }
+  };
 
-  async function updateProfile() {
+  const updateProfile = async () => {
     const UserKey = currentUserId || localStorage.getItem('userId');
     const isArtist = profileType === 'artist';
 
@@ -198,7 +205,7 @@ function EditProfile() {
     } else {
       await nav('/');
     }
-  }
+  };
 
   useEffect(() => {
     if (currentUserState) getUserData();
@@ -216,7 +223,7 @@ function EditProfile() {
     }
   }, [artistType]);
 
-  async function updateProfilePicture(f) {
+  const updateProfilePicture = async (f) => {
     const stroageRef = SRef(storage, `/users_pdp/${f.name}`);
     const uploadTask = uploadBytesResumable(stroageRef, f);
     document.getElementById('pdp').src = 'https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif';
@@ -238,39 +245,13 @@ function EditProfile() {
         document.getElementById('submitBtn').disabled = false;
       },
     );
-  }
+  };
 
-  async function updateCoverPicture(f) {
-    const stroageRef = SRef(storage, `/coverImages/${f.name}`);
-    const uploadTask = uploadBytesResumable(stroageRef, f);
-    document.getElementById('cover').src = 'https://cdn.dribbble.com/users/8769896/screenshots/16200531/8ee212dac057d412972e0c8cc164deee.gif';
-    document.getElementById('submitBtn').disabled = true;
-    uploadTask.on(
-      'state_changed',
-
-      (error) => {
-        console.error(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          document.getElementById('cover').src = downloadURL;
-          if (address) {
-            setCoverLink(downloadURL);
-          } else {
-            setCoverLink(downloadURL);
-          }
-        });
-        document.getElementById('submitBtn').disabled = false;
-      },
-    );
-  }
-
-  //
-  // const handleCheckChange = (nextChecked) => {
-  //   setAccountTypeChecked(nextChecked);
+  // const handleCoverPictureUpdate = (f) => {
+  //   updateCoverPicture(f);
   // };
 
-  const signInWithTwitter = async () => {
+  const signInWithTwitter = useCallback(async () => {
     const provider = new TwitterAuthProvider();
     signInWithPopup(auth, provider)
       .then((response) => {
@@ -284,9 +265,9 @@ function EditProfile() {
       })
       .catch(async (error) => {
         console.error(error);
-        await nav('/');
+        nav('/');
       });
-  };
+  }, [nav]);
 
   const signInWithInstagram = async () => {
     const clientId = '276266121931752'; // instagram app id
@@ -328,184 +309,170 @@ function EditProfile() {
     setSelectedOptions(selectedOptionsInMultiSelect);
   };
 
-  const doNotNavigateHandlerFunction = (e) => {
-    e.preventDefault();
-  };
-
   return (
     <div>
-      <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row profilePadding">
-            <div
-              className="col-xl-12 col-lg-12 col-md-12 col-12"
-              id="coverSection"
-            >
-              <div className="sc-card-profile text-center">
-                <div className="card-media">
-                  <img src={coverLink} id="cover" alt="" />
-                </div>
-                <div id="upload-profile">
-                  <Link to={doNotNavigateHandlerFunction} className="btn-upload">
-                    Upload New Photo
-                    {' '}
-                  </Link>
-                  <input
-                    id="cover-upload-img"
-                    type="file"
-                    name="profile"
-                    accept="image/*"
-                    required=""
-                    onChange={(e) => {
-                      updateCoverPicture(e.target.files[0]);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-3 col-lg-4 col-md-6 col-12">
-              <div className="sc-card-profile text-center">
-                <div className="card-media">
-                  <img src={pdpLink} id="pdp" alt="" />
-                </div>
-                <div id="upload-profile">
-                  <Link to={doNotNavigateHandlerFunction} className="btn-upload">
-                    Upload New Photo
-                    {' '}
-                  </Link>
-                  <input
-                    id="tf-upload-img"
-                    type="file"
-                    name="profile"
-                    accept="image/*"
-                    required=""
-                    onChange={(e) => {
-                      updateProfilePicture(e.target.files[0]);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-9 col-lg-8 col-md-12 col-12">
-              <div className="form-upload-profile">
-                <div className="form-infor-profile">
-                  <div className="info-account accountTypeBox">
-                    <h5>Member</h5>
-                    <Toggle
-                      checked={accountTypeChecked}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setAccountTypeChecked(e.target.checked);
-                          setProfileType('artist');
-                        } else {
-                          setAccountTypeChecked(e.target.checked);
-                          setProfileType('member');
-                        }
-                      }}
-                    />
-                    <h5>Artist</h5>
-                  </div>
+      <div className="themesflat-container">
+        <div className="row top-bottom-padding">
 
+          <CoverImageSection
+            coverLink={coverLink}
+            setCoverLink={setCoverLink}
+          />
+
+          <UploadSection className="col-xl-3 col-lg-4 col-md-6 col-12">
+            <div className="sc-card-profile text-center">
+              <div className="card-media">
+                <img src={pdpLink} id="pdp" alt="Unable to load User's Profile" />
+              </div>
+            </div>
+            <UploadButton
+              htmlFor="upload-profile"
+              className="sc-button loadmore fl-button pri-3"
+            >
+              <span>Upload New Profile Photo</span>
+            </UploadButton>
+
+            <FileInput
+              id="upload-profile"
+              type="file"
+              name="profile"
+              accept="image/*"
+              required=""
+              onChange={(e) => {
+                updateProfilePicture(e.target.files[0]);
+              }}
+            />
+
+          </UploadSection>
+
+          <div className="col-xl-9 col-lg-8 col-md-12 col-12">
+            <div className="form-upload-profile">
+              <div className="form-infor-profile">
+                <div className="info-account accountTypeBox">
+                  <h5>Member</h5>
+                  <Toggle
+                    checked={accountTypeChecked}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setAccountTypeChecked(e.target.checked);
+                        setProfileType('artist');
+                      } else {
+                        setAccountTypeChecked(e.target.checked);
+                        setProfileType('member');
+                      }
+                    }}
+                  />
+                  <h5>Artist</h5>
                 </div>
-                <form action="#" className="form-profile">
-                  <div className="form-infor-profile">
-                    <div className="info-account">
-                      <h4 className="title-create-item">Account info</h4>
-                      <fieldset>
-                        <h4 className="title-infor-account">Name</h4>
-                        <input
-                          type="text"
-                          placeholder={name}
-                          onChange={(e) => setName(e.target.value)}
-                          defaultValue={name}
+
+              </div>
+              <form action="#" className="form-profile">
+                <div className="form-infor-profile">
+                  <div className="info-account">
+                    <h4 className="title-create-item">Account info</h4>
+                    <fieldset>
+                      <h4 className="title-infor-account">Name</h4>
+                      <input
+                        type="text"
+                        placeholder={name}
+                        onChange={(e) => setName(e.target.value)}
+                        defaultValue={name}
+                      />
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Email</h4>
+                      <input
+                        type="email"
+                        placeholder={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        defaultValue={email}
+                      />
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Bio</h4>
+                      <textarea
+                        tabIndex="0"
+                        rows="5"
+                        defaultValue={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                      />
+                    </fieldset>
+                    <button
+                      className="tf-button-submit mg-t-15"
+                      id="submitBtn"
+                      onClick={updateProfile}
+                      type="button"
+                    >
+                      Update Profile
+                    </button>
+                    {/* use the given bellow jsx code when enabling email notifiactions */}
+                    {/* <fieldset> */}
+                    {/*    <h5 className="emailNotifTitle">Email notifications</h5> */}
+                    {/*    <h5 className="emailNotifText"> */}
+                    {/*        You can turn this service on to receive notifications */}
+                    {/*        by Email about your activities on ARTRISE, last */}
+                    {/*        upadtes, ressources & much more. */}
+                    {/*    </h5> */}
+                    {/*    <h5 className="emailNotifText"> */}
+                    {/*        Make sure your email address is set. Also take not */}
+                    {/*        that, due to some Email service providers, our */}
+                    {/*        notifications emails may end up in your Spam/Hidden */}
+                    {/*        folder. */}
+                    {/*    </h5> */}
+                    {/*    <div className="emailNotifSwitchBox"> */}
+                    {/*        <Toggle */}
+                    {/*            checked={emailNotifications} */}
+                    {/*            onChange={(e) => { */}
+                    {/*                setEmailNotifications(!emailNotifications); */}
+                    {/*            }} */}
+                    {/*            sliderHeight={30} */}
+                    {/*            sliderWidth={30} */}
+                    {/*            height={40} */}
+                    {/*            width={80} */}
+                    {/*        /> */}
+                    {/*    </div> */}
+                    {/* </fieldset> */}
+                  </div>
+                  <div className="info-social">
+                    {profileType === 'artist' && (
+                    <>
+                      <div style={{ marginBottom: '10%' }}>
+                        <h4 className="title-create-item">You are a</h4>
+                        <Select
+                          className="multi-select"
+                          options={artistTypeOptions}
+                          isMulti
+                          value={selectedOptions}
+                          onChange={handleSelectChange}
+                          placeholder="Select any..."
                         />
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">Email</h4>
-                        <input
-                          type="email"
-                          placeholder={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          defaultValue={email}
-                        />
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">Bio</h4>
-                        <textarea
-                          tabIndex="0"
-                          rows="5"
-                          defaultValue={bio}
-                          onChange={(e) => setBio(e.target.value)}
-                        />
-                      </fieldset>
-                      {/* use the given bellow jsx code when enabling email notifiactions */}
-                      {/* <fieldset> */}
-                      {/*    <h5 className="emailNotifTitle">Email notifications</h5> */}
-                      {/*    <h5 className="emailNotifText"> */}
-                      {/*        You can turn this service on to receive notifications */}
-                      {/*        by Email about your activities on ARTRISE, last */}
-                      {/*        upadtes, ressources & much more. */}
-                      {/*    </h5> */}
-                      {/*    <h5 className="emailNotifText"> */}
-                      {/*        Make sure your email address is set. Also take not */}
-                      {/*        that, due to some Email service providers, our */}
-                      {/*        notifications emails may end up in your Spam/Hidden */}
-                      {/*        folder. */}
-                      {/*    </h5> */}
-                      {/*    <div className="emailNotifSwitchBox"> */}
-                      {/*        <Toggle */}
-                      {/*            checked={emailNotifications} */}
-                      {/*            onChange={(e) => { */}
-                      {/*                setEmailNotifications(!emailNotifications); */}
-                      {/*            }} */}
-                      {/*            sliderHeight={30} */}
-                      {/*            sliderWidth={30} */}
-                      {/*            height={40} */}
-                      {/*            width={80} */}
-                      {/*        /> */}
-                      {/*    </div> */}
-                      {/* </fieldset> */}
-                    </div>
-                    <div className="info-social">
-                      {profileType === 'artist' && (
-                        <>
-                          <div style={{ marginBottom: '10%' }}>
-                            <h4 className="title-create-item">You are a</h4>
-                            <Select
-                              className="multi-select"
-                              options={artistTypeOptions}
-                              isMulti
-                              value={selectedOptions}
-                              onChange={handleSelectChange}
-                              placeholder="Select any..."
-                            />
-                          </div>
-                          <h4 className="title-create-item">Your Social media</h4>
-                          <div style={{ maxWidth: '100%' }}>
-                            <h4 className="title-infor-account">
-                              Verify your account
-                            </h4>
-                            <div className="d-flex">
-                              <CustomTwitterLoginButton Twitter={Twitter} signInWithTwitter={signInWithTwitter} />
-                              <InstagramLoginButton
-                                text={
+                      </div>
+                      <h4 className="title-create-item">Your Social media</h4>
+                      <div style={{ maxWidth: '100%' }}>
+                        <h4 className="title-infor-account">
+                          Verify your account
+                        </h4>
+                        <div className="d-flex">
+                          <CustomTwitterLoginButton Twitter={Twitter} signInWithTwitter={signInWithTwitter} />
+                          <InstagramLoginButton
+                            text={
                                 Instagram === 'No Instagram added yet ...'
                                 || Instagram === ''
                                 || Instagram === ' '
                                   ? 'Verify with Instagram'
                                   : 'Verified'
                               }
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  if (
-                                    Instagram === 'No Instagram added yet ...'
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (
+                                Instagram === 'No Instagram added yet ...'
                                     || Instagram === ''
                                     || Instagram === ' '
-                                  ) {
-                                    signInWithInstagram();
-                                  }
-                                }}
-                                style={
+                              ) {
+                                signInWithInstagram();
+                              }
+                            }}
+                            style={
                                 Instagram === 'No Instagram added yet ...'
                                 || Instagram === ''
                                 || Instagram === ' '
@@ -514,73 +481,65 @@ function EditProfile() {
                                     fontSize: '16px',
                                   } : { fontSize: '16px' }
                               }
-                              />
-                            </div>
-                          </div>
-                        </>
-                      )}
-                      <fieldset style={{ marginTop: '5%' }}>
-                        <h4 className="title-infor-account">
-                          <FaGlobeAfrica size={15} />
-                          {' '}
-                          Website
-                        </h4>
-                        <input
-                          type="text"
-                          placeholder={website}
-                          defaultValue={website}
-                          onChange={(e) => setWebsite(e.target.value)}
-                        />
-                      </fieldset>
+                          />
+                        </div>
+                      </div>
+                    </>
+                    )}
+                    <fieldset style={{ marginTop: '5%' }}>
+                      <h4 className="title-infor-account">
+                        <FaGlobeAfrica size={15} />
+                        {' '}
+                        Website
+                      </h4>
+                      <input
+                        type="text"
+                        placeholder={website}
+                        defaultValue={website}
+                        onChange={(e) => setWebsite(e.target.value)}
+                      />
+                    </fieldset>
 
-                      <fieldset style={{ marginTop: '5%' }}>
-                        <h4 className="title-infor-account">
-                          <FaFacebook size={15} />
-                          Facebook
-                        </h4>
-                        <input
-                          type="text"
-                          placeholder={Facebook}
-                          defaultValue={Facebook}
-                          onChange={(e) => setFacebook(e.target.value)}
-                        />
-                      </fieldset>
-                      <fieldset style={{ marginTop: '5%' }}>
-                        <h4 className="title-infor-account">
-                          <FaInstagram size={15} />
-                          Instagram
-                        </h4>
-                        <input
-                          type="text"
-                          placeholder={Instagram}
-                          defaultValue={Instagram}
-                          onChange={(e) => setInstagram(e.target.value)}
-                        />
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">
-                          <FaTwitter size={15} />
-                          Twitter
-                        </h4>
-                        <input
-                          type="text"
-                          placeholder={Twitter}
-                          defaultValue={Twitter}
-                          onChange={(e) => setTwitter(e.target.value)}
-                        />
-                      </fieldset>
-                    </div>
+                    <fieldset style={{ marginTop: '5%' }}>
+                      <h4 className="title-infor-account">
+                        <FaFacebook size={15} />
+                        Facebook
+                      </h4>
+                      <input
+                        type="text"
+                        placeholder={Facebook}
+                        defaultValue={Facebook}
+                        onChange={(e) => setFacebook(e.target.value)}
+                      />
+                    </fieldset>
+                    <fieldset style={{ marginTop: '5%' }}>
+                      <h4 className="title-infor-account">
+                        <FaInstagram size={15} />
+                        Instagram
+                      </h4>
+                      <input
+                        type="text"
+                        placeholder={Instagram}
+                        defaultValue={Instagram}
+                        onChange={(e) => setInstagram(e.target.value)}
+                      />
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">
+                        <FaTwitter size={15} />
+                        Twitter
+                      </h4>
+                      <input
+                        type="text"
+                        placeholder={Twitter}
+                        defaultValue={Twitter}
+                        onChange={(e) => setTwitter(e.target.value)}
+                      />
+                    </fieldset>
                   </div>
-                  <button
-                    className="tf-button-submit mg-t-15"
-                    id="submitBtn"
-                    onClick={updateProfile}
-                    type="button"
-                  >
-                    Update Profile
-                  </button>
-                </form>
-              </div>
+                </div>
+
+              </form>
             </div>
           </div>
         </div>
