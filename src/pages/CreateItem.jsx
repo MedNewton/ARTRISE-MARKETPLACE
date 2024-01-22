@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+/*eslint-disable*/
+import React, {
+  useState, useEffect, useCallback, useMemo,
+} from 'react';
 
 import { Button } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -8,6 +11,7 @@ import { useAccount } from 'wagmi';
 import {
   ref, get, update, set,
 } from 'firebase/database';
+import { useNavigate } from 'react-router-dom';
 import Toggle from 'react-styled-toggle';
 import {
   Navigation, Pagination,
@@ -23,12 +27,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signMessage } from '@wagmi/core';
 import db from '../firebase';
 import img1 from '../assets/images/box-item/image-box-6.jpg';
 import Footer from '../components/footer/Footer';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
+import { fetchUsers } from '../utils/allUsersUtils';
+import { fetchCurrentUser } from '../utils/currentUserUtils';
+import { fetchLazyOwned } from '../utils/lazyOwnedUtils';
 
 const TraitForm = (tr, v) => ({
   trait_type: tr,
@@ -48,7 +54,9 @@ const toastOptions = {
 
 function CreateItem() {
   const currentUserState = useSelector((state) => state.usersReducer.currentUser);
-
+ const navigate = useNavigate();
+  const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
+  const dispatch = useDispatch();
   // const { contract } = useContract(
   //   '0x91FBfcDDa7FE1aD979C34dF707D2691FcD5663B0',
   // );
@@ -79,7 +87,7 @@ function CreateItem() {
   let existingArtworksIds;
   let existingArtworksThumbnails;
 
-  const months = [
+  const months = useMemo ( ()=> [
     'January',
     'February',
     'March',
@@ -92,10 +100,10 @@ function CreateItem() {
     'October',
     'November',
     'December',
-  ];
+  ],[]);
 
   function navigateToHomepage() {
-    window.location.href = '/';
+    navigate('/');
   }
   const delay = (ms) => setTimeout(navigateToHomepage, ms);
 
@@ -307,7 +315,7 @@ function CreateItem() {
         throw error;
       }
     } else if (artistCollections.length > 0) {
-      const collRef = await ref(db, `collections/${collectionID}`);
+      const collRef = ref(db, `collections/${collectionID}`);
       let existingArtworksInCollection = [];
       await get(collRef).then((snapshot) => {
         const dt = snapshot.val();
@@ -372,9 +380,14 @@ function CreateItem() {
       toast.success('Minted! Redirecting you to the homepage...', toastOptions);
       // Delay before redirecting (consider whether 8 seconds is necessary)
 
-      await delay(7000);
+      if (currentUserId) {
+        await fetchUsers(dispatch);
+        await fetchCurrentUser(dispatch, currentUserId);
+        await fetchLazyOwned(dispatch, currentUserId);
+      }
+
+      delay(7000);
       // Redirect to the homepage
-      window.location.href = '/';
     } catch (error) {
       toast.error('Problem occurred while adding artwork to DB ...', toastOptions);
       throw error;
@@ -398,8 +411,6 @@ function CreateItem() {
 
   return (
     <div className="create-item">
-      <HeaderStyle2 />
-
       <div className="d-flex flex-row, justify-content-center">
         <div className="d-flex flex-column" style={{ width: '60%' }}>
           <div>
