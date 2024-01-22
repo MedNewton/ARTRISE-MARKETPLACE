@@ -3,7 +3,8 @@ import Select from 'react-select';
 import { toast, ToastContainer } from 'react-toastify';
 import { ref, set, update } from 'firebase/database';
 import * as PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import db from '../../../firebase';
 import {
   DetailTitle,
@@ -13,21 +14,33 @@ import {
   SummaryDetailsWrapper,
   SummarySection,
 } from './FixedMethod.styles';
+import { fetchCurrentUser } from '../../../utils/currentUserUtils';
+import { fetchLazyOwned } from '../../../utils/lazyOwnedUtils';
+import { fetchLazyListed } from '../../../utils/lazyListedUtils';
+import { getCollections } from '../../../utils/collectionUtils';
 
 DetailTitle.propTypes = { children: PropTypes.node };
 
 function FixedMethod() {
+  const theme = useSelector((state) => state.themeReducer.theme);
+  const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [price, setPrice] = useState(0);
   const [shippingOption, setShippingOption] = useState('free');
   const [shippingPrice, setShippingPrice] = useState(0);
   const [loading, setLoading] = useState(false);
-  const theme = useSelector((state) => state.themeReducer.theme);
 
   function getRandomInteger(min, max) {
     const minimum = Math.ceil(min);
     const maximum = Math.floor(max);
     return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
   }
+
+  function navigateToHomepage() {
+    navigate('/');
+  }
+  const delay = (ms) => setTimeout(navigateToHomepage, ms);
 
   async function listForFixedPrice() {
     if (price <= 0) {
@@ -60,7 +73,7 @@ function FixedMethod() {
         price,
         shipping: shippingPrice,
       })
-        .then(() => {
+        .then(async () => {
           toast.success(
             'NFT listed successfully !',
             {
@@ -75,6 +88,26 @@ function FixedMethod() {
             },
           );
           setLoading(false);
+          if (currentUserId) {
+            await fetchLazyListed(dispatch);
+            await getCollections(dispatch);
+            await fetchCurrentUser(dispatch, currentUserId);
+            await fetchLazyOwned(dispatch, currentUserId);
+          }
+          toast.success(
+            'Redirecting you to the homepage...',
+            {
+              position: 'top-left',
+              autoClose: 7000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+            },
+          );
+          delay(5000);
         });
     }
   }
