@@ -1,25 +1,27 @@
-/*eslint-disable*/
-import React, { useCallback, useEffect, useState } from 'react';
-import ImageViewer from 'react-simple-image-viewer';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import 'react-tabs/style/react-tabs.css';
 import './styles/artwork.css';
 import { Accordion } from 'react-bootstrap-accordion';
 
-import { get, ref, set } from 'firebase/database';
+import {
+  ref,
+  get,
+  set,
+} from 'firebase/database';
 import { useAccount, useBalance } from 'wagmi';
 import axios from 'axios';
 import Web3 from 'web3';
 import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import Swal from 'sweetalert2';
 
-import { Button, Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { ethers } from 'ethers';
 import db from '../firebase';
 import ShippingModal from '../components/layouts/ShippingModal';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import MediaViewer from '../components/layouts/mediaViewer/MediaViewer';
+import PhysicalImagesViewer from '../components/layouts/artwork/PhysicalImagesViewer';
 
 class LazyNFT {
   constructor(i, d, o, c) {
@@ -31,46 +33,34 @@ class LazyNFT {
 }
 
 function Artwork() {
+  const [nftID, setNftID] = useState('');
   const location = useLocation();
   const initialData = location.state ? location.state.data : null;
-  const [Offerdata, setData] = useState(initialData);
+  const [Offerdata] = useState(initialData);
   const [Listed, setListed] = useState(false);
-  const [currentImage, setCurrentImage] = useState(0);
-  const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [nft, setNFT] = useState();
   const [ownerAddress, setOwnerAddress] = useState('');
   const [CollectionID, setCollectionID] = useState('');
-  const [physicalImages, setPhysicalImages] = useState([]);
   const [ipfsURL, setIpfsURL] = useState('');
   const [price, setPrice] = useState(0);
   const [shippingPrice, setShippingPrice] = useState(0);
   const [listingID, setListingID] = useState('');
   const [OfferModal, setOfferModal] = useState(false);
 
-  // const [loading, setLoading] = useState(false);
-  // const [status, setStatus] = useState('');
+  const [setLoading] = useState(false);
+  const [setStatus] = useState('');
 
   const [shippingModalShow, setShippingModalShow] = useState(false);
-  // const [transactionStatus, setTransactionStatus] = useState('');
+  const [setTransactionStatus] = useState('');
 
-  const openImageViewer = useCallback((index) => {
-    setCurrentImage(index);
-    setIsViewerOpen(true);
-  }, []);
-
-  const closeImageViewer = () => {
-    setCurrentImage(0);
-    setIsViewerOpen(false);
-  };
-
-  const { address} = useAccount();
+  const { address } = useAccount();
   const { data } = useBalance({
     address,
   });
 
-  async function getNFTData() {
+  const getNFTData = useCallback(async () => {
     let lazyNFT;
-    const nftID = window.location.href.toString().split('id=')[1];
+    // const nftID = window.location.href.toString().split('id=')[1];
     const artworkRef = ref(db, `artworks/${nftID}`);
     await get(artworkRef).then(async (snapshot) => {
       const collectionID = snapshot.val().collection;
@@ -78,153 +68,63 @@ function Artwork() {
       const { key } = snapshot;
       const IPFS_URL = snapshot.val().ipfsURI;
       setIpfsURL(IPFS_URL);
-      const data = await axios.get(IPFS_URL);
+      const IPFSdata = await axios.get(IPFS_URL);
       let collection;
       const collectionRef = ref(db, `collections/${collectionID}`);
-      await get(collectionRef).then(async (snapshot) => {
-        collection = snapshot.val();
+      await get(collectionRef).then(async (collectionSnapshot) => {
+        collection = collectionSnapshot.val();
       });
       const ownerID = snapshot.val().owner;
       setOwnerAddress(ownerID);
       const userRef = ref(db, `users/${ownerID}`);
-      await get(userRef).then(async (snapshot) => {
-        const owner = snapshot.val();
-        lazyNFT = new LazyNFT(key, data.data, owner);
+      await get(userRef).then(async (ownerSnapshot) => {
+        const owner = ownerSnapshot.val();
+        lazyNFT = new LazyNFT(key, IPFSdata.data, owner, collection);
         setNFT(lazyNFT);
       });
     });
     return lazyNFT;
-  }
+  }, [nftID]);
 
-  async function getPrice() {
-    const nftID = window.location.href.toString().split('id=')[1];
-    const listingsRef = ref(db, 'listings/');
-    await get(listingsRef).then(async (snapshot) => {
-      const listings = snapshot.val();
-      for (const i in listings) {
-        const listing = listings[i];
-        if (listing.artwork_id === nftID) {
-          setListed(true);
-          setListingID(i);
-          if (Offerdata != null) {
-            setPrice(Offerdata?.offeredprice);
-          } else {
-            setPrice(listing.price);
+  const getPrice = useCallback(async () => {
+    try {
+      // const nftID = new URLSearchParams(window.location.search).get('id');
+      const listingsRef = ref(db, 'listings/');
+      const snapshot = await get(listingsRef);
+
+      if (snapshot.exists()) {
+        const listings = snapshot.val();
+
+        Object.keys(listings).forEach((listingId) => {
+          const listing = listings[listingId];
+
+          if (listing.artwork_id === nftID) {
+            setListed(true);
+            setListingID(listingId);
+            setPrice(Offerdata?.offeredprice || listing.price);
+            setShippingPrice(parseFloat(listing.shipping));
+            // Stop looping once a match is found
           }
-          setShippingPrice(parseFloat(listing.shipping));
-        }
-      }
-    });
-  }
-
-  useEffect(() => {
-    getNFTData();
-    getPrice();
-  }, []);
-
-  const payForNFT = async () => {
-    const nftID = window.location.href.toString().split('id=')[1];
-    if (address != null) {
-      const userBalance = parseFloat(data.formatted);
-      // let userBalance = 1000;
-      alert(userBalance);
-      // alert(usdPriceInEth);
-      // let totalToPay = price + (shippingPrice / 1806.96);
-      // alert('price: '+price)
-      // alert(shippingPrice)
-      // let totalToPay = price;
-      // alert(totalToPay);
-      const totalToPay = price + shippingPrice.toFixed(2) / 1806.96;
-      // alert(totalToPay.toFixed(6));
-      const totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
-      // alert(totalToPayInWei);
-      if (userBalance < totalToPay) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Insufficient funds !',
-          text: 'The funds in your wallet are insufficient to pay for this artwork.',
         });
       } else {
-        try {
-          await window.ethereum.enable();
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-          const signer = provider.getSigner();
-          const transaction = {
-            to: '0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44',
-            value: totalToPayInWei,
-          };
-          // alert(transaction);
-          const sendTransaction = await signer.sendTransaction(transaction);
-          // setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
-          if (sendTransaction.hash) {
-            await handleMint().then(async () => {
-              const listingsRef = ref(db, `listings/${listingID}`);
-              await set(listingsRef, null).then(() => {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'The Artwork is now yours ! !',
-                  text: 'You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.',
-                });
-                const orderID = (Math.random() + 1).toString(36).substring(2);
-                const orderRef = ref(db, `orders/${orderID}`);
-                set(
-                  orderRef,
-                  {
-                    artworkid: nftID,
-                    listingid: listingID,
-                    sellersid: ownerAddress,
-                    buyersid: address,
-                    price: totalToPay,
-                    Collectionid: CollectionID,
-                    buyersWallet: address,
-                    status: 'Pending Shipping',
-                    purchasedate: Date().getTime(),
-                  },
-                );
-              });
-            });
-          }
-        } catch (error) {
-          console.error('Error transferring ETH:', error);
-          // setTransactionStatus('Error transferring ETH');
-        }
+        console.error('Listings data not found.');
       }
-    } else {
-      await Swal.fire({
-        icon: 'error',
-        title: 'Wallet Not Connected !',
-        text: 'Please Connect Your Wallet in Order to Complete the Purchase',
-      });
+    } catch (error) {
+      console.error('Error fetching price:', error);
     }
-  };
+  }, [nftID, Offerdata?.offeredprice]);
 
-  // const DemoPurchase = async () => {
-  //   const orderID = (Math.random() + 1).toString(36).substring(2);
-  //   const orderRef = ref(db, `orders/${orderID}`);
-  //   await set(
-  //     orderRef,
-  //     {
-  //       artworkid: window.location.href.toString().split('id=')[1],
-  //       listingid: listingID,
-  //       sellersid: ownerAddress,
-  //       buyersid: address,
-  //       price: '100',
-  //       Collectionid: CollectionID,
-  //       buyersWallet: address,
-  //       status: 'Pending Shipping',
-  //     },
-  //   );
-  //   Swal.fire({
-  //     icon: 'success',
-  //     title: 'The Artwork is now yours ! !',
-  //     text: 'You can see this artwork in your wallet, use it, or list it again on ARTRISE to gain profits !.',
-  //   });
-  //   redirect('/page/confirmation');
-  // };
+  useEffect(() => {
+    setNftID(new URLSearchParams(window.location.search).get('id'));
+    if (nftID) {
+      getNFTData();
+      getPrice();
+    }
+  }, [getPrice, getNFTData, nftID]);
 
   const handleMint = async () => {
-    // setLoading(true);
-    // setStatus('');
+    setLoading(true);
+    setStatus('');
 
     const web3 = new Web3(window.ethereum);
 
@@ -819,23 +719,101 @@ function Artwork() {
       raribleProtocolAddress,
     );
 
+    const metadataURI = ipfsURL;
     if (address != null) {
       await raribleContract.methods
-        .mintWithURI(address, ipfsURL)
+        .mintWithURI(address, metadataURI)
         .send({ from: address });
+    }
+  };
+
+  const payForNFT = async () => {
+    // const nftID = window.location.href.toString().split('id=')[1];
+    if (address != null) {
+      const userBalance = parseFloat(data.formatted);
+      // let userBalance = 1000;
+      // alert(userBalance);
+      // alert(usdPriceInEth);
+      const totalToPay = price + (shippingPrice / 1806.96);
+      // alert('price: '+price)
+      // alert(shippingPrice)
+      // let totalToPay = price;
+      // alert(totalToPay);
+      const totalToPayInWei = ethers.utils.parseEther(totalToPay.toString());
+      // alert(totalToPayInWei);
+      if (userBalance < totalToPay) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Insufficient funds !',
+          text: 'The funds in your wallet are insufficient to pay for this artwork.',
+        });
+      } else {
+        try {
+          await window.ethereum.enable();
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+          const transaction = {
+            to: '0x18C41549ee05F893B5eA6ede6f8dccC1a9C16f44',
+            value: totalToPayInWei,
+          };
+          const sendTransaction = await signer.sendTransaction(transaction);
+          setTransactionStatus(`Transaction Hash: ${sendTransaction.hash}`);
+          if (sendTransaction.hash) {
+            await handleMint().then(async () => {
+              const listingsRef = ref(db, `listings/${listingID}`);
+              await set(listingsRef, null).then(() => {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'The Artwork is now yours ! !',
+                  text: `You can see this artwork in your wallet, 
+                  use it, or list it again on ARTRISE to gain profits !.`,
+                });
+                const orderID = (Math.random() + 1).toString(36).substring(2);
+                const orderRef = ref(db, `orders/${orderID}`);
+                set(
+                  orderRef,
+                  {
+                    artworkid: nftID,
+                    listingid: listingID,
+                    sellersid: ownerAddress,
+                    buyersid: address,
+                    price: totalToPay,
+                    Collectionid: CollectionID,
+                    buyersWallet: address,
+                    status: 'Pending Shipping',
+                    purchasedate: Date().getTime(),
+                  },
+                );
+              });
+            });
+          }
+        } catch (error) {
+          setTransactionStatus('Error transferring ETH');
+        }
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Wallet Not Connected !',
+        text: 'Please Connect Your Wallet in Order to Complete the Purchase',
+      });
     }
   };
 
   const SendOffer = async () => {
     if (address != null) {
-      const nftID = window.location.href.toString().split('id=')[1];
-      const userBalance = parseFloat(data.formatted);
+      // console.log('offersent');
+      // const nftID = window.location.href.toString().split('id=')[1];
+      // const userBalance = parseFloat(data.formatted);
       const OfferAmount = document.getElementById('OfferAmount').value;
+      // console.log(OfferAmount)
 
       // User Balance
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const balance = await provider.getBalance(address);
       const UserBalanceInEth = ethers.utils.formatEther(balance);
+      // console.log(balanceInEth);
+
       if (UserBalanceInEth >= OfferAmount) {
         const OfferId = (Math.random() + 1).toString(36).substring(2);
         const OfferRef = ref(db, `offers/${OfferId}`);
@@ -856,7 +834,7 @@ function Artwork() {
           },
         ).then(
           async () => {
-            await Swal.fire({
+            Swal.fire({
               icon: 'success',
               title: 'Offer Sent',
               text: 'Offer Has Been Successfully sent to the Owner of this Artwork!',
@@ -864,14 +842,14 @@ function Artwork() {
           },
         );
       } else {
-        await Swal.fire({
+        Swal.fire({
           icon: 'error',
           title: 'Insufficient Balance',
           text: 'Please Add Balance to your Etherium Wallet!',
         });
       }
     } else {
-      await Swal.fire({
+      Swal.fire({
         icon: 'warning',
         title: 'User Not Logged In!',
         text: 'Please Login to Send an Offer!',
@@ -888,8 +866,7 @@ function Artwork() {
       const response = await axios.get(
         'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
       );
-      setUsdPriceInEth(parseFloat(response?.data?.USD));
-      setUsdPriceInEth(parseFloat(1806.96)); // response.data.USD
+      setUsdPriceInEth(parseFloat(response.data.USD));
     }
     fetchPrice();
   }, [usdPriceInEth]);
@@ -900,13 +877,11 @@ function Artwork() {
         'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
       );
       setUsdPriceInEth(parseFloat(response.data.USD));
-      // setUsdPriceInEth(parseFloat(1806.96)); //response.data.USD
     }, 30000);
   });
 
   return (
     <div className="item-details">
-      <HeaderStyle2 />
       <Modal show={OfferModal} onHide={hideOfferModal}>
         <Modal.Header closeButton>
           <Modal.Title>Make an Offer</Modal.Title>
@@ -991,7 +966,7 @@ function Artwork() {
                         </div>
                         <div className="row">
                           <div className="col-6 detailLeft">
-                            <p>Token Stdandard</p>
+                            <p>Token Standard</p>
                           </div>
                           <div className="col-6">
                             <p className="detailRight">ERC-721</p>
@@ -1022,61 +997,29 @@ function Artwork() {
                     <h5 className="style2 collectionName">
                       {nft?.collection?.name ? nft?.collection?.name : 'ARTRISE Shared Collection'}
                     </h5>
-                    <div className="meta-item">
-                      <div className="left">
-                        <span
-                          className="viewed eye"
-                          id="likeBtn"
-                          onClick={(e) => {}}
-                        >
-                          {1}
-                        </span>
-                        <span
-                          className="liked heart wishlist-button mg-l-8"
-                          hidden
-                        >
-                          <span className="number-like">100</span>
-                        </span>
-                      </div>
-                      <div className="right">
-                        <Link
-                          to="#"
-                          onClick={(e) => {}}
-                          id="shareBtn"
-                          className="share"
-                        />
-                        <Link to="/" className="option" hidden />
-                      </div>
-                    </div>
-                    <p
-                      style={{
-                        fontSize: '1.6em',
-                        lineHeight: '1.4em',
-                        marginBottom: '5%',
-                      }}
-                    >
-                      {nft.data.description}
+                    <p>
+                      {nft?.data.description}
                     </p>
                     <div className="client-infor sc-card-product">
                       <div className="meta-info">
                         <div className="author">
                           <div className="avatar">
-                            <img src={nft.owner.pdpLink} alt="Axies" />
+                            <img src={nft?.owner?.pdpLink} alt="Axies" />
                           </div>
                           <div className="info">
                             <span>Owned By</span>
-                            <h6>{nft.owner.displayName}</h6>
+                            <h6>{nft?.owner?.name}</h6>
                           </div>
                         </div>
                       </div>
                       <div className="meta-info">
                         <div className="author">
                           <div className="avatar">
-                            <img src={nft.owner.pdpLink} alt="Axies" />
+                            <img src={nft?.owner?.pdpLink} alt="Axies" />
                           </div>
                           <div className="info">
                             <span>Create By</span>
-                            <h6>{nft.owner.displayName}</h6>
+                            <h6>{nft?.owner?.name}</h6>
                           </div>
                         </div>
                       </div>
@@ -1107,7 +1050,9 @@ function Artwork() {
                                   Swal.fire({
                                     icon: 'question',
                                     title: 'Flexible price NFTs',
-                                    text: 'In order to protect users from unexpected market swings,\nARTRISE implemented the notion of flexible price NFTs\nto keep all the artworks aligned with the actual cryptocurrencies market prices.',
+                                    text: 'In order to protect users from unexpected market swings,\nARTRISE '
+                                      + 'implemented the notion of flexible price NFTs\nto keep all the artworks '
+                                      + 'aligned with the actual cryptocurrencies market prices.',
                                   });
                                 }}
                               />
@@ -1123,11 +1068,15 @@ function Artwork() {
                           {' '}
                           <span
                             className="shippingDetails"
-                            onClick={() => {
-                              setShippingModalShow(true);
-                            }}
                           >
-                            (View Shipping Info)
+                            <button
+                              onClick={() => {
+                                setShippingModalShow(true);
+                              }}
+                              type="button"
+                            >
+                              (View Shipping Info)
+                            </button>
                           </span>
                         </span>
                         <div className="price">
@@ -1163,37 +1112,7 @@ function Artwork() {
                     >
                       <span>Make an Offer!</span>
                     </Link>
-
-                    <div className="physicalImages">
-                      <h5 className="physicalArtworksTitle">
-                        Pictures of the physical artwork:
-                      </h5>
-                      <div className="row" style={{ marginBottom: '3%' }}>
-                        {nft?.data?.physical_images?.map((image, index) => (
-                          <div className="col-3 physImgCol" key={index + 1}>
-                            <img
-                              src={image.image_url}
-                              onClick={() => openImageViewer(index)}
-                              className="physImg"
-                              key={index + 1}
-                              style={{ margin: '2px' }}
-                              alt=""
-                            />
-                          </div>
-                        ))}
-
-                        {isViewerOpen && (
-                          <ImageViewer
-                            src={physicalImages}
-                            currentIndex={currentImage}
-                            disableScroll
-                            closeOnClickOutside
-                            onClose={closeImageViewer}
-                          />
-                        )}
-                      </div>
-                    </div>
-
+                    <PhysicalImagesViewer physicalImages={nft?.data?.physical_images} />
                     <div
                       className="flat-tabs themesflat-tabs"
                       style={{ marginBottom: '5%' }}
