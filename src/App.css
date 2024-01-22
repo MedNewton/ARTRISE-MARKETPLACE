@@ -1422,7 +1422,7 @@ cursor: pointer;
 
 .styles-module_image__2hdkJ{
   max-height: 90vh !important;
-  position: absolute !important;
+  /*position: absolute !important;*/
   left: 25vw !important;
   top: 2% !important;
   max-width: auto !important;
