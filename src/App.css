@@ -220,11 +220,11 @@
 }
 
 .is_dark #root > div > div.mainslider.sld > div{
-  background: #030303 !important;
+  background: #141414 !important;
 }
 
 .is_dark .slide-pane__content{
-  background-color: #030303;
+  background-color: #141414;
 }
 
 .slide-pane__content{
@@ -238,7 +238,7 @@
 }
 
 .is_dark #side-bar{
-  background-color: #030303;
+  background-color: #141414;
 }
 
 .artworkDescription{
