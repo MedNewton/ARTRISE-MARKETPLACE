@@ -10,7 +10,6 @@ function CreateChoices() {
 
   return (
     <div>
-      <HeaderStyle2 />
       <div className="tf-create-item tf-section">
         <div className="themesflat-container">
           <div className="row top-bottom-padding " style={{ paddingLeft: '0.5%' }}>
