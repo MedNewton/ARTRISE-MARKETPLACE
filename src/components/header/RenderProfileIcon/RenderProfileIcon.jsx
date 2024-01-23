@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FaBook, FaFileAlt, FaHandsHelping, FaLink, FaPlus, FaRegUser, FaSignOutAlt, FaSlidersH,
 } from 'react-icons/fa';
@@ -52,48 +52,58 @@ function RenderProfileIcon(props) {
           <FaRegUser size={15} />
           Profile
         </Dropdown.Item>
-
         )}
         {(localStorage.getItem('profileType') === 'member' && localStorage.getItem('walletAddress')) ? (
-          <Dropdown.Item href="/tokenize">
-            <BiCoinStack size={15} />
-            Tokenize
+          <Dropdown.Item>
+            <Link to="/tokenize">
+              <BiCoinStack size={15} />
+              Tokenize
+            </Link>
           </Dropdown.Item>
         ) : (
           ''
         )}
-
         {(localStorage.getItem('profileType') === 'artist' && localStorage.getItem('walletAddress')) ? (
-          <Dropdown.Item href="/creator-choice">
-            <FaPlus size={15} />
-            Create
+          <Dropdown.Item>
+            <Link to="/creator-choice">
+              <FaPlus size={15} />
+              Create
+            </Link>
           </Dropdown.Item>
         ) : (
           ''
         )}
-
-        <Dropdown.Item href="/referral-program">
-          <FaLink size={15} />
-          Referral
+        <Dropdown.Item>
+          <Link to="/referral-program">
+            <FaLink size={15} />
+            Referral
+          </Link>
         </Dropdown.Item>
-        <Dropdown.Item href="/learn">
-          <FaBook size={15} />
-          Learn
+        <Dropdown.Item>
+          <Link to="/learn">
+            <FaBook size={15} />
+            Learn
+          </Link>
         </Dropdown.Item>
-        <Dropdown.Item href="/learn">
-          <FaFileAlt size={18} />
-          Resources
+        <Dropdown.Item>
+          <Link to="/learn">
+            <FaFileAlt size={18} />
+            Resources
+          </Link>
         </Dropdown.Item>
-        <Dropdown.Item href="/help-center">
-          <FaHandsHelping size={17} />
-          Help
+        <Dropdown.Item>
+          <Link to="/help-center">
+            <FaHandsHelping size={17} />
+            Help
+          </Link>
         </Dropdown.Item>
-        <Dropdown.Item href="/settings">
-          <FaSlidersH size={15} />
-          Settings
+        <Dropdown.Item>
+          <Link to="/settings">
+            <FaSlidersH size={15} />
+            Settings
+          </Link>
         </Dropdown.Item>
         <Dropdown.Item
-          href=""
           onClick={(e) => {
             e.preventDefault();
             logoutHandler();
