@@ -2,7 +2,7 @@ import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { get, ref, update } from 'firebase/database';
+import { ref, update } from 'firebase/database';
 import { useAccount } from 'wagmi';
 import Swal from 'sweetalert2';
 import { getDownloadURL, ref as SRef, uploadBytesResumable } from 'firebase/storage';
@@ -20,18 +20,16 @@ import auth from '../auth';
 import storage from '../storage';
 import db from '../firebase';
 import Footer from '../components/footer/Footer';
-import {
-  setMembers,
-  setAllUsers,
-  setArtists, setCurrentUser,
-} from '../redux/actions/userActions';
 import CoverImageSection from '../components/layouts/editProfile/CoverImageSection';
 import CustomTwitterLoginButton from '../components/layouts/editProfile/CustomTwitterLoginButton';
 import {
-  UploadSection,
   FileInput,
   UploadButton,
+  UploadSection,
 } from '../components/layouts/editProfile/EditProfileStyles/CoverImageSection.styles';
+import { fetchUsers } from '../utils/allUsersUtils';
+import { fetchCurrentUser } from '../utils/currentUserUtils';
+import { fetchLazyOwned } from '../utils/lazyOwnedUtils';
 
 function EditProfile() {
   const nav = useNavigate();
@@ -58,10 +56,22 @@ function EditProfile() {
   const { address } = useAccount();
 
   const artistTypeOptions = useMemo(() => [
-    { value: 'Painter', label: 'Painter' },
-    { value: 'Sculptor', label: 'Sculptor' },
-    { value: 'Photographer', label: 'Photographer' },
-    { value: 'Draftsman', label: 'Draftsman' },
+    {
+      value: 'Painter',
+      label: 'Painter',
+    },
+    {
+      value: 'Sculptor',
+      label: 'Sculptor',
+    },
+    {
+      value: 'Photographer',
+      label: 'Photographer',
+    },
+    {
+      value: 'Draftsman',
+      label: 'Draftsman',
+    },
   ], []);
 
   const getUserData = useCallback(() => {
@@ -80,59 +90,13 @@ function EditProfile() {
       setArtistType(currentUserState?.artistType ? currentUserState?.artistType : '');
       setSocialMediaVerified(currentUserState?.socialMediaVerified ? currentUserState?.socialMediaVerified : false);
       setArtRiseAdminVerified(currentUserState?.artRiseAdminVerified ? currentUserState?.artRiseAdminVerified : false);
-      if (currentUserState.profileType === 'artist') setAccountTypeChecked(true);
-      else setAccountTypeChecked(false);
+      if (currentUserState.profileType === 'artist') {
+        setAccountTypeChecked(true);
+      } else {
+        setAccountTypeChecked(false);
+      }
     }
   }, [currentUserState]);
-
-  const fetchAllUsersForRedux = async () => {
-    try {
-      const ThisUserRef = ref(db, `users/${currentUserId}`);
-      const thisUserSnapshot = await get(ThisUserRef);
-      const currentUser = thisUserSnapshot.val();
-      dispatch(setCurrentUser({ currentUser }));
-
-      const members = [];
-      const artists = [];
-      const allUsers = [];
-
-      const userRef = ref(db, 'users/');
-      const usersSnapshot = await get(userRef);
-      const dt = usersSnapshot.val();
-
-      Object.keys(dt).forEach((userId) => {
-        const a = dt[userId];
-
-        const userItem = {
-          userId,
-          ...a,
-        };
-        allUsers.push(userItem);
-
-        if (a?.socialMediaVerified && a?.profileType === 'artist') {
-          const artistItem = {
-            userId,
-            ...a,
-          };
-          artists.push(artistItem);
-        } else if (!a?.socialMediaVerified) {
-          const memberItem = {
-            userId,
-            ...a,
-          };
-          members.push(memberItem);
-        }
-      });
-
-      dispatch(setAllUsers({ allUsers }));
-      dispatch(setMembers({ members }));
-      dispatch(setArtists({ artists }));
-    } catch (error) {
-      console.error('Error fetching users:', error.message);
-      // Handle the error or throw it further
-      throw error;
-    }
-  };
 
   const updateProfile = async () => {
     const UserKey = currentUserId || localStorage.getItem('userId');
@@ -160,14 +124,14 @@ function EditProfile() {
         title: 'Congratulations!',
         text: 'You are now part of the Artrise artists community. You can start creating your own collections '
           + 'and minting artworks.',
-        confirmButtonText: "Let's go!",
+        confirmButtonText: 'Let\'s go!',
       });
     } else if (isArtist && !socialMediaVerified) {
       await Swal.fire({
         icon: 'error',
         title: 'Failure!',
         text: 'To switch into an artist profile, you should verify your account with Twitter or Instagram.',
-        confirmButtonText: "Let's Verify!",
+        confirmButtonText: 'Let\'s Verify!',
       });
     } else if (!isArtist) {
       await update(ref(db, `users/${UserKey}`), {
@@ -190,13 +154,17 @@ function EditProfile() {
         icon: 'success',
         title: 'Congratulations!',
         text: 'You have successfully updated your data.',
-        confirmButtonText: "Let's go!",
+        confirmButtonText: 'Let\'s go!',
       });
     }
     await localStorage.setItem('name', name);
     await localStorage.setItem('pdpLink', pdpLink);
 
-    await fetchAllUsersForRedux();
+    if (currentUserId) {
+      await fetchUsers(dispatch);
+      await fetchCurrentUser(dispatch, currentUserId);
+      await fetchLazyOwned(dispatch, currentUserId);
+    }
 
     if (profileType === 'artist') {
       await nav(`/displayProfile?artist=${UserKey}`);
@@ -208,13 +176,17 @@ function EditProfile() {
   };
 
   useEffect(() => {
-    if (currentUserState) getUserData();
-    else getUserData();
+    if (currentUserState) {
+      getUserData();
+    } else {
+      getUserData();
+    }
   }, [currentUserState, getUserData]);
 
   useEffect(() => {
     if (artistType) {
-      const arrayOfTypes = artistType.split(/[,&]/).map((item) => item.trim());
+      const arrayOfTypes = artistType.split(/[,&]/)
+        .map((item) => item.trim());
       const ArrayOfObjects = arrayOfTypes.map((item) => ({
         value: item,
         label: item,
@@ -234,14 +206,15 @@ function EditProfile() {
         console.error(error);
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          document.getElementById('pdp').src = downloadURL;
-          if (address) {
-            setPdpLink(downloadURL);
-          } else {
-            setPdpLink(downloadURL);
-          }
-        });
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then(async (downloadURL) => {
+            document.getElementById('pdp').src = downloadURL;
+            if (address) {
+              setPdpLink(downloadURL);
+            } else {
+              setPdpLink(downloadURL);
+            }
+          });
         document.getElementById('submitBtn').disabled = false;
       },
     );
@@ -287,14 +260,14 @@ function EditProfile() {
       case 1:
         return selectedOptionsInMultiSelectProps[0].value;
       case 2:
-        return `${selectedOptionsInMultiSelectProps[0].value} & 
+        return `${selectedOptionsInMultiSelectProps[0].value} &
         ${selectedOptionsInMultiSelectProps[1].value}`;
       case 3:
-        return `${selectedOptionsInMultiSelectProps[0].value}, 
+        return `${selectedOptionsInMultiSelectProps[0].value},
         ${selectedOptionsInMultiSelectProps[1].value} &
          ${selectedOptionsInMultiSelectProps[2].value}`;
       case 4:
-        return `${selectedOptionsInMultiSelectProps[0].value}, 
+        return `${selectedOptionsInMultiSelectProps[0].value},
         ${selectedOptionsInMultiSelectProps[1].value},
          ${selectedOptionsInMultiSelectProps[2].value} &
           ${selectedOptionsInMultiSelectProps[3].value}`;
@@ -435,44 +408,44 @@ function EditProfile() {
                   </div>
                   <div className="info-social">
                     {profileType === 'artist' && (
-                    <>
-                      <div style={{ marginBottom: '10%' }}>
-                        <h4 className="title-create-item">You are a</h4>
-                        <Select
-                          className="multi-select"
-                          options={artistTypeOptions}
-                          isMulti
-                          value={selectedOptions}
-                          onChange={handleSelectChange}
-                          placeholder="Select any..."
-                        />
-                      </div>
-                      <h4 className="title-create-item">Your Social media</h4>
-                      <div style={{ maxWidth: '100%' }}>
-                        <h4 className="title-infor-account">
-                          Verify your account
-                        </h4>
-                        <div className="d-flex">
-                          <CustomTwitterLoginButton Twitter={Twitter} signInWithTwitter={signInWithTwitter} />
-                          <InstagramLoginButton
-                            text={
+                      <>
+                        <div style={{ marginBottom: '10%' }}>
+                          <h4 className="title-create-item">You are a</h4>
+                          <Select
+                            className="multi-select"
+                            options={artistTypeOptions}
+                            isMulti
+                            value={selectedOptions}
+                            onChange={handleSelectChange}
+                            placeholder="Select any..."
+                          />
+                        </div>
+                        <h4 className="title-create-item">Your Social media</h4>
+                        <div style={{ maxWidth: '100%' }}>
+                          <h4 className="title-infor-account">
+                            Verify your account
+                          </h4>
+                          <div className="d-flex">
+                            <CustomTwitterLoginButton Twitter={Twitter} signInWithTwitter={signInWithTwitter} />
+                            <InstagramLoginButton
+                              text={
                                 Instagram === 'No Instagram added yet ...'
                                 || Instagram === ''
                                 || Instagram === ' '
                                   ? 'Verify with Instagram'
                                   : 'Verified'
                               }
-                            onClick={(e) => {
-                              e.preventDefault();
-                              if (
-                                Instagram === 'No Instagram added yet ...'
-                                    || Instagram === ''
-                                    || Instagram === ' '
-                              ) {
-                                signInWithInstagram();
-                              }
-                            }}
-                            style={
+                              onClick={(e) => {
+                                e.preventDefault();
+                                if (
+                                  Instagram === 'No Instagram added yet ...'
+                                  || Instagram === ''
+                                  || Instagram === ' '
+                                ) {
+                                  signInWithInstagram();
+                                }
+                              }}
+                              style={
                                 Instagram === 'No Instagram added yet ...'
                                 || Instagram === ''
                                 || Instagram === ' '
@@ -481,10 +454,10 @@ function EditProfile() {
                                     fontSize: '16px',
                                   } : { fontSize: '16px' }
                               }
-                          />
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </>
+                      </>
                     )}
                     <fieldset style={{ marginTop: '5%' }}>
                       <h4 className="title-infor-account">
