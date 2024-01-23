@@ -23,7 +23,6 @@ import db from '../firebase';
 import storage from '../storage';
 import img1 from '../assets/images/box-item/image-box-6.jpg';
 import Footer from '../components/footer/Footer';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 
 function CreateCollection() {
   const currentUser = useSelector((state) => state.usersReducer.currentUser);
@@ -214,8 +213,6 @@ function CreateCollection() {
 
   return (
     <div className="create-item">
-      <HeaderStyle2 />
-
       <div className="tf-create-item tf-section">
         <div
           className="themesflat-container"

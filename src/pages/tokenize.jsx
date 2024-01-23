@@ -291,8 +291,6 @@ function Tokenize() {
 
   return (
     <div className="create-item">
-      <HeaderStyle2 />
-
       <div className="d-flex flex-row, justify-content-center">
         <div className="d-flex flex-column" style={{ width: '60%' }}>
           <div>
@@ -302,7 +300,6 @@ function Tokenize() {
               NFT
             </h5>
           </div>
-
           <div className="sc-card-product">
             <div className="d-flex flex-column align-items-center">
               <div className="card-media " style={{ maxWidth: '40%' }}>

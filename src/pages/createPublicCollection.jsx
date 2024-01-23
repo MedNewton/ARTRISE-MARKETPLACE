@@ -23,7 +23,6 @@ import db from '../firebase';
 import storage from '../storage';
 import img1 from '../assets/images/box-item/image-box-6.jpg';
 import Footer from '../components/footer/Footer';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 
 function CreatePublicCollection() {
   const adr = useAddress();
@@ -88,13 +87,13 @@ function CreatePublicCollection() {
   }, [getArtistDescription, connect]);
 
   async function checkDeployMetadataError() {
-    connect();
+    await connect();
     let errorsExist;
     if (!title || title === '' || title === ' ' || title.length < 2) {
       await Swal.fire({
         icon: 'error',
         title: 'Collection name error !',
-        text: "The collection name cna't be empty.",
+        text: "The collection name can't be empty.",
       });
       errorsExist = true;
     } else if (!symbol || symbol === '' || symbol === ' ') {
@@ -192,7 +191,7 @@ function CreatePublicCollection() {
   }
 
   async function deployNFTCollection() {
-    connect();
+    await connect();
     const metadataErrors = checkDeployMetadataError();
 
     if (metadataErrors === false) {
@@ -237,8 +236,6 @@ function CreatePublicCollection() {
 
   return (
     <div className="create-item">
-      <HeaderStyle2 />
-
       <div className="tf-create-item tf-section">
         <div
           className="themesflat-container"
@@ -429,9 +426,6 @@ function CreatePublicCollection() {
                   data-dismiss="modal"
                   aria-label="Close"
                   onClick={() => {
-                    deployNFTCollection();
-                  }}
-                  onKeyDown={() => {
                     deployNFTCollection();
                   }}
                 >
