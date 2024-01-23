@@ -1704,23 +1704,68 @@ a{
   color: #020202 !important;
 }
 
+.createChoicesPageWrapper{
+  padding: 20px 2%;
+}
+
 .createChoiceBoxesWrapper{
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap:10px;
+}
+
+@media only screen and (max-width: 900px) {
+  .createChoiceBoxesWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
+  }
 }
 
 .createChoiceBox{
   display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #f2f2f2;
     margin-bottom: 2%;
     cursor: pointer;
     border-radius: 15px !important;
-    padding: 2% 0px !important;
+    padding: 10px 10px !important;
+
     width: 100%;
     align-content: flex-start;
 }
+.createChoiceBox p{
+  color: #666666;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.createChoiceBox h5{
+  color: #666666;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 0;
+}
+
+
+.is_dark .createChoiceBox{;
+  background-color: #202020;
+}
+.is_dark .createChoiceBox p{
+  color: white;
+  font-size: 1.5rem;
+}
+
+.is_dark .createChoiceBox h5{
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 
 .userAttribution{
   font-size: 1.2em;
@@ -1800,7 +1845,7 @@ a{
 }
 
 .createChoiceImageBox{
-  padding-right: 10% !important;
+  /*padding-right: 10% !important;*/
   max-width: none !important;
   width: 100% !important;
   margin-top: 5%;
@@ -1812,10 +1857,14 @@ a{
 
 .createChoiceImage{
   height: 40vh;
-  background-color: #aeaeae;
-  box-shadow: 0px 0px 20px 1px #aeaeae;
-  border: solid 3px #fff;
+  background-color: #e3e3e3;
+  border: solid 2px #fff;
   border-radius: 10px;
+}
+
+.is_dark .createChoiceImage{
+  background-color: #353535;
+  border: solid 2px #fff;
 }
 
 .referralImage{
@@ -2452,12 +2501,6 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     align-items: center;
     justify-content: center;
     align-content: flex-start;
-  }
-
-  .createChoiceBoxesWrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   #root > div > div.tf-create-item.tf-section > div > div > div.col-xl-8.col-lg-8.col-md-8.col-8{
