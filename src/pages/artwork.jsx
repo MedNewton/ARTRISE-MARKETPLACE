@@ -17,11 +17,31 @@ import Swal from 'sweetalert2';
 
 import { Modal, Button } from 'react-bootstrap';
 import { ethers } from 'ethers';
+import { useMediaQuery } from 'react-responsive';
+import { useSelector } from 'react-redux';
 import db from '../firebase';
 import ShippingModal from '../components/layouts/ShippingModal';
 import Footer from '../components/footer/Footer';
 import MediaViewer from '../components/layouts/mediaViewer/MediaViewer';
 import PhysicalImagesViewer from '../components/layouts/artwork/PhysicalImagesViewer';
+import {
+  ArtworkCollectionName,
+  ArtworkDescription,
+  ArtworkDetailsWrapper,
+  ArtworkName,
+  ArtworkPageWrapper,
+  AvatarWrapper, ButtonsWrapper,
+  InfoWrapper,
+  MainImageAttributesWrapper, ModalInputField, ModalInputLabel,
+  OwnerName,
+  OwnerNameHeading,
+  OwnersSectionDetailsWrapper,
+  OwnerWrapper,
+  PriceHeading, PriceNotification, PriceSectionWrapper,
+  PriceSubSection,
+} from '../components/layouts/artwork/artwork.styles';
+import { COLORS } from '../components/shared/styles-constants';
+import placeHolderMainImage from '../assets/images/box-item/collection-item-bottom-4.jpg';
 
 class LazyNFT {
   constructor(i, d, o, c) {
@@ -33,6 +53,8 @@ class LazyNFT {
 }
 
 function Artwork() {
+  const theme = useSelector((state) => state.themeReducer.theme);
+
   const [nftID, setNftID] = useState('');
   const location = useLocation();
   const initialData = location.state ? location.state.data : null;
@@ -57,6 +79,10 @@ function Artwork() {
   const { data } = useBalance({
     address,
   });
+
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+
+  // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   const getNFTData = useCallback(async () => {
     let lazyNFT;
@@ -893,10 +919,10 @@ function Artwork() {
             {' '}
             ETH
           </h4>
-          <div className="offer-modal form-inline">
-            <span className="offer-label">Your Offer ETH:</span>
-            <input id="OfferAmount" className="form-control" type="number" />
-          </div>
+          <ModalInputLabel htmlFor="OfferAmount">
+            <span><p>Your Offer ETH:</p></span>
+            <ModalInputField type="number" id="OfferAmount" placeholder="ETH" />
+          </ModalInputLabel>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={hideOfferModal}>
@@ -915,216 +941,314 @@ function Artwork() {
         </Modal.Footer>
       </Modal>
       {nft ? (
-        <div className="tf-section tf-item-details">
-          <div className="themesflat-container">
-            <div className="row">
-              <div className="col-xl-6 col-md-12">
-                <div className="content-left">
-                  <div className="artwork-media-wrapper">
-                    <MediaViewer mediaUrl={nft?.data?.image} />
+        <ArtworkPageWrapper isDeviceMobile={isDeviceMobile}>
+          <MainImageAttributesWrapper isDeviceMobile={isDeviceMobile}>
+            <div className="artwork-media-wrapper">
+              <MediaViewer mediaUrl={nft?.data?.image} />
+            </div>
+            <div className="metadataBox" style={{ marginTop: '2%' }}>
+              <div className="flat-accordion2">
+                <Accordion key="0" title="Properties">
+                  <div className="row propertiesBox">
+                    {nft?.data?.attributes?.map((attribute) => (
+                      <div className="col-3 attr">
+                        <p className="attributeTitle">{attribute?.trait_type}</p>
+                        <p>{attribute?.trait_value}</p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="metadataBox" style={{ marginTop: '2%' }}>
-                    <div className="flat-accordion2">
-                      <Accordion key="0" title="Properties">
-                        <div className="row propertiesBox">
-                          {nft?.data?.attributes?.map((attribute) => (
-                            <div className="col-3 attr">
-                              <p className="attributeTitle">{attribute?.trait_type}</p>
-                              <p className="attributeValue">{attribute?.trait_value}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </Accordion>
-                      <Accordion key="1" title="About the artist">
-                        <p>{nft?.owner.bio}</p>
-                      </Accordion>
-                      <Accordion key="2" title="Details">
-                        <div className="row">
-                          <div className="col-6 detailLeft">
-                            <p>Contract address</p>
-                          </div>
-                          <div className="col-6">
-                            <p className="detailRight">
-                              <Link
-                                rel="external"
-                                target="_blank"
-                                to="http://etherscan.io/address/0x6E42262978de5233C8d5B05B128C121fBa110DA4"
-                              >
-                                0xa6F...0fC
-                              </Link>
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="row">
-                          <div className="col-6 detailLeft">
-                            <p>Token ID</p>
-                          </div>
-                          <div className="col-6">
-                            <p className="detailRight">31</p>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-6 detailLeft">
-                            <p>Token Standard</p>
-                          </div>
-                          <div className="col-6">
-                            <p className="detailRight">ERC-721</p>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-6 detailLeft">
-                            <p>Chain</p>
-                          </div>
-                          <div className="col-6">
-                            <p className="detailRight">Ethereum</p>
-                          </div>
-                        </div>
-                      </Accordion>
+                </Accordion>
+                <Accordion key="1" title="About the artist">
+                  <p>{nft?.owner.bio}</p>
+                </Accordion>
+                <Accordion key="2" title="Details">
+                  <div className="row">
+                    <div className="col-6 detailLeft">
+                      <p>Contract address</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="detailRight">
+                        <Link
+                          rel="external"
+                          target="_blank"
+                          to="http://etherscan.io/address/0x6E42262978de5233C8d5B05B128C121fBa110DA4"
+                        >
+                          0xa6F...0fC
+                        </Link>
+                      </p>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="col-xl-6 col-md-12">
-                <div className="content-right">
-                  <div className="sc-item-details">
-                    <h2
-                      className="style2"
-                      style={{ textTransform: 'capitalize' }}
-                    >
-                      {nft.data.name}
-                    </h2>
-                    <h5 className="style2 collectionName">
-                      {nft?.collection?.name ? nft?.collection?.name : 'ARTRISE Shared Collection'}
-                    </h5>
-                    <p>
-                      {nft?.data.description}
-                    </p>
-                    <div className="client-infor sc-card-product">
-                      <div className="meta-info">
-                        <div className="author">
-                          <div className="avatar">
-                            <img src={nft?.owner?.pdpLink} alt="Axies" />
-                          </div>
-                          <div className="info">
-                            <span>Owned By</span>
-                            <h6>{nft?.owner?.name}</h6>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="meta-info">
-                        <div className="author">
-                          <div className="avatar">
-                            <img src={nft?.owner?.pdpLink} alt="Axies" />
-                          </div>
-                          <div className="info">
-                            <span>Create By</span>
-                            <h6>{nft?.owner?.name}</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="meta-item-details style2">
-                      <div className="item meta-price">
-                        <span className="heading">
-                          Price
-                          <small className="shippingDetails">(late minting gas not included)</small>
-                        </span>
-                        <div className="price">
-                          <div className="price-box">
-                            <h6>
-                              $
-                              {(usdPriceInEth * price).toFixed(2).toString()}
-                              &nbsp;
-                              {' ≈ '}
-                              &nbsp;
-                              {price.toString()}
-                              {' '}
-                              ETH
-                              &nbsp;
-                              <BsFillQuestionCircleFill
-                                color="#000"
-                                size={12}
-                                className="smallpriceQuestion"
-                                onClick={() => {
-                                  Swal.fire({
-                                    icon: 'question',
-                                    title: 'Flexible price NFTs',
-                                    text: 'In order to protect users from unexpected market swings,\nARTRISE '
-                                      + 'implemented the notion of flexible price NFTs\nto keep all the artworks '
-                                      + 'aligned with the actual cryptocurrencies market prices.',
-                                  });
-                                }}
-                              />
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="meta-item-details style2" id="shipping">
-                      <div className="item meta-price">
-                        <span className="heading">
-                          Estimated shipping cost
-                          {' '}
-                          <span
-                            className="shippingDetails"
-                          >
-                            <button
-                              onClick={() => {
-                                setShippingModalShow(true);
-                              }}
-                              type="button"
-                            >
-                              (View Shipping Info)
-                            </button>
-                          </span>
-                        </span>
-                        <div className="price">
-                          <div className="price-box">
-                            <h5>
-                              $
-                              {shippingPrice}
-                            </h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
-                    <Link
-                      to="/"
-                      className="sc-button disabled  loadmore style bag fl-button pri-3"
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        await payForNFT();
-                      }}
-
-                    >
-                      <span>{Listed ? 'Buy Now' : 'Not Available'}</span>
-                    </Link>
-                    <Link
-                      to="/"
-                      className="sc-button disabled offer-btn loadmore style fl-button pri-3"
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        showOfferModal();
-                      }}
-
-                    >
-                      <span>Make an Offer!</span>
-                    </Link>
-                    <PhysicalImagesViewer physicalImages={nft?.data?.physical_images} />
-                    <div
-                      className="flat-tabs themesflat-tabs"
-                      style={{ marginBottom: '5%' }}
-                    />
+                  <div className="row">
+                    <div className="col-6 detailLeft">
+                      <p>Token ID</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="detailRight">31</p>
+                    </div>
                   </div>
-                </div>
+                  <div className="row">
+                    <div className="col-6 detailLeft">
+                      <p>Token Standard</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="detailRight">ERC-721</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-6 detailLeft">
+                      <p>Chain</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="detailRight">Ethereum</p>
+                    </div>
+                  </div>
+                </Accordion>
               </div>
             </div>
-          </div>
-        </div>
+          </MainImageAttributesWrapper>
+
+          <ArtworkDetailsWrapper isDeviceMobile={isDeviceMobile}>
+            <ArtworkName theme={theme}>
+              {nft?.data?.name}
+            </ArtworkName>
+            <ArtworkCollectionName theme={theme}>
+              {nft?.collection?.name ? nft?.collection?.name : 'ARTRISE Shared Collection'}
+            </ArtworkCollectionName>
+            <ArtworkDescription theme={theme}>
+              {nft?.data?.description}
+            </ArtworkDescription>
+            <OwnersSectionDetailsWrapper>
+              <OwnerWrapper theme={theme}>
+                <AvatarWrapper>
+                  <img style={{ borderRadius: '5px' }} src={nft?.owner?.pdpLink} alt="Axies" />
+                </AvatarWrapper>
+                <InfoWrapper>
+                  <OwnerNameHeading theme={theme}>Owned By</OwnerNameHeading>
+                  <OwnerName theme={theme}>{nft?.owner?.name}</OwnerName>
+                </InfoWrapper>
+              </OwnerWrapper>
+              <OwnerWrapper theme={theme}>
+                <AvatarWrapper>
+                  <img style={{ borderRadius: '5px' }} src={nft?.owner?.pdpLink} alt="Axies" />
+                </AvatarWrapper>
+                <InfoWrapper>
+                  <OwnerNameHeading theme={theme}>Created By</OwnerNameHeading>
+                  <OwnerName theme={theme}>{nft?.owner?.name}</OwnerName>
+                </InfoWrapper>
+              </OwnerWrapper>
+            </OwnersSectionDetailsWrapper>
+            <PriceSectionWrapper>
+              <PriceSubSection>
+                <PriceHeading theme={theme}>Price</PriceHeading>
+                <PriceNotification theme={theme}>(late minting gas not included)</PriceNotification>
+              </PriceSubSection>
+              <PriceSubSection>
+                <PriceHeading theme={theme}>
+                  $
+                  {(usdPriceInEth * price).toFixed(2).toString()}
+                    &nbsp;
+                  {' ≈ '}
+                    &nbsp;
+                  {price.toString()}
+                  {' '}
+                  ETH
+                  &nbsp;
+                  <BsFillQuestionCircleFill
+                    color={theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont}
+                    size={12}
+                    className="smallpriceQuestion"
+                    onClick={() => {
+                      Swal.fire({
+                        icon: 'question',
+                        title: 'Flexible price NFTs',
+                        text: 'In order to protect users from unexpected market swings,\nARTRISE '
+                                + 'implemented the notion of flexible price NFTs\nto keep all the artworks '
+                                + 'aligned with the actual cryptocurrencies market prices.',
+                      });
+                    }}
+                  />
+                </PriceHeading>
+              </PriceSubSection>
+            </PriceSectionWrapper>
+            <PriceSectionWrapper>
+              <PriceSubSection>
+                <PriceHeading theme={theme}>Estimated shipping cost</PriceHeading>
+                <PriceNotification
+                  theme={theme}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setShippingModalShow(true);
+                  }}
+                >
+                  (View Shipping Info)
+                </PriceNotification>
+              </PriceSubSection>
+              <PriceSubSection>
+                <PriceHeading
+                  theme={theme}
+                >
+                  $
+                  {shippingPrice}
+                </PriceHeading>
+              </PriceSubSection>
+            </PriceSectionWrapper>
+            <ButtonsWrapper>
+              <button
+                type="button"
+                id="load-more"
+                className="sc-button loadmore fl-button pri-3"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await payForNFT();
+                }}
+              >
+                <span>{Listed ? 'Buy Now' : 'Not Available'}</span>
+              </button>
+              <button
+                type="button"
+                id="load-more"
+                className="sc-button loadmore fl-button pri-3"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  showOfferModal();
+                }}
+              >
+                <span>Make an Offer!</span>
+              </button>
+            </ButtonsWrapper>
+            <PhysicalImagesViewer physicalImages={nft?.data?.physical_images} />
+          </ArtworkDetailsWrapper>
+        </ArtworkPageWrapper>
+
       ) : (
-        ''
+        <ArtworkPageWrapper isDeviceMobile={isDeviceMobile}>
+          <MainImageAttributesWrapper isDeviceMobile={isDeviceMobile}>
+            <div className="artwork-media-wrapper">
+              <MediaViewer />
+            </div>
+            <div className="metadataBox" style={{ marginTop: '2%' }}>
+              <div className="flat-accordion2">
+                <Accordion key="0" title="Properties" />
+                <Accordion key="1" title="About the artist">
+                  <p>Owner&apos;s Bio</p>
+                </Accordion>
+                <Accordion key="2" title="Details" />
+              </div>
+            </div>
+          </MainImageAttributesWrapper>
+          <ArtworkDetailsWrapper isDeviceMobile={isDeviceMobile}>
+            <ArtworkName theme={theme}>
+              Artwork&apos;s Name
+            </ArtworkName>
+            <ArtworkCollectionName theme={theme}>
+              ARTRISE Shared Collection
+            </ArtworkCollectionName>
+            <ArtworkDescription theme={theme}>
+              Artwork&apos;s Description
+            </ArtworkDescription>
+            <OwnersSectionDetailsWrapper>
+              <OwnerWrapper theme={theme}>
+                <AvatarWrapper>
+                  <img style={{ borderRadius: '5px' }} src={placeHolderMainImage} alt="Axies" />
+                </AvatarWrapper>
+                <InfoWrapper>
+                  <OwnerNameHeading theme={theme}>Owned By</OwnerNameHeading>
+                  <OwnerName theme={theme}>Owner&apos;s Name</OwnerName>
+                </InfoWrapper>
+              </OwnerWrapper>
+              <OwnerWrapper theme={theme}>
+                <AvatarWrapper>
+                  <img style={{ borderRadius: '5px' }} src={placeHolderMainImage} alt="Axies" />
+                </AvatarWrapper>
+                <InfoWrapper>
+                  <OwnerNameHeading theme={theme}>Created By</OwnerNameHeading>
+                  <OwnerName theme={theme}>Creator&apos;s Name</OwnerName>
+                </InfoWrapper>
+              </OwnerWrapper>
+            </OwnersSectionDetailsWrapper>
+            <PriceSectionWrapper>
+              <PriceSubSection>
+                <PriceHeading theme={theme}>Price</PriceHeading>
+                <PriceNotification theme={theme}>(late minting gas not included)</PriceNotification>
+              </PriceSubSection>
+              <PriceSubSection>
+                <PriceHeading theme={theme}>
+                  $
+                  0.00
+                  &nbsp;
+                  {' ≈ '}
+                  &nbsp;
+                  0.00
+                  {' '}
+                  ETH
+                  &nbsp;
+                  <BsFillQuestionCircleFill
+                    color={theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont}
+                    size={12}
+                    className="smallpriceQuestion"
+                    onClick={() => {
+                      Swal.fire({
+                        icon: 'question',
+                        title: 'Flexible price NFTs',
+                        text: 'In order to protect users from unexpected market swings,\nARTRISE '
+                                + 'implemented the notion of flexible price NFTs\nto keep all the artworks '
+                                + 'aligned with the actual cryptocurrencies market prices.',
+                      });
+                    }}
+                  />
+                </PriceHeading>
+              </PriceSubSection>
+            </PriceSectionWrapper>
+            <PriceSectionWrapper>
+              <PriceSubSection>
+                <PriceHeading theme={theme}>Estimated shipping cost</PriceHeading>
+                <PriceNotification
+                  theme={theme}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setShippingModalShow(true);
+                  }}
+                >
+                  (View Shipping Info)
+                </PriceNotification>
+              </PriceSubSection>
+              <PriceSubSection>
+                <PriceHeading
+                  theme={theme}
+                >
+                  $
+                  0.00
+                </PriceHeading>
+              </PriceSubSection>
+            </PriceSectionWrapper>
+            <ButtonsWrapper>
+              <button
+                type="button"
+                id="load-more"
+                className="sc-button loadmore fl-button pri-3"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await payForNFT();
+                }}
+              >
+                <span>{Listed ? 'Buy Now' : 'Not Available'}</span>
+              </button>
+              <button
+                type="button"
+                id="load-more"
+                className="sc-button loadmore fl-button pri-3"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  showOfferModal();
+                }}
+              >
+                <span>Make an Offer!</span>
+              </button>
+            </ButtonsWrapper>
+            <PhysicalImagesViewer physicalImages={nft?.data?.physical_images} />
+          </ArtworkDetailsWrapper>
+        </ArtworkPageWrapper>
       )}
       <Footer />
       <ShippingModal

@@ -26,13 +26,13 @@ function RenderLogo() {
       : (
         <div id="site-logo" className="clearfix">
           <Link to="/" rel="home" className="main-logo">
-            <div id="site-logo-inner" className="d-flex" style={{ gap: '4%' }}>
+            <div id="site-logo-inner" className="d-flex" style={{ gap: '10%' }}>
               <img
                 id="logo_header"
                 src={logodark}
                 alt="ArtRise"
                 style={{
-                  width: '90%',
+                  width: '60%',
                   height: 'auto',
                 }}
               />

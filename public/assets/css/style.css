@@ -253,8 +253,8 @@ img {
 p {
     text-align: left;
     font-weight: 400;
-    font-size  : 18px;
-    line-height: 28px;
+    font-size  : 16px;
+    line-height: 24px;
     color      : var(--primary-color4);
 }
 
@@ -1348,7 +1348,7 @@ a:focus {
 .is_dark {
     --primary-color: #343444;
     --primary-color2 : #fff;
-    --primary-color4: rgba(255,255,255,0.9);
+    --primary-color4: rgba(221, 221, 221, 0.9);
     --primary-color5: #141414;
     --primary-color6: #ffffff;
     --primary-color7: #343444;

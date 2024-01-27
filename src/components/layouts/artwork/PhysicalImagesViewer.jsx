@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import ImageViewer from 'react-simple-image-viewer';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import { useSelector } from 'react-redux';
+import {
+  ArtworkCollectionName, PhyscialImage, PhysicalImagesPageWrapper, PhysicalImagesWrapper,
+} from './artwork.styles';
 
 function PhysicalImagesViewer(props) {
   const { physicalImages } = props;
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const theme = useSelector((state) => state.themeReducer.theme);
 
   const openImageViewer = (index) => {
     setCurrentImage(index);
@@ -23,13 +28,13 @@ function PhysicalImagesViewer(props) {
   }
 
   return (
-    <div>
-      <h5>
+    <PhysicalImagesPageWrapper>
+      <ArtworkCollectionName theme={theme}>
         Pictures of the physical artwork:
-      </h5>
-      <div className="row" style={{ marginBottom: '3%', maxHeight: '250px', maxWidth: '250px' }}>
+      </ArtworkCollectionName>
+      <PhysicalImagesWrapper>
         {physicalImages?.map((image, index) => (
-          <div key={generateUniqueId()}>
+          <PhyscialImage key={generateUniqueId()}>
             <button type="button" onClick={() => openImageViewer(index)} aria-label={`Open image ${index + 1}`}>
               <img
                 src={image.image_url}
@@ -38,9 +43,9 @@ function PhysicalImagesViewer(props) {
                 alt={`Physical Artwork ${index + 1}`}
               />
             </button>
-          </div>
+          </PhyscialImage>
         ))}
-      </div>
+      </PhysicalImagesWrapper>
 
       {isViewerOpen && (
         <ImageViewer
@@ -51,7 +56,7 @@ function PhysicalImagesViewer(props) {
           onClose={closeImageViewer}
         />
       )}
-    </div>
+    </PhysicalImagesPageWrapper>
   );
 }
 

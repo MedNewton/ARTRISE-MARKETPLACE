@@ -2653,7 +2653,7 @@ section.today-picks {
   display: none;
 }
 .home-1 .flat-title-page {
-  height: 66vh;
+  /*height: 66vh;*/
   margin-left: 1%;
   margin-right: 1%;
   border-radius: 30px;
@@ -5114,7 +5114,7 @@ button.accordion-button {
   width: 100%;
   text-align: left;
   padding: 0;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   border: none !important;
   color: var(--primary-color2);
@@ -5129,11 +5129,11 @@ button.accordion-button {
 
 .flat-accordion2 .accordion-item {
   position: relative;
-
-  background-color: #fff;
+  /*background-color: #fff;*/
   border-radius: 40px;
   padding: 20px 37px 4.5px 33px;
   margin-bottom: 20px;
+  /*color:#000000;*/
 }
 
 .flat-accordion2 .accordion-item .accordion-button.collapsed::after {
@@ -5142,33 +5142,41 @@ button.accordion-button {
 
 .flat-accordion2 .accordion-item .accordion-button::after {
   content: "\f068";
-  font-family: "Font Awesome 5 Pro" !important;
+  font-family: "Font Awesome 5 Pro", sans-serif !important;
   right: 0;
   top: 3px;
   position: absolute;
-  color: #5142fc;
-  font-size: 15px;
+  color: #000000;
+  font-size: 12px;
 }
 .flat-accordion2 h2 {
   font-size: 20px;
 }
 .is_dark .flat-accordion2 .accordion-item {
-  background-color: #fff;
+  /*color: darkgoldenrod;*/
 }
 
 .flat-accordion2 .accordion-item .accordion-button {
   position: relative;
   cursor: pointer;
-  color: #020e28;
-  font-size: 20px;
-  line-height: 26px;
-  font-weight: 700;
+  /*color: #000000;*/
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
   -webkit-transition: all 0.1s ease;
   margin-bottom: 13px;
 }
 
 .is_dark .flat-accordion2 .accordion-item .accordion-button {
-  color: #030303;
+  color: #fff;
+}
+
+.is_dark .flat-accordion2 .accordion-item .accordion-button.collapsed::after {
+  color: #ffffff !important;
+}
+
+.is_dark .flat-accordion2 .accordion-item .accordion-button::after {
+  color: #ffffff !important;
 }
 
 .flat-accordion2 .accordion-item .accordion-button .number {
@@ -5759,7 +5767,7 @@ button.accordion-button {
 
 /* Home 4 */
 .header_2 .themesflat-container {
-  width: 1870px;
+  width: -webkit-fill-available;
 }
 
 .header_2 .mode_switcher {
