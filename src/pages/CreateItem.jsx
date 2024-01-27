@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React, {
   useState, useEffect, useCallback, useMemo,
 } from 'react';
@@ -17,12 +16,6 @@ import {
   Navigation, Pagination,
 } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
-// import 'swiper/css';
-// import 'swiper/css/navigation';
-// import 'swiper/css/pagination';
-// import 'swiper/css/scrollbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -54,7 +47,7 @@ const toastOptions = {
 
 function CreateItem() {
   const currentUserState = useSelector((state) => state.usersReducer.currentUser);
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
   const dispatch = useDispatch();
   // const { contract } = useContract(
@@ -87,7 +80,7 @@ function CreateItem() {
   let existingArtworksIds;
   let existingArtworksThumbnails;
 
-  const months = useMemo ( ()=> [
+  const months = useMemo(() => [
     'January',
     'February',
     'March',
@@ -100,12 +93,7 @@ function CreateItem() {
     'October',
     'November',
     'December',
-  ],[]);
-
-  function navigateToHomepage() {
-    navigate('/');
-  }
-  const delay = (ms) => setTimeout(navigateToHomepage, ms);
+  ], []);
 
   const getArtistCollections = useCallback(async () => {
     const userId = localStorage.getItem('userId');
@@ -385,9 +373,8 @@ function CreateItem() {
         await fetchCurrentUser(dispatch, currentUserId);
         await fetchLazyOwned(dispatch, currentUserId);
       }
-
-      delay(7000);
       // Redirect to the homepage
+      await navigate('/');
     } catch (error) {
       toast.error('Problem occurred while adding artwork to DB ...', toastOptions);
       throw error;
