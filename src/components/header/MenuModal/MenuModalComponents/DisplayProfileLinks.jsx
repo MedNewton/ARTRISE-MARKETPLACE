@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  FaAngleLeft, FaBook, FaFileAlt, FaHandsHelping, FaLink, FaPlus, FaSignOutAlt, FaSlidersH,
+  FaAngleLeft, FaBook, FaFileAlt, FaLink, FaPlus, FaSignOutAlt, FaSlidersH,
 } from 'react-icons/fa';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { BiCoinStack } from 'react-icons/bi';
@@ -145,7 +145,7 @@ function DisplayProfileLinks(props) {
 
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
-          <Link to="/learn">
+          <Link to="/help-center">
             <button
               type="button"
               className="accordion-card-display-flex-font-large"
@@ -153,23 +153,7 @@ function DisplayProfileLinks(props) {
             >
               <FaFileAlt />
               {' '}
-              Resources
-            </button>
-          </Link>
-        </div>
-      </div>
-
-      <div className="accordion-border-color-transparent">
-        <div className="accordion-card-background-border-color">
-          <Link to="/help-center">
-            <button
-              type="button"
-              className="accordion-card-display-flex-font-large"
-              onClick={() => handleMenuModalClose()}
-            >
-              <FaHandsHelping />
-              {' '}
-              Help
+              How to use
             </button>
           </Link>
         </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  FaBook, FaFileAlt, FaHandsHelping, FaLink, FaPlus, FaRegUser, FaSignOutAlt, FaSlidersH,
+  FaBook, FaFileAlt, FaLink, FaPlus, FaRegUser, FaSignOutAlt, FaSlidersH,
 } from 'react-icons/fa';
 import { BiCoinStack } from 'react-icons/bi';
 import PropTypes from 'prop-types';
@@ -86,15 +86,9 @@ function RenderProfileIcon(props) {
           </Link>
         </Dropdown.Item>
         <Dropdown.Item>
-          <Link to="/learn">
-            <FaFileAlt size={18} />
-            Resources
-          </Link>
-        </Dropdown.Item>
-        <Dropdown.Item>
           <Link to="/help-center">
-            <FaHandsHelping size={17} />
-            Help
+            <FaFileAlt size={18} />
+            How to use
           </Link>
         </Dropdown.Item>
         <Dropdown.Item>
