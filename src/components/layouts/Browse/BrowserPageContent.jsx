@@ -4,14 +4,15 @@ import {
   Tab, Tabs, TabList, TabPanel,
 } from 'react-tabs';
 import { useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 import CardModal from '../CardModal';
 import DropsRaw from '../dropsRaw';
 import DisplayArtworks from '../ProfileDisplay/DisplayArtworks';
+import ArtistPageMediaViewer from '../artistPageMediaViewer/ArtistPageMediaViewer';
 
 function BrowserPageContent() {
   const collections = useSelector((state) => state.usersReducer.collections);
   const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
+  const artistsState = useSelector((state) => state.usersReducer.artists);
   const [modalShow, setModalShow] = useState(false);
 
   const [dataTab] = useState(
@@ -29,7 +30,7 @@ function BrowserPageContent() {
         title: 'Artists',
       },
       {
-        id: 3,
+        id: 4,
         title: 'Drops',
       },
     ],
@@ -38,6 +39,20 @@ function BrowserPageContent() {
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 5);
   };
+
+  const selectedTags = [];
+
+  function editTags(val, target) {
+    if (selectedTags.includes(val)) {
+      selectedTags.pop(val);
+      target.classList.remove('selectedTag');
+      target.classList.add('tag');
+    } else {
+      selectedTags.push(val);
+      target.classList.remove('tag');
+      target.classList.add('selectedTag');
+    }
+  }
 
   // code for tags enabling
 
@@ -69,12 +84,7 @@ function BrowserPageContent() {
   //   }
   // }
 
-  function generateUniqueId() {
-    return uuidv4();
-  }
-
   return (
-
     <>
       <div className="flat-tabs items">
         <Tabs>
@@ -93,10 +103,10 @@ function BrowserPageContent() {
               ))
             }
           </TabList>
-          <TabPanel key={0} style={{ padding: '95px 0px 0px 0px' }}>
+          <TabPanel key={1} style={{ padding: '95px 0px 0px 0px' }}>
             {lazyListed && <DisplayArtworks data={lazyListed} />}
           </TabPanel>
-          <TabPanel key={1}>
+          <TabPanel key={2}>
             <div className="row">
               <div className="col-12">
                 <div className="row tagsBar">
@@ -136,15 +146,15 @@ function BrowserPageContent() {
               </div>
               {
                 collections?.slice(0, visible)
-                  .map((item) => (
-                    <div key={item?.id ? item?.id : generateUniqueId()} className="col-lg-4 col-md-6 col-12">
+                  .map((collection) => (
+                    <div key={collection?.id} className="col-lg-4 col-md-6 col-12">
                       <div className="sc-card-collection style-2">
                         <div className="card-bottom">
                           <div className="author">
                             <div className="sc-author-box style-2">
                               <div className="author-avatar">
                                 <img
-                                  src="http://marketplace.artrise.io/static/media/carre2.22139fe1474fade1785f.jpg"
+                                  src={collection.owner_image}
                                   alt=""
                                   className="avatar"
                                 />
@@ -152,37 +162,44 @@ function BrowserPageContent() {
                               </div>
                             </div>
                             <div className="content">
-                              <h4><Link to="/pixelizd-mosaic-collection">Pixelized Mosaic</Link></h4>
+                              <h4>
+                                <Link to={`/collection?id=${collection?.id}`}>
+                                  {collection.name}
+                                </Link>
+                              </h4>
                               <p>
                                 By
-                                <Link to="/"><span className="authorName">Yann Faisant</span></Link>
+                                {' '}
+                                <Link to={`/displayProfile?${collection?.owner_profile_type}=${collection?.owner}`}>
+                                  <span className="authorName">{collection?.owner_name}</span>
+                                </Link>
                               </p>
                             </div>
                           </div>
-                          <Link to="/" className="sc-button fl-button pri-3"><span>Following</span></Link>
                         </div>
-                        <Link to="/author-02">
+
+                        <Link to={`/collection?id=${collection?.id}`}>
                           <div className="media-images-collection">
                             <div className="box-left">
                               <img
-                                src="http://marketplace.artrise.io/static/media/carre4.ab991fdacaae0540bf90.jpg"
+                                src={collection.cover}
                                 alt=""
                               />
                             </div>
                             <div className="box-right">
                               <div className="top-img">
                                 <img
-                                  src="http://marketplace.artrise.io/static/media/carre3.6147bdea570afcdc03a4.jpg"
+                                  src={collection.image}
                                   alt=""
                                 />
                                 <img
-                                  src="http://marketplace.artrise.io/static/media/carre1.d7ad1702258665b20fd6.jpg"
+                                  src={collection.cover}
                                   alt=""
                                 />
                               </div>
                               <div className="bottom-img">
                                 <img
-                                  src="http://marketplace.artrise.io/static/media/Portret%20van%20Joan%20Jacob%20Mauricius.53f33d98075c90aec764.jpg"
+                                  src={collection.image}
                                   alt=""
                                 />
                               </div>
@@ -194,8 +211,8 @@ function BrowserPageContent() {
                   ))
               }
               {
-                visible < collections?.length
-                && (
+                  visible < collections?.length
+                  && (
                   <div className="col-md-12 wrap-inner load-more text-center">
                     <button
                       type="button"
@@ -206,119 +223,150 @@ function BrowserPageContent() {
                       <span>Load More</span>
                     </button>
                   </div>
-                )
-              }
-            </div>
-          </TabPanel>
-          <TabPanel key={2}>
-            <div className="row">
-              <div className="col-12">
-                <div className="row tagsBar">
-                  <div className="col-12">
-                    <div
-                      className="tag"
-                      id="artists_painter"
-                    >
-                      Painter
-                    </div>
-                    <div
-                      className="tag"
-                      id="artists_photographer"
-                    >
-                      Photographer
-                    </div>
-                    <div
-                      className="tag"
-                      id="artists_sculpturer"
-                    >
-                      Sculpturer
-                    </div>
-                    <div
-                      className="tag"
-                      id="artists_ceramic_artist"
-                    >
-                      Ceramic artist
-                    </div>
-                    <div
-                      className="tag"
-                      id="artists_others"
-                    >
-                      Others
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {
-                collections?.slice(0, visible)
-                  .map((item) => (
-                    <div key={item?.id ? item?.id : generateUniqueId()} className="col-lg-4 col-md-6 col-12">
-                      <div className="sc-card-collection style-2">
-                        <div className="card-bottom">
-                          <div className="author">
-                            <div className="sc-author-box style-2">
-                              <div className="author-avatar">
-                                <img src={item.imgAuthor} alt="" className="avatar" />
-                                <div className="badge" />
-                              </div>
-                            </div>
-                            <div className="content">
-                              <h4><Link to="/">{item.name}</Link></h4>
-
-                            </div>
-                          </div>
-                          <Link to="/" className="sc-button fl-button pri-3"><span>Following</span></Link>
-                        </div>
-                        <Link to="/author-02">
-                          <div className="media-images-collection">
-                            <div className="box-left">
-                              <img
-                                src="http://marketplace.artrise.io/static/media/carre2.22139fe1474fade1785f.jpg"
-                                alt=""
-                              />
-                            </div>
-                            <div className="box-right">
-                              <div className="top-img">
-                                <img
-                                  src="http://marketplace.artrise.io/static/media/carre3.6147bdea570afcdc03a4.jpg"
-                                  alt=""
-                                />
-                                <img
-                                  src="http://marketplace.artrise.io/static/media/carre1.d7ad1702258665b20fd6.jpg"
-                                  alt=""
-                                />
-                              </div>
-                              <div className="bottom-img">
-                                <img
-                                  src="http://marketplace.artrise.io/static/media/Portret%20van%20Joan%20Jacob%20Mauricius.53f33d98075c90aec764.jpg"
-                                  alt=""
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  ))
-              }
-              {
-                visible < collections?.length
-                && (
-                  <div className="col-md-12 wrap-inner load-more text-center">
-                    <button
-                      type="button"
-                      id="load-more"
-                      className="sc-button loadmore fl-button pri-3"
-                      onClick={showMoreItems}
-                    >
-                      <span>Load More</span>
-                    </button>
-                  </div>
-                )
+                  )
               }
             </div>
           </TabPanel>
           <TabPanel key={3}>
+            <section className="tf-section our-creater dark-style2">
+              <div
+                className="themesflat-container"
+                style={{
+                  paddingLeft: '2%',
+                  paddingRight: '2%',
+                  marginLeft: '0px',
+                  marginRight: '0px',
+                  width: '100%',
+                }}
+              >
+                <div className="row">
+                  <div className="col-md-12">
+                    <h2 className="tf-title style4 mg-bt-38 ourArtists">
+                      Artists
+                    </h2>
+                  </div>
+                  <div className="col-md-12 col-sm-12 mobileTags">
+                    <button
+                      type="button"
+                      className="tag"
+                      onClick={(e) => editTags(e.target.id, e.target)}
+                      onKeyDown={(e) => editTags(e.target.id, e.target)}
+                      id="painter"
+                    >
+                      Painter
+                    </button>
+                    <button
+                      type="button"
+                      className="tag"
+                      onClick={(e) => editTags(e.target.id, e.target)}
+                      onKeyDown={(e) => editTags(e.target.id, e.target)}
+                      id="photographer"
+                    >
+                      Photographer
+                    </button>
+                    <button
+                      type="button"
+                      className="tag"
+                      onClick={(e) => editTags(e.target.id, e.target)}
+                      onKeyDown={(e) => editTags(e.target.id, e.target)}
+                      id="sculpturer"
+                    >
+                      Sculpturer
+                    </button>
+                    <button
+                      type="button"
+                      className="tag"
+                      onClick={(e) => editTags(e.target.id, e.target)}
+                      onKeyDown={(e) => editTags(e.target.id, e.target)}
+                      id="ceramic_artist"
+                    >
+                      Ceramic artist
+                    </button>
+                    <button
+                      type="button"
+                      className="tag"
+                      onClick={(e) => editTags(e.target.id, e.target)}
+                      onKeyDown={(e) => editTags(e.target.id, e.target)}
+                      id="others"
+                    >
+                      Others
+                    </button>
+                  </div>
+                  <div className="col-12">
+                    <div className="row tagsBar">
+                      <div className="col-12">
+                        <button
+                          type="button"
+                          className="tag"
+                          onClick={(e) => editTags(e.target.id, e.target)}
+                          onKeyDown={(e) => editTags(e.target.id, e.target)}
+                          id="sculpturer"
+                        >
+                          Sculptors
+                        </button>
+                        <button
+                          type="button"
+                          className="tag"
+                          onClick={(e) => editTags(e.target.id, e.target)}
+                          onKeyDown={(e) => editTags(e.target.id, e.target)}
+                          id="painter"
+                        >
+                          Painters
+                        </button>
+                        <button
+                          type="button"
+                          className="tag"
+                          onClick={(e) => editTags(e.target.id, e.target)}
+                          onKeyDown={(e) => editTags(e.target.id, e.target)}
+                          id="photographer"
+                        >
+                          Photographers
+                        </button>
+
+                        <button
+                          type="button"
+                          className="tag"
+                          onClick={(e) => editTags(e.target.id, e.target)}
+                          onKeyDown={(e) => editTags(e.target.id, e.target)}
+                          id="others"
+                        >
+                          Others
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {
+                    artistsState?.map((item) => (
+                      <div key={item?.userId} className="col-lg-4 col-md-6 col-12">
+                        <Link to={`/displayProfile?artist=${item?.userId}`}>
+                          <div className="sc-card-collection style-2">
+                            <div className="card-bottom">
+                              <div className="author">
+                                <div className="sc-author-box style-2">
+                                  <div className="author-avatar">
+                                    <img src={item?.pdpLink} alt="" className="avatar" />
+                                    <div className="badge" />
+                                  </div>
+                                </div>
+                                <div className="content">
+                                  <h4>{item?.name}</h4>
+                                  <h5 className="artistCategory">{item?.artistType}</h5>
+                                </div>
+                              </div>
+                              <div className="sc-button fl-button pri-3"><span>Follow</span></div>
+                            </div>
+                            <ArtistPageMediaViewer artworksArray={item?.artworkThumbNails} />
+                          </div>
+                        </Link>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            </section>
+          </TabPanel>
+          <TabPanel key={4}>
             <DropsRaw />
           </TabPanel>
         </Tabs>
