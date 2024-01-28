@@ -17,7 +17,7 @@ const calculateWidth = (props) => {
 
 export const Card = styled.div`
 width: ${calculateWidth};
-  height: ${(props) => (props.unlistedCard ? '300px' : '330px')};
+  height: ${(props) => (props.unlistedCard ? 'auto' : 'auto')};
   margin: 10px 2% 10px 0px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
@@ -116,9 +116,45 @@ export const DescriptionTag = styled.p`
   text-overflow: ellipsis;
 `;
 
+export const PriceSectionWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid 1px #e6e6e6;
+  padding-bottom: 5px;
+  padding-top: 5px;
+`;
+
 export const PriceHeading = styled.div`
   margin-top: 15px;
   font-size: 13px;
   font-weight: 600;
   color: #81754e;
+`;
+
+export const BuyNowButtonWrapper = styled.div`
+display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+export const BuyNowButton = styled.button`
+  background-color: transparent;
+  border: 2px solid transparent;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
+  padding: 0px 30px;
+  height: 35px;
+  font-size: 14px;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  border-color: ${(props) => (props.theme === 'light' ? 'transparent' : 'white')};
+  font-weight: 600;
+  font-family: sans-serif;
+  margin: 10px 0px;
+  border-radius: 20px;
+  &:hover {
+    color: ${(props) => (props.theme === 'light' ? 'white' : 'black')};
+    background-color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  }
 `;

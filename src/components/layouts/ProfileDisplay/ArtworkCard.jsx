@@ -6,12 +6,12 @@ import PropTypes from 'prop-types';
 import { useMediaQuery } from 'react-responsive';
 import MediaViewer from '../mediaViewer/MediaViewer';
 import {
-  ArtworkName,
+  ArtworkName, BuyNowButton, BuyNowButtonWrapper,
   Card,
   CardContent,
   CardMedia,
   CreatorInfo,
-  PriceHeading,
+  PriceHeading, PriceSectionWrapper,
   PriceTag,
 } from './ProfileDisplayStyles/ArtworkCard.styles';
 
@@ -60,18 +60,30 @@ function ArtworkCard(props) {
           <img src={artwork.ownerImage} alt={artwork.ownerName} />
           <span>{artwork.ownerName}</span>
         </CreatorInfo>
-        <PriceHeading>Price</PriceHeading>
-        <PriceTag>
-          {(artwork.price * usdPriceInEth).toFixed(2)}
-          {' '}
+        <PriceSectionWrapper>
+          <PriceHeading>Price</PriceHeading>
+          <PriceTag>
+            {(artwork.price * usdPriceInEth).toFixed(2)}
+            {' '}
           &nbsp;
-          {' ≈ '}
-          {' '}
+            {' ≈ '}
+            {' '}
           &nbsp;
-          {artwork.price}
-          {' '}
-          ETH
-        </PriceTag>
+            {artwork.price}
+            {' '}
+            ETH
+          </PriceTag>
+        </PriceSectionWrapper>
+        <BuyNowButtonWrapper>
+          <BuyNowButton
+            theme={theme}
+            onClick={async (e) => {
+              e.preventDefault();
+            }}
+          >
+            {artwork?.listed ? 'Buy Now' : 'List Now'}
+          </BuyNowButton>
+        </BuyNowButtonWrapper>
       </CardContent>
     </Card>
   );

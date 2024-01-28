@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MediaViewer from '../mediaViewer/MediaViewer';
 import {
-  ArtworkName,
+  ArtworkName, BuyNowButton, BuyNowButtonWrapper,
   Card,
   CardMedia,
   DescriptionTag,
@@ -46,6 +46,16 @@ function UnlistedArtworkCard(props) {
       <DescriptionWrapper>
         <DescriptionTag>{listing?.data?.description}</DescriptionTag>
       </DescriptionWrapper>
+      <BuyNowButtonWrapper>
+        <BuyNowButton
+          theme={theme}
+          onClick={async (e) => {
+            e.preventDefault();
+          }}
+        >
+          {listing?.listable ? 'List Now' : 'View Listing'}
+        </BuyNowButton>
+      </BuyNowButtonWrapper>
     </Card>
   );
 }
