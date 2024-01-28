@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 
 function Contact02() {
@@ -9,7 +8,6 @@ function Contact02() {
   };
   return (
     <div>
-      <HeaderStyle2 />
       <section className="flat-title-page inner">
         <div className="overlay" />
         <div className="themesflat-container">

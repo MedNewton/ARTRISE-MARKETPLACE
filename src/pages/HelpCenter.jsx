@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import img1 from '../assets/images/icon/icon-1.png';
 import img2 from '../assets/images/icon/icon-2.png';
@@ -58,8 +57,6 @@ function HelpCenter() {
   );
   return (
     <div>
-      <HeaderStyle2 />
-
       <section className="tf-help-center tf-section">
         <div className="themesflat-container">
           <div className="row mrgTopSection">

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 
 import img1 from '../assets/images/box-item/icon1-recont-post.jpg';
@@ -88,7 +87,6 @@ function HybridArticle() {
 
   return (
     <div>
-      <HeaderStyle2 />
       <div className="tf-section post-details">
         <div className="themesflat-container">
           <div className="wrap-flex-box style mrgTopSection">

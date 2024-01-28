@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ref, get } from 'firebase/database';
 import PropTypes from 'prop-types';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import db from '../firebase';
 import img1 from '../assets/images/blog/thumb-1.jpg';
@@ -42,8 +41,6 @@ function Blog() {
 
   return (
     <div>
-      <HeaderStyle2 />
-
       <div className="tf-section sc-card-blog dark-style2">
         <div className="themesflat-container">
           <div className="row mrgTopSection">

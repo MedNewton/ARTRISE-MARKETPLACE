@@ -1,24 +1,10 @@
 /*eslint-disable*/
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import HeaderStyle2 from '../../components/header/HeaderStyle2';
+import React, { useState } from 'react';
 import Footer from '../../components/footer/Footer';
 import 'react-tabs/style/react-tabs.css';
 import './Order.css';
-
 import OrderTrackingTable from '../../components/Table/OrderTrackingTable';
 import OrderTrackingTable2 from '../../components/Table/OrderTrackingTable2';
-import {
-  ref,
-  onValue,
-  get,
-  update,
-  set,
-  child,
-  remove,
-  query,
-  equalTo,
-} from 'firebase/database';
 
 function OrderTracking() {
   const [active, setActive] = useState(1);
@@ -26,7 +12,6 @@ function OrderTracking() {
 
   return (
     <div className="item-details">
-      <HeaderStyle2 />
       <div className="tf-section">
         <div className="themesflat-container">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>

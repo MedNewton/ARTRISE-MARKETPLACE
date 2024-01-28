@@ -1,12 +1,9 @@
 import React from 'react';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 
 function Contact01() {
   return (
     <div>
-      <HeaderStyle2 />
-
       <section className="tf-contact tf-section">
         <div className="themesflat-container">
           <div className="row mrgTopSection">

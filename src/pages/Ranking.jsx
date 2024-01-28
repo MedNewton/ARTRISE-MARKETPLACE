@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import img1 from '../assets/images/box-item/img_cart_item.jpg';
 import yann from '../assets/images/avatar/yann.png';
@@ -161,7 +160,6 @@ function Ranking() {
   };
   return (
     <div>
-      <HeaderStyle2 />
       <section className="flat-title-page inner">
         <div className="overlay" />
         <div className="themesflat-container">

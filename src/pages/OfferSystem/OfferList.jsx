@@ -1,6 +1,5 @@
 /*eslint-disable*/
 import React, { useState, useEffect } from 'react';
-import HeaderStyle2 from '../../components/header/HeaderStyle2';
 import Footer from '../../components/footer/Footer';
 
 import { FaArrowRightLong } from 'react-icons/fa6';
@@ -80,8 +79,6 @@ function OfferList() {
 
   return (
     <div>
-      <HeaderStyle2 />
-
       <div className=" container">
         <h1 style={{ paddingTop: '100px', paddingBottom: '20px' }}> Pending Offers</h1>
         <div className="table">

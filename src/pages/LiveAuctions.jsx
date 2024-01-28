@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import liveAuctionData from '../assets/fake-data/data-live-auction';
 import LiveAuction from '../components/layouts/auctions/LiveAuction';
@@ -8,7 +7,6 @@ import LiveAuction from '../components/layouts/auctions/LiveAuction';
 function LiveAuctions() {
   return (
     <div className="auctions">
-      <HeaderStyle2 />
       <section className="flat-title-page inner">
         <div className="overlay" />
         <div className="themesflat-container">

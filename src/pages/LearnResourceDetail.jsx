@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 
 import rightArrowIcon from '../assets/images/icon/rightArrowIcon.svg';
@@ -96,7 +94,6 @@ function ArticleDetails() {
 
   return (
     <div>
-      <HeaderStyle2 />
       <div className="learn-resource-detail-page-wrapper">
         <div className="learn-resource-navigation">
           Learn&emsp;
