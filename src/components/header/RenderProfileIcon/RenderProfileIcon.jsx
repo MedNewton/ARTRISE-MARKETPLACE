@@ -27,13 +27,13 @@ function GetProfileLink(UserPdpLink, pdp) {
   } if ((UserPdpLink) && (UserPdpLink === pdp)) {
     return (
       <IconWrapper>
-        <HiOutlineUser style={{ width: '28px', height: '28px' }} />
+        <HiOutlineUser style={{ width: '25px', height: '28px' }} />
       </IconWrapper>
     );
   }
   return (
     <IconWrapper>
-      <HiOutlineUser style={{ width: '28px', height: '28px' }} />
+      <HiOutlineUser style={{ width: '25px', height: '28px' }} />
     </IconWrapper>
   );
 }

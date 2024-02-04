@@ -1,8 +1,19 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useMediaQuery } from 'react-responsive';
-import cart from '../../../assets/images/icon/cart.png';
+import styled from 'styled-components';
+import { LuShoppingCart } from 'react-icons/lu';
 
+const IconWrapper = styled.div`
+    display: flex;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    color: #000000;
+`;
 function RenderCartIcon() {
   const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
@@ -11,7 +22,9 @@ function RenderCartIcon() {
   return (
     <Dropdown>
       <Dropdown.Toggle id={isDeviceMobile ? 'dropdownCartButtonMobileVersion' : 'dropdownCartButton'}>
-        <img alt="shoping cart" className="avatar cart-icon-mobile-version-image" src={cart} />
+        <IconWrapper>
+          <LuShoppingCart style={{ width: '23px', height: '28px' }} />
+        </IconWrapper>
       </Dropdown.Toggle>
 
       <Dropdown.Menu

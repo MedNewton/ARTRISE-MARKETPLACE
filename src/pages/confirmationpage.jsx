@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAccount } from 'wagmi';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import 'react-tabs/style/react-tabs.css';
 import './styles/ConfirmationPage.css';
@@ -11,7 +10,6 @@ function ConfirmationPage() {
   return (
     <div className="item-details">
       <style />
-      <HeaderStyle2 />
       <div className="tf-section">
         <div className="themesflat-container">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>

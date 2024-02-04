@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Accordion } from 'react-bootstrap-accordion';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 
 function HybridNFT() {
@@ -136,8 +135,6 @@ function HybridNFT() {
   );
   return (
     <div>
-      <HeaderStyle2 />
-
       <section className="tf-section wrap-accordion">
         <div className="container">
           <div className="row mrgTopSection">

@@ -1,10 +1,8 @@
 import React from 'react';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 
 function SettingsPage() {
   return (
     <div>
-      <HeaderStyle2 />
       <div className="tf-create-item tf-section">
         <div className="themesflat-container">
           <div className="row top-bottom-padding " style={{ display: 'flex', flexDirection: 'column' }}>

@@ -19,7 +19,7 @@ function RenderNotifyIcon() {
     <Dropdown>
       <Dropdown.Toggle id="dropdownNotifButton">
         <IconWrapper>
-          <IoMdNotificationsOutline style={{ width: '28px', height: '28px' }} />
+          <IoMdNotificationsOutline style={{ width: '26px', height: '28px' }} />
         </IconWrapper>
       </Dropdown.Toggle>
       <Dropdown.Menu

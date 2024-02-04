@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import Footer from '../components/footer/Footer';
 import ReferralModal from '../components/layouts/referralModal';
 
@@ -9,7 +8,6 @@ function ReferralProgram() {
 
   return (
     <div>
-      <HeaderStyle2 />
       <div className="referral-home-wrapper">
         <div className="flex-column-gap20">
           <div>
