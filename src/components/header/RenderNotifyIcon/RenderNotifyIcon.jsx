@@ -1,17 +1,26 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import notification from '../../../assets/images/icon/notification.png';
+import { IoMdNotificationsOutline } from 'react-icons/io';
+import styled from 'styled-components';
+
+const IconWrapper = styled.div`
+    display: flex;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    color: #000000;
+`;
 
 function RenderNotifyIcon() {
   return (
     <Dropdown>
       <Dropdown.Toggle id="dropdownNotifButton">
-        <img
-          alt="Notification"
-          className="avatar"
-          style={{ padding: '6px', backgroundColor: 'white' }}
-          src={notification}
-        />
+        <IconWrapper>
+          <IoMdNotificationsOutline style={{ width: '28px', height: '28px' }} />
+        </IconWrapper>
       </Dropdown.Toggle>
       <Dropdown.Menu
         align="end"
@@ -24,4 +33,5 @@ function RenderNotifyIcon() {
     </Dropdown>
   );
 }
+
 export default RenderNotifyIcon;
