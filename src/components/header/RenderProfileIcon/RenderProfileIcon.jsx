@@ -6,8 +6,20 @@ import {
 } from 'react-icons/fa';
 import { BiCoinStack } from 'react-icons/bi';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { HiOutlineUser } from 'react-icons/hi';
 import { Logout } from '../../../services/AuthServices/Logout';
 
+const IconWrapper = styled.div`
+    display: flex;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    color: #000000;
+`;
 function RenderProfileIcon(props) {
   const { UserPdpLink, disconnect, dispatch } = props;
   const nav = useNavigate();
@@ -31,10 +43,29 @@ function RenderProfileIcon(props) {
     nav(`/displayProfile?member=${localStorage?.getItem('userId')}`);
   };
 
+  function GetProfileLink() {
+    if ((UserPdpLink) && (UserPdpLink !== pdp)) {
+      return <img alt="The Artist" className="avatar" src={UserPdpLink || pdp} />;
+    } if ((UserPdpLink) && (UserPdpLink === pdp)) {
+      return (
+        <IconWrapper>
+          <HiOutlineUser style={{ width: '28px', height: '28px' }} />
+        </IconWrapper>
+      );
+    }
+    return (
+      <IconWrapper>
+        <HiOutlineUser style={{ width: '28px', height: '28px' }} />
+      </IconWrapper>
+    );
+  }
+
   return (
     <Dropdown>
       <Dropdown.Toggle id="dropdownMenuButton">
-        <img alt="The Artist" className="avatar" src={UserPdpLink || pdp} />
+        {
+            GetProfileLink()
+          }
       </Dropdown.Toggle>
 
       <Dropdown.Menu
@@ -42,16 +73,16 @@ function RenderProfileIcon(props) {
         style={{ marginTop: '1vh' }}
       >
         {localStorage.getItem('profileType') === 'artist' && (
-        <Dropdown.Item onClick={ArtistProfileHandler}>
-          <FaRegUser size={15} />
-          Profile
-        </Dropdown.Item>
+          <Dropdown.Item onClick={ArtistProfileHandler}>
+            <FaRegUser size={15} />
+            Profile
+          </Dropdown.Item>
         )}
         {localStorage.getItem('profileType') === 'member' && (
-        <Dropdown.Item onClick={MemberProfileHandler}>
-          <FaRegUser size={15} />
-          Profile
-        </Dropdown.Item>
+          <Dropdown.Item onClick={MemberProfileHandler}>
+            <FaRegUser size={15} />
+            Profile
+          </Dropdown.Item>
         )}
         {(localStorage.getItem('profileType') === 'member' && localStorage.getItem('walletAddress')) ? (
           <Dropdown.Item>
