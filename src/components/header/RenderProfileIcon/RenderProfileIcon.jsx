@@ -20,6 +20,23 @@ const IconWrapper = styled.div`
     border-radius: 10px;
     color: #000000;
 `;
+
+function GetProfileLink(UserPdpLink, pdp) {
+  if ((UserPdpLink) && (UserPdpLink !== pdp)) {
+    return <img alt="The Artist" className="avatar" src={UserPdpLink || pdp} />;
+  } if ((UserPdpLink) && (UserPdpLink === pdp)) {
+    return (
+      <IconWrapper>
+        <HiOutlineUser style={{ width: '28px', height: '28px' }} />
+      </IconWrapper>
+    );
+  }
+  return (
+    <IconWrapper>
+      <HiOutlineUser style={{ width: '28px', height: '28px' }} />
+    </IconWrapper>
+  );
+}
 function RenderProfileIcon(props) {
   const { UserPdpLink, disconnect, dispatch } = props;
   const nav = useNavigate();
@@ -43,28 +60,11 @@ function RenderProfileIcon(props) {
     nav(`/displayProfile?member=${localStorage?.getItem('userId')}`);
   };
 
-  function GetProfileLink() {
-    if ((UserPdpLink) && (UserPdpLink !== pdp)) {
-      return <img alt="The Artist" className="avatar" src={UserPdpLink || pdp} />;
-    } if ((UserPdpLink) && (UserPdpLink === pdp)) {
-      return (
-        <IconWrapper>
-          <HiOutlineUser style={{ width: '28px', height: '28px' }} />
-        </IconWrapper>
-      );
-    }
-    return (
-      <IconWrapper>
-        <HiOutlineUser style={{ width: '28px', height: '28px' }} />
-      </IconWrapper>
-    );
-  }
-
   return (
     <Dropdown>
       <Dropdown.Toggle id="dropdownMenuButton">
         {
-            GetProfileLink()
+            GetProfileLink(UserPdpLink, pdp)
           }
       </Dropdown.Toggle>
 
