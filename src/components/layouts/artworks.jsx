@@ -6,9 +6,16 @@ function Artworks() {
   const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
 
   return (
-    <div style={{ paddingTop: '10px' }}>
+    <div style={{
+        paddingLeft: '2%',
+        paddingRight: '2%',
+        paddingTop:'60px',
+        marginLeft: '0px',
+        marginRight: '0px',
+        width: '100%',
+    }}>
       <div>
-        <h2 className="artists-page-title">Artworks</h2>
+        <h2 className=" ourArtists">Artworks</h2>
       </div>
       {lazyListed && <DisplayArtworks data={lazyListed} />}
     </div>

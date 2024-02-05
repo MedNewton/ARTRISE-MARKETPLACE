@@ -77,7 +77,7 @@ export const CardMedia = styled.div`
 `;
 
 export const CardContent = styled.div`
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
 `;
 
 export const CreatorInfo = styled.div`
@@ -142,16 +142,16 @@ display: flex;
 `;
 export const BuyNowButton = styled.button`
   background-color: transparent;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
   padding: 0px 30px;
   height: 35px;
   font-size: 14px;
   color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
-  border-color: ${(props) => (props.theme === 'light' ? 'transparent' : 'white')};
+  border-color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
   font-weight: 600;
   font-family: sans-serif;
-  margin: 10px 0px;
+  margin: 15px 0px;
   border-radius: 20px;
   &:hover {
     color: ${(props) => (props.theme === 'light' ? 'white' : 'black')};
