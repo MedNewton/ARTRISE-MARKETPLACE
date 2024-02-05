@@ -286,7 +286,7 @@
 }
 
 .attr{
-  padding: 5px 10px;
+  padding: 10px 20px;
   background-color: #f8f8f8;
   border: solid 0.5px #d4d4d4;
   /* box-shadow: 0px 0px 10px 1px #515151aa; */
@@ -296,10 +296,8 @@
   border-radius: 10px;
   text-align: center;
   max-width: none !important;
-  width: -moz-fit-content !important;
   width: fit-content !important;
   max-height: none !important;
-  height: -moz-fit-content !important;
   height: fit-content !important;
 }
 .is_dark .attr{
@@ -459,10 +457,7 @@
 }
 
 .ourArtists{
-  /*margin-top:10%;*/
-  text-align: left;
-  margin-bottom: 3%;
-  margin-left: 0%;
+text-align: left;
   font-size: 3em;
 }
 
@@ -705,8 +700,7 @@
 }
 
 .tagsBar{
-  margin-top: 2%;
-  margin-bottom: 3%;
+  padding: 25px 0px 25px 0px;
 }
 
 .tag{
@@ -770,9 +764,8 @@
   width: fit-content;
   height: fit-content;
   padding: 8px;
-  margin-left: 0%;
-  margin-bottom: 2%;
   cursor: pointer;
+  margin: 25px 0px;
 }
 
 .filtersBtn:hover{
@@ -2947,7 +2940,7 @@ a{
 
 .artist-profile-wrapper {
   width: 100%;
-padding: 1% 2% 1% 2%;
+/*padding: 1% 2% 1% 2%;*/
 }
 
 .artist-artworks-wrapper {

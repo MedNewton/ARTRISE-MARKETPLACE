@@ -21,21 +21,20 @@ function Craftsmen() {
   }
 
   return (
-    <div className="authors">
-      <section className="tf-section our-creater dark-style2">
+      <>
         <div
-          className="themesflat-container"
-          style={{
-            paddingLeft: '2%',
-            paddingRight: '2%',
-            marginLeft: '0px',
-            marginRight: '0px',
-            width: '100%',
-          }}
+            style={{
+              paddingLeft: '2%',
+              paddingRight: '2%',
+              paddingTop:'60px',
+              marginLeft: '0px',
+              marginRight: '0px',
+              width: '100%',
+            }}
         >
           <div className="row">
             <div className="col-md-12">
-              <h2 className="tf-title style4 mg-bt-38 ourArtists">
+              <h2 className=" ourArtists">
                 Artists
               </h2>
             </div>
@@ -158,9 +157,8 @@ function Craftsmen() {
             }
           </div>
         </div>
-      </section>
       <Footer />
-    </div>
+      </>
   );
 }
 
