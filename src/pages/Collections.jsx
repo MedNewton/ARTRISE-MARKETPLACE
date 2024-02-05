@@ -30,6 +30,7 @@ function Collections() {
         style={{
           paddingLeft: '2%',
           paddingRight: '2%',
+          paddingTop:'60px',
           marginLeft: '0px',
           marginRight: '0px',
           width: '100%',
@@ -37,7 +38,7 @@ function Collections() {
       >
         <div className="row">
           <div className="col-md-12">
-            <h2 className="tf-title style4 mg-bt-38 ourArtists">
+            <h2 className=" ourArtists">
               Collections
             </h2>
           </div>
