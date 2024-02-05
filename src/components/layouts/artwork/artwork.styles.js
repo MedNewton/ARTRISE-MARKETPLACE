@@ -42,7 +42,7 @@ export const OwnersSectionDetailsWrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 10px;
+    gap: 30px;
 `;
 
 export const OwnerWrapper = styled.div`
@@ -51,12 +51,13 @@ export const OwnerWrapper = styled.div`
     width: 100%;
     background-color: ${(props) => (props.theme === 'light' ? COLORS.LightGrayBG : COLORS.BlackBG2)};
     gap: 20px;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 15px;
+    padding: 5px;
+    align-items: center;
 `;
 export const AvatarWrapper = styled.div`
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background-color: transparent;
 `;
 export const InfoWrapper = styled.div`
@@ -65,8 +66,8 @@ export const InfoWrapper = styled.div`
     gap: 4px;
 `;
 export const OwnerNameHeading = styled.h5`
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 15px;
+    line-height: 20px;
     font-weight: 600;
     color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};
 `;
@@ -141,4 +142,41 @@ export const ModalInputLabel = styled.label`
 export const ModalInputField = styled.input`
     border-color: rgb(122, 121, 138);
     padding: 5px;
+`;
+
+export const LikeShareButtonsWrapper = styled.div`
+display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 0px 20px 0px;
+    
+`;
+
+export const LikeButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    background-color: ${(props) => (props.theme === 'light' ? COLORS.LightGrayBG : COLORS.BlackBG2)};
+    gap: 5px;
+    align-items: center;
+    padding: 9px 15px;
+    border-radius: 40px;
+    width: auto;
+    font-size: 15px;
+    cursor: pointer;
+    color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+`;
+export const ShareButtonWrapper = styled.div`
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    //width: 100%;
+    background-color: ${(props) => (props.theme === 'light' ? COLORS.LightGrayBG : COLORS.BlackBG2)};
+    gap: 20px;
+    align-items: center;
+    padding: 9px 15px;
+    border-radius: 40px;
+    width: auto;
+    font-size: 17px;
+    color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;

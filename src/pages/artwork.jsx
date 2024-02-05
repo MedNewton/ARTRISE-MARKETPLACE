@@ -19,6 +19,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { ethers } from 'ethers';
 import { useMediaQuery } from 'react-responsive';
 import { useSelector } from 'react-redux';
+import { FaRegHeart } from 'react-icons/fa';
+import { BiNavigation } from 'react-icons/bi';
 import db from '../firebase';
 import ShippingModal from '../components/layouts/ShippingModal';
 import Footer from '../components/footer/Footer';
@@ -31,14 +33,14 @@ import {
   ArtworkName,
   ArtworkPageWrapper,
   AvatarWrapper, ButtonsWrapper,
-  InfoWrapper,
+  InfoWrapper, LikeButtonWrapper, LikeShareButtonsWrapper,
   MainImageAttributesWrapper, ModalInputField, ModalInputLabel,
   OwnerName,
   OwnerNameHeading,
   OwnersSectionDetailsWrapper,
   OwnerWrapper,
   PriceHeading, PriceNotification, PriceSectionWrapper,
-  PriceSubSection,
+  PriceSubSection, ShareButtonWrapper,
 } from '../components/layouts/artwork/artwork.styles';
 import { COLORS } from '../components/shared/styles-constants';
 import placeHolderMainImage from '../assets/images/box-item/collection-item-bottom-4.jpg';
@@ -951,7 +953,7 @@ function Artwork() {
                 <Accordion key="0" title="Properties">
                   <div className="row propertiesBox">
                     {nft?.data?.attributes?.map((attribute) => (
-                      <div className="col-3 attr">
+                      <div className="attr">
                         <p className="attributeTitle">{attribute?.trait_type}</p>
                         <p>{attribute?.trait_value}</p>
                       </div>
@@ -1007,7 +1009,6 @@ function Artwork() {
               </div>
             </div>
           </MainImageAttributesWrapper>
-
           <ArtworkDetailsWrapper isDeviceMobile={isDeviceMobile}>
             <ArtworkName theme={theme}>
               {nft?.data?.name}
@@ -1015,6 +1016,15 @@ function Artwork() {
             <ArtworkCollectionName theme={theme}>
               {nft?.collection?.name ? nft?.collection?.name : 'ARTRISE Shared Collection'}
             </ArtworkCollectionName>
+            <LikeShareButtonsWrapper>
+              <LikeButtonWrapper theme={theme}>
+                <FaRegHeart style={{ color: 'red' }} />
+                <span>1</span>
+              </LikeButtonWrapper>
+              <ShareButtonWrapper theme={theme}>
+                <BiNavigation />
+              </ShareButtonWrapper>
+            </LikeShareButtonsWrapper>
             <ArtworkDescription theme={theme}>
               {nft?.data?.description}
             </ArtworkDescription>
@@ -1047,9 +1057,9 @@ function Artwork() {
                 <PriceHeading theme={theme}>
                   $
                   {(usdPriceInEth * price).toFixed(2).toString()}
-                    &nbsp;
+                  &nbsp;
                   {' ≈ '}
-                    &nbsp;
+                  &nbsp;
                   {price.toString()}
                   {' '}
                   ETH
@@ -1063,8 +1073,8 @@ function Artwork() {
                         icon: 'question',
                         title: 'Flexible price NFTs',
                         text: 'In order to protect users from unexpected market swings,\nARTRISE '
-                                + 'implemented the notion of flexible price NFTs\nto keep all the artworks '
-                                + 'aligned with the actual cryptocurrencies market prices.',
+                              + 'implemented the notion of flexible price NFTs\nto keep all the artworks '
+                              + 'aligned with the actual cryptocurrencies market prices.',
                       });
                     }}
                   />
@@ -1144,6 +1154,15 @@ function Artwork() {
             <ArtworkCollectionName theme={theme}>
               ARTRISE Shared Collection
             </ArtworkCollectionName>
+            <LikeShareButtonsWrapper>
+              <LikeButtonWrapper theme={theme}>
+                <FaRegHeart style={{ color: 'red' }} />
+                <span>1</span>
+              </LikeButtonWrapper>
+              <ShareButtonWrapper theme={theme}>
+                <BiNavigation />
+              </ShareButtonWrapper>
+            </LikeShareButtonsWrapper>
             <ArtworkDescription theme={theme}>
               Artwork&apos;s Description
             </ArtworkDescription>
