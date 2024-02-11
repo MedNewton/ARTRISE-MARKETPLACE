@@ -8127,11 +8127,13 @@ button.accordion-button {
   background-color: #fff;
   position: absolute;
   width: 95%;
-  margin-left: 40px;
-  margin-right: 40px;
+  height: 60px;
+  gap:40px;
+  /*margin-left: 40px;*/
+  /*margin-right: 40px;*/
   border-radius: 10px;
-  left: 0;
-  box-shadow: 0px 3px 16px rgb(47 83 109 / 12%);
+  /*left: 0;*/
+  box-shadow: 0px 0px 6px 1px rgb(47 83 109 / 12%);
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -ms-transition: all 0.5s ease;
@@ -8183,7 +8185,7 @@ button.accordion-button {
 }
 
 .flat-tabs.items .react-tabs__tab-panel {
-  padding: 80px 40px 8px 40px;
+  padding: 80px 0px 0px 0px;
 }
 
 .flat-tabs.items .react-tabs__tab-panel .option {
