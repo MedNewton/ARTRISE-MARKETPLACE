@@ -27,16 +27,18 @@ function ReferralProgram() {
                 you&apos;ll both unlock exciting benefits. Embrace the power of art and
                 connections by joining our referral program today.
               </h6>
-              <button
-                className="refer-friend-button"
-                id="submitBtn"
-                type="button"
-                onClick={() => {
-                  setCreateModalShow(true);
-                }}
-              >
-                Refer a friend
-              </button>
+              <div className="wrap-inner load-more mb-20">
+                <button
+                  type="submit"
+                  id="load-more"
+                  className="sc-button loadmore fl-button pri-3"
+                  onClick={() => {
+                    setCreateModalShow(true);
+                  }}
+                >
+                  <span>Send message</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
