@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/footer/Footer';
 
 function Contact01() {
+  const navigate = useNavigate();
   return (
     <div>
-      <section className="tf-contact tf-section">
+      <section>
         <div className="themesflat-container">
           <div className="row mrgTopSection">
             <div className="col-lg-6 col-md-6 col-12">
@@ -59,7 +61,18 @@ function Contact01() {
                     required
                     placeholder="Message"
                   />
-                  <button type="submit" className="submit">Send message</button>
+                  <div className="col-md-12 wrap-inner load-more text-center mb-20">
+                    <button
+                      type="submit"
+                      id="load-more"
+                      className="sc-button loadmore fl-button pri-3"
+                      onClick={() => {
+                        navigate('/');
+                      }}
+                    >
+                      <span>Send message</span>
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>

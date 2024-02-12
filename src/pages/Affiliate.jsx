@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Accordion } from 'react-bootstrap-accordion';
 import Footer from '../components/footer/Footer';
 
 function Affiliate() {
+  const navigate = useNavigate();
   const data = useMemo(() => [
     {
       key: '0',
       show: 'show',
       title: 'BECOME AN AFFILIATE',
       text: 'It\'s easy and free to join. After your application is approved, '
-        + 'you’ll get access to promotional assets',
+                + 'you’ll get access to promotional assets',
     },
     {
       key: '1',
@@ -21,7 +22,7 @@ function Affiliate() {
       key: '2',
       title: 'EARN COMMISIONS',
       text: 'Every time people come to Artrise through your affiliate link and make a purchase, '
-        + 'you get up to 10% in commissions for every purchase.',
+                + 'you get up to 10% in commissions for every purchase.',
     },
   ], []);
 
@@ -30,7 +31,7 @@ function Affiliate() {
   }, []);
   return (
     <div>
-      <section className="tf-section wrap-accordion">
+      <section className="wrap-accordion">
         <div className="container">
           <div className="row mrgTopSection">
             <div className="col-md-12">
@@ -39,12 +40,25 @@ function Affiliate() {
               </h2>
 
               <h5 className="sub-title help-center mg-bt-32 ">
-                Earn money by promoting ArtRise, where you can buy, trade, and discover hybrid NFT artworks.
+                Earn money by promoting ArtRise, where you can buy, trade, and discover hybrid NFT
+                artworks.
 
               </h5>
-              <Link to="/">
-                <button type="button" className="affiliateButton">Become an affiliate</button>
-              </Link>
+
+              <div
+                className="col-md-12 wrap-inner load-more text-center mb-20"
+              >
+                <button
+                  type="button"
+                  id="load-more"
+                  className="sc-button loadmore fl-button pri-3"
+                  onClick={() => {
+                    navigate('/');
+                  }}
+                >
+                  <span>Become an affiliate</span>
+                </button>
+              </div>
               <h4 className="tf-title-heading ct style-2 fs-30 mg-bt-30">
                 How it works?
 

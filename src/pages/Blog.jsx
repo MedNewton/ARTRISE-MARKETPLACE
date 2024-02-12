@@ -41,78 +41,76 @@ function Blog() {
 
   return (
     <div>
-      <div className="tf-section sc-card-blog dark-style2">
-        <div className="themesflat-container">
-          <div className="row mrgTopSection">
-            <div className="col-md-12">
-              <h2 className="tf-title style2 fs-50 mg-bt-38 ourArtists">
-                Blog
-              </h2>
-            </div>
-            <div className="fl-blog fl-item2 col-lg-4 col-md-6">
-              <article className="sc-card-article">
-                <div className="card-media">
-                  <Link to="/blog-details/Hybrid-NFTs">
-                    <img src="https://miro.medium.com/max/1400/1*4NDULE6Ww72yr60pZRXFOw.png" alt="medium" />
-                  </Link>
-                </div>
-                <div className="meta-info">
-                  <div className="author">
-                    <div className="avatar">
-                      <img src={imga1} alt="medium" />
-                    </div>
-                    <div className="info">
-                      <span>Post owner</span>
+      <div
+        className="margin-Left-Right-Top"
+      >
+        <h2 className=" ourArtists" style={{ margin: '25px 0px' }}>
+          Blog
+        </h2>
+        <div className="row">
 
-                      <h6>
-                        {' '}
-                        <Link to="/">MEHDI LOUIJAB</Link>
-                        {' '}
-                      </h6>
-                    </div>
-                  </div>
-                  <div className="date">11.01.2023</div>
-                </div>
-                <div className="text-article">
-                  <h3><Link to="/blog-details/Hybrid-NFTs">What is &quot;Hybrid NFT&quot;</Link></h3>
-                  <p>
-                    {'An NFT, or non-fungible token, is a digital asset that represents ownership of a '
-                    + 'unique item or piece of content. '}
-                  </p>
-                </div>
-                <Link
-                  to="/blog-details/Hybrid-NFTs"
-                  className="sc-button fl-button pri-3"
-                >
-                  <span>Read More</span>
+          <div className=" fl-blog fl-item2 col-lg-4 col-md-6">
+            <article className="sc-card-article">
+              <div className="card-media">
+                <Link to="/blog-details/Hybrid-NFTs">
+                  <img src="https://miro.medium.com/max/1400/1*4NDULE6Ww72yr60pZRXFOw.png" alt="medium" />
                 </Link>
-              </article>
-            </div>
-            {
-              Object.keys(data)
-                .map((id) => (
-                  <BlogItem key={id} item={data[id]} />
-                ))
-            }
-            {
-              visible < data.length
-              && (
-                <div className="col-md-12 wrap-inner load-more text-center">
-                  <Link
-                    to={doNotNavigateHandlerFunction}
-                    id="load-more"
-                    className="sc-button loadmore fl-button pri-3 mt-6"
-                    onClick={showMoreItems}
-                  >
-                    <span>Load More</span>
-                  </Link>
+              </div>
+              <div className="meta-info">
+                <div className="author">
+                  <div className="avatar">
+                    <img src={imga1} alt="medium" />
+                  </div>
+                  <div className="info">
+                    <span>Post owner</span>
+
+                    <h6>
+                      {' '}
+                      <Link to="/">MEHDI LOUIJAB</Link>
+                      {' '}
+                    </h6>
+                  </div>
                 </div>
-              )
-            }
+                <div className="date">11.01.2023</div>
+              </div>
+              <div className="text-article">
+                <h3><Link to="/blog-details/Hybrid-NFTs">What is &quot;Hybrid NFT&quot;</Link></h3>
+                <p>
+                  {'An NFT, or non-fungible token, is a digital asset that represents ownership of a '
+                                    + 'unique item or piece of content. '}
+                </p>
+              </div>
+              <Link
+                to="/blog-details/Hybrid-NFTs"
+                className="sc-button fl-button pri-3"
+              >
+                <span>Read More</span>
+              </Link>
+            </article>
           </div>
+          {
+                    Object.keys(data)
+                      .map((id) => (
+                        <BlogItem key={id} item={data[id]} />
+                      ))
+                }
+          {
+                    visible < data.length
+                    && (
+                    <div className="col-md-12 wrap-inner load-more text-center">
+                      <Link
+                        to={doNotNavigateHandlerFunction}
+                        id="load-more"
+                        className="sc-button loadmore fl-button pri-3 mt-6"
+                        onClick={showMoreItems}
+                      >
+                        <span>Load More</span>
+                      </Link>
+                    </div>
+                    )
+                }
         </div>
       </div>
-
       <Footer />
     </div>
   );
@@ -146,7 +144,7 @@ function BlogItem({ item }) {
           <h3><Link to="/blog-details">{item?.title}</Link></h3>
           <p>
             {item?.abv ? item?.abv : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do '
-            + 'eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam'}
+                            + 'eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam'}
           </p>
         </div>
         <Link to="/blog-details" className="sc-button fl-button pri-3"><span>Read More</span></Link>
@@ -160,7 +158,6 @@ BlogItem.propTypes = {
     date: PropTypes.string,
     title: PropTypes.string,
     abv: PropTypes.string,
-    // Add any other properties you expect in the 'item' object
   }).isRequired,
 };
 
