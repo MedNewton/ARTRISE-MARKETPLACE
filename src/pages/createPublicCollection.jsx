@@ -192,8 +192,7 @@ function CreatePublicCollection() {
 
   async function deployNFTCollection() {
     await connect();
-    const metadataErrors = checkDeployMetadataError();
-
+    const metadataErrors = await checkDeployMetadataError();
     if (metadataErrors === false) {
       try {
         await uploadMainMedia(media);

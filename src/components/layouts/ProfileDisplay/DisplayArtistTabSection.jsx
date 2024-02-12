@@ -129,30 +129,30 @@ function DisplayArtistTabSection(props) {
       </TabList>
       {artistData.socialMediaVerified
         ? (
-          <>
-            <TabPanel key={0}>
+          <div>
+            <TabPanel key={0} style={{ margin: '0% 2%', width: 'auto' }}>
               {artistData.userId === currentUserId
                 ? <DisplayLazyOwnedNfts /> : <DisplayArtworks data={userArtworks} />}
             </TabPanel>
-            <TabPanel key={1}>
+            <TabPanel key={1} style={{ margin: '25px 2%' }}>
               <DisplayCollections data={userCollections} />
             </TabPanel>
-            <TabPanel key={2}>
+            <TabPanel key={2} style={{ margin: '25px 2%' }}>
               <div />
             </TabPanel>
-            <TabPanel key={3}>
+            <TabPanel key={3} style={{ margin: '25px 2%' }}>
               <h5 className="bioTabText">{artistData?.bio}</h5>
             </TabPanel>
-          </>
+          </div>
         )
         : (
           <>
-            <TabPanel key={0}>
+            <TabPanel key={0} style={{ margin: '25px 2%', width: 'auto' }}>
               {artistData?.userId === currentUserId
                 ? <DisplayMyOwnedNfts address={address} />
                 : <DisplayMemberOwnedNfts address={artistData?.userId} artistData={artistData} />}
             </TabPanel>
-            <TabPanel key={1}>
+            <TabPanel key={1} style={{ margin: '25px 2%' }}>
               <div
                 style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%',
@@ -186,7 +186,7 @@ function DisplayArtistTabSection(props) {
                 </div>
               </div>
             </TabPanel>
-            <TabPanel key={2}>
+            <TabPanel key={2} style={{ margin: '25px 2%' }}>
               <div
                 style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%',
@@ -221,7 +221,7 @@ function DisplayArtistTabSection(props) {
                 </div>
               </div>
             </TabPanel>
-            <TabPanel key={3}>
+            <TabPanel key={3} style={{ margin: '25px 2%' }}>
               <div
                 style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%',

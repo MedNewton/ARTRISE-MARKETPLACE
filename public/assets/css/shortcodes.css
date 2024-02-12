@@ -543,7 +543,7 @@
 }
 
 .sc-box-icon {
-  text-align: center;
+  /*text-align: center;*/
 }
 .home-1 .sc-box-icon,
 .home-4 .sc-box-icon,
@@ -5070,7 +5070,7 @@ section.today-picks {
 /* Page connect-wallet
 --------------------------------------------------*/
 .help-center-form {
-  max-width: 690px;
+  max-width: max-content;
   margin: 0 auto;
   position: relative;
 }
