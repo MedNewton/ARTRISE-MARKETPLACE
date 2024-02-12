@@ -31,7 +31,6 @@ function Create() {
       icon: icon6,
       colorbg: 'icon-color1',
     },
-
     {
       id: '4',
       title: 'List & Sell',
@@ -53,43 +52,37 @@ function Create() {
       icon: icon5,
       colorbg: 'icon-color3',
     },
-
   ], []);
 
   return (
-    <section className=" style1">
-      <div
-        className="themesflat-container"
-        style={{
-          paddingLeft: '2%',
-          paddingRight: '2%',
-          marginLeft: '0px',
-          marginRight: '0px',
-          width: '100%',
-        }}
-      >
-        <div className="row">
-          <div className="col-12">
-            <h1 className="tf-title-heading ct style-2 fs-30 mg-bt-10 SeparatorTitle2">
-              The link between physical Art an Blockchain
-            </h1>
-            <h4
-              className="sub-title help-center mg-bt-32 lastSeparatingText"
-            >
-              We are playing a big part in the revolution of art by creating limitless possibilities
-              for all the industry actors.
-            </h4>
-          </div>
-        </div>
-        <div className="row">
-          {
-                            data.map((item) => (
-                              <CreateItem key={item.id} item={item} />
-                            ))
-                        }
-        </div>
+    <div
+      className="margin-Left-Right-Top"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '20px',
+      }}
+    >
+      <div className=" ourArtists">
+        <h2>
+          The link between physical Art an Blockchain
+        </h2>
       </div>
-    </section>
+      <div className=" ourArtists">
+        <h4>
+          We are playing a big part in the revolution of art by creating limitless possibilities
+          for all the industry actors.
+        </h4>
+      </div>
+      <div className="row">
+        {
+                    data.map((item) => (
+                      <CreateItem key={item.id} item={item} />
+                    ))
+                }
+      </div>
+    </div>
   );
 }
 
@@ -124,13 +117,13 @@ CreateItem.propTypes = {
 
 CreateItem.defaultProps = {
   item:
-    {
-      id: '',
-      title: '',
-      description: '',
-      icon: '',
-      colorbg: '',
-    },
+        {
+          id: '',
+          title: '',
+          description: '',
+          icon: '',
+          colorbg: '',
+        },
 
 };
 

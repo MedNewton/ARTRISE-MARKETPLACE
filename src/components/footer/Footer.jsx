@@ -80,7 +80,7 @@ function Footer() {
     {
       id: 'company3',
       title: 'َReferral program',
-      link: '/Referral',
+      link: '/referral-program',
     },
     {
       id: 'company4',

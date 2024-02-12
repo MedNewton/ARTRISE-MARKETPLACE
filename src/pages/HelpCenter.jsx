@@ -57,9 +57,9 @@ function HelpCenter() {
   );
   return (
     <div>
-      <section className="tf-help-center tf-section">
+      <section className="tf-help-center">
         <div className="themesflat-container">
-          <div className="row mrgTopSection">
+          <div className="row">
             <div className="col-12">
               <h2 className="tf-title-heading ct style-2 fs-30 mg-bt-10">
                 How Can We Help You?
@@ -70,47 +70,52 @@ function HelpCenter() {
               </h5>
               <form action="#" className="help-center-form">
                 <label htmlFor="questionInput">
-                  Type your Question Here:
-
-                  <input id="questionInput" type="text" placeholder="Type your question here" required />
-                </label>
-                <button
-                  type="button"
-                  onClick={(e) => { preventDefaultHandler(e); }}
-                  aria-label="Submit"
-                >
-                  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <mask
-                      id="mask0_1241_902"
-                      value="mask-type:alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="1"
-                      y="0"
-                      width="25"
-                      height="24"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M24.666 1.3335H2.23912V23.2653H24.666V1.3335Z"
-                        fill="white"
-                        stroke="white"
-                      />
-                    </mask>
-                    <g mask="url(#mask0_1241_902)">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M13.4518 3.02254C18.6829 3.02254 22.9387 7.18324 22.9387 12.2988C22.9387 17.4144
+                  <input
+                    style={{ width: '40vw' }}
+                    id="questionInput"
+                    type="text"
+                    placeholder="Type your question here"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      preventDefaultHandler(e);
+                    }}
+                    aria-label="Submit"
+                  >
+                    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <mask
+                        id="mask0_1241_902"
+                        value="mask-type:alpha"
+                        maskUnits="userSpaceOnUse"
+                        x="1"
+                        y="0"
+                        width="25"
+                        height="24"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M24.666 1.3335H2.23912V23.2653H24.666V1.3335Z"
+                          fill="white"
+                          stroke="white"
+                        />
+                      </mask>
+                      <g mask="url(#mask0_1241_902)">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M13.4518 3.02254C18.6829 3.02254 22.9387 7.18324 22.9387 12.2988C22.9387 17.4144
                         18.6829 21.5762 13.4518 21.5762C8.22183 21.5762 3.96601 17.4144 3.96601 12.2988C3.
                         96601 7.18324 8.22183 3.02254 13.4518 3.02254ZM13.4519 23.2653C19.6353 23.2653 24.
                         666 18.3456 24.666 12.2988C24.666 6.25201 19.6353 1.3335 13.4519 1.3335C7.2685
                         1.3335 2.23889 6.25201 2.23889 12.2988C2.23889 18.3456 7.2685 23.2653 13.4519
                         23.2653Z"
-                        fill="white"
-                      />
-                      <path
-                        d="M13.4518 2.52254C18.9484 2.52254 23.4387 6.89655 23.4387 12.2988H22.4387C22.4387
+                          fill="white"
+                        />
+                        <path
+                          d="M13.4518 2.52254C18.9484 2.52254 23.4387 6.89655 23.4387 12.2988H22.4387C22.4387
                       7.46993 18.4174 3.52254 13.4518 3.52254V2.52254ZM23.4387 12.2988C23.4387 17.701 18.9485
                       22.0762 13.4518 22.0762V21.0762C18.4174 21.0762 22.4387 17.1278 22.4387 12.2988H23.4387ZM13.4518
                        22.0762C7.95623 22.0762 3.46601 17.701 3.46601 12.2988H4.46601C4.46601 17.1278 8.48742
@@ -123,46 +128,48 @@ function HelpCenter() {
                           7.00294 0.833496 13.4519 0.833496V1.8335ZM2.73889 12.2988C2.73889 18.0591
                           7.53412 22.7653 13.4519 22.7653V23.7653C7.00288 23.7653 1.73889 18.6322
                           1.73889 12.2988H2.73889Z"
-                        fill="white"
-                      />
-                    </g>
-                    <mask
-                      id="mask1_1241_902"
-                      value="mask-type:alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="18"
-                      width="8"
-                      height="8"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M7.11719 19.02H1.33216V24.6668H7.11719V19.02Z"
-                        fill="white"
-                        stroke="white"
-                      />
-                    </mask>
-                    <g mask="url(#mask1_1241_902)">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M2.19553 24.6668C2.41546 24.6668 2.63654 24.5846 2.8058 24.4202L6.86358 20.4633C7.20096
+                          fill="white"
+                        />
+                      </g>
+                      <mask
+                        id="mask1_1241_902"
+                        value="mask-type:alpha"
+                        maskUnits="userSpaceOnUse"
+                        x="0"
+                        y="18"
+                        width="8"
+                        height="8"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M7.11719 19.02H1.33216V24.6668H7.11719V19.02Z"
+                          fill="white"
+                          stroke="white"
+                        />
+                      </mask>
+                      <g mask="url(#mask1_1241_902)">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M2.19553 24.6668C2.41546 24.6668 2.63654 24.5846 2.8058 24.4202L6.86358 20.4633C7.20096
                         20.1334 7.20211 19.5985 6.86473 19.2686C6.5285 18.9364 5.98155 18.9387 5.64302
                         19.2663L1.58525 23.2243C1.24787 23.5543 1.24672 24.088 1.5841 24.4179C1.75221
                         24.5846 1.97444 24.6668 2.19553 24.6668Z"
-                        fill="white"
-                      />
-                      <path
-                        d="M2.19553 24.6668C2.41546 24.6668 2.63654 24.5846 2.8058 24.4202L6.86358
+                          fill="white"
+                        />
+                        <path
+                          d="M2.19553 24.6668C2.41546 24.6668 2.63654 24.5846 2.8058 24.4202L6.86358
                         20.4633C7.20096 20.1334 7.20211 19.5985 6.86473 19.2686C6.5285 18.9364 5.98155
                         18.9387 5.64302 19.2663L1.58525 23.2244C1.24787 23.5543 1.24672 24.088 1.5841
                         24.4179C1.75221 24.5846 1.97444 24.6668 2.19553 24.6668"
-                        stroke="white"
-                      />
-                    </g>
-                  </svg>
-                </button>
+                          stroke="white"
+                        />
+                      </g>
+                    </svg>
+                  </button>
+                </label>
+
               </form>
               <p className="text-center mg-t-40 mg-bt-60">
                 Or choose a categories to quickly
@@ -172,21 +179,21 @@ function HelpCenter() {
           </div>
           <div className="sc-box-icon-inner style-3">
             {
-                            dataBox.map((item) => (
-                              <div key={item.id} className={`sc-box-icon ${item.classnone}`}>
-                                <div className="icon">
-                                  <div className="icon-item">
-                                    <img src={item.icon} alt="Axies" />
-                                  </div>
-                                </div>
-                                <h4 className="heading">
-                                  <Link to="/">{item.title}</Link>
-                                  {' '}
-                                </h4>
-                                <p className="content">{item.description}</p>
-                              </div>
-                            ))
-                        }
+              dataBox.map((item) => (
+                <div key={item.id} className={`sc-box-icon ${item.classnone}`}>
+                  <div className="icon">
+                    <div className="icon-item">
+                      <img src={item.icon} alt="Axies" />
+                    </div>
+                  </div>
+                  <h4 className="heading">
+                    <Link to="/">{item.title}</Link>
+                    {' '}
+                  </h4>
+                  <p className="content">{item.description}</p>
+                </div>
+              ))
+            }
 
           </div>
         </div>
