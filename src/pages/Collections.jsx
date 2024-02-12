@@ -27,14 +27,7 @@ function Collections() {
   return (
     <>
       <div
-        style={{
-          paddingLeft: '2%',
-          paddingRight: '2%',
-          paddingTop:'60px',
-          marginLeft: '0px',
-          marginRight: '0px',
-          width: '100%',
-        }}
+        className="margin-Left-Right-Top"
       >
         <div className="row">
           <div className="col-md-12">

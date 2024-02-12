@@ -21,115 +21,106 @@ function Craftsmen() {
   }
 
   return (
-      <>
-        <div
-            style={{
-              paddingLeft: '2%',
-              paddingRight: '2%',
-              paddingTop:'60px',
-              marginLeft: '0px',
-              marginRight: '0px',
-              width: '100%',
-            }}
-        >
-          <div className="row">
-            <div className="col-md-12">
-              <h2 className=" ourArtists">
-                Artists
-              </h2>
-            </div>
-            <div className="col-md-12 col-sm-12 mobileTags">
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="painter"
-              >
-                Painter
-              </button>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="photographer"
-              >
-                Photographer
-              </button>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="sculpturer"
-              >
-                Sculpturer
-              </button>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="ceramic_artist"
-              >
-                Ceramic artist
-              </button>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="others"
-              >
-                Others
-              </button>
-            </div>
-            <div className="col-12">
-              <div className="row tagsBar">
-                <div className="col-12">
-                  <button
-                    type="button"
-                    className="tag"
-                    onClick={(e) => editTags(e.target.id, e.target)}
-                    onKeyDown={(e) => editTags(e.target.id, e.target)}
-                    id="sculpturer"
-                  >
-                    Sculptors
-                  </button>
-                  <button
-                    type="button"
-                    className="tag"
-                    onClick={(e) => editTags(e.target.id, e.target)}
-                    onKeyDown={(e) => editTags(e.target.id, e.target)}
-                    id="painter"
-                  >
-                    Painters
-                  </button>
-                  <button
-                    type="button"
-                    className="tag"
-                    onClick={(e) => editTags(e.target.id, e.target)}
-                    onKeyDown={(e) => editTags(e.target.id, e.target)}
-                    id="photographer"
-                  >
-                    Photographers
-                  </button>
+    <>
+      <div className="margin-Left-Right-Top">
+        <div className="row">
+          <div className="col-md-12">
+            <h2 className=" ourArtists">
+              Artists
+            </h2>
+          </div>
+          <div className="col-md-12 col-sm-12 mobileTags">
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="painter"
+            >
+              Painter
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="photographer"
+            >
+              Photographer
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="sculpturer"
+            >
+              Sculpturer
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="ceramic_artist"
+            >
+              Ceramic artist
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="others"
+            >
+              Others
+            </button>
+          </div>
+          <div className="col-12">
+            <div className="row tagsBar">
+              <div className="col-12">
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="sculpturer"
+                >
+                  Sculptors
+                </button>
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="painter"
+                >
+                  Painters
+                </button>
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="photographer"
+                >
+                  Photographers
+                </button>
 
-                  <button
-                    type="button"
-                    className="tag"
-                    onClick={(e) => editTags(e.target.id, e.target)}
-                    onKeyDown={(e) => editTags(e.target.id, e.target)}
-                    id="others"
-                  >
-                    Others
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="others"
+                >
+                  Others
+                </button>
               </div>
             </div>
+          </div>
 
-            {
+          {
               artistsState?.map((item) => (
                 <div key={item?.userId} className="col-lg-4 col-md-6 col-12">
                   <Link to={`/displayProfile?artist=${item?.userId}`}>
@@ -155,10 +146,10 @@ function Craftsmen() {
                 </div>
               ))
             }
-          </div>
         </div>
+      </div>
       <Footer />
-      </>
+    </>
   );
 }
 

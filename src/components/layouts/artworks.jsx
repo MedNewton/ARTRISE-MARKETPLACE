@@ -6,14 +6,7 @@ function Artworks() {
   const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
 
   return (
-    <div style={{
-        paddingLeft: '2%',
-        paddingRight: '2%',
-        paddingTop:'60px',
-        marginLeft: '0px',
-        marginRight: '0px',
-        width: '100%',
-    }}>
+    <div className="margin-Left-Right-Top">
       <div>
         <h2 className=" ourArtists">Artworks</h2>
       </div>
