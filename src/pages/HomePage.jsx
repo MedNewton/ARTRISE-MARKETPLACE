@@ -132,8 +132,8 @@ function HomePage() {
                   </div>
                 </Link>
               )}
-              {profileData?.profileType === 'user' && (
-                <Link to={`/displayProfile?user=${currentUserId}`}>
+              {profileData?.profileType === 'member' && (
+                <Link to={`/displayProfile?member=${currentUserId}`}>
                   <div className="pdpSpace artistButton" id="pdp">
                     <img
                       src={profileData?.pdpLink ? profileData?.pdpLink : profile}
