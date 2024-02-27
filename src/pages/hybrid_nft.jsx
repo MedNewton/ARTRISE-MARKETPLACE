@@ -134,40 +134,36 @@ function HybridNFT() {
     ],
   );
   return (
-    <div>
-      <section className="tf-section wrap-accordion">
-        <div className="container">
-          <div className="row mrgTopSection">
-            <div className="col-md-12">
-              <h2 className="tf-title style2 fs-30 mg-bt-38 ourArtists">
-                What is a hybrid NFT?
-              </h2>
-            </div>
-            <div className="col-md-12">
+    <>
+      <div className="container">
+        <div className="row mrgTopSection">
+          <div className="col-md-12">
+            <h2 className="tf-title style2 fs-30 mg-bt-60">
+              What is a hybrid NFT?
+            </h2>
+          </div>
+          <div className="col-md-12">
 
-              <h5 className="sub-title help-center mg-bt-32 ">
-                “From fine art to blockchain”
-              </h5>
+            <h5 className="sub-title help-center mg-bt-32 ">
+              “From fine art to blockchain”
+            </h5>
 
-            </div>
-
-            <div className="col-md-12">
-              <div className="flat-accordion2">
-                {
+          </div>
+          <div className="col-md-12">
+            <div className="flat-accordion2">
+              {
                                     data?.map((item) => (
                                       <Accordion key={item?.key} title={item?.title}>
                                         <p>{item?.text}</p>
                                       </Accordion>
                                     ))
                                 }
-              </div>
             </div>
-
           </div>
         </div>
-      </section>
+      </div>
       <Footer />
-    </div>
+    </>
   );
 }
 
