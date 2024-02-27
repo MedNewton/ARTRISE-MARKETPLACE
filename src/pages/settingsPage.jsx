@@ -3,10 +3,12 @@ import React from 'react';
 function SettingsPage() {
   return (
     <div>
-      <div className="tf-create-item tf-section">
-        <div className="themesflat-container">
-          <div className="row top-bottom-padding " style={{ display: 'flex', flexDirection: 'column' }}>
-            <h5 className="settingPageTitle">Settings</h5>
+      <section className="wrap-accordion">
+        <div className="container">
+          <div className="mrgTopSection">
+            <h2 className="tf-title style2 fs-30 mg-bt-60">
+              Settings
+            </h2>
             <div className="settingsBoxesContainer">
               <div className="settingsBox">
                 <input type="checkbox" />
@@ -61,7 +63,7 @@ function SettingsPage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
