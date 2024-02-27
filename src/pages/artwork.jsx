@@ -1013,9 +1013,11 @@ function Artwork() {
             <ArtworkName theme={theme}>
               {nft?.data?.name}
             </ArtworkName>
-            <ArtworkCollectionName theme={theme}>
-              {nft?.collection?.name ? nft?.collection?.name : 'ARTRISE Shared Collection'}
-            </ArtworkCollectionName>
+            <Link to={`/collection?id=${nft?.collection?.address}`}>
+              <ArtworkCollectionName theme={theme}>
+                {nft?.collection?.name ? nft?.collection?.name : 'ARTRISE Shared Collection'}
+              </ArtworkCollectionName>
+            </Link>
             <LikeShareButtonsWrapper>
               <LikeButtonWrapper theme={theme}>
                 <FaRegHeart style={{ color: 'red' }} />
@@ -1030,18 +1032,22 @@ function Artwork() {
             </ArtworkDescription>
             <OwnersSectionDetailsWrapper>
               <OwnerWrapper theme={theme}>
-                <AvatarWrapper>
-                  <img style={{ borderRadius: '5px' }} src={nft?.owner?.pdpLink} alt="Axies" />
-                </AvatarWrapper>
+                <Link to={`/displayProfile?artist=${nft?.owner?.walletAddress}`}>
+                  <AvatarWrapper>
+                    <img style={{ borderRadius: '5px' }} src={nft?.owner?.pdpLink} alt="Axies" />
+                  </AvatarWrapper>
+                </Link>
                 <InfoWrapper>
                   <OwnerNameHeading theme={theme}>Owned By</OwnerNameHeading>
                   <OwnerName theme={theme}>{nft?.owner?.name}</OwnerName>
                 </InfoWrapper>
               </OwnerWrapper>
               <OwnerWrapper theme={theme}>
-                <AvatarWrapper>
-                  <img style={{ borderRadius: '5px' }} src={nft?.owner?.pdpLink} alt="Axies" />
-                </AvatarWrapper>
+                <Link to={`/displayProfile?artist=${nft?.owner?.walletAddress}`}>
+                  <AvatarWrapper>
+                    <img style={{ borderRadius: '5px' }} src={nft?.owner?.pdpLink} alt="Axies" />
+                  </AvatarWrapper>
+                </Link>
                 <InfoWrapper>
                   <OwnerNameHeading theme={theme}>Created By</OwnerNameHeading>
                   <OwnerName theme={theme}>{nft?.owner?.name}</OwnerName>

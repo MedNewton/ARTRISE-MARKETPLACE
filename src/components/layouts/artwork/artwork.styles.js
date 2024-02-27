@@ -59,6 +59,7 @@ export const AvatarWrapper = styled.div`
     width: 40px;
     height: 40px;
     background-color: transparent;
+    cursor: pointer;
 `;
 export const InfoWrapper = styled.div`
     display: flex;
@@ -107,7 +108,7 @@ export const ButtonsWrapper = styled.div`
     align-items: center;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    gap: 50px;
+    gap: 25px;
     margin: 20px 0px;
 `;
 
