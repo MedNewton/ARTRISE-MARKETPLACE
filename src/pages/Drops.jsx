@@ -23,111 +23,109 @@ function Drops() {
   }
 
   return (
-    <div>
-      <div className="drop-page-header-wrapper">
-        <div>
-          <h2>Drops</h2>
-        </div>
+    <>
+      <div className="margin-Left-Right-Top">
+        <div className="row">
+          <div className="col-md-12">
+            <h2 className=" ourArtists">
+              Drops
+            </h2>
+          </div>
+          <div className="col-md-12 col-sm-12 mobileTags">
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="painter"
+            >
+              Painting
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="photographer"
+            >
+              Photography
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="sculpturer"
+            >
+              Sculpture
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="ceramic_artist"
+            >
+              Others...
+            </button>
+          </div>
+          <div className="col-12">
+            <div className="row tagsBar">
+              <div className="col-12">
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="sculpturer"
+                >
+                  Painting
+                </button>
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="painter"
+                >
+                  Photography
+                </button>
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="photographer"
+                >
+                  Sculpture
+                </button>
 
-        <div className="col-md-12 col-sm-12 mobileTags">
-          <button
-            type="button"
-            className="tag"
-            onClick={(e) => editTags(e.target.id, e.target)}
-            onKeyDown={(e) => editTags(e.target.id, e.target)}
-            id="painting"
-          >
-
-            Painting
-          </button>
-          <button
-            type="button"
-            className="tag"
-            onClick={(e) => editTags(e.target.id, e.target)}
-            onKeyDown={(e) => editTags(e.target.id, e.target)}
-            id="photography"
-          >
-
-            Photography
-          </button>
-          <button
-            type="button"
-            className="tag"
-            onClick={(e) => editTags(e.target.id, e.target)}
-            onKeyDown={(e) => editTags(e.target.id, e.target)}
-            id="sculpture"
-          >
-
-            Sculpture
-          </button>
-          <button
-            type="button"
-            className="tag"
-            onClick={(e) => editTags(e.target.id, e.target)}
-            onKeyDown={(e) => editTags(e.target.id, e.target)}
-            id="others"
-          >
-            Others...
-          </button>
-        </div>
-        <div>
-          <div>
-            <div>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="painting"
-              >
-                Painting
-              </button>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="photography"
-              >
-                Photography
-              </button>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="sculpture"
-              >
-                Sculpture
-              </button>
-              <button
-                type="button"
-                className="tag"
-                onClick={(e) => editTags(e.target.id, e.target)}
-                onKeyDown={(e) => editTags(e.target.id, e.target)}
-                id="others"
-              >
-                Others...
-              </button>
+                <button
+                  type="button"
+                  className="tag"
+                  onClick={(e) => editTags(e.target.id, e.target)}
+                  onKeyDown={(e) => editTags(e.target.id, e.target)}
+                  id="others"
+                >
+                  Others...
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="col-md-12">
-        <LiveAuction2 data={liveAuctionData2} />
-      </div>
-      <div className="drop-page-sections-wrapper">
-        <div>
+          <div className="col-md-12">
+            <LiveAuction2 data={liveAuctionData2} />
+          </div>
           <div className="col-md-12">
             <LiveAuction data={liveAuctionData} />
           </div>
           <div className="col-md-12">
             <ComingSoon data={ComingSoonData} />
           </div>
+          <div />
         </div>
       </div>
       <Footer />
-    </div>
+    </>
   );
 }
 
