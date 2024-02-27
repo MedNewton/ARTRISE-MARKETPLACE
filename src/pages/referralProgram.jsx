@@ -36,7 +36,7 @@ function ReferralProgram() {
                     setCreateModalShow(true);
                   }}
                 >
-                  <span>Send message</span>
+                  <span>Refer a Friend</span>
                 </button>
               </div>
             </div>

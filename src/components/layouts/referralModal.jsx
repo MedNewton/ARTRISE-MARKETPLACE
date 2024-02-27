@@ -52,10 +52,11 @@ function ReferralModal(props) {
           <div
             className="btn btn-light referral-link-wrapper"
           >
-            <p className="pd-15">{referralLink}</p>
+            <p className="pd-15 referal-Link">{referralLink}</p>
             <button
               type="button"
               className="btn btn-primary"
+              style={{ width: '25%' }}
               onClick={(e) => {
                 e.preventDefault();
                 navigator.clipboard.writeText(referralLink.toString());

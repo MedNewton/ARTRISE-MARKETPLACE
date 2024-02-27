@@ -52,7 +52,7 @@ Slider.propTypes = {
 function SliderItem(props) {
   const { item } = props;
   return (
-    <div className="flat-title-page" style={{ backgroundImage: `url(${mainbg})` }}>
+    <div className="flat-title-page home-1 swiper-class" style={{ backgroundImage: `url(${mainbg})` }}>
       <div className="swiper-container mainslider home">
         <div className="swiper-wrapper">
           <div className="swiper-slide">

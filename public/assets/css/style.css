@@ -2723,6 +2723,7 @@ height: 100%;
 
 .is_dark .widget-subcribe .form-subcribe input {
     background: transparent;
+    color: white;
 }
 
 .widget-subcribe .form-subcribe input:focus{
