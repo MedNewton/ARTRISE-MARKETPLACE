@@ -90,7 +90,7 @@ function CreateItem(props) {
   const { item } = props;
   return (
     <div className="col-lg-4 col-md-6 col-sm-6 col-6 createSectionItems">
-      <div className="sc-box-icon">
+      <div className="sc-box-icon flex-column-center-align">
         <div className="image">
           <div className={`icon-create ${item.colorbg}`}>
             <img src={item.icon} alt="" />
