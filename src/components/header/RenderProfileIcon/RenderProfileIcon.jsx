@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   FaBook, FaFileAlt, FaLink, FaPlus, FaRegUser, FaSignOutAlt, FaSlidersH,
 } from 'react-icons/fa';
@@ -85,48 +85,36 @@ function RenderProfileIcon(props) {
           </Dropdown.Item>
         )}
         {(localStorage.getItem('profileType') === 'member' && localStorage.getItem('walletAddress')) ? (
-          <Dropdown.Item>
-            <Link to="/tokenize">
-              <BiCoinStack size={15} />
-              Tokenize
-            </Link>
+          <Dropdown.Item onClick={() => nav('/tokenize')}>
+            <BiCoinStack size={15} />
+            Tokenize
           </Dropdown.Item>
         ) : (
           ''
         )}
         {(localStorage.getItem('profileType') === 'artist' && localStorage.getItem('walletAddress')) ? (
-          <Dropdown.Item>
-            <Link to="/creator-choice">
-              <FaPlus size={15} />
-              Create
-            </Link>
+          <Dropdown.Item onClick={() => nav('/creator-choice')}>
+            <FaPlus size={15} />
+            Create
           </Dropdown.Item>
         ) : (
           ''
         )}
-        <Dropdown.Item>
-          <Link to="/referral-program">
-            <FaLink size={15} />
-            Referral
-          </Link>
+        <Dropdown.Item onClick={() => nav('/referral-program')}>
+          <FaLink size={15} />
+          Referral
         </Dropdown.Item>
-        <Dropdown.Item>
-          <Link to="/learn">
-            <FaBook size={15} />
-            Learn
-          </Link>
+        <Dropdown.Item onClick={() => nav('/learn')}>
+          <FaBook size={15} />
+          Learn
         </Dropdown.Item>
-        <Dropdown.Item>
-          <Link to="/help-center">
-            <FaFileAlt size={18} />
-            How to use
-          </Link>
+        <Dropdown.Item onClick={() => nav('/help-center')}>
+          <FaFileAlt size={18} />
+          How to use
         </Dropdown.Item>
-        <Dropdown.Item>
-          <Link to="/settings">
-            <FaSlidersH size={15} />
-            Settings
-          </Link>
+        <Dropdown.Item onClick={() => nav('/settings')}>
+          <FaSlidersH size={15} />
+          Settings
         </Dropdown.Item>
         <Dropdown.Item
           onClick={(e) => {
