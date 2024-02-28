@@ -200,7 +200,7 @@ function DisplayProfileInfo(props) {
           </div>
         </div>
       </div>
-      <div className="userDataContainer" style={{ marginBottom: '2%' }}>
+      <div className="userDataContainer" style={{ marginBottom: '10px' }}>
         <h5 className="userName">{artistData?.name}</h5>
         <p className="userAttribution">
           {artistData?.socialMediaVerified === true

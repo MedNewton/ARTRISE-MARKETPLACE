@@ -59,7 +59,7 @@ function SliderItem(props) {
             <div className="slider-item">
               <div className="themesflat-container ">
                 <div className="wrap-heading flat-slider flex">
-                  <div className="content">
+                  <div>
                     <h1 className="heading mb-style">
                       <span className="tf-text">{item.title_2}</span>
                     </h1>
