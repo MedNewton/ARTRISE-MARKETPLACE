@@ -35,9 +35,9 @@ function ArtworkCard(props) {
   }, [fetchPrice]);
 
   const cardOnClickHandler = () => {
-    if (artwork?.listed === 'yes' || artwork?.listed === true) {
+    if (artwork.listed === 'yes' || artwork.listed === true) {
       navigate(`/artwork-details?id=${artwork.artworkId}`);
-    } else if (artwork?.listed === 'false' || artwork?.listed === false || artwork?.listed === '') {
+    } else if (artwork.listed === 'false' || artwork.listed === false || artwork.listed === '') {
       navigate(`/artwork-details?id=${artwork.artworkId}`);
     }
   };
@@ -53,7 +53,7 @@ function ArtworkCard(props) {
     >
       <CardMedia>
         <ArtworkName>{artwork.data.name}</ArtworkName>
-        <MediaViewer mediaUrl={artwork?.data?.image} />
+        <MediaViewer mediaUrl={artwork.data.image} />
       </CardMedia>
       <CardContent>
         <CreatorInfo>
@@ -81,7 +81,7 @@ function ArtworkCard(props) {
               e.preventDefault();
             }}
           >
-            {artwork?.listed ? 'Buy Now' : 'List Now'}
+            {artwork.listed ? 'Buy Now' : 'List Now'}
           </BuyNowButton>
         </BuyNowButtonWrapper>
       </CardContent>
