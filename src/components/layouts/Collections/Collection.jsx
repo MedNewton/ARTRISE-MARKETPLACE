@@ -93,7 +93,7 @@ function Collection() {
           <h3>Artworks</h3>
         </div>
       </div>
-      <div style={{ marginTop: '20px', marginLeft: '2%', marginRight:'2%' }}>
+      <div style={{ marginTop: '20px', marginLeft: '2%', marginRight: '2%' }}>
         {lazyListed && <DisplayArtworks data={displayArtworks} />}
       </div>
       <Footer />

@@ -1,11 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import Footer from '../components/footer/Footer';
-import ArtistPageMediaViewer from '../components/layouts/artistPageMediaViewer/ArtistPageMediaViewer';
+import ArtistCard from '../components/layouts/craftsmen/ArtistCard';
+import { ArtistsContainer } from '../components/layouts/craftsmen/craftsmenStyles/CraftsMen.styles';
 
 function Craftsmen() {
   const artistsState = useSelector((state) => state.usersReducer.artists);
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
+
   const selectedTags = [];
 
   function editTags(val, target) {
@@ -120,33 +124,18 @@ function Craftsmen() {
             </div>
           </div>
 
-          {
-              artistsState?.map((item) => (
-                <div key={item?.userId} className="col-lg-4 col-md-6 col-12">
-                  <Link to={`/displayProfile?artist=${item?.userId}`}>
-                    <div className="sc-card-collection style-2">
-                      <div className="card-bottom">
-                        <div className="author">
-                          <div className="sc-author-box style-2">
-                            <div className="author-avatar">
-                              <img src={item?.pdpLink} alt="" className="avatar" />
-                              <div className="badge" />
-                            </div>
-                          </div>
-                          <div className="content">
-                            <h4>{item?.name}</h4>
-                            <h5 className="artistCategory">{item?.artistType}</h5>
-                          </div>
-                        </div>
-                        <div className="sc-button fl-button pri-3"><span>Follow</span></div>
-                      </div>
-                      <ArtistPageMediaViewer artworksArray={item?.artworkThumbNails} />
-                    </div>
-                  </Link>
-                </div>
-              ))
-            }
         </div>
+
+        <ArtistsContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
+          {artistsState?.map((artist) => (
+            <ArtistCard
+              key={artist.userId}
+              artist={artist}
+              isDeviceMobile={isDeviceMobile}
+              isDeviceTablet={isDeviceTablet}
+            />
+          ))}
+        </ArtistsContainer>
       </div>
       <Footer />
     </>
