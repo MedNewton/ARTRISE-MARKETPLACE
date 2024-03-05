@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import {COLORS} from '../../../shared/styles-constants';
+import { COLORS } from '../../../shared/styles-constants';
 
 const calculateWidth = (props) => {
-    if (props.isDeviceMobile && !props.isDeviceTablet) {
-        return '100%';
-    }
-    if (!props.isDeviceMobile && props.isDeviceTablet) {
-        return '47%';
-    }
-    if (!props.isDeviceMobile && !props.isDeviceTablet) {
-        return '30.3333%';
-    }
-    // default width if none of the conditions match
+  if (props.isDeviceMobile && !props.isDeviceTablet) {
+    return '100%';
+  }
+  if (!props.isDeviceMobile && props.isDeviceTablet) {
+    return '47%';
+  }
+  if (!props.isDeviceMobile && !props.isDeviceTablet) {
     return '30.3333%';
+  }
+  // default width if none of the conditions match
+  return '30.3333%';
 };
 export const CardContainer = styled.div`
 
