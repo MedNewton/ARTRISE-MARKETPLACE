@@ -4,16 +4,21 @@ import {
   Tab, Tabs, TabList, TabPanel,
 } from 'react-tabs';
 import { useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import CardModal from '../CardModal';
 import DropsRaw from '../dropsRaw';
 import DisplayArtworks from '../ProfileDisplay/DisplayArtworks';
-import ArtistPageMediaViewer from '../artistPageMediaViewer/ArtistPageMediaViewer';
+import ArtistCard from '../craftsmen/ArtistCard';
+import { ArtistsContainer } from '../craftsmen/craftsmenStyles/CraftsMen.styles';
 
 function BrowserPageContent() {
   const collections = useSelector((state) => state.usersReducer.collections);
   const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
   const artistsState = useSelector((state) => state.usersReducer.artists);
   const [modalShow, setModalShow] = useState(false);
+
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   const [dataTab] = useState(
     [
@@ -333,39 +338,17 @@ function BrowserPageContent() {
                     </button>
                   </div>
                 </div>
+                <ArtistsContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
+                  {artistsState?.map((artist) => (
+                    <ArtistCard
+                      key={artist.userId}
+                      artist={artist}
+                      isDeviceMobile={isDeviceMobile}
+                      isDeviceTablet={isDeviceTablet}
+                    />
+                  ))}
+                </ArtistsContainer>
               </div>
-              {
-                                artistsState?.map((item) => (
-                                  <div key={item?.userId} className="col-lg-4 col-md-6 col-12">
-                                    <Link to={`/displayProfile?artist=${item?.userId}`}>
-                                      <div className="sc-card-collection style-2">
-                                        <div className="card-bottom">
-                                          <div className="author">
-                                            <div className="sc-author-box style-2">
-                                              <div className="author-avatar">
-                                                <img
-                                                  src={item?.pdpLink}
-                                                  alt=""
-                                                  className="avatar"
-                                                />
-                                                <div className="badge" />
-                                              </div>
-                                            </div>
-                                            <div className="content">
-                                              <h4>{item?.name}</h4>
-                                              <h5 className="artistCategory">{item?.artistType}</h5>
-                                            </div>
-                                          </div>
-                                          <div className="sc-button fl-button pri-3">
-                                            <span>Follow</span>
-                                          </div>
-                                        </div>
-                                        <ArtistPageMediaViewer artworksArray={item?.artworkThumbNails} />
-                                      </div>
-                                    </Link>
-                                  </div>
-                                ))
-                            }
             </div>
           </TabPanel>
           <TabPanel key={4}>
