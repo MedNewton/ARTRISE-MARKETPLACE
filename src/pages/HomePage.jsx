@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ref, update } from 'firebase/database';
 import { useAccount } from 'wagmi';
 import { useSelector } from 'react-redux';
@@ -14,13 +14,12 @@ import LiveAuction2 from '../components/layouts/LiveAuction2';
 import ComingSoon from '../components/layouts/ComingSoon';
 import db from '../firebase';
 import DisplayArtworks from '../components/layouts/ProfileDisplay/DisplayArtworks';
-import profile from '../assets/images/icon/profile.png';
 import Create from '../components/layouts/Create';
+import ArtistsRow from '../components/layouts/homepage/ArtistsRow';
 
 function HomePage() {
   const navigate = useNavigate();
   const lazyListed = useSelector((state) => state.usersReducer.lazyListed);
-  const profileData = useSelector((state) => state.usersReducer.currentUser);
   const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
   const UserKey = localStorage.getItem('userId');
   const { address } = useAccount();
@@ -122,26 +121,7 @@ function HomePage() {
                   Join the world&apos;s finest painters, sculptors, photographers and collectors!
                 </h4>
               </div>
-              {profileData?.profileType === 'artist' && (
-                <Link to={`/displayProfile?artist=${currentUserId}`}>
-                  <div className="pdpSpace artistButton" id="pdp">
-                    <img
-                      src={profileData?.pdpLink ? profileData?.pdpLink : profile}
-                      alt="User Profile"
-                    />
-                  </div>
-                </Link>
-              )}
-              {profileData?.profileType === 'member' && (
-                <Link to={`/displayProfile?member=${currentUserId}`}>
-                  <div className="pdpSpace artistButton" id="pdp">
-                    <img
-                      src={profileData?.pdpLink ? profileData?.pdpLink : profile}
-                      alt="User Profile"
-                    />
-                  </div>
-                </Link>
-              )}
+              <ArtistsRow />
             </div>
           )
           : (
