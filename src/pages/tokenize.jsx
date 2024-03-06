@@ -202,7 +202,7 @@ function Tokenize() {
         );
       },
       (error) => {
-        console.error(error);
+        console.log(error);
       },
       async () => {
         await getDownloadURL(stroageRef).then((url) => {
@@ -213,9 +213,11 @@ function Tokenize() {
 
     Promise.all(pr)
       .then(() => {
+        console.log(mainMediaUrl);
+        console.log(physicalMediaURLs);
       })
       .catch((error) => {
-        console.error(error);
+        console.log("error : " + error);
       });
   }
 
