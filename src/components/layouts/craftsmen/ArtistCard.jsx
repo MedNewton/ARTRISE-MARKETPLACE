@@ -1,7 +1,6 @@
 import React from 'react';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   ArtistInfo, ArtistName, ArtistType,
@@ -15,16 +14,17 @@ function ArtistCard({ artist, isDeviceMobile, isDeviceTablet }) {
   const theme = useSelector((state) => state.themeReducer.theme);
 
   return (
-    <CardContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet} theme={theme}>
+    <CardContainer
+      isDeviceMobile={isDeviceMobile}
+      isDeviceTablet={isDeviceTablet}
+      theme={theme}
+      to={`/displayProfile?artist=${artist?.userId}`}
+    >
       <InfoFollowButtonWrapper>
         <InfoSectionWrapper>
           <ProfileImageWrapper>
-            <Link to={`/displayProfile?artist=${artist?.userId}`}>
-
-              <ProfileImage src={artist?.pdpLink} alt="" />
-              <RiVerifiedBadgeFill fontSize="2.5em" style={{ marginLeft: '-10px' }} />
-            </Link>
-
+            <ProfileImage src={artist?.pdpLink} alt="" />
+            <RiVerifiedBadgeFill fontSize="2.5em" style={{ marginLeft: '-10px' }} />
           </ProfileImageWrapper>
           <ArtistInfo>
             <ArtistName theme={theme}>{artist?.name}</ArtistName>

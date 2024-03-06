@@ -2,7 +2,7 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 import Footer from '../components/footer/Footer';
 import 'react-tabs/style/react-tabs.css';
-import './styles/ConfirmationPage.css';
+// import './styles/ConfirmationPageage.css';
 
 function ConfirmationPage() {
   const { address } = useAccount();

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { COLORS } from '../../../shared/styles-constants';
 
 const calculateWidth = (props) => {
@@ -14,9 +15,7 @@ const calculateWidth = (props) => {
   // default width if none of the conditions match
   return '30.3333%';
 };
-export const CardContainer = styled.div`
-
-
+export const CardContainer = styled(Link)`
     background-color: ${(props) => (props.theme === 'light' ? COLORS.WhiteFont : COLORS.BlackBG2)};
     margin: 0% 3% 3% 0px;
     height: fit-content;
