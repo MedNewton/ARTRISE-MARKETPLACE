@@ -1,51 +1,53 @@
-import React from "react";
-import { useState } from "react";
-import { Modal } from "react-bootstrap";
-import JoinModal from "./joinModal";
+import React, { useState } from 'react';
+import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import JoinModal from './joinModal';
 
-const JoinChoicesModal = ({show, onHide}) => {
+function JoinChoicesModal(props) {
+  // { show, onHide }
+  const { onHide: propsOnHide, show: propsShow } = props;
   const [showJoinModal, setShowJoinModal] = useState(false);
 
-
   return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton></Modal.Header>
+    <Modal show={propsShow} onHide={propsOnHide}>
+      <Modal.Header closeButton />
 
       <div className="modal-body space-y-20 pd-40">
         <h3>Join</h3>
         <p className="text-center">
-          <span className="price color-popup" style={{ fontWeight: "600" }}>
-            Become part of the world's first community of hybrid NFTs
+          <span className="price color-popup" style={{ fontWeight: '600' }}>
+            Become part of the world&apos;s first community of hybrid NFTs
           </span>
         </p>
 
-        <p className="text-center" style={{ marginTop: "10%", marginBottom: "0px !important" }}>
-          <span className="price color-popup" style={{ fontWeight: "500", fontSize: "1.1em" }}>
+        <p className="text-center" style={{ marginTop: '10%', marginBottom: '0px !important' }}>
+          <span className="price color-popup" style={{ fontWeight: '500', fontSize: '1.1em' }}>
             Join as a member:
           </span>
         </p>
-        <div
+        <button
+          type="button"
           id="createCollection"
           onClick={() => {
-              setShowJoinModal(true);
+            setShowJoinModal(true);
           }}
           className="btn btn-primary"
           data-toggle="modal"
           data-target="#popup_bid_success"
           data-dismiss="modal"
           aria-label="Close"
-          style={{cursor: "pointer"}}
+          style={{ cursor: 'pointer' }}
         >
           Join memebers community
-        </div>
+        </button>
 
-        
-        <p className="text-center" style={{ marginTop: "10%", marginBottom: "0px !important" }}>
-          <span className="price color-popup" style={{ fontWeight: "500", fontSize: "1.1em" }}>
+        <p className="text-center" style={{ marginTop: '10%', marginBottom: '0px !important' }}>
+          <span className="price color-popup" style={{ fontWeight: '500', fontSize: '1.1em' }}>
             Join as an artist:
           </span>
         </p>
-        <div
+        <button
+          type="button"
           id="createCollection"
           className="btn btn-primary"
           data-toggle="modal"
@@ -55,23 +57,33 @@ const JoinChoicesModal = ({show, onHide}) => {
           onClick={() => {
             setShowJoinModal(true);
           }}
-          style={{cursor: "pointer", marginBottom: "8%"}}
+          style={{ cursor: 'pointer', marginBottom: '8%' }}
         >
           Join artists community
-        </div>
+        </button>
       </div>
       <JoinModal
         show={showJoinModal}
         onHide={() => {
           setShowJoinModal(false);
-          onHide();
+          propsOnHide();
         }}
         hideParent={() => {
-          onHide();
+          propsOnHide();
         }}
       />
     </Modal>
   );
+}
+
+JoinChoicesModal.propTypes = {
+  onHide: PropTypes.func,
+  show: PropTypes.bool,
+};
+
+JoinChoicesModal.defaultProps = {
+  onHide: () => {},
+  show: false,
 };
 
 export default JoinChoicesModal;

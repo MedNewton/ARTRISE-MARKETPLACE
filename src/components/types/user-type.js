@@ -1,0 +1,27 @@
+import PropTypes from 'prop-types';
+
+export const userDataStoreShape = {
+  userId: PropTypes.string,
+  name: PropTypes.string,
+  email: PropTypes.string,
+  walletAddress: PropTypes.string,
+  bio: PropTypes.string,
+  pdpLink: PropTypes.string,
+  cover_link: PropTypes.string,
+  Facebook: PropTypes.string,
+  Instagram: PropTypes.string,
+  Twitter: PropTypes.string,
+  website: PropTypes.string,
+  profileType: PropTypes.string,
+  artistType: PropTypes.string,
+  followedCollections: PropTypes.arrayOf(PropTypes.string),
+  followers: PropTypes.arrayOf(PropTypes.string),
+  following: PropTypes.arrayOf(PropTypes.string),
+  slug: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  referralCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  referralBy: PropTypes.string,
+  socialMediaVerified: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  artRiseAdminVerified: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  artworks: PropTypes.arrayOf(PropTypes.string),
+  artworkThumbNails: PropTypes.arrayOf(PropTypes.string),
+};

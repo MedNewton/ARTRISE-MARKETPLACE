@@ -1,0 +1,39 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "airbnb"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "import/prefer-default-export": "off",
+    "linebreak-style": ["error", "windows"],
+    "semi": ["error", "always"],
+    "no-console": ["error", { "allow": ["error"] }],
+    "max-len": [
+      "error",
+      {
+        "code": 120, // Adjust the value to your preferred maximum line length
+        "tabWidth": 2,
+        "ignoreComments": false,
+        "ignoreTrailingComments": false,
+        "ignoreUrls": true
+      }
+    ],
+    "import/no-unresolved": ["error", { "ignore": ["@web3modal/wagmi/react"] }]
+    // Add your custom rules here as per your project's needs
+  }
+}
