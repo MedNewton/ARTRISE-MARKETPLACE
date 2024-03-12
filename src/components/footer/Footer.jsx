@@ -224,7 +224,7 @@ function Footer() {
           <hr className="indentedHR" />
           <div className="footer-copyrights">
 
-            <div><p className="rights">All rights reserved ArtRise Labs LLC</p></div>
+           <div><p className="rights">All rights reserved ArtRise Labs LLC</p></div>
             <div><p className="rights">Version: March 12, 2024</p></div>
             <div>
               {' '}
