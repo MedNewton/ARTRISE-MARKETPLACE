@@ -2765,6 +2765,7 @@ a{
   width: 50%;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .header-search-mobile-version{
@@ -3425,7 +3426,8 @@ gap:20px;
 .full-screen-modal {
   width: 100vw !important;
   height: 100vh !important;
-  margin: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   position: fixed;
   top: 0;
   left: 0;

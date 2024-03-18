@@ -28,7 +28,7 @@ import HeaderSearchForMobileView from './HeaderSearch/HeaderSearchForMobileView'
 function HeaderStyle2() {
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
-  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1200px)' });
   
   //const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
   const [showMenuModal, setShowMenuModal] = useState(false);

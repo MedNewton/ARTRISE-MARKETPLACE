@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import logodark from '../../../assets/images/logo/logo_dark_new.png';
 
 function RenderLogo() {
-  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1200px)' });
 
   // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 

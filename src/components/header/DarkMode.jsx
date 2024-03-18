@@ -9,7 +9,7 @@ import { setAppTheme } from '../../redux/actions/themeActions';
 
 function DarkMode() {
   const dispatch = useDispatch();
-  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1200px)' });
 
   // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
   const { body } = document;

@@ -15,7 +15,7 @@ const IconWrapper = styled.div`
     color: #000000;
 `;
 function RenderCartIcon() {
-  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1200px)' });
 
   // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
