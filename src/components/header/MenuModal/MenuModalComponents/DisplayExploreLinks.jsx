@@ -6,6 +6,7 @@ import { IoIosPhotos } from 'react-icons/io';
 import { PiPaintBucketFill } from 'react-icons/pi';
 import { RiMenuSearchFill } from 'react-icons/ri';
 import PropTypes from 'prop-types';
+import { MenuElementButton } from '../../HeaderStyles/DisplayMenuLinks.styles';
 
 function DisplayExploreLinks(props) {
   const {
@@ -18,7 +19,7 @@ function DisplayExploreLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-back-option-background-border-color">
           <Link to="/">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => setShowExploreOptions(!showExploreOptions)}
@@ -26,7 +27,7 @@ function DisplayExploreLinks(props) {
               <FaAngleLeft />
               {' '}
               Explore
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -34,7 +35,7 @@ function DisplayExploreLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/craftsmen">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -42,7 +43,7 @@ function DisplayExploreLinks(props) {
               <BsPersonLinesFill />
               {' '}
               Artists
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -50,7 +51,7 @@ function DisplayExploreLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/collections">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -58,7 +59,7 @@ function DisplayExploreLinks(props) {
               <IoIosPhotos />
               {' '}
               Collections
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -66,7 +67,7 @@ function DisplayExploreLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/masterpieces">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -74,7 +75,7 @@ function DisplayExploreLinks(props) {
               <PiPaintBucketFill />
               {' '}
               Artworks
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -82,7 +83,7 @@ function DisplayExploreLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/explore">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -90,7 +91,7 @@ function DisplayExploreLinks(props) {
               <RiMenuSearchFill />
               {' '}
               Browse
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -106,8 +107,10 @@ DisplayExploreLinks.propTypes = {
 
 DisplayExploreLinks.defaultProps = {
   showExploreOptions: false,
-  setShowExploreOptions: () => {},
-  handleMenuModalClose: () => {},
+  setShowExploreOptions: () => {
+  },
+  handleMenuModalClose: () => {
+  },
 };
 
 export default DisplayExploreLinks;

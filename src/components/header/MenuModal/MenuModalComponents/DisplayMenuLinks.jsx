@@ -13,6 +13,11 @@ import RenderJoinLoginButtonMobileVersion from '../../RenderJoinLoginButton/Rend
 import RenderWalletAddressMobileVersion from '../../RenderWalletAddressSection/RenderWalletAddressMobileVersion';
 import RenderConnectWalletAddressMobileVersion
   from '../../RenderWalletAddressSection/RenderConnectWalletAddressMobileVersion';
+import {
+  ExpandableMenuElementButton,
+  ExpandableMenuIconWrapper,
+  MenuElementButton,
+} from '../../HeaderStyles/DisplayMenuLinks.styles';
 
 function DisplayMenuLinks(props) {
   const {
@@ -52,20 +57,17 @@ function DisplayMenuLinks(props) {
   // Conditional rendering functions
 
   const renderProfileButton = () => (
-    <button
-      type="button"
-      className="accordion-border-color-transparent"
+
+    <ExpandableMenuElementButton
       onClick={() => setShowProfileOptions(!showProfileOptions)}
     >
-      <div className="accordion-card-background-border-color">
-        <div className="accordion-card-display-flex-font-large">
-          <BsFillPersonFill />
-          {' '}
-          Profile
-        </div>
-        <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
-      </div>
-    </button>
+      <ExpandableMenuIconWrapper>
+        <BsFillPersonFill />
+        {' '}
+        Profile
+      </ExpandableMenuIconWrapper>
+      <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
+    </ExpandableMenuElementButton>
   );
 
   const renderProfileSection = () => (
@@ -118,7 +120,7 @@ function DisplayMenuLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -126,59 +128,55 @@ function DisplayMenuLinks(props) {
               <FaHome />
               {' '}
               Home
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
 
-      <button
-        type="button"
-        className="accordion-border-color-transparent"
+      <ExpandableMenuElementButton
         onClick={() => setShowExploreOptions(!showExploreOptions)}
       >
-        <div className="accordion-card-background-border-color">
-          <div className="accordion-card-display-flex-font-large">
-            <MdExplore />
-            {' '}
-            Explore
-          </div>
-          <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
-        </div>
-      </button>
+        <ExpandableMenuIconWrapper>
+          <MdExplore />
+          {' '}
+          Explore
+        </ExpandableMenuIconWrapper>
+        <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
+      </ExpandableMenuElementButton>
 
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
-          <Link to="/Drops">
-            <div className="accordion-card-display-flex-font-large">
+          <Link to="/drops">
+            <MenuElementButton
+              type="button"
+              className="accordion-card-display-flex-font-large"
+              onClick={() => handleMenuModalClose()}
+            >
               <MdOutlineLabelImportant />
               {' '}
               Drops
-            </div>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
 
-      <div className="accordion-border-color-transparent">
-        <div className="accordion-card-background-border-color">
-          <div className="accordion-card-display-flex-font-large">
-            <FaBell />
-            {' '}
-            Notifications
-          </div>
-          <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
-        </div>
-      </div>
+      <ExpandableMenuElementButton>
+        <ExpandableMenuIconWrapper>
+          <FaBell />
+          {' '}
+          Notifications
+        </ExpandableMenuIconWrapper>
+        <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
+      </ExpandableMenuElementButton>
 
-      <div className="accordion-border-color-transparent">
-        <div className="accordion-card-background-border-color">
-          <div className="accordion-card-display-flex-font-large">
-            <FaShoppingCart />
-            {' '}
-            Cart
-          </div>
-          <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
-        </div>
-      </div>
+      <ExpandableMenuElementButton>
+        <ExpandableMenuIconWrapper>
+          <FaShoppingCart />
+          {' '}
+          Cart
+        </ExpandableMenuIconWrapper>
+        <div style={{ fontSize: 'large' }}><FaAngleRight /></div>
+      </ExpandableMenuElementButton>
 
       {renderDynamicSection()}
 

@@ -6,6 +6,7 @@ import {
 import { BsFillPersonFill } from 'react-icons/bs';
 import { BiCoinStack } from 'react-icons/bi';
 import PropTypes from 'prop-types';
+import { MenuElementButton } from '../../HeaderStyles/DisplayMenuLinks.styles';
 
 function DisplayProfileLinks(props) {
   const {
@@ -19,7 +20,7 @@ function DisplayProfileLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-back-option-background-border-color">
           <Link to="/">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => setShowProfileOptions(!showProfileOptions)}
@@ -27,7 +28,7 @@ function DisplayProfileLinks(props) {
               <FaAngleLeft />
               {' '}
               Profile
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -36,7 +37,7 @@ function DisplayProfileLinks(props) {
         <div className="accordion-border-color-transparent">
           <div className="accordion-card-background-border-color">
             <Link to={`/displayProfile?artist=${localStorage.getItem('userId')}`}>
-              <button
+              <MenuElementButton
                 type="button"
                 className="accordion-card-display-flex-font-large"
                 onClick={() => handleMenuModalClose()}
@@ -44,7 +45,7 @@ function DisplayProfileLinks(props) {
                 <BsFillPersonFill />
                 {' '}
                 My Profile
-              </button>
+              </MenuElementButton>
             </Link>
           </div>
         </div>
@@ -53,7 +54,7 @@ function DisplayProfileLinks(props) {
         <div className="accordion-border-color-transparent">
           <div className="accordion-card-background-border-color">
             <Link to={`/displayProfile?member=${localStorage.getItem('userId')}`}>
-              <button
+              <MenuElementButton
                 type="button"
                 className="accordion-card-display-flex-font-large"
                 onClick={() => handleMenuModalClose()}
@@ -61,20 +62,20 @@ function DisplayProfileLinks(props) {
                 <BsFillPersonFill />
                 {' '}
                 My Profile
-              </button>
+              </MenuElementButton>
             </Link>
           </div>
         </div>
       )}
 
       {localStorage.getItem('accountTypeChoice') === 'user'
-            && localStorage.getItem('walletAddress') !== 'undefined'
-            && localStorage.getItem('walletAddress') !== undefined
+        && localStorage.getItem('walletAddress') !== 'undefined'
+        && localStorage.getItem('walletAddress') !== undefined
         ? (
           <div className="accordion-border-color-transparent">
             <div className="accordion-card-background-border-color">
               <Link to="/tokenize">
-                <button
+                <MenuElementButton
                   type="button"
                   className="accordion-card-display-flex-font-large"
                   onClick={() => handleMenuModalClose()}
@@ -82,7 +83,7 @@ function DisplayProfileLinks(props) {
                   <BiCoinStack />
                   {' '}
                   Tokenize
-                </button>
+                </MenuElementButton>
               </Link>
             </div>
           </div>
@@ -90,13 +91,13 @@ function DisplayProfileLinks(props) {
         : ('')}
 
       {localStorage.getItem('accountTypeChoice') === 'artist'
-            && localStorage.getItem('walletAddress') !== 'undefined'
-            && localStorage.getItem('walletAddress') !== undefined
+        && localStorage.getItem('walletAddress') !== 'undefined'
+        && localStorage.getItem('walletAddress') !== undefined
         ? (
           <div className="accordion-border-color-transparent">
             <div className="accordion-card-background-border-color">
               <Link to="/creator-choice">
-                <button
+                <MenuElementButton
                   type="button"
                   className="accordion-card-display-flex-font-large"
                   onClick={() => handleMenuModalClose()}
@@ -104,7 +105,7 @@ function DisplayProfileLinks(props) {
                   <FaPlus />
                   {' '}
                   Create
-                </button>
+                </MenuElementButton>
               </Link>
             </div>
           </div>
@@ -114,7 +115,7 @@ function DisplayProfileLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/referral-program">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -122,7 +123,7 @@ function DisplayProfileLinks(props) {
               <FaLink />
               {' '}
               Referral
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -130,7 +131,7 @@ function DisplayProfileLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/learn">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -138,7 +139,7 @@ function DisplayProfileLinks(props) {
               <FaBook />
               {' '}
               Learn
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -146,7 +147,7 @@ function DisplayProfileLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/help-center">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -154,7 +155,7 @@ function DisplayProfileLinks(props) {
               <FaFileAlt />
               {' '}
               How to use
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -162,7 +163,7 @@ function DisplayProfileLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/settings">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={() => handleMenuModalClose()}
@@ -170,7 +171,7 @@ function DisplayProfileLinks(props) {
               <FaSlidersH />
               {' '}
               Settings
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -178,7 +179,7 @@ function DisplayProfileLinks(props) {
       <div className="accordion-border-color-transparent">
         <div className="accordion-card-background-border-color">
           <Link to="/explore">
-            <button
+            <MenuElementButton
               type="button"
               className="accordion-card-display-flex-font-large"
               onClick={(e) => {
@@ -190,7 +191,7 @@ function DisplayProfileLinks(props) {
               <FaSignOutAlt />
               {' '}
               Logout
-            </button>
+            </MenuElementButton>
           </Link>
         </div>
       </div>
@@ -206,10 +207,13 @@ DisplayProfileLinks.propTypes = {
 };
 
 DisplayProfileLinks.defaultProps = {
-  setShowProfileOptions: () => {},
+  setShowProfileOptions: () => {
+  },
   showProfileOptions: false,
-  handleMenuModalClose: () => {},
-  logoutHandler: () => {},
+  handleMenuModalClose: () => {
+  },
+  logoutHandler: () => {
+  },
 };
 
 export default DisplayProfileLinks;

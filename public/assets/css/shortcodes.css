@@ -4742,7 +4742,7 @@ section.today-picks {
 }
 
 .mode_switcher_mobile_version a {
-  background: red;
+  background: #1f1f2c;
   border-radius: 10px;
   width: 30px;
   height: 30px;
@@ -4756,8 +4756,8 @@ section.today-picks {
 
 .is_dark .mode_switcher_mobile_version a {
 
-  color:orange !important;
-  background: green;
+  /*color:orange !important;*/
+  background: white;
 }
 .is_dark .mode_switcher_mobile_version img {
 
