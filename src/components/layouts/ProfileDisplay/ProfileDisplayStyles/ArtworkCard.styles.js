@@ -9,7 +9,7 @@ const calculateWidth = (props) => {
   } if (!props.showFilter && !props.isDeviceMobile && props.isDeviceTablet) {
     return '48%';
   } if (!props.showFilter && props.isDeviceMobile && !props.isDeviceTablet) {
-    return '80%';
+    return '48%';
   }
   // default width if none of the conditions match
   return '80%';
@@ -43,7 +43,7 @@ export const ArtworkName = styled.div`
 
 export const CardMedia = styled.div`
   width: 100%;
-  height: 235px;
+  height: ${(props) => (props.isDeviceMobile === true ? '180px' : '235px')};
   display: flex;
   flex-direction: column;
   justify-content: center;
