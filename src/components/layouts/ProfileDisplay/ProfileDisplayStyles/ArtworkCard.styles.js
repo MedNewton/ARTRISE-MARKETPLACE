@@ -43,7 +43,8 @@ export const ArtworkName = styled.div`
 
 export const CardMedia = styled.div`
   width: 100%;
-  height: ${(props) => (props.isDeviceMobile === true ? '180px' : '235px')};
+  height: auto;
+  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -99,8 +100,7 @@ export const CreatorInfo = styled.div`
 `;
 
 export const PriceTag = styled.div`
-  margin-top: 10px;
-  font-size: 14px;
+  font-size: larger;
   font-weight: bold;
 `;
 export const DescriptionWrapper = styled.div`
@@ -122,13 +122,12 @@ export const PriceSectionWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px #e6e6e6;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  padding-bottom: 10px;
+  padding-top: 10px;
 `;
 
 export const PriceHeading = styled.div`
-  margin-top: 15px;
-  font-size: 13px;
+  font-size: larger;
   font-weight: 600;
   color: #81754e;
 `;
