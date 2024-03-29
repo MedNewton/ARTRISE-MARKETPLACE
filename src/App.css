@@ -3437,6 +3437,9 @@ gap:20px;
 }
 .full-screen-modal .modal-content{
   top: 0vh !important;
+  left: 0vw !important;
+  right: 0vw !important;
+  bottom: 0vh !important;
   height: 100vh !important;
   border-radius: 0px !important;
   border: none !important;
