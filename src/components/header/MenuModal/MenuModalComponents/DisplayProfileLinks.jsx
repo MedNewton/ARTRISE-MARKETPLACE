@@ -68,9 +68,8 @@ function DisplayProfileLinks(props) {
         </div>
       )}
 
-      {localStorage.getItem('accountTypeChoice') === 'user'
-        && localStorage.getItem('walletAddress') !== 'undefined'
-        && localStorage.getItem('walletAddress') !== undefined
+      {localStorage.getItem('profileType') === 'member'
+        && localStorage.getItem('walletAddress')
         ? (
           <div className="accordion-border-color-transparent">
             <div className="accordion-card-background-border-color">
@@ -90,9 +89,8 @@ function DisplayProfileLinks(props) {
         )
         : ('')}
 
-      {localStorage.getItem('accountTypeChoice') === 'artist'
-        && localStorage.getItem('walletAddress') !== 'undefined'
-        && localStorage.getItem('walletAddress') !== undefined
+      {localStorage.getItem('profileType') === 'artist'
+        && localStorage.getItem('walletAddress')
         ? (
           <div className="accordion-border-color-transparent">
             <div className="accordion-card-background-border-color">
