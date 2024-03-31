@@ -3345,10 +3345,9 @@ Collections-filter-wrapper{
   gap: 5vh;
   align-items: center;
   font-size: large;
-  padding-left: 10%;
-  padding-right: 10%;
-  height: 80vh;
-  justify-content: center;
+  padding: 20px 10% 0px;
+  height: 90vh;
+  justify-content: space-evenly;
 
 }
 
@@ -3381,9 +3380,10 @@ justify-content: space-between;
 
 
 .accordion-card-display-flex-font-large {
-display:flex;
-font-size:large;
-gap:20px;
+  display:flex;
+  font-size:larger;
+  font-weight: bold;
+  gap:20px;
 }
 
 .mobile-version-login-join-button {
