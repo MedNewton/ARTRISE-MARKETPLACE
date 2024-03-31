@@ -32,8 +32,9 @@ import storage from '../storage';
 import db from '../firebase';
 import img1 from '../assets/images/box-item/image-box-6.jpg';
 import Footer from '../components/footer/Footer';
-import HeaderStyle2 from '../components/header/HeaderStyle2';
 import 'react-toastify/dist/ReactToastify.css';
+import {useMediaQuery} from "react-responsive";
+import {PageWidthWrapper} from "../components/layouts/createItem/Tokenize.styles";
 
 const TraitForm = (tr, v) => ({
   trait_type: tr,
@@ -53,6 +54,9 @@ function Tokenize() {
   const [media, setMedia] = useState();
   const [mediaPreview, setMediaPreview] = useState(img1);
   const [physicalMedia, setPhysicalMedia] = useState([]);
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1200px)' });
+  // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
+
 
   const [physicalMediaPreview, setPhysicalMediaPreview] = useState([]);
   const [traits, setTraits] = useState([
@@ -294,7 +298,7 @@ function Tokenize() {
   return (
     <div className="create-item">
       <div className="d-flex flex-row, justify-content-center">
-        <div className="d-flex flex-column" style={{ width: '60%' }}>
+        <PageWidthWrapper isDeviceMobile={isDeviceMobile}>
           <div>
             <h2 className="tf-title style4 mg-bt-20 ourArtists">Tokenize</h2>
             <h5 className="subTitleCreate mb-5">
@@ -629,7 +633,7 @@ function Tokenize() {
               </form>
             </div>
           </div>
-        </div>
+        </PageWidthWrapper>
       </div>
       <ToastContainer
         position="top-left"

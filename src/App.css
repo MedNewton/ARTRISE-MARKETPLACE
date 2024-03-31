@@ -2308,7 +2308,7 @@ a{
     margin-top: 30% !important;
   }
   .artistButton{
-    width: 90%;
+    width: 100%;
   }
   .SeparatorTitle{
     line-height: 1.1em;
@@ -2542,7 +2542,7 @@ a{
   .artisticBox{
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    width: 90vw;
     justify-content: flex-start;
   }
 
@@ -2941,6 +2941,7 @@ a{
   border-radius: 30px;
   padding-left: 2em;
   padding-right: 2em;
+  width: max-content;
 }
 
 .artist-profile-wrapper {

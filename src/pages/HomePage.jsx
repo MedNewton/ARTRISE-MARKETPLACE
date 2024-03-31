@@ -108,7 +108,7 @@ function HomePage() {
               flexDirection: 'column',
               alignItems: 'center',
               gap: '20px',
-              margin: '20px 0px',
+              margin: '20px 10px',
             }}
             >
               <div className=" ourArtists">
