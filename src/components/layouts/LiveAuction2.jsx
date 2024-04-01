@@ -7,8 +7,10 @@ import {
 } from 'swiper';
 import Countdown from 'react-countdown';
 import { v4 as uuidv4 } from 'uuid';
+import { useMediaQuery } from 'react-responsive';
 import CardModal from './CardModal';
 import yann from '../../assets/images/avatar/yann.png';
+import { SectionTitleWrapper } from './LiveAuctions/LiveAuctions.style';
 
 // import 'swiper/scss';
 // import 'swiper/scss/navigation';
@@ -16,6 +18,9 @@ import yann from '../../assets/images/avatar/yann.png';
 
 function LiveAuction2(props) {
   const { data } = props;
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1200px)' });
+
+  // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
   const [modalShow, setModalShow] = useState(false);
   const now = Date.now();
   const dropDate = new Date('2022-12-31');
@@ -28,12 +33,10 @@ function LiveAuction2(props) {
   return (
     <>
       <>
-        <h2 className=" ourArtists" style={{ margin: '25px 0px' }}>
+        <SectionTitleWrapper className=" ourArtists" isDeviceMobile={isDeviceMobile}>
           Coming Soon
-        </h2>
-
+        </SectionTitleWrapper>
         <div className="col-md-12 AuctionsBg">
-
           <Swiper
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={30}
