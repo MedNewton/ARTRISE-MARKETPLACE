@@ -281,9 +281,9 @@
   color: #fff;
 }
 .sc-button span {
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 22px;
+  /*font-weight: 700;*/
+  /*font-size: 14px;*/
+  /*line-height: 22px;*/
   position: relative;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -409,8 +409,8 @@
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
   padding-left: 24px;
   padding-right: 24px;
-  height: 48px;
-  font-size: 16px;
+  height: 40px;
+  font-size: initial;
   color: black;
   font-weight: bold;
   font-family: sans-serif;
@@ -436,7 +436,7 @@
 }
 
 .sc-button.loadmore span {
-  font-size: 15px;
+  /*font-size: 15px;*/
 }
 
 .is_dark .sc-button.loadmore:hover {
@@ -451,7 +451,7 @@
 
 .sc-button.style.note span::before {
   content: "\e91b";
-  font-size: 20px;
+  /*font-size: 20px;*/
 }
 
 .sc-button.style.wallet span::before {

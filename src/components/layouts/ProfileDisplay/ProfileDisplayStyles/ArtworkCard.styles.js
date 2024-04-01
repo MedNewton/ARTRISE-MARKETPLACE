@@ -9,7 +9,7 @@ const calculateWidth = (props) => {
   } if (!props.showFilter && !props.isDeviceMobile && props.isDeviceTablet) {
     return '48%';
   } if (!props.showFilter && props.isDeviceMobile && !props.isDeviceTablet) {
-    return '80%';
+    return '48%';
   }
   // default width if none of the conditions match
   return '80%';
@@ -43,7 +43,8 @@ export const ArtworkName = styled.div`
 
 export const CardMedia = styled.div`
   width: 100%;
-  height: 235px;
+  height: auto;
+  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -93,15 +94,14 @@ export const CreatorInfo = styled.div`
   }
 
   span {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: large;
+    font-weight: bold;
   }
 `;
 
 export const PriceTag = styled.div`
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: medium;
+  font-weight: normal;
 `;
 export const DescriptionWrapper = styled.div`
 padding: 10px;
@@ -122,14 +122,13 @@ export const PriceSectionWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px #e6e6e6;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  padding-bottom: 10px;
+  padding-top: 10px;
 `;
 
 export const PriceHeading = styled.div`
-  margin-top: 15px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: medium;
+  font-weight: normal;
   color: #81754e;
 `;
 

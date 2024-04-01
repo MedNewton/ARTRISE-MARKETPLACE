@@ -20,4 +20,6 @@ export const ExpandableMenuIconWrapper = styled.div`
     gap: 20px;
     align-items: center;
     justify-content: space-between;
+    font-size: larger;
+    font-weight: bold;
 `;

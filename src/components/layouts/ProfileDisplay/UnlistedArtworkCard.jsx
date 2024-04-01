@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useMediaQuery } from 'react-responsive';
 import MediaViewer from '../mediaViewer/MediaViewer';
 import {
   ArtworkName, BuyNowButton, BuyNowButtonWrapper,
@@ -13,6 +14,7 @@ import {
 
 function UnlistedArtworkCard(props) {
   const { listing, showFilter } = props;
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const theme = useSelector((state) => state.themeReducer.theme);
   const navigate = useNavigate();
 
@@ -39,7 +41,7 @@ function UnlistedArtworkCard(props) {
       unlistedCard
       onClick={cardOnClickHandler}
     >
-      <CardMedia>
+      <CardMedia isDeviceMobile={isDeviceMobile}>
         <ArtworkName>{listing?.data?.name}</ArtworkName>
         <MediaViewer mediaUrl={listing?.data?.image} />
       </CardMedia>

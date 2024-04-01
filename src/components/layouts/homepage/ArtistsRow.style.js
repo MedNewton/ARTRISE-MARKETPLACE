@@ -6,6 +6,6 @@ export const ArtistsProfilesWrapper = styled.div`
     margin-top: 20px;
     row-gap: 10px;
     max-width: 800px;
-    width: 100%;
+    width: ${(props) => (props.isDeviceMobile ? 'auto' : '100%')};
     justify-content: space-evenly;
     `;

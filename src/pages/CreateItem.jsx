@@ -22,12 +22,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { signMessage } from '@wagmi/core';
+import { useMediaQuery } from 'react-responsive';
 import db from '../firebase';
 import img1 from '../assets/images/box-item/image-box-6.jpg';
 import Footer from '../components/footer/Footer';
 import { fetchUsers } from '../utils/allUsersUtils';
 import { fetchCurrentUser } from '../utils/currentUserUtils';
 import { fetchLazyOwned } from '../utils/lazyOwnedUtils';
+import { PageWidthWrapper } from '../components/layouts/createItem/Tokenize.styles';
 
 const TraitForm = (tr, v) => ({
   trait_type: tr,
@@ -50,6 +52,8 @@ function CreateItem() {
   const navigate = useNavigate();
   const currentUserId = useSelector((state) => state.usersReducer.currentUserId);
   const dispatch = useDispatch();
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 1200px)' });
+  // const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
   // const { contract } = useContract(
   //   '0x91FBfcDDa7FE1aD979C34dF707D2691FcD5663B0',
   // );
@@ -399,7 +403,7 @@ function CreateItem() {
   return (
     <div className="create-item">
       <div className="d-flex flex-row, justify-content-center">
-        <div className="d-flex flex-column" style={{ width: '60%' }}>
+        <PageWidthWrapper isDeviceMobile={isDeviceMobile}>
           <div>
             <h2 className="tf-title style4 mg-bt-20 ourArtists">Integrate</h2>
             <h5 className="subTitleCreate mb-5">
@@ -702,7 +706,7 @@ function CreateItem() {
               </form>
             </div>
           </div>
-        </div>
+        </PageWidthWrapper>
       </div>
       <ToastContainer
         position="top-left"

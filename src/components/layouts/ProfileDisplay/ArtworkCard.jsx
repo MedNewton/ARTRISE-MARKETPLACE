@@ -51,7 +51,7 @@ function ArtworkCard(props) {
       key={artwork.artworkId}
       onClick={cardOnClickHandler}
     >
-      <CardMedia>
+      <CardMedia isDeviceMobile={isDeviceMobile}>
         <ArtworkName>{artwork.data.name}</ArtworkName>
         <MediaViewer mediaUrl={artwork.data.image} />
       </CardMedia>
