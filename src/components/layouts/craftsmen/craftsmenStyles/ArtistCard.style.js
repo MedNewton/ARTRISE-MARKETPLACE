@@ -83,14 +83,16 @@ export const ArtistInfo = styled.div`
 
 export const ArtistName = styled.h4`
     margin: 0;
-    font-size: 2em; /* Adjust font-size as needed */
+    font-size: medium; 
+  text-align: left;
     color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};
 
 `;
 
 export const ArtistType = styled.h5`
     margin: 0;
-    font-size: 1.8em;
+    font-size: larger;
+  text-align: left;
     font-style: italic;
     font-weight: 400;
     color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};

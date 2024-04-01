@@ -94,14 +94,14 @@ export const CreatorInfo = styled.div`
   }
 
   span {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: large;
+    font-weight: bold;
   }
 `;
 
 export const PriceTag = styled.div`
-  font-size: larger;
-  font-weight: bold;
+  font-size: medium;
+  font-weight: normal;
 `;
 export const DescriptionWrapper = styled.div`
 padding: 10px;
@@ -127,8 +127,8 @@ export const PriceSectionWrapper = styled.div`
 `;
 
 export const PriceHeading = styled.div`
-  font-size: larger;
-  font-weight: 600;
+  font-size: medium;
+  font-weight: normal;
   color: #81754e;
 `;
 
