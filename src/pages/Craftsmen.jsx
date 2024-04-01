@@ -33,53 +33,6 @@ function Craftsmen() {
               Artists
             </h2>
           </div>
-          <div className="col-md-12 col-sm-12 mobileTags">
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="painter"
-            >
-              Painter
-            </button>
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="photographer"
-            >
-              Photographer
-            </button>
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="sculpturer"
-            >
-              Sculpturer
-            </button>
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="ceramic_artist"
-            >
-              Ceramic artist
-            </button>
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="others"
-            >
-              Others
-            </button>
-          </div>
           <div className="col-12">
             <div className="row tagsBar">
               <div className="col-12">
