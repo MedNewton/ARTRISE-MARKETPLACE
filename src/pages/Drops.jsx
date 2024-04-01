@@ -31,44 +31,6 @@ function Drops() {
               Drops
             </h2>
           </div>
-          <div className="col-md-12 col-sm-12 mobileTags">
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="painter"
-            >
-              Painting
-            </button>
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="photographer"
-            >
-              Photography
-            </button>
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="sculpturer"
-            >
-              Sculpture
-            </button>
-            <button
-              type="button"
-              className="tag"
-              onClick={(e) => editTags(e.target.id, e.target)}
-              onKeyDown={(e) => editTags(e.target.id, e.target)}
-              id="ceramic_artist"
-            >
-              Others...
-            </button>
-          </div>
           <div className="col-12">
             <div className="row tagsBar">
               <div className="col-12">
