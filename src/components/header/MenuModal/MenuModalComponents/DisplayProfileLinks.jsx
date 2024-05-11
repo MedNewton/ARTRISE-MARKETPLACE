@@ -33,7 +33,7 @@ function DisplayProfileLinks(props) {
         </div>
       </div>
 
-      {localStorage.getItem('accountTypeChoice') === 'artist' && (
+      {localStorage.getItem('profileType') === 'artist' && (
         <div className="accordion-border-color-transparent">
           <div className="accordion-card-background-border-color">
             <Link to={`/displayProfile?artist=${localStorage.getItem('userId')}`}>
@@ -50,7 +50,7 @@ function DisplayProfileLinks(props) {
           </div>
         </div>
       )}
-      {localStorage.getItem('accountTypeChoice') === 'user' && (
+      {localStorage.getItem('profileType') === 'member' && (
         <div className="accordion-border-color-transparent">
           <div className="accordion-card-background-border-color">
             <Link to={`/displayProfile?member=${localStorage.getItem('userId')}`}>
