@@ -1,5 +1,8 @@
 /*eslint-disable*/
 
+
+
+
 export const ArtistDesktopViewMainTabs= [
     {
         key: 0,
@@ -22,18 +25,14 @@ export const ArtistDesktopViewMainTabs= [
 export const ArtistDesktopViewMoreTabs=  [
     {
         key: 4,
-        name: 'Artworks',
-    },
-    {
-        key: 5,
         name: 'Liked Items',
     },
     {
-        key: 6,
+        key: 5,
         name: 'Offers Made',
     },
     {
-        key: 7,
+        key: 6,
         name: 'Offers Received',
     },
 ];
@@ -60,18 +59,14 @@ export const ArtistMobileViewMoreTabs=  [
     },
     {
         key: 4,
-        name: 'Artworks',
-    },
-    {
-        key: 5,
         name: 'Liked Items',
     },
     {
-        key: 6,
+        key: 5,
         name: 'Offers Made',
     },
     {
-        key: 7,
+        key: 6,
         name: 'Offers Received',
     },
 ];
@@ -109,30 +104,30 @@ export const MemberDesktopViewMoreTabs=  [
 
 export const MemberMobileViewMainTabs=  [
     {
-        key: '23',
+        key: 0,
         name: 'Owned',
     },
     {
-        key: '24',
+        key: 1,
         name: 'Tokenized',
     },
 ];
 
 export const MemberMobileViewMoreTabs=  [
     {
-        key: 'Liked Items',
+        key: 2,
         name: 'Liked Items',
     },
     {
-        key: 'Collections',
+        key: 3,
         name: 'Collections',
     },
     {
-        key: 'Offers Made',
+        key: 4,
         name: 'Offers Made',
     },
     {
-        key: 'Offers Received',
+        key: 5,
         name: 'Offers Received',
     },
 ];
