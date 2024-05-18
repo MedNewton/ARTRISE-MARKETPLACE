@@ -17,6 +17,8 @@ const TabListStyled = styled.div`
     padding-top: 15px;
     padding-bottom: 15px;
 
+    
+
 `;
 
 const TabStyled = styled.button`
@@ -31,7 +33,7 @@ const TabStyled = styled.button`
     font-weight: bold;
     font-family: sans-serif;
     border-radius: 50px;
-    margin: 0px 20px 0px 20px;
+    margin: 0% 2%;
     
     
   cursor: pointer;
@@ -59,6 +61,7 @@ const TabPanelStyled = styled.div`
 
   &.active {
     display: block;
+      margin: 0% 2%;
   }
 `;
 
@@ -88,22 +91,22 @@ export const Tab = ({ children, index }) => {
     )
 };
 
-export const MoreTab = ({ children }) => {
-    const { activeIndex, setActiveIndex } = useContext(TabContext);
+export const MoreTab = ({ children, baseIndex }) => {
+    const { setActiveIndex } = useContext(TabContext);
 
     return (
-        // <div className="tagLink">
         <Dropdown>
             <Dropdown.Toggle id="profileTabDropdown">
                 <TabStyled><SlOptions /></TabStyled>
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 {React.Children.map(children, (child, index) => (
-                    <Dropdown.Item onClick={() => setActiveIndex(index + 2)}>{child}</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setActiveIndex(baseIndex + index)}>
+                        {child.props.children}
+                    </Dropdown.Item>
                 ))}
             </Dropdown.Menu>
         </Dropdown>
-        // </div>
     );
 };
 
