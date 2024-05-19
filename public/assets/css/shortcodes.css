@@ -1220,7 +1220,7 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  padding: 0;
+  padding: 0 !important;
   border: none;
 }
 .sc-card-product .meta-info .menu_card .dropdown .dropdown-toggle:focus {
