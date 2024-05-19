@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   FaAngleRight, FaBell, FaHome, FaShoppingCart,
 } from 'react-icons/fa';
 import { MdExplore, MdOutlineLabelImportant } from 'react-icons/md';
 import { BsFillPersonFill } from 'react-icons/bs';
-import Button from 'react-bootstrap/Button';
 import { useAccount } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import RenderJoinLoginButtonMobileVersion from '../../RenderJoinLoginButton/RenderJoinLoginButtonMobileVersion';
 import RenderWalletAddressMobileVersion from '../../RenderWalletAddressSection/RenderWalletAddressMobileVersion';
 import RenderConnectWalletAddressMobileVersion
@@ -18,6 +18,10 @@ import {
   ExpandableMenuIconWrapper,
   MenuElementButton,
 } from '../../HeaderStyles/DisplayMenuLinks.styles';
+import { SwitchModeButton } from '../MenuModalComponents.styles';
+import imgmoon from '../../../../assets/images/icon/moon.png';
+import { setAppTheme } from '../../../../redux/actions/themeActions';
+import imgsun from '../../../../assets/images/icon/sun.png';
 
 function DisplayMenuLinks(props) {
   const {
@@ -38,23 +42,27 @@ function DisplayMenuLinks(props) {
     isConnected,
   } = useAccount();
   const { open } = useWeb3Modal();
+  const dispatch = useDispatch();
+  const themeState = useSelector((state) => state.themeReducer.theme);
+  const lightTheme = 'light';
+  const darkTheme = 'is_dark';
+  const { body } = document;
 
-  // State for the light dark mode switch
-  const [currentMode, setCurrentMode] = useState(localStorage.getItem('theme') || 'light');
-
-  useEffect(() => { // function for the light dark mode switch
-    document.body.classList.remove('light', 'is_dark');
-    document.body.classList.add(currentMode);
-    localStorage.setItem('theme', currentMode);
-  }, [currentMode]);
-
-  const modeSwitchHandler = () => { // function for the light dark mode switch
-    const newMode = currentMode === 'light' ? 'is_dark' : 'light';
-    setCurrentMode(newMode);
-    localStorage.setItem('theme', newMode);
+  const modeSwitchHandler = () => {
+    if (themeState === lightTheme) {
+      document.getElementById('themeIcon').src = imgmoon;
+      body.classList.replace(lightTheme, darkTheme);
+      localStorage.setItem('theme', darkTheme);
+      const theme = darkTheme;
+      dispatch(setAppTheme({ theme }));
+    } else {
+      document.getElementById('themeIcon').src = imgsun;
+      body.classList.replace(darkTheme, lightTheme);
+      localStorage.setItem('theme', lightTheme);
+      const theme = lightTheme;
+      dispatch(setAppTheme({ theme }));
+    }
   };
-
-  // Conditional rendering functions
 
   const renderProfileButton = () => (
 
@@ -180,13 +188,12 @@ function DisplayMenuLinks(props) {
 
       {renderDynamicSection()}
 
-      <Button
-        className="mobile-version-switch-mode-button"
+      <SwitchModeButton
+        theme={themeState}
         onClick={modeSwitchHandler}
       >
-        Switch
-        Mode
-      </Button>
+        <span>Switch Mode</span>
+      </SwitchModeButton>
     </div>
   );
 }

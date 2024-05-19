@@ -11,7 +11,7 @@ function DisplayCollections(props) {
   }
 
   return (
-    <div className="artist-profile-wrapper display-collections-wrapper">
+    <div className="artist-profile-wrapper display-collections-wrapper" style={{ margin: '25px 0px' }}>
       <div className="Collections-filter-wrapper">
         <div
           className="tag"
