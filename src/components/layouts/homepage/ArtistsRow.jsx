@@ -1,14 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import profile from '../../../assets/images/icon/profile.png';
 import { ArtistsProfilesWrapper } from './ArtistsRow.style';
 
 function ArtistsRow() {
   const artistsState = useSelector((state) => state.usersReducer.artists);
-  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
-  const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   // List of userIds to render
   const allowedUserIds = [
@@ -20,7 +17,7 @@ function ArtistsRow() {
   const filteredArtists = artistsState?.filter((artist) => allowedUserIds.includes(artist?.userId));
 
   return (
-    <ArtistsProfilesWrapper isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
+    <ArtistsProfilesWrapper>
       {filteredArtists?.map((artist) => (
         <Link to={`/displayProfile?artist=${artist?.userId}`} key={artist?.userId}>
           <div className="pdpSpace artistButton" id="pdp">
