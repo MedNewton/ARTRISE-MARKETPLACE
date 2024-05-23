@@ -42,15 +42,17 @@ function DisplayArtistTabSection(props) {
     setUserCollections(tempCollectionsList);
   }, [artistData, lazyListed, collections]);
 
-  const getTabs = () => {
-    setMainTabs(artistData?.socialMediaVerified ? ArtistDesktopViewMainTabs : MemberDesktopViewMainTabs);
-    setMoreTabs(artistData?.socialMediaVerified ? ArtistDesktopViewMoreTabs : MemberDesktopViewMoreTabs);
-    if (isDeviceMobile) {
-      setMainTabs(artistData?.socialMediaVerified ? ArtistMobileViewMainTabs : MemberMobileViewMainTabs);
-      setMoreTabs(artistData?.socialMediaVerified ? ArtistMobileViewMoreTabs : MemberMobileViewMoreTabs);
-    }
-  };
   useEffect(() => {
+    const getTabs = () => {
+      if (artistData?.socialMediaVerified) {
+        setMainTabs(isDeviceMobile ? ArtistMobileViewMainTabs : ArtistDesktopViewMainTabs);
+        setMoreTabs(isDeviceMobile ? ArtistMobileViewMoreTabs : ArtistDesktopViewMoreTabs);
+      } else {
+        setMainTabs(isDeviceMobile ? MemberMobileViewMainTabs : MemberDesktopViewMainTabs);
+        setMoreTabs(isDeviceMobile ? MemberMobileViewMoreTabs : MemberDesktopViewMoreTabs);
+      }
+    };
+
     getTabs();
   }, [isDeviceMobile, artistData]);
 
