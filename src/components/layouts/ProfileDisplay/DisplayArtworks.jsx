@@ -1,4 +1,5 @@
 import React, {
+  useEffect,
   useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -10,6 +11,7 @@ import {
   FilterArtworksWrapper,
   FilterContent,
 } from './DisplayArtworksStyles/DisplayArtworks.styles';
+import ArtworksFilterModal from './DisplayArtworksFilterModal/ArtworksFilterModal';
 
 function DisplayArtworks(props) {
   const { data } = props;
@@ -18,6 +20,9 @@ function DisplayArtworks(props) {
     setVisible((prevValue) => prevValue + 5);
   };
   const [modalShow, setModalShow] = useState(false);
+
+  const [showFilterModal, setShowFilterModal] = useState(false);
+
   const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
@@ -57,8 +62,19 @@ function DisplayArtworks(props) {
   };
 
   const toggleFilter = () => {
-    setShowFilter(!showFilter);
+    if (isDeviceMobile || isDeviceTablet) {
+      setShowFilterModal(true);
+    } else {
+      setShowFilter(!showFilter);
+    }
   };
+
+  const handleFilterModalClose = () => setShowFilterModal(false);
+
+  useEffect(() => () => {
+    setModalShow(false);
+    setShowFilterModal(false);
+  }, []);
 
   return (
     <div className="artist-profile-wrapper">
@@ -146,6 +162,14 @@ function DisplayArtworks(props) {
         </div>
       )}
       <CardModal show={modalShow} onHide={() => setModalShow(false)} />
+      <ArtworksFilterModal
+        showFilterModal={showFilterModal}
+        handleFilterModalClose={handleFilterModalClose}
+        filterOptions={filterOptions}
+        filterState={filterState}
+        handleOptionChange={handleOptionChange}
+      />
+
     </div>
 
   );

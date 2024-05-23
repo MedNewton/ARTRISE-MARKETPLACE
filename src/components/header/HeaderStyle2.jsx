@@ -74,6 +74,7 @@ function HeaderStyle2() {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      setShowMenuModal(false);
     };
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { useDisconnect } from 'wagmi';
@@ -27,6 +27,13 @@ function MobileVersionMenuModal(props) {
   const [showProfileOptions, setShowProfileOptions] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showJoinModal, setShowJoinModal] = useState(false);
+
+  useEffect(() => () => {
+    setShowExploreOptions(false);
+    setShowProfileOptions(false);
+    setShowLoginModal(false);
+    setShowJoinModal(false);
+  }, []);
 
   const logoutHandler = async () => {
     try {
