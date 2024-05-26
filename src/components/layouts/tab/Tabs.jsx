@@ -1,7 +1,10 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, {
+  useState, createContext, useContext, useMemo,
+} from 'react';
 import styled from 'styled-components';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { SlOptions } from 'react-icons/sl';
+import PropTypes from 'prop-types';
 import { COLORS } from '../../shared/styles-constants';
 
 const TabContext = createContext();
@@ -51,8 +54,10 @@ const TabPanelStyled = styled.div`
 `;
 export function Tabs({ children }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const contextValue = useMemo(() => ({ activeIndex, setActiveIndex }), [activeIndex, setActiveIndex]);
+
   return (
-    <TabContext.Provider value={{ activeIndex, setActiveIndex }}>
+    <TabContext.Provider value={contextValue}>
       {children}
     </TabContext.Provider>
   );
@@ -107,3 +112,79 @@ export function TabPanel({ children, index }) {
     </TabPanelStyled>
   );
 }
+
+// props validations
+
+Tabs.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
+Tabs.defaultProps = {
+  children: '',
+};
+
+TabList.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+  theme: PropTypes.string,
+};
+TabList.defaultProps = {
+  children: '',
+  theme: 'light',
+};
+
+Tab.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+  index: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  theme: PropTypes.string,
+};
+Tab.defaultProps = {
+  children: '',
+  index: 0,
+  theme: 'light',
+};
+
+MoreTab.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+  baseIndex: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  theme: PropTypes.string,
+};
+MoreTab.defaultProps = {
+  children: '',
+  baseIndex: PropTypes.oneOfType([
+    '',
+    0,
+  ]),
+  theme: 'light',
+};
+
+TabPanel.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+  index: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+};
+TabPanel.defaultProps = {
+  children: '',
+  index: 0,
+};

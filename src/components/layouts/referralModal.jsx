@@ -32,7 +32,7 @@ function ReferralModal(props) {
 
   useEffect(() => {
     getReferralCode();
-  }, [getReferralCode]);
+  }, [getReferralCode, address]);
 
   return (
     <Modal

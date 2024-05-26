@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const ArtistsProfilesWrapper = styled.div`
     display: flex;
-    flex-direction: ${(props) => (props.isDeviceMobile ? 'column' : 'row')};
+    flex-direction: row;
     margin-top: 20px;
     row-gap: 10px;
     max-width: 800px;
-    width: ${(props) => (props.isDeviceMobile ? 'auto' : '100%')};
+    width: 100%;
     justify-content: space-evenly;
     `;

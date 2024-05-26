@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import Footer from '../components/footer/Footer';
 
 import rightArrowIcon from '../assets/images/icon/rightArrowIcon.svg';
@@ -11,10 +13,12 @@ import image6 from '../assets/images/learnResourcesImages/6.jpg';
 import image7 from '../assets/images/learnResourcesImages/7.jpg';
 import image8 from '../assets/images/learnResourcesImages/8.jpg';
 import image9 from '../assets/images/learnResourcesImages/9.jpg';
+import { COLORS } from '../components/shared/styles-constants';
 
 const imageArray = [image1, image2, image3, image4, image5, image6, image7, image8, image9];
 
 function ArticleDetails() {
+  const theme = useSelector((state) => state.themeReducer.theme);
   const paragraphDetailsRef = useRef(null);
   const [menuPosition, setMenuPosition] = useState('fixed');
   const [allResources, setAllResources] = useState([]);
@@ -113,7 +117,8 @@ function ArticleDetails() {
               style={{ position: `${menuPosition}` }}
             >
               {article?.articleParagraphs?.map((paragraph, index) => (
-                <button
+                <ParagraphTitleButton
+                  theme={theme}
                   type="button"
                   className="learn-resource-detail-headings-wrapper"
                   onClick={() => scrollToParagraph(index)}
@@ -121,7 +126,7 @@ function ArticleDetails() {
                   style={{ cursor: 'pointer' }}
                 >
                   {paragraph.paragraphHeading}
-                </button>
+                </ParagraphTitleButton>
               ))}
             </div>
           </div>
@@ -162,3 +167,10 @@ function ArticleDetails() {
 }
 
 export default ArticleDetails;
+
+const ParagraphTitleButton = styled.button`
+    color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : COLORS.WhiteFont)};
+    background: ${(props) => (props.theme === 'light' ? '#F6F6F6' : COLORS.BlackBG2)};
+    text-align: left;
+    webkit-appearance: none !important;
+`;

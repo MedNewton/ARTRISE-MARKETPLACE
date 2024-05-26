@@ -2324,7 +2324,8 @@ a{
   }
 
   .artistButton {
-    width: 100%;
+    width: 100px;
+    height: 100px;
   }
 
   .SeparatorTitle {
@@ -3307,7 +3308,7 @@ Collections-filter-wrapper{
   border-radius: 5px;
 }
 .is_dark .learn-resource-detail-headings2{
-  background-color: rgba(225, 225, 225, 0%);
+  background-color: #202020;
   width: 20%;
   padding: 2% 0px 2% 0px;
   border-radius: 5px;
