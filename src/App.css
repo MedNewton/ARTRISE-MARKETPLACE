@@ -702,6 +702,9 @@ text-align: left;
 
 .tagsBar{
   padding: 25px 0px 25px 0px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  overflow-x: auto;
 }
 
 .tag{
@@ -719,6 +722,7 @@ text-align: left;
   font-size: 1.5em;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .tag:hover{

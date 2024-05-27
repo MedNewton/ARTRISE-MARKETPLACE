@@ -5,14 +5,10 @@ import Footer from '../components/footer/Footer';
 function Browse() {
   return (
     <>
-      <div
-        className="margin-Left-Right-Top"
-      >
-        <h2 className=" ourArtists">
-          Browse
-        </h2>
-        <BrowserPageContent />
-      </div>
+      <h2 className="mb-4 margin-Left-Right-Top ourArtists">
+        Browse
+      </h2>
+      <BrowserPageContent />
       <Footer />
     </>
   );

@@ -27,68 +27,70 @@ function Craftsmen() {
   return (
     <>
       <div className="margin-Left-Right-Top">
-        <div className="row">
-          <div className="col-md-12">
-            <h2 className=" ourArtists">
-              Artists
-            </h2>
+        <h2 className=" ourArtists">
+          Artists
+        </h2>
+        <div className="flex flex-column">
+          <div className="tagsBar flex">
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="painter"
+            >
+              Painter
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="photographer"
+            >
+              Photographer
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="sculpturer"
+            >
+              Sculpturer
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="ceramic_artist"
+            >
+              Ceramic artist
+            </button>
+            <button
+              type="button"
+              className="tag"
+              onClick={(e) => editTags(e.target.id, e.target)}
+              onKeyDown={(e) => editTags(e.target.id, e.target)}
+              id="others"
+            >
+              Others
+            </button>
           </div>
-          <div className="col-12">
-            <div className="row tagsBar">
-              <div className="col-12">
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="sculpturer"
-                >
-                  Sculptors
-                </button>
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="painter"
-                >
-                  Painters
-                </button>
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="photographer"
-                >
-                  Photographers
-                </button>
-
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="others"
-                >
-                  Others
-                </button>
-              </div>
-            </div>
-          </div>
-
+          {/* <div className="row"> */}
+          <ArtistsContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
+            {artistsState?.map((artist) => (
+              <ArtistCard
+                key={artist.userId}
+                artist={artist}
+                isDeviceMobile={isDeviceMobile}
+                isDeviceTablet={isDeviceTablet}
+              />
+            ))}
+          </ArtistsContainer>
+          {/* </div> */}
         </div>
-
-        <ArtistsContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
-          {artistsState?.map((artist) => (
-            <ArtistCard
-              key={artist.userId}
-              artist={artist}
-              isDeviceMobile={isDeviceMobile}
-              isDeviceTablet={isDeviceTablet}
-            />
-          ))}
-        </ArtistsContainer>
       </div>
       <Footer />
     </>

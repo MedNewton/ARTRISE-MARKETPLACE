@@ -16,31 +16,35 @@ const TabListStyled = styled.div`
     border-top: 1px solid transparent;
     padding-top: 15px;
     padding-bottom: 15px;
+    padding-left: 2%;
     border-color: ${(props) => (props.theme === 'light' ? '#e0e0e0' : 'transparent')};
+    flex-wrap: ${(props) => (props.isDeviceMobile === true ? 'nowrap' : '')};
+    overflow-x: ${(props) => (props.isDeviceMobile === true ? 'scroll' : '')};
 `;
 
 const TabStyled = styled.button`
     background-color: transparent;
-    border: 2px solid transparent;
-    padding: 0px 20px;
+    padding: 0px 15px;
+    margin: 0px 5px 0px 0px;
     height: 40px;
     font-size: initial;
     color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
     font-weight: bold;
     font-family: sans-serif;
     border-radius: 50px;
-    margin: 0% 2%;
     cursor: pointer;
 
     &:hover {
         opacity: 1;
-        border-color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};;
+        background-color: ${(props) => (props.theme === 'light' ? COLORS.LightGrayBG : 'white')};
+        color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : 'black')};
     }
 
     &.active {
         opacity: 1;
-        background-color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
-        color: ${(props) => (props.theme === 'light' ? 'white' : 'black')};
+        background-color: ${(props) => (props.theme === 'light' ? COLORS.LightGrayBG : 'white')};
+        color: ${(props) => (props.theme === 'light' ? COLORS.BlackFont : 'black')};
+        border-color: transparent !important;
     }
 `;
 
@@ -52,6 +56,7 @@ const TabPanelStyled = styled.div`
         margin: 0% 2%;
     }
 `;
+
 export function Tabs({ children }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const contextValue = useMemo(() => ({ activeIndex, setActiveIndex }), [activeIndex, setActiveIndex]);
@@ -63,9 +68,9 @@ export function Tabs({ children }) {
   );
 }
 
-export function TabList({ children, theme }) {
+export function TabList({ children, theme, isDeviceMobile }) {
   return (
-    <TabListStyled theme={theme}>
+    <TabListStyled theme={theme} isDeviceMobile={isDeviceMobile}>
       {children}
     </TabListStyled>
   );
@@ -131,10 +136,12 @@ TabList.propTypes = {
     PropTypes.node,
   ]),
   theme: PropTypes.string,
+  isDeviceMobile: PropTypes.bool,
 };
 TabList.defaultProps = {
   children: '',
   theme: 'light',
+  isDeviceMobile: false,
 };
 
 Tab.propTypes = {
