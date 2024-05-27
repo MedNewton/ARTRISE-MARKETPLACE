@@ -103,7 +103,7 @@ function BrowserPageContent() {
       <TabPanel index={1}>
         <>
           <div className="row tagsBar">
-            <div className="col-12">
+            <div className="col-12 flex">
               <button
                 type="button"
                 className="tag"
@@ -224,6 +224,7 @@ function BrowserPageContent() {
               ))
             }
           </div>
+
           {
             visible < collections?.length
             && (
@@ -242,8 +243,8 @@ function BrowserPageContent() {
         </>
       </TabPanel>
       <TabPanel index={2}>
-        <div className="row">
-          <div className="col-md-12 col-sm-12 mobileTags">
+        <div className="flex flex-column">
+          <div className="tagsBar flex">
             <button
               type="button"
               className="tag"
@@ -290,59 +291,16 @@ function BrowserPageContent() {
               Others
             </button>
           </div>
-          <div className="col-12">
-            <div className="row tagsBar">
-              <div className="col-12">
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="sculpturer"
-                >
-                  Sculptors
-                </button>
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="painter"
-                >
-                  Painters
-                </button>
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="photographer"
-                >
-                  Photographers
-                </button>
-
-                <button
-                  type="button"
-                  className="tag"
-                  onClick={(e) => editTags(e.target.id, e.target)}
-                  onKeyDown={(e) => editTags(e.target.id, e.target)}
-                  id="others"
-                >
-                  Others
-                </button>
-              </div>
-            </div>
-            <ArtistsContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
-              {artistsState?.map((artist) => (
-                <ArtistCard
-                  key={artist.userId}
-                  artist={artist}
-                  isDeviceMobile={isDeviceMobile}
-                  isDeviceTablet={isDeviceTablet}
-                />
-              ))}
-            </ArtistsContainer>
-          </div>
+          <ArtistsContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
+            {artistsState?.map((artist) => (
+              <ArtistCard
+                key={artist.userId}
+                artist={artist}
+                isDeviceMobile={isDeviceMobile}
+                isDeviceTablet={isDeviceTablet}
+              />
+            ))}
+          </ArtistsContainer>
         </div>
       </TabPanel>
       <TabPanel index={3}>
