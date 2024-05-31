@@ -22,6 +22,8 @@ function ArtworkCard(props) {
   const navigate = useNavigate();
   const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
+  const isWidthLessThan470 = useMediaQuery({ query: '(min-width: 380px) and (max-width: 470px)' });
+  const isWidthLessThan380 = useMediaQuery({ query: '(max-width: 380px)' });
 
   const fetchPrice = useCallback(async () => {
     const response = await axios.get(
@@ -61,8 +63,16 @@ function ArtworkCard(props) {
           <span>{artwork.ownerName}</span>
         </CreatorInfo>
         <PriceSectionWrapper>
-          <PriceHeading>Price</PriceHeading>
-          <PriceTag>
+          <PriceHeading
+            isWidthLessThan380={isWidthLessThan380}
+            isWidthLessThan470={isWidthLessThan470}
+          >
+            Price
+          </PriceHeading>
+          <PriceTag
+            isWidthLessThan380={isWidthLessThan380}
+            isWidthLessThan470={isWidthLessThan470}
+          >
             {(artwork.price * usdPriceInEth).toFixed(2)}
             {' '}
           &nbsp;

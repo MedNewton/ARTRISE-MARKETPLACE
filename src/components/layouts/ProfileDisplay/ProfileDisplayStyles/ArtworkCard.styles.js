@@ -15,6 +15,15 @@ const calculateWidth = (props) => {
   return '80%';
 };
 
+const calculatePriceFont = (props) => {
+  if (props.isWidthLessThan470 && !props.isWidthLessThan380) {
+    return 'small';
+  } if (!props.isWidthLessThan470 && props.isWidthLessThan380) {
+    return 'smaller';
+  }
+  return 'medium';
+};
+
 export const Card = styled.div`
 width: ${calculateWidth};
   height: ${(props) => (props.unlistedCard ? 'auto' : 'auto')};
@@ -100,7 +109,7 @@ export const CreatorInfo = styled.div`
 `;
 
 export const PriceTag = styled.div`
-  font-size: medium;
+  font-size: ${calculatePriceFont};
   font-weight: normal;
 `;
 export const DescriptionWrapper = styled.div`
@@ -127,7 +136,7 @@ export const PriceSectionWrapper = styled.div`
 `;
 
 export const PriceHeading = styled.div`
-  font-size: medium;
+  font-size: ${calculatePriceFont};
   font-weight: normal;
   color: #81754e;
 `;
