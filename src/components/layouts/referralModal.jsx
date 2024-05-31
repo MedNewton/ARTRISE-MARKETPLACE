@@ -73,22 +73,6 @@ function ReferralModal(props) {
           </div>
         </div>
       </div>
-      <div className="modal-body referral-modal-wrapper">
-        <h5>Referral a member</h5>
-        <p>
-          Integrate your original physical artwork and turn it into a Hybrid NFT. Simply
-          upload a photo of your artwork, fill out the artwork details and properties
-          and we&apos;ll take care of the rest.
-        </p>
-      </div>
-      <div className="modal-body referral-modal-wrapper">
-        <h5>Referral an artist</h5>
-        <p>
-          Integrate your original physical artwork and turn it into a Hybrid NFT. Simply
-          upload a photo of your artwork, fill out the artwork details and properties
-          and we&apos;ll take care of the rest.
-        </p>
-      </div>
       <ToastContainer
         position="top-left"
         autoClose={1000}
