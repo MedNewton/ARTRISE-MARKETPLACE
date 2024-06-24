@@ -47,7 +47,6 @@ function ArtistCard({ artist, isDeviceMobile, isDeviceTablet }) {
       </InfoFollowButtonWrapper>
       <ImageGrid artworkThumbNails={artist.artworkThumbNails} />
     </CardContainer>
-
   );
 }
 
