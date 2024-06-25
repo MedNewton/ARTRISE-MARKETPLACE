@@ -33,7 +33,7 @@ const TabStyled = styled.button`
     font-family: sans-serif;
     border-radius: 50px;
     cursor: pointer;
-
+  white-space: nowrap;
     &:hover {
         opacity: 1;
         background-color: ${(props) => (props.theme === 'light' ? COLORS.LightGrayBG : 'white')};

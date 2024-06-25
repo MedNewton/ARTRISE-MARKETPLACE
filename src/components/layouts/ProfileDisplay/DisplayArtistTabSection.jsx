@@ -16,9 +16,13 @@ import {
   MoreTab, Tab, TabList, TabPanel, Tabs,
 } from '../tab/Tabs';
 import {
-  ArtistDesktopViewMainTabs, ArtistDesktopViewMoreTabs, ArtistMobileViewMainTabs, ArtistMobileViewMoreTabs,
-  MemberDesktopViewMainTabs, MemberDesktopViewMoreTabs, MemberMobileViewMainTabs, MemberMobileViewMoreTabs,
-} from '../../constants/DisplayProfileTabsHeadings';
+  ArtistDesktopViewMainTabs,
+  ArtistDesktopViewMoreTabs,
+  ArtistProfilePageTabs,
+  MemberDesktopViewMainTabs,
+  MemberDesktopViewMoreTabs,
+  MemberProfilePageTabs,
+} from '../../constants/en';
 import DisplayDefaultTab from './DisplayDefaultTab';
 
 function DisplayArtistTabSection(props) {
@@ -34,6 +38,7 @@ function DisplayArtistTabSection(props) {
 
   const [mainTabs, setMainTabs] = useState([]);
   const [moreTabs, setMoreTabs] = useState([]);
+  // const [tabs, setTabs] = useState([]);
 
   useEffect(() => {
     const tempArtworksList = GetArtWorks(artistData.userId, lazyListed);
@@ -45,11 +50,11 @@ function DisplayArtistTabSection(props) {
   useEffect(() => {
     const getTabs = () => {
       if (artistData?.socialMediaVerified) {
-        setMainTabs(isDeviceMobile ? ArtistMobileViewMainTabs : ArtistDesktopViewMainTabs);
-        setMoreTabs(isDeviceMobile ? ArtistMobileViewMoreTabs : ArtistDesktopViewMoreTabs);
+        setMainTabs(isDeviceMobile ? ArtistProfilePageTabs : ArtistDesktopViewMainTabs);
+        setMoreTabs(isDeviceMobile ? [] : ArtistDesktopViewMoreTabs);
       } else {
-        setMainTabs(isDeviceMobile ? MemberMobileViewMainTabs : MemberDesktopViewMainTabs);
-        setMoreTabs(isDeviceMobile ? MemberMobileViewMoreTabs : MemberDesktopViewMoreTabs);
+        setMainTabs(isDeviceMobile ? MemberProfilePageTabs : MemberDesktopViewMainTabs);
+        setMoreTabs(isDeviceMobile ? [] : MemberDesktopViewMoreTabs);
       }
     };
 
@@ -58,19 +63,24 @@ function DisplayArtistTabSection(props) {
 
   return (
     <Tabs>
-      <TabList theme={theme}>
+      <TabList theme={theme} isDeviceMobile={isDeviceMobile}>
         {mainTabs.map((item) => (
           <Tab index={item.key} theme={theme}>
             {item.name}
           </Tab>
         ))}
-        <MoreTab baseIndex={mainTabs.length} theme={theme}>
-          {moreTabs.map((item) => (
-            <Tab index={item.key} theme={theme}>
-              {item.name}
-            </Tab>
-          ))}
-        </MoreTab>
+        {moreTabs?.length > 0
+          ? (
+            <MoreTab baseIndex={mainTabs.length} theme={theme}>
+              {moreTabs.map((item) => (
+                <Tab index={item.key} theme={theme}>
+                  {item.name}
+                </Tab>
+              ))}
+            </MoreTab>
+          )
+          : null}
+
       </TabList>
 
       {artistData.socialMediaVerified ? (

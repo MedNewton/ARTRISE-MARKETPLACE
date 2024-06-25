@@ -53,11 +53,14 @@ export const ProfileImageWrapper = styled.div`
 `;
 
 export const ProfileImage = styled.img`
-    margin-bottom: 0;
-
-    margin-left: 1px;
-    max-width: 70px;
-    border-radius: 20px;
+  margin-bottom: 0;
+  margin-left: 1px;
+  max-width: 70px;
+  width: 70px;
+  max-height: 70px;
+  object-fit: cover;
+  height: 70px;
+  border-radius: 10px;
 `;
 
 export const Badge = styled.div`

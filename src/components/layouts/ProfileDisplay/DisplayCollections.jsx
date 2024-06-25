@@ -1,109 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { useMediaQuery } from 'react-responsive';
+import CollectionsFilter from '../Collections/CollectionsFilter';
+import { ArtistsContainer } from '../craftsmen/craftsmenStyles/CraftsMen.styles';
+import CollectionCard from '../Collections/CollectionCard';
 
 function DisplayCollections(props) {
   const { data } = props;
-
-  function generateUniqueId() {
-    return uuidv4();
-  }
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   return (
-    <div className="artist-profile-wrapper display-collections-wrapper" style={{ margin: '25px 0px' }}>
-      <div className="Collections-filter-wrapper">
-        <div
-          className="tag"
-        >
-          Painting
-        </div>
-        <div
-          className="tag"
-        >
-          Photography
-        </div>
-        <div
-          className="tag"
-        >
-          Sculpture
-        </div>
-        <div
-          className="tag"
-        >
-          Ceramic Artworks
-        </div>
-        <div
-          className="tag"
-        >
-          Others...
-        </div>
-      </div>
+    <div className="artist-profile-wrapper display-collections-wrapper">
 
-      <div className="d-flex flex-wrap flex-row" style={{ gap: '20px' }}>
+      <CollectionsFilter />
+
+      <ArtistsContainer isDeviceMobile={isDeviceMobile} isDeviceTablet={isDeviceTablet}>
         {data?.map((collection) => (
-          <div key={generateUniqueId()} style={{ maxWidth: '400px' }}>
-            <div className="sc-card-collection style-2">
-              <div className="card-bottom">
-                <div className="author">
-                  <div className="sc-author-box style-2">
-                    <div className="author-avatar">
-                      <img
-                        src={collection?.owner_image}
-                        alt=""
-                        className="avatar"
-                      />
-                      <div className="badge" />
-                    </div>
-                  </div>
-                  <div className="content">
-                    <h4>
-                      <Link to={`/collection?id=${collection?.id}`}>
-                        {collection?.name}
-                      </Link>
-                    </h4>
-                    <p>
-                      By
-                      {' '}
-                      <Link to={`/displayProfile?${collection?.owner_profile_type}=${collection?.owner}`}>
-                        <span className="authorName">{collection?.owner_name}</span>
-                      </Link>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <Link to="/author-02">
-                <div className="media-images-collection">
-                  <div className="box-left">
-                    <img
-                      src={collection.cover}
-                      alt=""
-                    />
-                  </div>
-                  <div className="box-right">
-                    <div className="top-img">
-                      <img
-                        src={collection.image}
-                        alt=""
-                      />
-                      <img
-                        src={collection.cover}
-                        alt=""
-                      />
-                    </div>
-                    <div className="bottom-img">
-                      <img
-                        src={collection.image}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
+          <CollectionCard
+            key={collection.id}
+            collection={collection}
+            isDeviceMobile={isDeviceMobile}
+            isDeviceTablet={isDeviceTablet}
+          />
         ))}
-      </div>
+      </ArtistsContainer>
     </div>
   );
 }

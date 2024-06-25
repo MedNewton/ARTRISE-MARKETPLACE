@@ -23,7 +23,7 @@ function CollectionCard({ collection, isDeviceMobile, isDeviceTablet }) {
       <InfoFollowButtonWrapper>
         <InfoSectionWrapper>
           <ProfileImageWrapper>
-            <ProfileImage src={collection?.owner_image} alt="" />
+            <ProfileImage src={collection?.image} alt="" />
             <RiVerifiedBadgeFill fontSize="2.5em" style={{ marginLeft: '-10px' }} />
           </ProfileImageWrapper>
           <ArtistInfo>
@@ -46,7 +46,7 @@ function CollectionCard({ collection, isDeviceMobile, isDeviceTablet }) {
 CollectionCard.propTypes = {
   collection: PropTypes.shape({
     id: PropTypes.string,
-    owner_image: PropTypes.string,
+    image: PropTypes.string,
     name: PropTypes.string,
     owner_name: PropTypes.string,
     thumbnails: PropTypes.arrayOf(PropTypes.string),
@@ -59,7 +59,7 @@ CollectionCard.propTypes = {
 CollectionCard.defaultProps = {
   collection: PropTypes.shape({
     id: '',
-    owner_image: '',
+    image: '',
     name: '',
     owner_name: '',
     thumbnails: [],
