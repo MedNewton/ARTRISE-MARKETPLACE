@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import { useMediaQuery } from 'react-responsive';
 import Footer from '../components/footer/Footer';
 import ReferralModal from '../components/layouts/referralModal';
+import { ImageWrapper, InnerWrapperA } from '../components/layouts/referralProgram/ReferralProgram.styles';
 
 function ReferralProgram() {
   const [createModalShow, setCreateModalShow] = useState(false);
+  const isDeviceMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isDeviceTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
   return (
     <div>
@@ -13,11 +17,13 @@ function ReferralProgram() {
           <div>
             <h3>Referral</h3>
           </div>
-          <div className="flex-row-align-center" style={{ width: '100%', gap: '5%' }}>
-            <div style={{ width: '40%' }}>
-              <div className="referralImage" />
-            </div>
-            <div className="flex-column-gap20" style={{ width: '60%' }}>
+          <InnerWrapperA isDeviceMobile={isDeviceMobile}>
+            <ImageWrapper
+              isDeviceMobile={isDeviceMobile}
+              isDeviceTablet={isDeviceTablet}
+              src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            />
+            <div className="flex-column-gap20">
               <h4>
                 Spread the Rise of Hybrid Art - Join Our Referral Program
               </h4>
@@ -40,7 +46,7 @@ function ReferralProgram() {
                 </button>
               </div>
             </div>
-          </div>
+          </InnerWrapperA>
         </div>
 
         <div className="flex-column-gap20">
@@ -50,11 +56,14 @@ function ReferralProgram() {
           <div>
             <h6>Empower Art, Earn Together</h6>
           </div>
-          <div className="flex-row-align-center" style={{ width: '100%', gap: '5%' }}>
-            <div style={{ width: '40%' }}>
-              <div className="referralImage" />
-            </div>
-            <div className="flex-column-gap20" style={{ width: '60%' }}>
+          <InnerWrapperA isDeviceMobile={isDeviceMobile}>
+            <ImageWrapper
+              isDeviceMobile={isDeviceMobile}
+              isDeviceTablet={isDeviceTablet}
+              src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            />
+
+            <div className="flex-column-gap20">
               <h4>
                 Referring a Member
               </h4>
@@ -67,13 +76,15 @@ function ReferralProgram() {
                 <p>5% refund of the first purchase</p>
               </div>
             </div>
-          </div>
+          </InnerWrapperA>
 
-          <div className="flex-row-align-center" style={{ width: '100%', gap: '5%' }}>
-            <div style={{ width: '40%' }}>
-              <div className="referralImage" />
-            </div>
-            <div className="flex-column-gap20" style={{ width: '60%' }}>
+          <InnerWrapperA isDeviceMobile={isDeviceMobile}>
+            <ImageWrapper
+              isDeviceMobile={isDeviceMobile}
+              isDeviceTablet={isDeviceTablet}
+              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            />
+            <div className="flex-column-gap20">
               <h4>
                 Referring an Artists
               </h4>
@@ -86,7 +97,7 @@ function ReferralProgram() {
                 <p>5% of the artist&apos;s sale</p>
               </div>
             </div>
-          </div>
+          </InnerWrapperA>
         </div>
 
         <div className="referralInbfoBox flex-column-gap20">

@@ -1893,13 +1893,7 @@ a{
   border: solid 2px #fff;
 }
 
-.referralImage{
-  height: 30vh;
-  background-color: #f1f1f1;
-  box-shadow: 0px 0px 5px 1px #f1f1f1;
-  border: solid 3px #fff;
-  border-radius: 10px;
-}
+
 
 .modal-body{
   padding-bottom: 20px !important;
@@ -3137,7 +3131,7 @@ Collections-filter-wrapper{
 .referral-home-wrapper{
   display: flex;
   flex-direction: column;
-  padding: 10% 15% 5%;
+  padding: 45px 15% 45px;
   gap: 50px;
 }
 .artists-page-title {
