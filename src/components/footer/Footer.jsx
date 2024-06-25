@@ -225,7 +225,7 @@ function Footer() {
           <div className="footer-copyrights">
 
            <div><p className="rights">All rights reserved ArtRise Labs LLC</p></div>
-            <div><p className="rights">Version: May 26, 2024</p></div>
+            <div><p className="rights">Version: June 25, 2024</p></div>
             <div>
               {' '}
               <p className="rights privacy">
